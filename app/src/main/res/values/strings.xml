@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ePot</string>
+    <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
 </resources>
