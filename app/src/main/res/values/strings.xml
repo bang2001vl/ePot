@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">ePot</string>
     <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
+    <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
+        Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
 </resources>
