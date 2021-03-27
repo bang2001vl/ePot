@@ -3,4 +3,14 @@
     <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
     <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
         Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
+    <string name="add_to_cart">Thêm hàng vào giỏ</string>
+    <string name="submit">Xác nhận</string>
+    <string name="agree">Đồng ý</string>
+    <string name="cancel">Hủy</string>
+    <string name="order">Đặt hàng</string>
+    <string name="amount_formatted" formatted="false">Số lượng: %1$d</string>
+    <string name="amount_2dot" formatted="false">Số lượng:</string>
+    <string name="max_formatted" formatted="false">Tối đa: %1$d</string>
+    <string name="price_formatted" formatted="false">Giá: %1$s</string>
+    <string name="single_price_formatted" formatted="false">Đơn giá: %1$s</string>
 </resources>
