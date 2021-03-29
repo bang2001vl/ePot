@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <variable
-            name="viewModel"
-            type="exam.nlb2t.epot.ChooseItemDetailBottomSheet.ChooseItemDetailViewModel" />
-    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,21 +32,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtName_item"
-            android:text="@{viewModel.name}"
+            android:text="DUMMY NAME"
             android:textSize="@dimen/big_title_size_text"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtAmount_Max"
-            android:text="@{viewModel.maxAmount}"
+            android:id="@+id/txtPrice"
+            android:text="@string/single_price_formatted"
             android:textSize="@dimen/normal_title_size_text"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtPrice"
-            android:text="@{viewModel.price}"
+            android:id="@+id/txtAmount_Max"
+            android:text="@string/max_formatted"
             android:textSize="@dimen/normal_title_size_text"
             />
     </LinearLayout>
@@ -71,40 +66,23 @@
             android:layout_height="wrap_content"
             android:text="@string/amount_2dot"
             android:textSize="@dimen/normal_title_size_text"
+            android:layout_gravity="center"
             />
         <Space
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
-        <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/btn_decrease"
-            android:onClick="@{viewModel.onDecreaseListener}"
-            android:src="@mipmap/icon_minus"
-            android:background="@color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
-            />
-        <EditText
+        <com.thunderstudio.mylib.Views.ChooseAmountLayout
             android:layout_width="wrap_content"
-            android:minWidth="30dp"
             android:layout_height="wrap_content"
-            android:id="@+id/input_amount"
-            android:inputType="numberSigned"
-            android:text="@={viewModel.amount}"
-            android:textAlignment="center"
-            />
-        <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/btn_increase"
-            android:onClick="@{viewModel.onIncreaseListener}"
-            android:src="@mipmap/icon_add"
-            android:background="@color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/amount_picker"
+            app:button_size="@dimen/normal_button_size"
+            app:minValue="1"
+            app:maxValue="10"
+            app:stepValue="1"
+            app:src_increase="@mipmap/ic_plus"
+            app:src_decrease="@mipmap/ic_minus"
             />
     </LinearLayout>
     <LinearLayout
@@ -128,7 +106,6 @@
            android:textSize="@dimen/normal_button_text"
            android:text="@string/add_to_cart"
            android:textAllCaps="false"
-           android:onClick="@{viewModel.onSubmitListener}"
            />
         <Space
             android:layout_width="wrap_content"
@@ -137,4 +114,3 @@
             />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

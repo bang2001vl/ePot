@@ -1,142 +1,121 @@
 package exam.nlb2t.epot;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.ObservableField;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 
-import exam.nlb2t.epot.ClassData.ProductInfo;
-import exam.nlb2t.epot.databinding.FragmentChooseItemDetailBinding;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+
+import exam.nlb2t.epot.ClassInformation.BuyInfo;
 
 public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
 
-    String itemName;
-    int singlePrice;
-    int maxAmount;
-    int amount;
+    public static final String TAG_NAME = "PRODUCT_NAME";
+    public static final String TAG_MAX = "MAX";
+    public static final String TAG_PRICE = "PRICE";
+
+    String productName = "DEFAULT_NAME";
+    int productMaxAmount = 100;
+    int productSinglePrice = 1000;
+
+    public Bitmap bitmap = null;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //View view = inflater.inflate(R.layout.fragment_choose_item_detail, container, false);
-        FragmentChooseItemDetailBinding binding = FragmentChooseItemDetailBinding.inflate(inflater, container, false);
-        binding.setViewModel(new ChooseItemDetailViewModel());
-        return binding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_choose_item_detail, container, false);
+
+        ChooseAmountLayout chooseAmountLayout = view.findViewById(R.id.amount_picker);
+
+        TextView txtName = view.findViewById(R.id.txtName_item);
+        TextView txtMax = view.findViewById(R.id.txtAmount_Max);
+        TextView txtPrice = view.findViewById(R.id.txtPrice);
+        Button btnSubmit = view.findViewById(R.id.btn_submit);
+
+        if(savedInstanceState != null) {
+            this.productMaxAmount = savedInstanceState.getInt(TAG_MAX);
+            this.productName = savedInstanceState.getString(TAG_NAME);
+            this.productSinglePrice = savedInstanceState.getInt(TAG_PRICE);
+        }
+
+        txtName.setText(this.productName);
+        txtMax.setText(getString(R.string.max_formatted, this.productMaxAmount));
+        txtPrice.setText(getString(R.string.price_formatted, this.productSinglePrice + "VND"));
+
+        chooseAmountLayout.controller.min = 1;
+        chooseAmountLayout.controller.max = productMaxAmount;
+        chooseAmountLayout.controller.setNumber(1);
+
+        if(this.bitmap != null)
+        {
+            ImageView imageView = view.findViewById(R.id.image_item);
+            imageView.setImageBitmap(bitmap);
+        }
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ShowToast")
+            @Override
+            public void onClick(View v) {
+                Log.d("MY_TAG", "Buy : " + (int)chooseAmountLayout.controller.getNumber());
+                Toast.makeText(ChooseItemDetailBottomSheet.this.getContext(), "Buy : " + (int)chooseAmountLayout.controller.getNumber(), Toast.LENGTH_LONG);
+            }
+        });
+        return view;
+    }
+
+    public static ChooseItemDetailBottomSheet newInstance(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap)
+    {
+        ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet();
+        Bundle bundle = new Bundle();
+
+        bundle.putInt(TAG_MAX, maxAmount);
+        bundle.putString(TAG_NAME, productName);
+        bundle.putInt(TAG_PRICE, singlePrice);
+
+        if(bitmap != null)
+        {
+            bottomSheet.bitmap = bitmap;
+        }
+
+        bottomSheet.setArguments(bundle);
+        return bottomSheet;
     }
 
     public ChooseItemDetailBottomSheet()
     {
-        itemName = "DUMMY NAME";
-        singlePrice = 2000;
-        maxAmount = 30;
-        amount = 1;
+
     }
 
-    public static ChooseItemDetailBottomSheet newInstance()
+    public ChooseItemDetailBottomSheet(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap)
     {
-        ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet();
-
-        return bottomSheet;
+        this.productName = productName;
+        this.productMaxAmount = maxAmount;
+        this.productSinglePrice = singlePrice;
+        this.bitmap = bitmap;
     }
 
-    public class ChooseItemDetailViewModel extends BaseObservable
+    public class ChooseItemDetailController
     {
-        public ProductInfo product;
-        Long getMaxAmount_long()
-        {
-            return product.getTotal() - product.getAmountSold();
-        }
-
-        @Bindable
-        public String getPrice()
-        {
-            return getString(R.string.single_price_formatted, getMaxAmount_long().toString() + "VND");
-        }
-
-        @Bindable
-        public String getName()
-        {
-            return product.getNameProduct();
-        }
-
-        @Bindable
-        public String getMaxAmount()
-        {
-            return getString(R.string.max_formatted, (product.getTotal()-product.getAmountSold()));
-        }
-
-        private ObservableField<Long> MyAmount;
-
-        @Bindable
-        public String getAmount() {
-            return MyAmount.get().toString();
-        }
-
-        public void setAmount(String value)
-        {
-            if(value != null && value.length() > 0) {
-                long val = Long.parseLong(value);
-                if(val > getMaxAmount_long()){
-                    val = getMaxAmount_long();
-                }
-                if(val < 1){
-                    val = 1;
-                }
-                if(val != MyAmount.get())
-                {
-                    MyAmount.set(val);
-                    this.notifyPropertyChanged(BR.amount);
-                }
-            }
-            else {
-                MyAmount.set(1L);
-                this.notifyPropertyChanged(BR.amount);
-            }
-        }
-
-        public View.OnClickListener onSubmitListener;
-        public View.OnClickListener onIncreaseListener;
-        public View.OnClickListener onDecreaseListener;
-
-        public ChooseItemDetailViewModel()
-        {
-            MyAmount = new ObservableField<>(1L);
-
-            product = new ProductInfo();
-            product.setNameProduct("WAIFU IS DA BEST");
-            product.setValue(5000L);
-            product.setTotal(100L);
-            product.setAmountSold(20L);
-
-            onSubmitListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("MY_TAG", "amount = " + getAmount());
-                }
-            };
-
-            onIncreaseListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setAmount(String.valueOf(MyAmount.get()+1));
-                }
-            };
-
-            onDecreaseListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setAmount(String.valueOf(MyAmount.get()-1));
-                }
-            };
-        }
+        BuyInfo buyInfo;
     }
 }
