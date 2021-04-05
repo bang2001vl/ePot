@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name = "Tag_Salepro">
+        <attr name="Size_tag" format = "dimension"></attr>
+        <attr name="Color" format ="color"></attr>
+        <attr name="Text" format="string"></attr>
+        <attr name="TextSize" format="dimension"></attr>
+        <attr name="TextColor" format="color"></attr>
+        <attr name="TextPadding_Top" format="dimension"></attr>
+        <attr name="TextPadding_Left" format="dimension"></attr>
+    </declare-styleable>
+</resources>

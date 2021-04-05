@@ -13,5 +13,8 @@
 <!--    Image-->
     <dimen name="small_image_size">120dp</dimen>
 
+    <dimen name="Tag_Salepro_size">100dp</dimen>
+
     <dimen name="small_button_size">15dp</dimen>
+
 </resources>
