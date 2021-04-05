@@ -21,30 +21,38 @@ public class DatabaseController {
     }
 
     public boolean CheckUserExist(String username) throws SQLException {
-        Statement statement = connection.createStatement();// Tạo đối tượng Statement.
+        Statement statement = connection.createStatement();
         String sql = "select * from UserInfo where username = '" + username + "'";
         try {
             ResultSet rs = statement.executeQuery(sql);
-            connection.close();
 
-            if (rs.first()) return true;
-            return false;
+            if (rs.next()) {
+                connection.close();
+                return true;
+            }
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             Log.d("MY_DEBUG", e.getMessage());
         }
+        connection.close();
         return false;
     }
 
     public boolean CheckPassword(String username, String password) throws SQLException {
-        Statement statement = connection.createStatement();// Tạo đối tượng Statement.
-        String sql = "select password from UserInfo where username = '" + username + "'";
-        ResultSet rs = statement.executeQuery(sql);
+        Statement statement = connection.createStatement();
+        String sql = "select * from UserInfo where username = '" + username + "' and password = '"+password+"'";
+        try {
+            ResultSet rs = statement.executeQuery(sql);
 
+            if (rs.next()) {
+                connection.close();
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            Log.d("MY_DEBUG", e.getMessage());
+        }
         connection.close();
-
-        if (rs.getString("password") == password) return true;
-        else return false;
+        return false;
     }
 }
