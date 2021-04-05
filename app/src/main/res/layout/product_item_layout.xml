@@ -1,32 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/product_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    card_view:cardCornerRadius="40dp"
-    card_view:cardElevation="8dp">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-        android:paddingTop="3dp"
-        android:orientation="vertical">
         <FrameLayout
+            android:id="@+id/Tag_Image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/Image_Product"
-            android:layout_width="match_parent"
-            android:layout_height="413dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/mango"
-            />
+
+            <ImageView
+                android:id="@+id/Image_Product"
+                android:layout_width="match_parent"
+                android:layout_height="413dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/mango" />
 
             <exam.nlb2t.epot.Views.Tag_Salepro
+                android:id="@+id/Tag_Salepro"
                 android:layout_width="100dp"
                 android:layout_height="163dp"
                 card_view:Color="#ffff00"
@@ -51,6 +44,7 @@
 
         />
         <RelativeLayout
+            android:id="@+id/price_amoundsold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
     <TextView
@@ -75,7 +69,7 @@
         android:gravity="right"
         />
         </RelativeLayout>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+</LinearLayout>
 
 

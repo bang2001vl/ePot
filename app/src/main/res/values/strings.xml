@@ -14,7 +14,7 @@
     <string name="price_formatted" formatted="false">Giá: %1$s</string>
     <string name="single_price_formatted" formatted="false">Đơn giá: %1$s</string>
 
-    <string name="percent_salepro" >50% giảm</string>
+    <string name="percent_salepro">50% giảm</string>
 
 
     <string name="default_product_name">Dummy Name</string>
