@@ -34,7 +34,7 @@ public class Tag_Salepro  extends TextView {
     private int Color_tag;
     private int TextSize;
     private int Textcolor;
-    private String Text;
+    public String Text;
     private int Textpadding_top;
     private int Textpadding_left;
 
