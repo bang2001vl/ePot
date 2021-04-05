@@ -15,28 +15,47 @@
         android:paddingRight="6dp"
         android:paddingTop="3dp"
         android:orientation="vertical">
-
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/Image_Product"
             android:layout_width="match_parent"
             android:layout_height="413dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/mango" />
+            android:src="@mipmap/mango"
+            />
+
+            <exam.nlb2t.epot.Views.Tag_Salepro
+                android:layout_width="100dp"
+                android:layout_height="163dp"
+                card_view:Color="#ffff00"
+                card_view:Size_tag="100dp"
+                card_view:Text="50%"
+                card_view:TextColor="#ff0000"
+                card_view:TextSize="15pt"
+                card_view:TextPadding_Top="20dp"
+                card_view:TextPadding_Left="20dp"
+                />
+        </FrameLayout>
+
 
     <TextView
         android:id="@+id/textview_proName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Xoài cát nguyên trái 1KG ship mọi khu vực:V"
+        android:text="Xoài cát nguyên trái, 1KG ship mọi khu vực:V"
         android:textColor="@color/black"
         android:textSize="11pt"
 
         />
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <TextView
         android:id="@+id/textview_proPrice"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor = "#F00"
         android:textSize="12pt"
@@ -44,6 +63,7 @@
         android:text="70.000 đ"
         android:layout_marginTop="10dp"
         />
+
     <TextView
         android:id="@+id/textview_proSold"
         android:layout_width="match_parent"
@@ -52,7 +72,9 @@
         android:textSize="10pt"
         android:text="Đã bán 1k"
         android:layout_marginTop="5dp"
+        android:gravity="right"
         />
+        </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
 

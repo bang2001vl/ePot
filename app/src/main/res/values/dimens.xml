@@ -12,4 +12,5 @@
     <dimen name="normal_button_text">15sp</dimen>
 <!--    Image-->
     <dimen name="small_image_size">120dp</dimen>
+    <dimen name="Tag_Salepro_size">100dp</dimen>
 </resources>
