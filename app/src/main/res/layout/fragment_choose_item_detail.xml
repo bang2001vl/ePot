@@ -90,23 +90,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linearlayout_option_color"
+        android:orientation="vertical"
+        android:id="@+id/options_holder"
         app:layout_constraintTop_toBottomOf="@id/txtAmount_Max"
         app:layout_constraintStart_toStartOf="@id/txtAmount_Max"
 
         android:background="@color/light_gray"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Colors"
-            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/txtAmount_Max"
+        app:layout_constraintTop_toBottomOf="@id/options_holder"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginEnd="@dimen/normal_padding"

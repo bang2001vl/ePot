@@ -13,6 +13,7 @@
     <string name="max_formatted" formatted="false">Tối đa: %1$d</string>
     <string name="price_formatted" formatted="false">Giá: %1$s</string>
     <string name="single_price_formatted" formatted="false">Đơn giá: %1$s</string>
+    <string name="color">Màu sắc</string>
 
     <string name="percent_salepro" >50% giảm</string>
 

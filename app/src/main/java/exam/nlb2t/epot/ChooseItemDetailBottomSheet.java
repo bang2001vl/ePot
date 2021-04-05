@@ -5,21 +5,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.thunderstudio.mylib.OnValueChanged;
 import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 
 import java.util.List;
@@ -35,13 +38,18 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
     int productMaxAmount = 100;
     int productSinglePrice = 1000;
 
-    List<List<String>> list_options = null;
+    List<Pair<String, String[]>> list_options = null;
     ChooseAmountLayout amountPicker;
     public int getAmount()
     {
         return (int)amountPicker.controller.getNumber();
     }
 
+    RadioButton[] selectedOption;
+    public int getSelectedOptionIndex(int list_options_index)
+    {
+        return ((FlexboxLayout.LayoutParams)selectedOption[list_options_index].getLayoutParams()).getOrder();
+    }
     public Bitmap bitmap = null;
 
     @Nullable
@@ -80,12 +88,50 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         if(this.list_options != null)
         {
             Context context = view.getContext();
-            for (List<String> options:list_options ) {
-                LinearLayout linearLayout = new LinearLayout(context);
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                        ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                //layoutParams.top
-                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout options_holder = view.findViewById(R.id.options_holder);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            float size = getResources().getDimension(R.dimen.normal_button_text);
+            selectedOption = new RadioButton[list_options.size()];
+
+            for (int list_option_index = 0; list_option_index <list_options.size(); list_option_index++) {
+                Pair<String, String[]> options = list_options.get(list_option_index);
+
+                LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.list_option, container, false);
+                options_holder.addView(linearLayout, params);
+
+                TextView title = linearLayout.findViewById(R.id.title);
+                FlexboxLayout layout_options = linearLayout.findViewById(R.id.flexboxlayout_options);
+
+                title.setText(options.first);
+                for (int k =0; k<options.second.length; k++) {
+                    String option = options.second[k];
+                    RadioButton radioButton = new RadioButton(context);
+                    FlexboxLayout.LayoutParams option_params = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    option_params.setMargins(5,0,5,0);
+                    if(selectedOption[list_option_index] == null)
+                    {
+                        selectedOption[list_option_index] = radioButton;
+                        radioButton.setChecked(true);
+                    }
+                    else {radioButton.setChecked(false);}
+
+                    radioButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+                    radioButton.setText(option);
+                    radioButton.setTag(list_option_index);
+                    radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(isChecked)
+                            {
+                                int index = (int)buttonView.getTag();
+                                selectedOption[index].setChecked(false);
+                                selectedOption[index] = radioButton;
+                            }
+                        }
+                    });
+                    option_params.setOrder(k);
+                    layout_options.addView(radioButton, option_params);
+                }
             }
         }
 
@@ -93,7 +139,11 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
-                Log.d("MY_TAG", "Buy : " + (int)chooseAmountLayout.controller.getNumber());
+                Log.d("MY_TAG", String.format ("Amount = %1$d", (int)chooseAmountLayout.controller.getNumber()));
+                for(int i = 0; selectedOption!= null && i<selectedOption.length; i++)
+                {
+                    Log.d("MY_TAG", String.format ("Option %1$d(%4$s) choose index = %2$d (value = %3$s)", i, getSelectedOptionIndex(i), selectedOption[i].getText(), list_options.get(i).first));
+                }
                 Toast.makeText(ChooseItemDetailBottomSheet.this.getContext(), "Buy : " + (int)chooseAmountLayout.controller.getNumber(), Toast.LENGTH_LONG);
             }
         });
@@ -123,12 +173,13 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
 
     }
 
-    public ChooseItemDetailBottomSheet(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap)
+    public ChooseItemDetailBottomSheet(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap, @Nullable List<Pair<String, String[]>> list_options)
     {
         this.productName = productName;
         this.productMaxAmount = maxAmount;
         this.productSinglePrice = singlePrice;
         this.bitmap = bitmap;
+        this.list_options = list_options;
     }
 
     public interface OnClickSubmit
