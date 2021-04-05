@@ -1,5 +1,7 @@
 package exam.nlb2t.epot.Database;
 
+import android.util.Log;
+
 import exam.nlb2t.epot.SQL.DataController;
 
 import java.sql.Connection;
@@ -21,11 +23,17 @@ public class DatabaseController {
     public boolean CheckUserExist(String username) throws SQLException {
         Statement statement = connection.createStatement();// Tạo đối tượng Statement.
         String sql = "select * from UserInfo where username = '" + username + "'";
-        ResultSet rs = statement.executeQuery(sql);
+        try {
+            ResultSet rs = statement.executeQuery(sql);
+            connection.close();
 
-        connection.close();
-
-        if (rs.first()) return true;
+            if (rs.first()) return true;
+            return false;
+        }
+        catch (SQLException e)
+        {
+            Log.d("MY_DEBUG", e.getMessage());
+        }
         return false;
     }
 

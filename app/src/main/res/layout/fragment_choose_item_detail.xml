@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtName_item"
-            android:text="DUMMY NAME"
+            android:text="@string/default_product_name"
             android:textSize="@dimen/big_title_size_text"
             />
         <TextView
@@ -42,13 +42,7 @@
             android:text="@string/single_price_formatted"
             android:textSize="@dimen/normal_title_size_text"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtAmount_Max"
-            android:text="@string/max_formatted"
-            android:textSize="@dimen/normal_title_size_text"
-            />
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,7 +50,6 @@
         android:id="@+id/layout_amount"
         app:layout_constraintTop_toBottomOf="@id/image_item"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="@dimen/normal_padding"
         android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginEnd="@dimen/normal_padding"
         android:orientation="horizontal"
@@ -85,10 +78,35 @@
             app:src_decrease="@mipmap/ic_minus"
             />
     </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtAmount_Max"
+        android:text="@string/max_formatted"
+        android:textSize="@dimen/normal_title_size_text"
+        app:layout_constraintTop_toBottomOf="@id/layout_amount"
+        app:layout_constraintStart_toStartOf="@id/layout_amount"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/layout_amount"
+        android:orientation="horizontal"
+        android:id="@+id/linearlayout_option_color"
+        app:layout_constraintTop_toBottomOf="@id/txtAmount_Max"
+        app:layout_constraintStart_toStartOf="@id/txtAmount_Max"
+
+        android:background="@color/light_gray"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Colors"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/txtAmount_Max"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/normal_padding"
         android:layout_marginEnd="@dimen/normal_padding"

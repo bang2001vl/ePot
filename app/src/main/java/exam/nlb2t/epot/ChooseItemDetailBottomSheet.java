@@ -1,42 +1,46 @@
 package exam.nlb2t.epot;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.thunderstudio.mylib.OnValueChanged;
 import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-
-import exam.nlb2t.epot.ClassInformation.BuyInfo;
+import java.util.List;
 
 public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
 
     public static final String TAG_NAME = "PRODUCT_NAME";
     public static final String TAG_MAX = "MAX";
     public static final String TAG_PRICE = "PRICE";
+    public static final String TAG_AMOUNT = "AMOUNT";
 
     String productName = "DEFAULT_NAME";
     int productMaxAmount = 100;
     int productSinglePrice = 1000;
+
+    List<List<String>> list_options = null;
+    ChooseAmountLayout amountPicker;
+    public int getAmount()
+    {
+        return (int)amountPicker.controller.getNumber();
+    }
 
     public Bitmap bitmap = null;
 
@@ -65,11 +69,24 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         chooseAmountLayout.controller.min = 1;
         chooseAmountLayout.controller.max = productMaxAmount;
         chooseAmountLayout.controller.setNumber(1);
+        amountPicker = chooseAmountLayout;
 
         if(this.bitmap != null)
         {
             ImageView imageView = view.findViewById(R.id.image_item);
             imageView.setImageBitmap(bitmap);
+        }
+
+        if(this.list_options != null)
+        {
+            Context context = view.getContext();
+            for (List<String> options:list_options ) {
+                LinearLayout linearLayout = new LinearLayout(context);
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                //layoutParams.top
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            }
         }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +100,7 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    public static ChooseItemDetailBottomSheet newInstance(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap)
+    public static ChooseItemDetailBottomSheet newInstance(@NonNull String productName, int maxAmount, int singlePrice, @Nullable Bitmap bitmap, @Nullable List<List<String>> list_options)
     {
         ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet();
         Bundle bundle = new Bundle();
@@ -114,8 +131,8 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         this.bitmap = bitmap;
     }
 
-    public class ChooseItemDetailController
+    public interface OnClickSubmit
     {
-        BuyInfo buyInfo;
+        void OnClickSubmit(Context context, int amount, int[] params);
     }
 }
