@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtName_item"
             android:text="@string/default_product_name"
-            android:textSize="@dimen/big_title_size_text"
+            style="@style/TittleBigSize"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -41,6 +41,7 @@
             android:id="@+id/txtPrice"
             android:text="@string/single_price_formatted"
             android:textSize="@dimen/normal_title_size_text"
+            android:textColor="@color/black"
             />
 
     </LinearLayout>
@@ -54,13 +55,13 @@
         android:layout_marginEnd="@dimen/normal_padding"
         android:orientation="horizontal"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/amount_2dot"
-            android:textSize="@dimen/normal_title_size_text"
             android:layout_gravity="center"
-            />
+            android:text="@string/amount_2dot"
+            style="@style/TittleNormalSize" />
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,6 +85,8 @@
         android:id="@+id/txtAmount_Max"
         android:text="@string/max_formatted"
         android:textSize="@dimen/normal_title_size_text"
+
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/layout_amount"
         app:layout_constraintStart_toStartOf="@id/layout_amount"
         />

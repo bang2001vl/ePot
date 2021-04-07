@@ -59,6 +59,7 @@
             android:id="@+id/txtPrice"
             android:text="@string/single_price_formatted"
             android:textSize="@dimen/small_title_size_text"
+            android:textColor="@color/black"
             />
         <Space
             android:layout_width="wrap_content"
@@ -75,7 +76,7 @@
             app:stepValue="1"
             app:src_increase="@mipmap/ic_plus"
             app:src_decrease="@mipmap/ic_minus"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             />
     </LinearLayout>
 </LinearLayout>

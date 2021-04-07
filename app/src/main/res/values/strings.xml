@@ -14,6 +14,9 @@
     <string name="price_formatted" formatted="false">Giá: %1$s</string>
     <string name="single_price_formatted" formatted="false">Đơn giá: %1$s</string>
     <string name="color">Màu sắc</string>
+    <string name="total_money_2dot">Tổng tiền :</string>
+    <string name="purcharse">Thanh toán</string>
+    <string name="all">Tất cả</string>
 
     <string name="percent_salepro">50% giảm</string>
 
