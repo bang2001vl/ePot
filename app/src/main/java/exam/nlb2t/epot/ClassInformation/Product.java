@@ -9,6 +9,11 @@ public class Product extends BaseProductInfo{
 
     public String Description;
     public Bitmap[] Images;
+
+    public User Saler;
+    public int NumberSold;
+    public String PecentSale;
+
     public Saler Saler;
 
     @SuppressLint("DefaultLocale")
@@ -30,4 +35,5 @@ public class Product extends BaseProductInfo{
         product.Saler = exam.nlb2t.epot.ClassInformation.Saler.createRandom(seek);
         return product;
     }
+
 }
