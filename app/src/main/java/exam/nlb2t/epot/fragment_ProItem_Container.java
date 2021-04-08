@@ -1,12 +1,21 @@
 package exam.nlb2t.epot;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import java.util.List;
+
+import exam.nlb2t.epot.ClassInformation.Product;
+import exam.nlb2t.epot.Views.Tag_Salepro;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,43 +24,28 @@ import android.view.ViewGroup;
  */
 public class fragment_ProItem_Container extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    List<Product> productList ;
+    ArrayAdapter<Product> ProductAdapter;
+    GridView proGrid;
 
     public fragment_ProItem_Container() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_ProItem_Container.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static fragment_ProItem_Container newInstance(String param1, String param2) {
+
+    public static fragment_ProItem_Container newInstance(List<Product> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.productList = productList;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ProductAdapter = new ArrayAdapter<Product>(this.getContext(), R.layout.fragment__pro_item__container, productList);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -59,6 +53,26 @@ public class fragment_ProItem_Container extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment__pro_item__container, container, false);
+        View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
+        if(productList != null) {
+            proGrid = (GridView) view.findViewById(R.id.Gridpro);
+            proGrid.setNumColumns(2);
+            proGrid.setAdapter(ProductAdapter);
+
+            for (int i = 0; i < productList.size(); i++) {
+                LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.product_item_layout, container, false);
+
+                TextView tv = ((TextView) linearLayout.findViewById(R.id.textview_proPrice));
+                tv.setText(productList.get(i).CurrentPrice);
+                ((TextView) linearLayout.findViewById(R.id.textview_proSold)).setText(productList.get(i).NumberSold);
+                ((TextView) linearLayout.findViewById(R.id.textview_proName)).setText(productList.get(i).Description);
+                ((Tag_Salepro) linearLayout.findViewById(R.id.Tag_Salepro)).Text = (productList.get(i).PecentSale);
+                ((ImageView) linearLayout.findViewById(R.id.Image_Product)).setImageBitmap(productList.get(i).MainImage);
+
+                //ViewGroup.LayoutParams params = new GridLayout.LayoutParams();
+                proGrid.addView(linearLayout);
+            }
+        }
+        return view;
     }
 }

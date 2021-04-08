@@ -7,4 +7,6 @@ public class Product extends BaseProductInfo{
     public String Description;
     public Bitmap[] Images;
     public User Saler;
+    public int NumberSold;
+    public String PecentSale;
 }

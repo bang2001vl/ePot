@@ -1,6 +1,5 @@
 package exam.nlb2t.epot.Views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -20,33 +19,56 @@ public class product_Item_Layout extends LinearLayout {
     FrameLayout layout_tag_image;
     RelativeLayout layout_price_amountsold;
 
-    ImageView imagePro;
-    Tag_Salepro tag_salepro;
-    TextView tv_Namepro;
-    TextView tv_Pricepro;
-    TextView tv_Amountpro;
+    public ImageView imagePro;
+    public Tag_Salepro tag_salepro;
+    public TextView tv_Namepro;
+    public TextView tv_Pricepro;
+    public TextView tv_Amountpro;
+    int Size_tag;
     int Size;
 
 
     public product_Item_Layout(Context context) {
         super(context);
         Init(context, null);
+        this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
+
+            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
+            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
+        });
+
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    //@SuppressLint("UseCompatLoadingForDrawables")
     public product_Item_Layout(Context context, AttributeSet attrs) {
         super(context, attrs);
         Init(context, attrs);
+
+        this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
+
+            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
+            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
+        });
     }
 
     public product_Item_Layout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Init(context, attrs);
+        this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
+
+            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
+            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
+        });
     }
 
     public product_Item_Layout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         Init(context, attrs);
+        this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
+
+            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
+            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
+        });
     }
 
     private void Init(Context context, AttributeSet attrs)
@@ -70,7 +92,12 @@ public class product_Item_Layout extends LinearLayout {
             tv_Pricepro.setText(ta.getString(R.styleable.product_Item_Layout_Price_pro));
             tv_Amountpro.setText(ta.getString(R.styleable.product_Item_Layout_Amount_proSold));
             imagePro.setImageResource(ta.getResourceId(R.styleable.product_Item_Layout_Image_pro, R.mipmap.mango));
+            tag_salepro.SetTextSize(ta.getDimensionPixelSize(R.styleable.product_Item_Layout_Texttagsize, 15));
+            tag_salepro.Setsize(ta.getDimensionPixelSize(R.styleable.product_Item_Layout_size_tag, 100));
 
         this.addView(layout_ViewGroup, layout_ViewGroup.getLayoutParams());
+
     }
+
+
 }

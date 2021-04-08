@@ -14,21 +14,22 @@
             <ImageView
                 android:id="@+id/Image_Product"
                 android:layout_width="match_parent"
-                android:layout_height="413dp"
-                android:scaleType="fitXY"
+                android:layout_height="wrap_content"
+                android:scaleType="fitStart"
                 android:src="@mipmap/mango" />
 
             <exam.nlb2t.epot.Views.Tag_Salepro
                 android:id="@+id/Tag_Salepro"
-                android:layout_width="100dp"
-                android:layout_height="163dp"
+                android:layout_width="match_parent"
+                android:layout_height="278dp"
                 card_view:Color="#ffff00"
                 card_view:Size_tag="100dp"
                 card_view:Text="50%"
                 card_view:TextColor="#ff0000"
-                card_view:TextSize="15pt"
-                card_view:TextPadding_Top="20dp"
                 card_view:TextPadding_Left="20dp"
+                card_view:TextPadding_Top="20dp"
+                card_view:TextSize="15pt"
+
                 />
         </FrameLayout>
 
