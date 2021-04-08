@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.R;
 
 public class product_Item_Layout extends LinearLayout {
@@ -33,9 +33,7 @@ public class product_Item_Layout extends LinearLayout {
         Init(context, null);
         this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
 
-            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
-            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
-        });
+                   });
 
     }
 
@@ -46,9 +44,7 @@ public class product_Item_Layout extends LinearLayout {
 
         this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
 
-            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
-            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
-        });
+                   });
     }
 
     public product_Item_Layout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -56,21 +52,25 @@ public class product_Item_Layout extends LinearLayout {
         Init(context, attrs);
         this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
 
-            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
-            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
-        });
+                  });
     }
 
     public product_Item_Layout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         Init(context, attrs);
         this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
-
-            imagePro.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, right - left, right - left));
-            tag_salepro.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (bottom - top) / 3, (right - left) / 4));
         });
     }
 
+    public void Set_value(Product product)
+    {
+        tag_salepro.Text = product.PecentSale;
+        imagePro.setImageBitmap(product.MainImage);
+        tv_Pricepro.setText(product.CurrentPrice +" đ");
+        tv_Namepro.setText(product.ProductName);
+        tv_Amountpro.setText("Đã bán " + product.NumberSold);
+        postInvalidate();
+    }
     private void Init(Context context, AttributeSet attrs)
     {
 
@@ -88,14 +88,15 @@ public class product_Item_Layout extends LinearLayout {
 
             Size = ta.getDimensionPixelSize(R.styleable.product_Item_Layout_Size, 0);
             tag_salepro.Text = ta.getString(R.styleable.product_Item_Layout_Text_tagpro);
-            tv_Namepro.setText(ta.getString(R.styleable.product_Item_Layout_Name_pro));
-            tv_Pricepro.setText(ta.getString(R.styleable.product_Item_Layout_Price_pro));
-            tv_Amountpro.setText(ta.getString(R.styleable.product_Item_Layout_Amount_proSold));
+            tv_Namepro.setText(ta.getString(R.styleable.product_Item_Layout_Name_pro ));
+            tv_Pricepro.setText(ta.getString(R.styleable.product_Item_Layout_Price_pro) + " đ");
+            tv_Amountpro.setText("Đã bán " + ta.getString(R.styleable.product_Item_Layout_Amount_proSold) );
             imagePro.setImageResource(ta.getResourceId(R.styleable.product_Item_Layout_Image_pro, R.mipmap.mango));
             tag_salepro.SetTextSize(ta.getDimensionPixelSize(R.styleable.product_Item_Layout_Texttagsize, 15));
-            tag_salepro.Setsize(ta.getDimensionPixelSize(R.styleable.product_Item_Layout_size_tag, 100));
+            tag_salepro.Setsize(ta.getDimensionPixelSize(R.styleable.product_Item_Layout_size_tag, 150));
 
         this.addView(layout_ViewGroup, layout_ViewGroup.getLayoutParams());
+        ta.recycle();
 
     }
 

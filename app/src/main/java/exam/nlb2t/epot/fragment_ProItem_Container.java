@@ -4,18 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
 
 import exam.nlb2t.epot.ClassInformation.Product;
-import exam.nlb2t.epot.Views.Tag_Salepro;
+import exam.nlb2t.epot.Views.product_Item_Layout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +22,7 @@ import exam.nlb2t.epot.Views.Tag_Salepro;
 public class fragment_ProItem_Container extends Fragment {
 
     List<Product> productList ;
-    ArrayAdapter<Product> ProductAdapter;
-    GridView proGrid;
+    FlexboxLayout proGrid;
 
     public fragment_ProItem_Container() {
         // Required empty public constructor
@@ -42,11 +38,10 @@ public class fragment_ProItem_Container extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProductAdapter = new ArrayAdapter<Product>(this.getContext(), R.layout.fragment__pro_item__container, productList);
+        /*for (int i = 0; i < productList.size(); i++) {
 
-        if (getArguments() != null) {
+        }*/
 
-        }
     }
 
     @Override
@@ -55,24 +50,31 @@ public class fragment_ProItem_Container extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
         if(productList != null) {
-            proGrid = (GridView) view.findViewById(R.id.Gridpro);
-            proGrid.setNumColumns(2);
-            proGrid.setAdapter(ProductAdapter);
+            proGrid = (FlexboxLayout) view.findViewById(R.id.Gridpro);
 
             for (int i = 0; i < productList.size(); i++) {
-                LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.product_item_layout, container, false);
 
-                TextView tv = ((TextView) linearLayout.findViewById(R.id.textview_proPrice));
-                tv.setText(productList.get(i).CurrentPrice);
-                ((TextView) linearLayout.findViewById(R.id.textview_proSold)).setText(productList.get(i).NumberSold);
-                ((TextView) linearLayout.findViewById(R.id.textview_proName)).setText(productList.get(i).Description);
-                ((Tag_Salepro) linearLayout.findViewById(R.id.Tag_Salepro)).Text = (productList.get(i).PecentSale);
-                ((ImageView) linearLayout.findViewById(R.id.Image_Product)).setImageBitmap(productList.get(i).MainImage);
+                product_Item_Layout proItem = new product_Item_Layout(this.getContext());
 
-                //ViewGroup.LayoutParams params = new GridLayout.LayoutParams();
-                proGrid.addView(linearLayout);
+                proItem.Set_value(productList.get(i));
+               // FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                proGrid.addView(proItem);
+                //proGrid.getChildAt(i).getLayoutParams().width = proGrid.getWidth()/2;
             }
+            /*setColumnCount(2);*/
         }
+
         return view;
     }
+
+    /*public void setColumnCount(int columnCount)
+    {
+        int n = proGrid.getChildCount();
+        for(int i = 0; i<n; i++)
+        {
+            View view = proGrid.getChildAt(i);
+            view.getLayoutParams().width /= 2;
+            view.getLayoutParams().height /= 2;
+        }
+    }*/
 }

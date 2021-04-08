@@ -23,12 +23,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="278dp"
                 card_view:Color="#ffff00"
-                card_view:Size_tag="100dp"
+                card_view:Size_tag="50dp"
                 card_view:Text="50%"
                 card_view:TextColor="#ff0000"
-                card_view:TextPadding_Left="20dp"
-                card_view:TextPadding_Top="20dp"
-                card_view:TextSize="15pt"
+                card_view:TextPadding_Top="30dp"
+                card_view:TextSize="23dp"
 
                 />
         </FrameLayout>
@@ -42,6 +41,8 @@
         android:text="Xoài cát nguyên trái, 1KG ship mọi khu vực:V"
         android:textColor="@color/black"
         android:textSize="11pt"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
 
         />
         <RelativeLayout
@@ -53,10 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor = "#F00"
-        android:textSize="12pt"
-        android:textStyle="bold"
-        android:text="70.000 đ"
-        android:layout_marginTop="10dp"
+        android:textSize="10pt"
+        android:text="đ"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="12dp"
         />
 
     <TextView
@@ -64,10 +65,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor = "#808080"
-        android:textSize="10pt"
-        android:text="Đã bán 1k"
-        android:layout_marginTop="5dp"
+        android:textSize="9pt"
+        android:text="Đã bán"
+        android:layout_marginTop="12dp"
         android:gravity="right"
+        android:paddingRight="15dp"
         />
         </RelativeLayout>
 
