@@ -10,7 +10,6 @@ public class Product extends BaseProductInfo{
     public String Description;
     public Bitmap[] Images;
 
-    public User Saler;
     public int NumberSold;
     public String PecentSale;
 
@@ -33,6 +32,9 @@ public class Product extends BaseProductInfo{
             builder.append(String.format("Default text linr number %1$d", i));
         }
         product.Saler = exam.nlb2t.epot.ClassInformation.Saler.createRandom(seek);
+
+        product.PecentSale = random.nextInt(100) + "%";
+        product.NumberSold = random.nextInt(product.AvaiableAmount);
         return product;
     }
 

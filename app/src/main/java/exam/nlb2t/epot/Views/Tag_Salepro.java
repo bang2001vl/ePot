@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -97,16 +96,10 @@ public class Tag_Salepro  extends View {
         canvas.drawPath(path, paint);
     }
     protected void drawText(Canvas canvas) {
-        float txtWidth = textPaint.measureText(Text);
 
-        float x = getPaddingLeft();
-        textPaint.getTextBounds(Text, 0, Text.length(), rect);
-        float y = getPaddingTop() + rect.height();
+        textPaint.setTextSize(Size_tag/2 - 10);
 
-        textPaint.setTextSize(TextSize);
-
-        canvas.drawText("GIẢM", x  , y + Textpadding_top + TextSize, textPaint);
-        canvas.drawText(Text, x + Textpadding_left , y +Textpadding_top, textPaint);
+        canvas.drawText("-" + Text, Textpadding_left , ( (Size_tag) - TextSize)/3*2  , textPaint);
 
     }
 
@@ -132,7 +125,6 @@ public class Tag_Salepro  extends View {
         textPaint.setColor(Textcolor);
         textPaint.setTextSize(TextSize);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
             ta.recycle();
 
