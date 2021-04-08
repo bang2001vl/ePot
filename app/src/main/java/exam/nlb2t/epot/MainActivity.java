@@ -2,18 +2,26 @@ package exam.nlb2t.epot;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.dragnell.android.ButtonNumberNotification;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    ButtonNumberNotification icon_card;
+    ButtonNumberNotification icon_notification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,18 +29,24 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView main_bottom_navigation = findViewById(R.id.bottom_navigation_menu);
         main_bottom_navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        icon_card = findViewById(R.id.icon_card);
+        icon_card.setOnClickListener(onClickIconCard);
+
+        icon_notification = findViewById(R.id.icon_notification);
+        icon_notification.setOnClickListener(onClickIconNotification);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
             Resources res = getResources();
             String itemTitle = item.getTitle().toString();
 
-            if (itemTitle == res.getString(R.string.menu_home_page)) {
+            if (Objects.equals(itemTitle, res.getString(R.string.menu_home_page))) {
                 fragment = new fragment_ProItem_Container();
-            } else if (itemTitle == res.getString(R.string.menu_person)) {
+            } else if (Objects.equals(itemTitle, res.getString(R.string.menu_person))) {
 
                 // TODO: Not have user-fragment yet
             }
@@ -47,4 +61,17 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener onClickIconCard = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: fragment or activity?
+        }
+    };
+
+    View.OnClickListener onClickIconNotification = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // TODO: fragment or activity?
+        }
+    };
 }

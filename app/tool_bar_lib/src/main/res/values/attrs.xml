@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ButtonNumberNotification">
+        <attr name="background_number" format="color"/>
+        <attr name="textColor_number" format="color"/>
+        <attr name="text_number" format="integer"/>
+    </declare-styleable>
+</resources>
