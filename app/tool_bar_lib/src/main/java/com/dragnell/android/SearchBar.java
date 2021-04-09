@@ -71,29 +71,28 @@ public class SearchBar extends ViewGroup{
         }
     }
 
-    EditText editText;
-    Paint paint;
     void init(Context context, AttributeSet attrs)
     {
         LayoutInflater inflater = (LayoutInflater) this.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(com.dragnell.android.R.layout.tool_bar_search, this, false);
 
-        editText = view.findViewById(R.id.txt_search);
-        ImageView iconSearch = view.findViewById(R.id.icon_search);
-        ImageView iconClear = view.findViewById(R.id.icon_clear);
-
-        iconClear.setOnClickListener(onClickClear);
-        editText.setOnKeyListener(onKeyListener);
+        init((ConstraintLayout)view);
 
         LayoutParams params = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         this.addView(view, params);
+    }
 
-        //Log.d("MY_DEBUG", )
+    EditText editText;
+    void init(ConstraintLayout constraintLayout)
+    {
+        editText = constraintLayout.findViewById(R.id.txt_search);
+        ImageView iconSearch = constraintLayout.findViewById(R.id.icon_search);
+        ImageView iconClear = constraintLayout.findViewById(R.id.icon_clear);
 
-        paint = new Paint();
-        paint.setTextSize(40f);
+        iconClear.setOnClickListener(onClickClear);
+        editText.setOnKeyListener(onKeyListener);
     }
 
     View.OnClickListener onClickClear = new OnClickListener() {

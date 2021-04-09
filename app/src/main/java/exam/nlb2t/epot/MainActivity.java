@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     ButtonNumberNotification icon_card;
     ButtonNumberNotification icon_notification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

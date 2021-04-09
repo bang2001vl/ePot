@@ -11,20 +11,25 @@ public class Product extends BaseProductInfo{
     public Bitmap[] Images;
 
     public int NumberSold;
-    public String PecentSale;
 
     public Saler Saler;
+
+    public Product()
+    {
+
+    }
+
+    public Product(BaseProductInfo baseProductInfo)
+    {
+        super(baseProductInfo);
+    }
 
     @SuppressLint("DefaultLocale")
     public static Product createRandom(int seek)
     {
         BaseProductInfo base = BaseProductInfo.createRandom(seek);
-        Product product = new Product();
-        product.ProductName = base.ProductName;
-        product.OriginPrice = base.OriginPrice;
-        product.CurrentPrice = base.CurrentPrice;
-        product.AverageRating = base.AverageRating;
-        product.AvaiableAmount = base.AvaiableAmount;
+        Product product = new Product(base);
+
         StringBuilder builder = new StringBuilder();
         Random random = new Random(seek);
         for(int i = random.nextInt(10); i>=0; i--)
@@ -33,7 +38,6 @@ public class Product extends BaseProductInfo{
         }
         product.Saler = exam.nlb2t.epot.ClassInformation.Saler.createRandom(seek);
 
-        product.PecentSale = random.nextInt(100) + "%";
         product.NumberSold = random.nextInt(product.AvaiableAmount);
         return product;
     }
