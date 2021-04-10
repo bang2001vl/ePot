@@ -3,19 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment_ProItem_Container">
 
     <!-- TODO: Update blank fragment layout -->
-   <ScrollView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-       />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Đây là nơi xuất ra 1 dãy các món hàng đang bán"
-        android:textSize="30sp"
-        />
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/Gridpro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="flex_start"
+            android:orientation="vertical"
+            app:alignItems="stretch"
+           >
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
 
 </FrameLayout>

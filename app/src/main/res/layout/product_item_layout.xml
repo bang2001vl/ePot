@@ -13,25 +13,25 @@
 
             <ImageView
                 android:id="@+id/Image_Product"
-                android:layout_width="match_parent"
-                android:layout_height="413dp"
-                android:scaleType="fitXY"
+                android:layout_width="208dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitStart"
                 android:src="@mipmap/mango" />
-
-            <exam.nlb2t.epot.Views.Tag_Salepro
-                android:id="@+id/Tag_Salepro"
-                android:layout_width="100dp"
-                android:layout_height="163dp"
-                card_view:Color="#ffff00"
-                card_view:Size_tag="100dp"
-                card_view:Text="50%"
-                card_view:TextColor="#ff0000"
-                card_view:TextSize="15pt"
-                card_view:TextPadding_Top="20dp"
-                card_view:TextPadding_Left="20dp"
+            <TextView
+                android:id="@+id/tv_tag_salepro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30%"
+                android:background="#ff4500"
+                android:textSize="15pt"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/white"
                 />
-        </FrameLayout>
 
+        </FrameLayout>
 
     <TextView
         android:id="@+id/textview_proName"
@@ -41,21 +41,36 @@
         android:text="Xoài cát nguyên trái, 1KG ship mọi khu vực:V"
         android:textColor="@color/black"
         android:textSize="11pt"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
 
         />
         <RelativeLayout
             android:id="@+id/price_amoundsold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/textview_OldproPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor = "#808080"
+                android:textSize="10pt"
+                android:text=" đ"
+                android:paddingLeft="15dp"
+                android:layout_marginTop="12dp"
+                />
     <TextView
         android:id="@+id/textview_proPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor = "#F00"
-        android:textSize="12pt"
-        android:textStyle="bold"
-        android:text="70.000 đ"
-        android:layout_marginTop="10dp"
+        android:textSize="10pt"
+        android:text=" đ"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_toRightOf="@+id/textview_OldproPrice"
         />
 
     <TextView
@@ -63,10 +78,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor = "#808080"
-        android:textSize="10pt"
-        android:text="Đã bán 1k"
-        android:layout_marginTop="5dp"
+        android:textSize="9pt"
+        android:text="Đã bán"
+        android:layout_marginTop="12dp"
         android:gravity="right"
+        android:paddingRight="15dp"
         />
         </RelativeLayout>
 

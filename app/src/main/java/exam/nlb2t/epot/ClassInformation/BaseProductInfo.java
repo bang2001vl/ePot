@@ -13,6 +13,19 @@ public class BaseProductInfo {
     public int AvaiableAmount;
     public Bitmap MainImage;
 
+    public BaseProductInfo()
+    {
+
+    }
+
+    public BaseProductInfo(BaseProductInfo baseProductInfo) {
+        this.ProductName = baseProductInfo.ProductName;
+        this.OriginPrice = baseProductInfo.OriginPrice;
+        this.CurrentPrice = baseProductInfo.CurrentPrice;
+        this.AverageRating = baseProductInfo.AverageRating;
+        this.AvaiableAmount = baseProductInfo.AvaiableAmount;
+    }
+
     public static BaseProductInfo createRandom(int seek)
     {
         BaseProductInfo baseProductInfo = new BaseProductInfo();

@@ -7,30 +7,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StyleableRes;
-
-import com.google.android.material.shape.TriangleEdgeTreatment;
 
 import exam.nlb2t.epot.R;
 
-public class Tag_Salepro  extends TextView {
+public class Tag_Salepro  extends View {
     protected Rect rect;
     private Paint paint, textPaint;
 
     public final int Size = 500;
-    private int Size_tag;
+    public int Size_tag;
     private int Color_tag;
     private int TextSize;
     private int Textcolor;
@@ -77,6 +66,21 @@ public class Tag_Salepro  extends TextView {
 
     }
 
+    public final void Setsize (int size)
+    {
+        this.Size_tag = size;
+        postInvalidate();
+    }
+    public final void SetTextSize(int size)
+    {
+        this.TextSize = size;
+        postInvalidate();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 
     public void drawTriangle(Canvas canvas, Paint paint, int x, int y, int width) {
 
@@ -92,30 +96,20 @@ public class Tag_Salepro  extends TextView {
         canvas.drawPath(path, paint);
     }
     protected void drawText(Canvas canvas) {
-        float txtWidth = textPaint.measureText(Text);
 
-        float x = getPaddingLeft();
-        textPaint.getTextBounds(Text, 0, Text.length(), rect);
-        float y = getPaddingTop() + rect.height();
+        textPaint.setTextSize(Size_tag/2 - 10);
 
-        canvas.drawText(Text, x + Textpadding_left , y +Textpadding_top, textPaint);
-        canvas.drawText("GIẢM", x  , y + Textpadding_top + TextSize, textPaint);
+        canvas.drawText("-" + Text, Textpadding_left , ( (Size_tag) - TextSize)/3*2  , textPaint);
 
     }
 
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-       // Size_tag = widthMeasureSpec;
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
 
     protected void Init (@Nullable AttributeSet attrs)
     {
         rect = new Rect();
 
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.Tag_Salepro);
-        Size_tag = ta.getDimensionPixelSize(R.styleable.Tag_Salepro_Size_tag, Size);
+        Size_tag = ta.getDimensionPixelSize(R.styleable.Tag_Salepro_Size_tag, 158);
         Color_tag = ta.getColor(R.styleable.Tag_Salepro_Color, Color.RED);
         Text = ta.getString(R.styleable.Tag_Salepro_Text);
         TextSize = ta.getDimensionPixelSize(R.styleable.Tag_Salepro_TextSize,0 );
@@ -131,11 +125,8 @@ public class Tag_Salepro  extends TextView {
         textPaint.setColor(Textcolor);
         textPaint.setTextSize(TextSize);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        //textPaint.set;
 
             ta.recycle();
 
-            //this.setTextAlignment(TEXT_ALIGNMENT_CENTER);
     }
 }

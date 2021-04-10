@@ -6,6 +6,7 @@ public class ProductBuyInfo {
     public Product product;
     public int Amount;
 
+
     public static ProductBuyInfo createRandom(int seek)
     {
         ProductBuyInfo productBuyInfo = new ProductBuyInfo();

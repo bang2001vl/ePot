@@ -1,12 +1,18 @@
 package exam.nlb2t.epot;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
+import com.google.android.flexbox.FlexboxLayout;
+
+import java.util.List;
+
+import exam.nlb2t.epot.ClassInformation.Product;
+import exam.nlb2t.epot.Views.product_Item_Layout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,50 +21,60 @@ import android.view.ViewGroup;
  */
 public class fragment_ProItem_Container extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    List<Product> productList ;
+    FlexboxLayout proGrid;
 
     public fragment_ProItem_Container() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_ProItem_Container.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static fragment_ProItem_Container newInstance(String param1, String param2) {
+
+    public static fragment_ProItem_Container newInstance(List<Product> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.productList = productList;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        /*for (int i = 0; i < productList.size(); i++) {
+
+        }*/
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment__pro_item__container, container, false);
+        View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
+        if(productList != null) {
+            proGrid = (FlexboxLayout) view.findViewById(R.id.Gridpro);
+
+            for (int i = 0; i < productList.size(); i++) {
+
+                product_Item_Layout proItem = new product_Item_Layout(this.getContext());
+
+                proItem.Set_value(productList.get(i));
+               // FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                proGrid.addView(proItem);
+                //proGrid.getChildAt(i).getLayoutParams().width = proGrid.getWidth()/2;
+            }
+            /*setColumnCount(2);*/
+        }
+
+        return view;
     }
+
+    /*public void setColumnCount(int columnCount)
+    {
+        int n = proGrid.getChildCount();
+        for(int i = 0; i<n; i++)
+        {
+            View view = proGrid.getChildAt(i);
+            view.getLayoutParams().width /= 2;
+            view.getLayoutParams().height /= 2;
+        }
+    }*/
 }

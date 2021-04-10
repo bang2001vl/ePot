@@ -24,4 +24,9 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <style name="epotButton">
+        <item name="android:background">@color/light_gray</item>
+        <item name="colorOnBackground">true</item>
+    </style>
+
 </resources>
