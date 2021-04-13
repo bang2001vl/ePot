@@ -8,8 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#F0F6F6F6</color>
+    <color name="drark_gray">#F06C6C6C</color>
     <color name="transparent">#00000000</color>
     <color name="Color_Tag">#F00</color>
-
+    <color name="red">#FF0000</color>
     <color name="main_bottom_navigation_background">#FFFFFFFF</color>
 </resources>

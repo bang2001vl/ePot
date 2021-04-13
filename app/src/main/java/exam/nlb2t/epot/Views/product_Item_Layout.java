@@ -65,15 +65,15 @@ public class product_Item_Layout extends LinearLayout {
     @SuppressLint("SetTextI18n")
     public void Set_value(Product product)
     {
-        SpannableString oldproprice = new SpannableString(product.OriginPrice + "");
-        oldproprice.setSpan(new StrikethroughSpan(), 0, (product.OriginPrice + "").length(), 0);
+        SpannableString oldproprice = new SpannableString(product.originPrice + "");
+        oldproprice.setSpan(new StrikethroughSpan(), 0, (product.originPrice + "").length(), 0);
 
         this.tv_Oldproprice.setText(oldproprice + " đ ");
-        this.imagePro.setImageBitmap(product.MainImage);
-        this.tv_Pricepro.setText(product.CurrentPrice +" đ");
-        this.tv_Namepro.setText(product.ProductName);
-        this.tv_Amountpro.setText("Đã bán " + product.NumberSold);
-        this.tag_salepro.setText("-" + (int) (product.CurrentPrice*100/ product.OriginPrice)+ "%");
+        this.imagePro.setImageBitmap(product.mainImage);
+        this.tv_Pricepro.setText(product.currentPrice +" đ");
+        this.tv_Namepro.setText(product.productName);
+        this.tv_Amountpro.setText("Đã bán " + product.numberSold);
+        this.tag_salepro.setText("-" + (int) (product.currentPrice *100/ product.originPrice)+ "%");
 
         postInvalidate();
     }

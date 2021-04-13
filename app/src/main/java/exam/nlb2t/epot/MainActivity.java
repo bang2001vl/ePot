@@ -6,6 +6,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,12 +17,20 @@ import android.widget.Toast;
 import com.dragnell.android.ButtonNumberNotification;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import exam.nlb2t.epot.Activities.CartActivity;
+import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
+import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
 
 public class MainActivity extends AppCompatActivity {
 
     ButtonNumberNotification icon_card;
     ButtonNumberNotification icon_notification;
+
+    List<ProductBuyInfo> buyInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +74,16 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener onClickIconCard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO: fragment or activity?
+            ArrayList<ProductBuyInfoParcel> parcels = new ArrayList<>(buyInfoList.size());
+            for(ProductBuyInfo buyInfo: buyInfoList)
+            {
+                ProductBuyInfoParcel parcel = new ProductBuyInfoParcel(buyInfo);
+                parcels.add(parcel);
+            }
+
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            intent.putExtra(CartActivity.NAME_PARCEL, parcels);
+            startActivity(intent);
         }
     };
 

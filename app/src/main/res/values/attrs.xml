@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Card_ItemView">
+        <attr name="itemName" format="string"/>
+        <attr name="maxAmount" format="integer"/>
+        <attr name="amount" format="integer"/>
+        <attr name="price_origin" format="integer"/>
+        <attr name="price_current" format="integer"/>
+        <attr name="itemImage" format="reference"/>
+    </declare-styleable>
+</resources>

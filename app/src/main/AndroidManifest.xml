@@ -28,7 +28,8 @@
             </intent-filter>-->
         </activity>
 
-        <activity android:name=".Activities.CartActivity">
+        <activity android:name=".Activities.CartActivity"
+            >
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
