@@ -46,25 +46,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         Product product = productList.get(position);
 
-        String price = " " + product.OriginPrice + " đ";
+        String price = " " + product.originPrice + " đ";
         SpannableString oldproprice = new SpannableString(price);
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        if (product.OriginPrice == product.CurrentPrice)
+        if (product.originPrice == product.currentPrice)
         {
             holder.tag_salepro.setVisibility(View.GONE);
             holder.tv_Oldproprice.setVisibility(View.GONE);
         }
         else
         {
-            holder.tag_salepro.setText("-" + (product.CurrentPrice*100 / product.OriginPrice) +"%");
+            holder.tag_salepro.setText("-" + (product.currentPrice*100 / product.originPrice) +"%");
             holder.tv_Oldproprice.setText(oldproprice);
         }
 
-        holder.tv_Pricepro.setText(" " + product.CurrentPrice + " đ ");
-        holder.tv_Namepro.setText(" " + product.ProductName + " ");
-        holder.imagePro.setImageBitmap(product.MainImage);
-        holder.tv_Amountpro.setText(" Đã bán " + product.NumberSold);
+        holder.tv_Pricepro.setText(" " + product.currentPrice + " đ ");
+        holder.tv_Namepro.setText(" " + product.productName + " ");
+        holder.imagePro.setImageBitmap(product.mainImage);
+        holder.tv_Amountpro.setText(" Đã bán " + product.numberSold);
 
     }
 
