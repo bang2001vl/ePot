@@ -6,13 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-
-import com.google.android.flexbox.FlexboxLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import exam.nlb2t.epot.ClassInformation.Product;
-import exam.nlb2t.epot.Views.product_Item_Layout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +21,9 @@ import exam.nlb2t.epot.Views.product_Item_Layout;
 public class fragment_ProItem_Container extends Fragment {
 
     List<Product> productList ;
-    FlexboxLayout proGrid;
+    RecyclerView proGrid;
+    ProductAdapter productAdapter;
+
 
     public fragment_ProItem_Container() {
         // Required empty public constructor
@@ -38,43 +39,28 @@ public class fragment_ProItem_Container extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*for (int i = 0; i < productList.size(); i++) {
 
-        }*/
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
-        if(productList != null) {
-            proGrid = (FlexboxLayout) view.findViewById(R.id.Gridpro);
+        if(productList != null)
+         {
+            proGrid =  view.findViewById(R.id.Gridpro);
+            productAdapter = new ProductAdapter(productList, this.getContext());
 
-            for (int i = 0; i < productList.size(); i++) {
+            proGrid.setAdapter(productAdapter);
+            proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
 
-                product_Item_Layout proItem = new product_Item_Layout(this.getContext());
-
-                proItem.Set_value(productList.get(i));
-               // FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                proGrid.addView(proItem);
-                //proGrid.getChildAt(i).getLayoutParams().width = proGrid.getWidth()/2;
-            }
-            /*setColumnCount(2);*/
         }
 
         return view;
     }
 
-    /*public void setColumnCount(int columnCount)
-    {
-        int n = proGrid.getChildCount();
-        for(int i = 0; i<n; i++)
-        {
-            View view = proGrid.getChildAt(i);
-            view.getLayoutParams().width /= 2;
-            view.getLayoutParams().height /= 2;
-        }
-    }*/
 }
