@@ -39,8 +39,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/view_bg"
-            app:tabSelectedTextColor="@color/pink"
-            app:tabIndicatorColor="@color/pink"
+            app:tabSelectedTextColor="@color/mainColor"
+            app:tabIndicatorColor="@color/mainColor"
             app:layout_constraintVertical_bias="0"></com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager
