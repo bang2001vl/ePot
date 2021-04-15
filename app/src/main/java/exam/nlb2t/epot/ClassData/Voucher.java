@@ -21,21 +21,21 @@ public class Voucher {
         return iDAccount;
     }
 
-    private String iDShop;
+    private int amount;
 
-    public String getiDShop() {
-        return iDShop;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public void setiDShop(String iDShop) {
-        this.iDShop = iDShop;
+    public int getAmount() {
+        return amount;
     }
 
     public Voucher(){}
 
-    public Voucher(String iDVoucher, String iDAccount, String iDShop){
+    public Voucher(String iDVoucher, String iDAccount, int amount){
         this.iDAccount = iDAccount;
         this.iDVoucher = iDVoucher;
-        this.iDShop = iDShop;
+        this.amount = amount;
     }
 }

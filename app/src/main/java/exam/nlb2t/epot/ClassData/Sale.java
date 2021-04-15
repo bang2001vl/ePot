@@ -60,4 +60,16 @@ public class Sale {
     public void setValueDiscount(long valueDiscount) {
         this.valueDiscount = valueDiscount;
     }
+
+    public Sale(){}
+
+    public Sale(String iDVoucher, String iDShop, int percentDiscount, int valueDiscount, Long amount, String infoVoucher)
+    {
+        this.iDShop = iDShop;
+        this.amount = amount;
+        this.iDVoucher = iDVoucher;
+        this.percentDiscount = percentDiscount;
+        this.infoVoucher = infoVoucher;
+        this.valueDiscount = valueDiscount;
+    }
 }

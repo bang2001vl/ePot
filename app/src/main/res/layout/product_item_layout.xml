@@ -1,59 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    card_view:cardCornerRadius="40dp"
-    card_view:cardElevation="8dp">
+    >
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/Tag_Image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-        android:paddingTop="3dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/Image_Product"
-            android:layout_width="match_parent"
-            android:layout_height="413dp"
-            android:scaleType="fitXY"
+            android:layout_width="208dp"
+            android:layout_height="138dp"
+            android:scaleType="fitStart"
             android:src="@mipmap/mango" />
+
+        <TextView
+            android:id="@+id/tv_tag_salepro"
+            android:layout_width="39dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start"
+            android:background="#ff4500"
+            android:text="30%"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="8pt"
+            tools:ignore="RtlCompat" />
+
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textview_proName"
-        android:layout_width="match_parent"
+        android:layout_width="208dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Xoài cát nguyên trái 1KG ship mọi khu vực:V"
+        android:text="Xoài cát nguyên trái, 1KG ship mọi khu vực:V"
         android:textColor="@color/black"
-        android:textSize="11pt"
+        android:textSize="5pt"
 
         />
+        <RelativeLayout
+            android:id="@+id/price_amoundsold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
+            <TextView
+                android:id="@+id/textview_OldproPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor = "#808080"
+                android:textSize="4pt"
+                android:text=" đ"
+                />
     <TextView
         android:id="@+id/textview_proPrice"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor = "#F00"
-        android:textSize="12pt"
-        android:textStyle="bold"
-        android:text="70.000 đ"
-        android:layout_marginTop="10dp"
+        android:textSize="4pt"
+        android:text=" đ"
+        android:layout_toRightOf="@+id/textview_OldproPrice"
         />
-    <TextView
-        android:id="@+id/textview_proSold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor = "#808080"
-        android:textSize="10pt"
-        android:text="Đã bán 1k"
-        android:layout_marginTop="5dp"
-        />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textview_proSold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đã bán"
+                android:textColor="#808080"
+                android:textSize="4pt"
+                android:textAlignment="viewEnd"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
+
+</LinearLayout>
 
 

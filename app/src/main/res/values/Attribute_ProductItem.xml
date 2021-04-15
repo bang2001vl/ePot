@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="product_Item_Layout">
+        <attr name="Size" format="dimension"></attr>
+        <attr name="Text_tagpro" format="string"></attr>
+        <attr name="Image_pro" format="integer"></attr>
+        <attr name="Name_pro" format="string"></attr>
+        <attr name="Price_pro" format="string"></attr>
+        <attr name="Amount_proSold" format = "string"></attr>
+        <attr name="size_tag" format="dimension"></attr>
+        <attr name="Texttagsize" format="dimension"></attr>
+    </declare-styleable>
+
+</resources>
