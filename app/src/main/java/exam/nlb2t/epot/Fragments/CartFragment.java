@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import exam.nlb2t.epot.Card_ListItemAdapter;
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Card_ItemView;
@@ -107,14 +105,12 @@ public class CartFragment extends Fragment {
 
     TextView txtTotal;
     Button btnPurchase;
-    Map<String, Card_ListItemAdapter> adapters;
 
     void initSalerList(View root, LinearLayout saler_list_holder, LayoutInflater inflater, ViewGroup container)
     {
         List<String> salerNameSet = new ArrayList<>(data.keySet());
         Collections.sort(salerNameSet);
 
-        adapters = new HashMap<>(salerNameSet.size());
         for (String salerName : salerNameSet) {
 
             LinearLayout item_list_container = (LinearLayout) inflater.inflate(R.layout.card_list_saler, container, false);
