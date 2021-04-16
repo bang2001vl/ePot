@@ -26,6 +26,7 @@ import java.util.Map;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Card_ItemView;
+import exam.nlb2t.epot.singleton.Helper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -241,7 +242,7 @@ public class CartFragment extends Fragment {
                     }
                 }
             }
-            txtTotal.setText(String.format(Locale.getDefault(), "%,d VND", total));
+            txtTotal.setText(Helper.getInstance(getContext()).getPrice(total));
             btnPurchase.setEnabled(total > 0);
         }
     }
