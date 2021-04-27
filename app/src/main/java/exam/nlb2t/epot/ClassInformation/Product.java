@@ -10,9 +10,7 @@ public class Product extends BaseProductInfo{
     public String Description;
     public Bitmap[] Images;
 
-    public int NumberSold;
-
-    public Saler Saler;
+    public int numberSold;
 
     public Product()
     {
@@ -22,6 +20,17 @@ public class Product extends BaseProductInfo{
     public Product(BaseProductInfo baseProductInfo)
     {
         super(baseProductInfo);
+    }
+
+    public Product(Product product)
+    {
+        super(product);
+
+        this.Description = product.Description;
+        this.numberSold = product.numberSold;
+
+        this.saler = product.saler;
+        this.Images = product.Images;
     }
 
     @SuppressLint("DefaultLocale")
@@ -34,11 +43,11 @@ public class Product extends BaseProductInfo{
         Random random = new Random(seek);
         for(int i = random.nextInt(10); i>=0; i--)
         {
-            builder.append(String.format("Default text linr number %1$d", i));
+            builder.append(String.format("Default text line number %d", i));
         }
-        product.Saler = exam.nlb2t.epot.ClassInformation.Saler.createRandom(seek);
 
-        product.NumberSold = random.nextInt(product.AvaiableAmount);
+
+        product.numberSold = random.nextInt(product.avaiableAmount);
         return product;
     }
 

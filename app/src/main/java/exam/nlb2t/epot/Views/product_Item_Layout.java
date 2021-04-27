@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -65,15 +66,16 @@ public class product_Item_Layout extends LinearLayout {
     @SuppressLint("SetTextI18n")
     public void Set_value(Product product)
     {
-        SpannableString oldproprice = new SpannableString(product.OriginPrice + "");
-        oldproprice.setSpan(new StrikethroughSpan(), 0, (product.OriginPrice + "").length(), 0);
+        String price = product.originPrice + " đ";
+        SpannableString oldproprice = new SpannableString(price);
+        oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        this.tv_Oldproprice.setText(oldproprice + " đ ");
-        this.imagePro.setImageBitmap(product.MainImage);
-        this.tv_Pricepro.setText(product.CurrentPrice +" đ");
-        this.tv_Namepro.setText(product.ProductName);
-        this.tv_Amountpro.setText("Đã bán " + product.NumberSold);
-        this.tag_salepro.setText("-" + (int) (product.CurrentPrice*100/ product.OriginPrice)+ "%");
+        this.tv_Oldproprice.setText(oldproprice );
+        this.imagePro.setImageBitmap(product.mainImage);
+        this.tv_Pricepro.setText(product.currentPrice +" đ ");
+        this.tv_Namepro.setText(" " + product.productName + " ");
+        this.tv_Amountpro.setText("Đã bán " + product.numberSold);
+        this.tag_salepro.setText(" -" + (int) (product.currentPrice*100/ product.originPrice)+ "% ");
 
         postInvalidate();
     }
@@ -94,10 +96,10 @@ public class product_Item_Layout extends LinearLayout {
 
 
             Size = ta.getDimensionPixelSize(R.styleable.product_Item_Layout_Size, 0);
-            tag_salepro.setText("-" + ta.getString(R.styleable.product_Item_Layout_Text_tagpro) +"%");
-            tv_Namepro.setText(ta.getString(R.styleable.product_Item_Layout_Name_pro ));
-            tv_Pricepro.setText(ta.getString(R.styleable.product_Item_Layout_Price_pro) + " đ");
-            tv_Amountpro.setText("Đã bán " + ta.getString(R.styleable.product_Item_Layout_Amount_proSold) );
+            tag_salepro.setText(" -" + ta.getString(R.styleable.product_Item_Layout_Text_tagpro) +"% ");
+            tv_Namepro.setText(" " + ta.getString(R.styleable.product_Item_Layout_Name_pro) + " " );
+            tv_Pricepro.setText(ta.getString(R.styleable.product_Item_Layout_Price_pro) + " đ ");
+            tv_Amountpro.setText("Đã bán " + ta.getString(R.styleable.product_Item_Layout_Amount_proSold) +" ");
             imagePro.setImageResource(ta.getResourceId(R.styleable.product_Item_Layout_Image_pro, R.mipmap.mango));
 
         this.addView(layout_ViewGroup, layout_ViewGroup.getLayoutParams());
@@ -108,16 +110,14 @@ public class product_Item_Layout extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-       // if (this.findViewById(R.id.Image_Product) == imagePro)
-       /* if (oldh != 0 && oldw != 0)*/
-        {
-            float change = 0.5f;
-            tag_salepro.setTextSize( tag_salepro.getTextSize()*change);
-            tv_Namepro.setTextSize(tv_Namepro.getTextSize()*change);
-            tv_Oldproprice.setTextSize(tv_Oldproprice.getTextSize()*change);
-            tv_Pricepro.setTextSize(tv_Pricepro.getTextSize()*change);
-            tv_Amountpro.setTextSize(tv_Amountpro.getTextSize()*change);
-        }
 
+        imagePro.getLayoutParams().height = imagePro.getLayoutParams().width = w;
+        tag_salepro.setTextSize(w*0.035f);
+        tag_salepro.getLayoutParams().width = tag_salepro.getText().length();
+        tv_Namepro.setTextSize(w*0.025f);
+
+        tv_Oldproprice.setTextSize(w*0.025f);
+        tv_Pricepro.setTextSize(w*0.025f);
+        tv_Amountpro.setTextSize(w*0.025f - 1);
     }
 }

@@ -14,6 +14,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scrollbars="vertical"
+            android:nestedScrollingEnabled="true"
+            android:background="@color/drark_gray"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,53 +23,53 @@
                 android:orientation="vertical"
                 android:id="@+id/saler_layout_holder"
                 android:divider="@color/black"
-                android:dividerPadding="@dimen/normal_padding"
-                />
+                android:dividerPadding="20dp"
+                android:showDividers="beginning"
+                android:animateLayoutChanges="true"
+                >
+            </LinearLayout>
+
         </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cb_check_all"
-                android:text="@string/all"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txt_total_money_title"
                 android:text="@string/total_money_2dot"
-                app:layout_constraintEnd_toStartOf="@id/txt_total_money"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/TittleSmallSize"
+                style="@style/TittleNormalSize"
+                android:textSize="@dimen/normal_content_size_text"
+                android:layout_margin="@dimen/normal_padding"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txt_total_money"
-                android:text=" 1000000000VND"
-                app:layout_constraintEnd_toStartOf="@id/btnSubmit"
+                android:text="1000000000 VND"
+                android:textColor="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/txt_total_money_title"
-
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/normal_padding"
-                style="@style/TittleSmallSize"
-                android:textStyle="normal"
+                style="@style/TittleNormalSize"
                 />
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnSubmit"
+                android:id="@+id/button_purchase"
                 android:text="@string/purcharse"
+                android:textSize="13dp"
+                android:backgroundTint="@color/red"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:layout_marginEnd="@dimen/normal_padding"
+                android:layout_marginStart="@dimen/normal_padding"
+                app:layout_constraintTop_toBottomOf="@id/txt_total_money_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

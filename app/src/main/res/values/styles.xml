@@ -29,4 +29,12 @@
         <item name="colorOnBackground">true</item>
     </style>
 
+    <style name="ToolBarIcon">
+        <item name="android:layout_width">@dimen/tool_bar_icon_size</item>
+        <item name="android:layout_height">@dimen/tool_bar_icon_size</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:scaleX">1</item>
+        <item name="android:scaleY">1</item>
+    </style>
+
 </resources>

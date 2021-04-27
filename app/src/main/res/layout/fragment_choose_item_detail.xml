@@ -16,35 +16,40 @@
         android:layout_marginTop="@dimen/normal_padding"
         android:layout_marginStart="@dimen/normal_padding"
         />
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@id/image_item"
-        app:layout_constraintBottom_toBottomOf="@id/image_item"
-        app:layout_constraintStart_toEndOf="@id/image_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="@dimen/normal_padding"
-        android:layout_marginEnd="@dimen/normal_padding"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtName_item"
             android:text="@string/default_product_name"
             style="@style/TittleBigSize"
+            app:layout_constraintTop_toTopOf="@id/image_item"
+            app:layout_constraintStart_toEndOf="@id/image_item"
+            android:layout_marginStart="@dimen/normal_padding"
+            android:layout_marginTop="@dimen/normal_padding"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtPrice"
-            android:text="@string/single_price_formatted"
-            android:textSize="@dimen/normal_title_size_text"
-            android:textColor="@color/black"
+            android:id="@+id/price_origin"
+            android:text="@string/default_price_strike"
+            android:textSize="@dimen/normal_content_size_text"
+            android:textColor="@color/red"
+            app:layout_constraintTop_toBottomOf="@id/txtName_item"
+            app:layout_constraintStart_toStartOf="@id/txtName_item"
             />
-
-    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/price_current"
+        android:text="@string/default_price"
+        android:textSize="@dimen/normal_title_size_text"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/price_origin"
+        app:layout_constraintBottom_toBottomOf="@id/price_origin"
+        app:layout_constraintStart_toEndOf="@id/price_origin"
+        android:layout_marginStart="@dimen/normal_padding"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

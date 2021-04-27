@@ -20,8 +20,28 @@ public class DatabaseController {
         connection = dataController.ConnnectionData();
     }
 
-    public boolean CheckUserExist(String username) throws SQLException {
-        Statement statement = connection.createStatement();
+    Statement getStatement()
+    {
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException throwables) {
+            Log.e("MY_ERROR_DATABASE", throwables.getMessage());
+        }
+        return statement;
+    }
+
+    void closeConnection()
+    {
+        try {
+            connection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public boolean CheckUserExist(String username){
+        Statement statement = getStatement();
         String sql = "select * from UserInfo where username = '" + username + "'";
         try {
             ResultSet rs = statement.executeQuery(sql);
@@ -32,14 +52,14 @@ public class DatabaseController {
             }
         }
         catch (SQLException e) {
-            Log.d("MY_DEBUG", e.getMessage());
+            Log.e("MY_ERROR_DATABASE", e.getMessage());
         }
-        connection.close();
+        closeConnection();
         return false;
     }
 
-    public boolean CheckPassword(String username, String password) throws SQLException {
-        Statement statement = connection.createStatement();
+    public boolean CheckPassword(String username, String password){
+        Statement statement = getStatement();
         String sql = "select * from UserInfo where username = '" + username + "' and password = '"+password+"'";
         try {
             ResultSet rs = statement.executeQuery(sql);
@@ -50,9 +70,9 @@ public class DatabaseController {
             }
         }
         catch (SQLException e) {
-            Log.d("MY_DEBUG", e.getMessage());
+            Log.e("MY_ERROR_DATABASE", e.getMessage());
         }
-        connection.close();
+        closeConnection();
         return false;
     }
 }
