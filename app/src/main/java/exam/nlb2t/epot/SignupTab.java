@@ -36,66 +36,179 @@ public class SignupTab extends Fragment {
         password2 = root.findViewById(R.id.confirm);
 
         root.findViewById(R.id.Signup).setOnClickListener(v -> {
-            if(!checkPassword())
+            checkEmailFormat();
+            checkPhoneFormat();
+            checkPasswordStrength();
+            if(emailEDT.getError() != null || phoneNummber.getError() != null || password.getError() != null)
             {
                 return;
             }
+
+            checkPasswordSimilar();
+            if(password2.getError() != null){return;}
+
             String email = this.emailEDT.getText().toString();
             String phone = this.phoneNummber.getText().toString();
-            if(!checkUsername(phone, email)){return;}
+            checkUsernameExist(phone, email);
+            if(emailEDT.getError() != null || phoneNummber.getError() != null){return;}
 
-            DatabaseController databaseController = new DatabaseController();
-
-            if(databaseController.InsertUser(phone, email, password.getText().toString(), "test_name", 0,
-                    Calendar.getInstance().getTime().toString(), "08/30/2001", "test_address", "test_shopname",
-                    0, "test_info"))
-            {
-                Toast.makeText(getContext(), "Sign up successfully !!!", Toast.LENGTH_LONG).show();
-                if(this.onSignUpSuccessListener != null)
-                {
-                    onSignUpSuccessListener.OnSuccess(SignupTab.this);
-                }
-            }
-            else
-            {
-                Toast.makeText(getContext(), "Somethings went wrong", Toast.LENGTH_LONG).show();
-            }
-            databaseController.closeConnection();
+            RegistAccount();
         });
+
+        password.setOnFocusChangeListener((View.OnFocusChangeListener) (v, hasFocus) -> {
+            if(!hasFocus)
+            {
+                checkPasswordStrength();
+            }
+        });
+
+        emailEDT.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus) {
+                checkEmailFormat();
+            }
+        });
+
+        phoneNummber.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus) {
+                checkPhoneFormat();
+            }
+        });
+
         return  root;
     }
 
-    boolean checkUsername(String phone, String email)
+    void RegistAccount()
     {
+        String email = this.emailEDT.getText().toString();
+        String phone = this.phoneNummber.getText().toString();
         DatabaseController databaseController = new DatabaseController();
-        boolean rs = !databaseController.CheckEmailExist(email);
-        if(rs) {
-            rs = !databaseController.CheckphoneExist(phone);
-            if(!rs)
+        Calendar current = Calendar.getInstance();
+        if(databaseController.InsertUser(phone, email, password.getText().toString(), "test_name", 0,
+                Helper.getInstance(getContext()).getDateTime(current),
+                "08/30/2001", "test_address", "test_shopname",
+                0, "test_info"))
+        {
+            Toast.makeText(getContext(), "Sign up successfully !!!", Toast.LENGTH_LONG).show();
+            if(this.onSignUpSuccessListener != null)
             {
-                Toast.makeText(getContext(), "Phone number already exist", Toast.LENGTH_LONG).show();
-                this.phoneNummber.selectAll();
-                this.phoneNummber.requestFocus();
+                emailEDT.setText("");
+                phoneNummber.setText("");
+                password.setText("");
+                password2.setText(password.getText());
+                onSignUpSuccessListener.OnSuccess(SignupTab.this);
             }
         }
         else
         {
-            Toast.makeText(getContext(), "Email already exist", Toast.LENGTH_LONG).show();
-            this.emailEDT.selectAll();
-            this.emailEDT.requestFocus();
+            Toast.makeText(getContext(), "Somethings went wrong", Toast.LENGTH_LONG).show();
         }
         databaseController.closeConnection();
-
-        return rs;
     }
 
-    boolean checkPassword()
+    void checkPhoneFormat()
     {
-        return password2.getText().toString().equals(password.getText().toString()) ;
+        String phone = phoneNummber.getText().toString();
+        if(phone.length() == 0)
+        {
+            phoneNummber.setError("Please insert your phone number");
+            return;
+        }
+        if (phone.length() != 10 || phone.charAt(0) != '0') {
+            phoneNummber.setError("Phone number is wrong format");
+        }
     }
 
-    public interface OnSignUpSuccessListener
+    void checkEmailFormat()
     {
-        void onSignUpSuccess();
+        String email = emailEDT.getText().toString();
+        if (email.length()==0) {
+            emailEDT.setError("Please insert your email");
+            return;
+        }
+        if (!email.contains("@") || !email.contains(".") || (email.lastIndexOf("@") != email.indexOf("@"))) {
+            emailEDT.setError("Email is wrong format");
+        }
+    }
+
+    void checkPasswordStrength()
+    {
+        String msg;
+        String pass = password.getText().toString();
+        if(pass.length() < 6 || pass.length() > 32)
+        {
+            msg = "Password must has 6-32 characters";
+            password.setError(msg);
+            return;
+        }
+        int i = 0;
+        for(;i<pass.length();i++)
+        {
+            if(Character.isLowerCase(pass.charAt(i))){break;}
+        }
+        if(i == pass.length())
+        {
+            msg = "Password must has at least 1 letter (a-z)";
+            password.setError(msg);
+            return;
+        }
+        i = 0;
+        for(;i<pass.length();i++)
+        {
+            if(Character.isUpperCase(pass.charAt(i))){break;}
+        }
+        if(i == pass.length())
+        {
+            msg = "Password must has at least 1 letter (A-Z)";
+            password.setError(msg);
+            return;
+        }
+        i = 0;
+        for(;i<pass.length();i++)
+        {
+            if(Character.isDigit(pass.charAt(i))){break;}
+        }
+        if(i == pass.length())
+        {
+            msg = "Password must has at least 1 digit (0-9)";
+            password.setError(msg);
+            return;
+        }
+        i = 0;
+        for(;i<pass.length();i++)
+        {
+            if(!Character.isLetterOrDigit(pass.charAt(i))){break;}
+        }
+        if(i == pass.length())
+        {
+            msg = "Password must has at least 1 special character";
+            password.setError(msg);
+            return;
+        }
+    }
+
+    void checkUsernameExist(String phone, String email)
+    {
+        DatabaseController databaseController = new DatabaseController();
+        if(databaseController.CheckEmailExist(email)) {
+            this.emailEDT.setError("Email already exist");
+        }
+        else
+        {
+            if(databaseController.CheckphoneExist(phone))
+            {
+                this.phoneNummber.setError("Phone number already exist");
+            }
+        }
+        databaseController.closeConnection();
+    }
+
+    void checkPasswordSimilar()
+    {
+        String msg;
+        if(!password2.getText().toString().equals(password.getText().toString()))
+        {
+            msg = "Re-enter password is not correct";
+            password2.setError(msg);
+        }
     }
 }
