@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Calendar;
+
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -44,9 +46,8 @@ public class SignupTab extends Fragment {
 
             DatabaseController databaseController = new DatabaseController();
 
-            if(databaseController.InsertUser(10, "test_name", "08/30/2001",
-                    "test_address", email, phone, "test_username",
-                    password.getText().toString(), 0, "test_shopname", "01/01/2021",
+            if(databaseController.InsertUser(phone, email, password.getText().toString(), "test_name", 0,
+                    Calendar.getInstance().getTime().toString(), "08/30/2001", "test_address", "test_shopname",
                     0, "test_info"))
             {
                 Toast.makeText(getContext(), "Sign up successfully !!!", Toast.LENGTH_LONG).show();
