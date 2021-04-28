@@ -30,4 +30,9 @@ public class Helper {
     {
         return String.format(Locale.getDefault(), price_format, price);
     }
+
+    public interface OnSuccessListener
+    {
+        void OnSuccess(Object sender);
+    }
 }
