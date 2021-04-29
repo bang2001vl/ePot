@@ -63,11 +63,12 @@ public class DatabaseController {
         String sql = "select * from UserInfo where username = '" + username + "' and password = '"+password+"'";
         try {
             ResultSet rs = statement.executeQuery(sql);
-
-            if (rs.next()) {
-                connection.close();
-                return true;
-            }
+            if (rs.next())
+                //if (rs.getString("password")==password)
+                {
+                    connection.close();
+                    return true;
+                }
         }
         catch (SQLException e) {
             Log.e("MY_ERROR_DATABASE", e.getMessage());
