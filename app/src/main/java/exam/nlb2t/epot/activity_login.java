@@ -21,6 +21,15 @@ public class activity_login extends AppCompatActivity {
         viewPager=findViewById(R.id.view_pager);
         tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
         final LoginAdapter adapter=new LoginAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter.setOnSignUpSuccessListener((s)->
+        {
+            viewPager.setCurrentItem(0);
+        });
+        adapter.setOnLoginSuccessListener((s)->
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 

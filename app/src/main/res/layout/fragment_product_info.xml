@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/ImageProduct"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:foreground="#234102"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm hình"
+        android:textSize="15dp"
+        android:layout_below="@id/ImageProduct"
+        android:layout_alignStart="@id/ImageProduct"
+        android:layout_alignEnd="@id/ImageProduct"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="18dp"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ImageProduct"
+        android:columnCount="2"
+        android:layout_margin="10dp">
+        <TextView
+            android:text="Tên:"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:textSize="25dp"
+            android:layout_margin="5dp"/>
+        <EditText
+            android:layout_row="0"
+            android:layout_column="1"
+            android:textSize="25dp"
+            android:minWidth="180dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_textview"/>
+        <EditText
+            android:layout_row="1"
+            android:layout_column="1"
+            android:textSize="25dp"
+            android:minWidth="180dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_textview"/>
+        <TextView
+            android:text="Giá:"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:textSize="25dp"
+            android:layout_margin="5dp"/>
+    </GridLayout>
+</RelativeLayout>

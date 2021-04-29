@@ -10,7 +10,7 @@
         android:id="@+id/login_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Email/PhoneNumber"
         android:background="@drawable/edit_text_lineout"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
