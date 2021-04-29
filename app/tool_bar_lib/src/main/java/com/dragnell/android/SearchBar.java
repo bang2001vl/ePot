@@ -1,13 +1,16 @@
 package com.dragnell.android;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -78,21 +82,91 @@ public class SearchBar extends ViewGroup{
         View view = inflater.inflate(com.dragnell.android.R.layout.tool_bar_search, this, false);
 
         init((ConstraintLayout)view);
+        if(attrs != null) {
+            TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.SearchBar);
 
+            init(arr);
+            arr.recycle();
+        }
         LayoutParams params = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
         this.addView(view, params);
     }
 
     EditText editText;
+    ImageView icon;
     void init(ConstraintLayout constraintLayout)
     {
         editText = constraintLayout.findViewById(R.id.txt_search);
-        ImageView iconSearch = constraintLayout.findViewById(R.id.icon_search);
+        icon = constraintLayout.findViewById(R.id.icon_search);
         ImageView iconClear = constraintLayout.findViewById(R.id.icon_clear);
 
         iconClear.setOnClickListener(onClickClear);
+        iconClear.setVisibility(GONE);
+
         editText.setOnKeyListener(onKeyListener);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() == 0)
+                {
+                    iconClear.setVisibility(GONE);
+                }
+                else {
+                    iconClear.setVisibility(VISIBLE);
+                }
+            }
+        });
+    }
+
+    public void init(TypedArray arr)
+    {
+        String hint = arr.getString(R.styleable.SearchBar_hint);
+        if(hint != null) {
+            setTextPlaceHolder(hint);
+        }
+
+        setTextSize(arr.getDimensionPixelSize(R.styleable.SearchBar_android_textSize, (int)editText.getTextSize()));
+
+        Drawable drawable = arr.getDrawable(R.styleable.SearchBar_icon);
+        if(drawable != null)
+        {
+            setImage_Icon(drawable);
+        }
+    }
+
+    public void setImage_Icon(Drawable drawable)
+    {
+        icon.setImageDrawable(drawable);
+    }
+
+    public void setTextPlaceHolder(String textPlaceHolder)
+    {
+        editText.setHint(textPlaceHolder);
+    }
+
+    public void setTextColor(int color)
+    {
+        editText.setTextColor(color);
+    }
+
+    public void setTextSize(float size)
+    {
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
+    }
+
+    public EditText getEditText()
+    {
+        return editText;
     }
 
     View.OnClickListener onClickClear = new OnClickListener() {

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.thunderstudio.mylib.OnValueChanged;
 
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class Card_ItemView extends BaseCustomViewGroup{
     public Card_ItemView(Context context) {
@@ -76,7 +77,7 @@ public class Card_ItemView extends BaseCustomViewGroup{
     NumberPickerView numberPickerView;
     ImageButton btnRemove;
     ImageView itemImage;
-    Context mContext;
+
     void init(Context context, AttributeSet attrs)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -90,8 +91,6 @@ public class Card_ItemView extends BaseCustomViewGroup{
         btnRemove = view.findViewById(R.id.btnRemoveItem);
         itemImage = view.findViewById(R.id.image_item);
 
-        mContext = view.getContext();
-
         txtPrice_origin.setPaintFlags(txtPrice_origin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         ViewGroup.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -99,7 +98,7 @@ public class Card_ItemView extends BaseCustomViewGroup{
 
         if(attrs != null)
         {
-            TypedArray arr = mContext.obtainStyledAttributes(attrs,R.styleable.Card_ItemView);
+            TypedArray arr = getContext().obtainStyledAttributes(attrs,R.styleable.Card_ItemView);
             String itemName = arr.getString(R.styleable.Card_ItemView_itemName);
             int maxAmount = arr.getInt(R.styleable.Card_ItemView_maxAmount, 10);
             int amount = arr.getInt(R.styleable.Card_ItemView_amount, 1);
@@ -120,14 +119,14 @@ public class Card_ItemView extends BaseCustomViewGroup{
         numberPickerView.controller.max = amount_avaiable;
         numberPickerView.controller.setNumber(amount_picked);
 
-        txtPrice_current.setText(String.format(mContext.getString(R.string.format_price), price_current));
+        txtPrice_current.setText(Helper.getInstance(getContext()).getPrice(price_current));
         if(price_current == price_origin)
         {
             txtPrice_origin.setVisibility(GONE);
         }
         else {
             txtPrice_origin.setVisibility(VISIBLE);
-            txtPrice_origin.setText(String.format(mContext.getString(R.string.format_price), price_origin));
+            txtPrice_origin.setText(Helper.getInstance(getContext()).getPrice(price_origin));
         }
 
         if(image != null){

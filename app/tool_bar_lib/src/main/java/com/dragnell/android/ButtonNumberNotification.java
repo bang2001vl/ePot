@@ -30,8 +30,16 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
     {
         rectNumber = new RectF();
         rectNumberText = new Rect();
+
         paintNumber = new Paint();
+        paintNumber.setAntiAlias(true);
+
         paintNumberBackground = new Paint();
+        paintNumber.setFakeBoldText(true);
+
+        paintNumberBackgroundOutline = new Paint();
+        paintNumberBackgroundOutline.setAntiAlias(true);
+        paintNumberBackgroundOutline.setStyle(Paint.Style.STROKE);
 
         int color_number = Color.BLACK;
         int color_number_background = Color.BLUE;
@@ -43,6 +51,7 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
             color_number_background = arr.getColor(R.styleable.ButtonNumberNotification_background_number, Color.GREEN);
             arr.recycle();
         }
+        //this.setImageDrawable(getResources().getDrawable(R.mipmap.icon_search, context.getTheme()));
         setNumber(num);
         setNumberColor(color_number_background, color_number);
         setRectNumber(this.getWidth(), this.getHeight());
@@ -57,9 +66,12 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        setRectNumber(w, h);
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if(changed)
+        {
+            setRectNumber(Math.abs(right - left), Math.abs(bottom - top));
+        }
     }
 
     float background_radius;
@@ -69,9 +81,12 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
     Rect rectNumberText;
     Paint paintNumber;
     Paint paintNumberBackground;
+    Paint paintNumberBackgroundOutline;
     void drawNumber(Canvas canvas)
     {
         canvas.drawCircle(rectNumber.centerX(), rectNumber.centerY(), background_radius, paintNumberBackground);
+        canvas.drawCircle(rectNumber.centerX(), rectNumber.centerY(),
+                background_radius-paintNumberBackgroundOutline.getStrokeWidth()*0.5f, paintNumberBackgroundOutline);
 
         if(number < 100) {
             numberText = number + "";
@@ -93,23 +108,25 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
     {
         paintNumber.setColor(color_number);
         paintNumberBackground.setColor(color_background);
+        paintNumberBackgroundOutline.setColor(color_number);
     }
 
     public void setRectNumber(int parentW, int parentH) {
-        float w = Float.valueOf(parentW / 2f).intValue();
-        float h = Float.valueOf(parentH / 2f).intValue();
-        float top_left_x = w;
-        float top_left_y = h;
+        float left = Float.valueOf(parentW * 0.4f).intValue();
+        float bottom = Float.valueOf(parentH * 0.6f).intValue();
 
-        rectNumber.set(top_left_x, top_left_y, top_left_x + w, top_left_y - h);
+        rectNumber.set(left, 0, parentW, bottom);
 
-        background_radius = rectNumber.width()/2f;
-        if(rectNumber.height() < rectNumber.width()){
-            background_radius = rectNumber.height()/2f;}
+        background_radius = rectNumber.width()*0.48f;
+        if(rectNumber.height() < rectNumber.width())
+        {
+            background_radius = rectNumber.height()*0.48f;
+        }
 
-        background_radius = Math.abs(background_radius) * 0.8f;
+        background_radius = Math.abs(background_radius);
+        paintNumberBackgroundOutline.setStrokeWidth(background_radius * 0.12f);
 
-        paintNumber.setTextSize(background_radius);
+        paintNumber.setTextSize(background_radius * 0.9f);
     }
 
     public int getNumber() {

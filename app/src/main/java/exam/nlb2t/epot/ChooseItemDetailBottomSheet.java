@@ -27,6 +27,8 @@ import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 import java.util.List;
 import java.util.Locale;
 
+import exam.nlb2t.epot.singleton.Helper;
+
 public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
 
     public static final String TAG_NAME = "PRODUCT_NAME";
@@ -78,13 +80,13 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         if(productSinglePrice_current < productSinglePrice_origin)
         {
             txtPrice_origin.setPaintFlags(txtPrice_origin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            txtPrice_origin.setText(String.format(Locale.getDefault(), getString(R.string.format_price_strike), productSinglePrice_origin));
+            txtPrice_origin.setText(Helper.getInstance(getContext()).getPrice(productSinglePrice_origin));
         }
         else
         {
             txtPrice_origin.setVisibility(View.GONE);
         }
-        txtPrice_current.setText(String.format(Locale.getDefault(), getString(R.string.format_price), productSinglePrice_current));
+        txtPrice_current.setText(Helper.getInstance(getContext()).getPrice(productSinglePrice_current));
 
         chooseAmountLayout.controller.min = 1;
         chooseAmountLayout.controller.max = productMaxAmount;
