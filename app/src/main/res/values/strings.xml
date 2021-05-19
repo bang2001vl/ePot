@@ -26,7 +26,7 @@
     <string name="percent_salepro">50% giảm</string>
 
     <string name="default_product_name">Dummy Name</string>
-    
+
     <string name="select_all">Chọn tất cả</string>
     <string name="deselect_all">Bỏ chọn tất cả</string>
     <string name="delete_all">Xóa tất cả</string>
@@ -36,7 +36,14 @@
     <string name="default_price" formatted="false">1,000,000đ</string>
     <string name="default_price_strike" formatted="false"><strike>1,000,000đ</strike></string>
 
+    <!--string resources of layout MyShop-->
+    <string name="Name_Title">Tên tiêu đề</string>
+    <string name="Name_Title_Cart">Giỏ hàng</string>
+    <string name="Name_Title_Payment">Thanh toán</string>
+    <string name="Name_Title_Address">Địa chỉ giao hàng</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_Myshop">Đơn hàng</string>
 
 </resources>

@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     List<ProductBuyInfo> buyInfoList;
 
+    HomepageFragment homepageFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         icon_notification = findViewById(R.id.icon_notification);
         icon_notification.setOnClickListener(onClickIconNotification);*/
+
+        homepageFragment = new HomepageFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homepageFragment).commit();
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             String itemTitle = item.getTitle().toString();
 
             if (Objects.equals(itemTitle, res.getString(R.string.menu_home_page))) {
-                fragment = new HomepageFragment();
+                fragment = homepageFragment;
             } else if (Objects.equals(itemTitle, res.getString(R.string.menu_person))) {
 
                 fragment = new PersonFragment();

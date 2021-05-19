@@ -13,7 +13,6 @@
         android:theme="@style/Theme.EPot">
 
         <activity android:name=".activity_login">
-
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
