@@ -36,5 +36,11 @@
         <item name="android:scaleX">1</item>
         <item name="android:scaleY">1</item>
     </style>
+    <style name="product_ratingbar" parent="Widget.AppCompat.RatingBar"
+        >
+        <item name="android:minHeight">30px</item>
+        <item name="android:maxHeight">30px</item>
+        <item name="android:progressDrawable">@drawable/my_rating</item>
+    </style>
 
 </resources>

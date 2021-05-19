@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true"
+        android:state_window_focused="true"
+        android:drawable="@drawable/staron"
+        />
+    <item
+        android:state_pressed="true"
+        android:state_window_focused="true"
+        android:drawable="@drawable/staron" tools:ignore="StateListReachable" />
+    <item
+        android:state_pressed="true"
+        android:state_window_focused="true"
+        android:drawable="@drawable/staron"
+        />
+
+    <item android:drawable="@drawable/staron" />
+</selector>
