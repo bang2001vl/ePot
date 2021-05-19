@@ -19,4 +19,7 @@
     <color name="Color_Tag">#F00</color>
     <color name="red">#FF0000</color>
     <color name="main_bottom_navigation_background">#FFFFFFFF</color>
+
+    <color name="button_normal">#F0F6F6F6</color>
+    <color name="button_clicked">#33010101</color>
 </resources>

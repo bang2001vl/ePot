@@ -11,4 +11,13 @@
         <attr name="android:textSize" format="integer"/>
         <attr name="icon" format="reference"/>
     </declare-styleable>
+
+
+    <declare-styleable name="ListViewItemWithIcon">
+        <attr name="icon_left" format="reference"/>
+        <attr name="icon_right" format="reference"/>
+        <attr name="text_tittle" format="string"/>
+        <attr name="text_hint" format="string"/>
+        <attr name="icon_size" format="enum"/>
+    </declare-styleable>
 </resources>
