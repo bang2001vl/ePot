@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_very_small" >26dp</dimen>
+    <dimen name="icon_small" >32dp</dimen>
+    <dimen name="icon_normal" >48dp</dimen>
+    <dimen name="icon_large" >64dp</dimen>
+    <dimen name="icon_huge" >100dp</dimen>
+
+    <dimen name="icon_title_small" >16sp</dimen>
+    <dimen name="icon_title_normal" >24dp</dimen>
+    <dimen name="icon_title_large" >32dp</dimen>
+    <dimen name="icon_title_huge" >64dp</dimen>
+</resources>

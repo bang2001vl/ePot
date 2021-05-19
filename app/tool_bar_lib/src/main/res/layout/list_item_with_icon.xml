@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="@dimen/icon_small"
+        android:layout_height="@dimen/icon_small"
+        android:id="@+id/icon_left_list_item"
+        android:src="@mipmap/icon_information"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center_vertical"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_left_list_item"
+        android:layout_gravity="center_vertical"
+        android:text="Thong tin"
+        android:textSize="@dimen/icon_title_small"
+        android:layout_marginStart="5dp"
+        android:textColor="#000000"/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_right_list_item"
+        android:layout_gravity="center_vertical"
+        android:text="Xem them"
+        android:textSize="@dimen/icon_title_small"
+        android:layout_marginStart="5dp"
+        />
+    <ImageView
+        android:layout_width="@dimen/icon_very_small"
+        android:layout_height="@dimen/icon_very_small"
+        android:id="@+id/icon_right_list_item"
+        android:src="@drawable/ic_baseline_arrow_forward_ios_48"
+        android:backgroundTint="@android:color/black"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center_vertical|end"
+        />
+</LinearLayout>
