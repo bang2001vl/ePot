@@ -12,8 +12,8 @@
     <color name="transparent">#00000000</color>
   
     <color name="pink">#FF93A3</color>
-    <color name="mainColor">#E61A5F</color>
-    <color name="darkPink">#E84C72</color>
+    <color name="mainColor">#DB3022</color>
+    <color name="Background">#F9F9F9</color>
 
     <color name="Color_Tag">#F00</color>
     <color name="red">#FF0000</color>
