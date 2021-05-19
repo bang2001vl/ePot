@@ -7,8 +7,10 @@ import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,8 +22,9 @@ import exam.nlb2t.epot.ClassInformation.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<Product> productList;
-    private Context context;
+    private final List<Product> productList;
+    private final Context context;
+
 
     ProductAdapter (List<Product> products, Context mcontext)
     {
@@ -46,7 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         Product product = productList.get(position);
 
-        String price = " " + product.originPrice + " đ";
+        String price = product.originPrice + " đ";
         SpannableString oldproprice = new SpannableString(price);
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -57,14 +60,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
         else
         {
-            holder.tag_salepro.setText("-" + (product.currentPrice*100 / product.originPrice) +"%");
+            holder.tag_salepro.setText(" -" + (product.currentPrice*100 / product.originPrice) +"% ");
             holder.tv_Oldproprice.setText(oldproprice);
         }
 
-        holder.tv_Pricepro.setText(" " + product.currentPrice + " đ ");
+        holder.tv_Pricepro.setText(product.currentPrice + " đ");
         holder.tv_Namepro.setText(" " + product.productName + " ");
         holder.imagePro.setImageBitmap(product.mainImage);
-        holder.tv_Amountpro.setText(" Đã bán " + product.numberSold);
+        holder.tv_Amountpro.setText("Đã bán " + product.numberSold);
 
     }
 
@@ -73,7 +76,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder
+    public static class ViewHolder extends RecyclerView.ViewHolder
     {
         public ImageView imagePro;
         public TextView tv_Oldproprice;
@@ -81,6 +84,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public TextView tv_Pricepro;
         public TextView tv_Amountpro;
         public TextView tag_salepro;
+        public TextView tv_ShopName;
+        public RatingBar rt_Rating;
+        public TextView tv_Cmt;
+        public Button btn_favorites;
         LinearLayout parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -90,11 +97,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tv_Namepro = itemView.findViewById(R.id.textview_proName);
             tv_Oldproprice= itemView.findViewById(R.id.textview_OldproPrice);
             tv_Pricepro = itemView.findViewById(R.id.textview_proPrice);
+            tv_ShopName = itemView.findViewById(R.id.StoreName);
+            tv_Cmt = itemView.findViewById(R.id.TotalCmt);
+            rt_Rating = itemView.findViewById(R.id.ratingbar);
             tag_salepro = itemView.findViewById(R.id.tv_tag_salepro);
             parent_layout = itemView.findViewById(R.id.product_item);
+            btn_favorites = itemView.findViewById(R.id.Favorite);
 
-            itemView.setPadding(10, 10 , 10, 10);
+            btn_favorites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    {
+                        //change status of favorites button
+                        btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
+                    }
 
+                }
+            });
+
+            itemView.setPadding(2, 2 , 2, 2);
 
         }
     }
