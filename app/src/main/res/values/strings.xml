@@ -42,6 +42,15 @@
     <string name="Name_Title_Payment">Thanh toán</string>
     <string name="Name_Title_Address">Địa chỉ giao hàng</string>
 
+    <!--string resources of layout payment-->
+    <string name="txt_productprice_payment">Sản phẩm</string>
+    <string name="txt_transportprice_payment">Vận chuyển</string>
+    <string name="txt_voucher_payment">Giảm giá</string>
+    <string name="txt_totalprice_payment">Tổng tiền</string>
+
+    <string name="address_delivery">Địa chỉ giao hàng</string>
+    <string name="method_payment">Phương thức trả</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_Myshop">Đơn hàng</string>

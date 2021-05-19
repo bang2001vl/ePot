@@ -2,6 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <layer-list>
+
             <item>
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/corner_radius" />
@@ -14,10 +15,13 @@
                         android:height="@dimen/corner_size"/>
                 </shape>
             </item>
+
+<!--            icon tick-->
             <item android:drawable="@drawable/ic_tick"
                 android:height="@dimen/corner_size"
                 android:width="@dimen/corner_size"
                 />
+
         </layer-list>
 
     </item>
