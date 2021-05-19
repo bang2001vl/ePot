@@ -24,4 +24,12 @@
     <dimen name="tool_bar_icon_size">36dp</dimen>
     <dimen name="app_bar_height">48dp</dimen>
 
+<!--    Custom Button and Checkbox-->
+    <dimen name="corner_radius">15dp</dimen>
+    <dimen name="corner_thin">4dp</dimen>
+    <dimen name="corner_size">70dp</dimen>
+
+<!--    Dimen resources of layout MyShop-->
+    <dimen name="Size_Title">40dp</dimen>
+    <dimen name="Margin_Title">10dp</dimen>
 </resources>
