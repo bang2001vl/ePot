@@ -25,17 +25,17 @@
             android:orientation="horizontal"
             tools:layout_editor_absoluteX="0dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="?attr/homeAsUpIndicator" />
+                android:src="@drawable/ic_back_icon" />
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
@@ -46,12 +46,11 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginHorizontal="@dimen/normal_button_size"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
-                android:autoSizeTextType="uniform"
-                android:background=""
-                android:text="Lưu"
+                android:background="@color/transparent"
+                android:text="lưu"
+                android:textSize="18sp"
                 android:textColor="@android:color/holo_red_dark" />
         </LinearLayout>
 
@@ -96,15 +95,15 @@
                                 android:layout_height="200dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginStart="5dp"
-                                android:textAlignment="textEnd"
-                                app:srcCompat="@android:drawable/ic_menu_gallery"
-                                tools:srcCompat="@tools:sample/avatars" />
+                                android:src="@drawable/vans"
+                                />
 
                             <Button
                                 android:layout_width="150dp"
                                 android:layout_height="200dp"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                                 android:text="+ Thêm ảnh"
+                                android:textSize="20sp"
                                 android:textColor="@color/red"
                                 app:strokeWidth="2dp"
                                 app:strokeColor="@color/red"/>
