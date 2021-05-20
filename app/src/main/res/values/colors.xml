@@ -21,5 +21,5 @@
     <color name="main_bottom_navigation_background">#FFFFFFFF</color>
 
     <color name="button_normal">#F0F6F6F6</color>
-    <color name="button_clicked">#33010101</color>
+    <color name="button_clicked">#99010101</color>
 </resources>
