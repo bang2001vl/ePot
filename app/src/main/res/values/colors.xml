@@ -11,7 +11,7 @@
     <color name="light_gray">#F0F6F6F6</color>
     <color name="drark_gray">#F06C6C6C</color>
     <color name="transparent">#00000000</color>
-  
+
     <color name="pink">#FF93A3</color>
     <color name="mainColor">#DB3022</color>
     <color name="Background">#F9F9F9</color>
@@ -22,4 +22,8 @@
 
     <color name="button_normal">#F0F6F6F6</color>
     <color name="button_clicked">#33010101</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 </resources>
