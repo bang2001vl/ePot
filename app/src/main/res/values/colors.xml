@@ -22,4 +22,8 @@
 
     <color name="button_normal">#F0F6F6F6</color>
     <color name="button_clicked">#33010101</color>
+
+    <color name="BG_login_logout">#FFFFFF</color>
+    <color name="Title_login_logout">#494767</color>
+    <color name="Title">#7C7C7C</color>
 </resources>
