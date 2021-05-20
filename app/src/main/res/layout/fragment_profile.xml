@@ -60,7 +60,6 @@
                 android:background="#E2E2E2"></View>
         </RelativeLayout>
         <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:drawableLeft="@drawable/ic_icon"
             android:drawableRight="@drawable/ic_back_arrow"
             android:textAlignment="textStart"
@@ -91,7 +90,7 @@
                 android:textAllCaps="false"
                 android:textSize="12dp"
                 android:textColor="#524F4F"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="20dp">
             </Button>
 
             <Button
@@ -120,7 +119,6 @@
             </Button>
         </LinearLayout>
         <Button
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:drawableLeft="@drawable/ic_address"
             android:drawableRight="@drawable/ic_back_arrow"
             app:strokeWidth="2dp"
@@ -166,7 +164,6 @@
             android:layout_alignParentBottom="true"
             android:background="#E2E2E2"></View>
         <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:drawableLeft="@drawable/ic_heart"
             android:drawableRight="@drawable/ic_back_arrow"
             android:textAlignment="textStart"
@@ -191,7 +188,6 @@
             android:layout_alignParentBottom="true"
             android:background="#E2E2E2"></View>
         <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:drawableLeft="@drawable/ic_mydetails"
             android:drawableRight="@drawable/ic_back_arrow"
             android:textAlignment="textStart"
@@ -214,22 +210,23 @@
             android:layout_marginHorizontal="20dp"
             android:layout_alignParentBottom="true"
             android:background="#E2E2E2"></View>
+
         <Button
-            android:drawableLeft="@drawable/ic_help"
-            android:drawableRight="@drawable/ic_back_arrow"
-            android:textAlignment="textStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="20dp"
-            android:paddingLeft="20dp"
-            app:iconPadding="20dp"
-            android:fontFamily="@font/gilroy_medium"
-            android:text="Trợ giúp"
-            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
             android:background="@color/transparent"
-            android:textAllCaps="false">
-        </Button>
+            android:drawableLeft="@drawable/ic_help"
+            android:drawableRight="@drawable/ic_back_arrow"
+            android:fontFamily="@font/gilroy_medium"
+            android:paddingLeft="20dp"
+            android:text="Trợ giúp"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:iconPadding="20dp"></Button>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
