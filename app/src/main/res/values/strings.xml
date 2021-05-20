@@ -45,5 +45,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_Myshop">Đơn hàng</string>
+    <string name ="hint_search">Tìm kiếm trên Epot</string>
+    <string name="Selling">Sản phẩm bán chạy</string>
+    <string name="Category">Danh mục</string>
+    <string name="Suggestion">Gợi ý hôm nay</string>
+    <string name="See_All">Xem tất cả -></string>
+    <string name="Shoes">Giày</string>
+    <string name="Clothes">Quần áo</string>
+    <string name="Lock">Đồng hồ</string>
+    <string name="Locatin">TP.Hồ Chí Minh, Việt Nam</string>
 
 </resources>
