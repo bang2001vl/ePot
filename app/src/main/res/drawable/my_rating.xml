@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Backgound"
+        android:drawable="@drawable/rating_empty"
+        />
+    <item
+        android:id="@+id/secondaryprogressbar"
+        android:drawable="@drawable/rating_empty"
+        />
+    <item
+        android:id="@+id/progressbar"
+        android:drawable="@drawable/rating_filled"
+        />
+
+
+</layer-list>

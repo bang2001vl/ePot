@@ -1,86 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/product_item"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     >
 
-    <FrameLayout
-        android:id="@+id/Tag_Image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/Image_Product"
-            android:layout_width="208dp"
-            android:layout_height="138dp"
-            android:scaleType="fitStart"
-            android:src="@mipmap/mango" />
-
-        <TextView
-            android:id="@+id/tv_tag_salepro"
-            android:layout_width="39dp"
-            android:layout_height="24dp"
-            android:layout_gravity="start"
-            android:background="#ff4500"
-            android:text="30%"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="8pt"
-            tools:ignore="RtlCompat" />
-
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/textview_proName"
-        android:layout_width="208dp"
+    <LinearLayout
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:text="Xoài cát nguyên trái, 1KG ship mọi khu vực:V"
-        android:textColor="@color/black"
-        android:textSize="5pt"
-
-        />
-        <RelativeLayout
-            android:id="@+id/price_amoundsold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/product_item"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                app:cardCornerRadius="10dp"
+                >
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/Image_Product"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sowmi_nam" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_tag_salepro"
+                    android:background="@drawable/bg_rounded"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="2dp"
+                    android:text=" -20% "
+                    android:textSize="21px"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+
+                    >
+                </TextView>
+
+
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp">
+
+            <RatingBar
+                android:id="@+id/ratingbar"
+                android:layout_marginLeft="2dp"
+                style="@style/product_ratingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:numStars="5"
+                android:stepSize="1" />
             <TextView
-                android:id="@+id/textview_OldproPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor = "#808080"
-                android:textSize="4pt"
-                android:text=" đ"
+                android:id="@+id/TotalCmt"
+                android:text="(10)"
+                android:textSize="18px"
+                android:layout_marginLeft="2dp"
                 />
-    <TextView
-        android:id="@+id/textview_proPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor = "#F00"
-        android:textSize="4pt"
-        android:text=" đ"
-        android:layout_toRightOf="@+id/textview_OldproPrice"
-        />
+        </LinearLayout>
+
+        </LinearLayout>
+
+            <android.widget.Button
+                android:id="@+id/Favorite"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="65dp"
+                android:layout_marginLeft="70dp"
+                android:background="@drawable/ic_baseline_favorite_24" />
+        </FrameLayout>
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/StoreName"
+            android:text="StoreName"
+            android:textSize="18px"
+            android:textStyle="bold"
+            android:textColor="#9B9B9B"
+            android:textAlignment="viewStart"
+            android:layout_marginLeft="3dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_proName"
+            android:text="ProductName"
+            android:textSize="25px"
+            android:textStyle="bold"
+            android:textColor="#222222"
+            android:textAlignment="viewStart"
+            android:layout_marginLeft="3dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_proPrice"
+                android:text="New Price đ"
+                android:textSize="15px"
+                android:textColor="#DB3022"
+                android:textAlignment="viewStart"
+                android:layout_marginLeft="3dp"
+                />
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/textview_proSold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đã bán"
-                android:textColor="#808080"
-                android:textSize="4pt"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:text="Sold"
                 android:textAlignment="viewEnd"
-                android:layout_alignParentEnd="true"
-                />
-        </RelativeLayout>
+                android:textColor="#9B9B9B"
+                android:textSize="15px" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textview_OldproPrice"
+            android:text="Old Price đ"
+            android:textSize="15px"
+            android:textColor="#9B9B9B"
+            android:textAlignment="viewStart"
+            android:layout_marginLeft="3dp"
+            />
 
-</LinearLayout>
-
-
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,10 @@ import java.util.Random;
 public class Product extends BaseProductInfo{
 
     public String Description;
+    public String ShopName;
     public Bitmap[] Images;
+
+
 
     public int numberSold;
 
@@ -28,6 +31,7 @@ public class Product extends BaseProductInfo{
 
         this.Description = product.Description;
         this.numberSold = product.numberSold;
+        this.ShopName = product.ShopName;
 
         this.saler = product.saler;
         this.Images = product.Images;

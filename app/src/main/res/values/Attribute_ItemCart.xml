@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ItemCard_View">
+        <attr name="ItemName" format="string"/>
+        <attr name="ItemQuantity" format="integer"/>
+        <attr name="ItemIsCheck" format="boolean"/>
+        <attr name="ItemImage" format="reference"/>
+
+        <attr name="ItemTextSize" format="dimension"/>
+        <attr name="ItemImgSize" format="dimension"/>
+    </declare-styleable>
+</resources>

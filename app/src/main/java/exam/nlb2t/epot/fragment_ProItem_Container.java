@@ -56,8 +56,7 @@ public class fragment_ProItem_Container extends Fragment {
             productAdapter = new ProductAdapter(productList, this.getContext());
 
             proGrid.setAdapter(productAdapter);
-            proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-
+            proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 4));
         }
 
         return view;
