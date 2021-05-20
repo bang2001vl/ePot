@@ -36,14 +36,56 @@
     <string name="default_price" formatted="false">1,000,000đ</string>
     <string name="default_price_strike" formatted="false"><strike>1,000,000đ</strike></string>
 
-    <!--string resources of layout MyShop-->
+    <!--string resources of layout Cart-->
     <string name="Name_Title">Tên tiêu đề</string>
     <string name="Name_Title_Cart">Giỏ hàng</string>
     <string name="Name_Title_Payment">Thanh toán</string>
     <string name="Name_Title_Address">Địa chỉ giao hàng</string>
 
+    <!--string resources of layout payment-->
+    <string name="txt_productprice_payment">Sản phẩm</string>
+    <string name="txt_transportprice_payment">Vận chuyển</string>
+    <string name="txt_voucher_payment">Giảm giá</string>
+    <string name="txt_totalprice_payment">Tổng tiền</string>
+
+    <string name="address_delivery">Địa chỉ giao hàng</string>
+    <string name="method_payment">Phương thức trả</string>
+
+    <string name="complete_payment">Thành công!</string>
+    <string name="complete_payment2">Đơn hàng của bạn sẽ được sớm giao đến</string>
+    <string name="complete_payment3">Cảm ơn vì đã sử dụng Epot</string>
+
+    <string name="fail_payment">Thất bại!</string>
+    <string name="fail_payment2">Dường như có vấn đề trong việc thanh toán</string>
+
+    <string name="btn_complete_payment">Tiếp tục mua sắm</string>
+    <string name="btn_payment">Đặt hàng</string>
+    <string name="btn_cart">Thanh toán</string>
+    <string name="btn_address">Thêm vào</string>
+    <string name="btn_again_payment">Thử lại lần nữa</string>
+    <string name="txt_gohome">Trở về trang chủ</string>
+
+<!--    string resources of layout cart address-->
+    <string name="Name_Address">Tên</string>
+    <string name="Name_Address_edt">Minh Nhực</string>
+    <string name="Phone_Address">Số điện thoại</string>
+    <string name="Phone_Address_edt">0382259845</string>
+    <string name="City_Address">Tỉnh, thành phố</string>
+    <string name="City_Address_edt">Thành phố Hồ Chí Minh</string>
+    <string name="District_Address">Quận, huyện</string>
+    <string name="District_Address_edt">Quận thủ Đức</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_Myshop">Đơn hàng</string>
+    <string name ="hint_search">Tìm kiếm trên Epot</string>
+    <string name="Selling">Sản phẩm bán chạy</string>
+    <string name="Category">Danh mục</string>
+    <string name="Suggestion">Gợi ý hôm nay</string>
+    <string name="See_All">Xem tất cả -></string>
+    <string name="Shoes">Giày</string>
+    <string name="Clothes">Quần áo</string>
+    <string name="Lock">Đồng hồ</string>
+    <string name="Locatin">TP.Hồ Chí Minh, Việt Nam</string>
 
 </resources>
