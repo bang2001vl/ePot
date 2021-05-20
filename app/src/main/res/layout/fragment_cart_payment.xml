@@ -234,11 +234,11 @@
 
             android:text="Đặt hàng"
             android:textColor="@color/white"
-            android:textSize="25dp"
+            android:textSize="@dimen/large_btn_size"
             android:background="@drawable/btn_large_background"
             android:backgroundTint="@color/red"
 
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="@dimen/large_btn_marhor"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

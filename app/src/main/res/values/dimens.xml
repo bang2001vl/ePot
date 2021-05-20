@@ -27,7 +27,7 @@
 <!--    Custom Button and Checkbox-->
     <dimen name="corner_radius">5dp</dimen>
     <dimen name="corner_thin">2dp</dimen>
-    <dimen name="corner_size">40dp</dimen>
+    <dimen name="corner_size">20dp</dimen>
 
     <dimen name="btn_size">35dp</dimen>
     <dimen name="margin_hor">15dp</dimen>
@@ -39,4 +39,7 @@
     <dimen name="Margin_Title">10dp</dimen>
     <dimen name="ProductImgSize">80dp</dimen>
     <dimen name="ProductTextSize">18dp</dimen>
+    <dimen name="large_btn_size">22dp</dimen>
+    <dimen name="large_btn_marhor">40dp</dimen>
+
 </resources>

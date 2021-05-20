@@ -10,7 +10,9 @@
         android:layout_width="@dimen/corner_size"
         android:layout_height="@dimen/corner_size"
 
-        android:layout_marginHorizontal="7dp"
+        android:button="@drawable/corner_background"
+
+        android:layout_marginHorizontal="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/product_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/product_container"

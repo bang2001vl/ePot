@@ -51,6 +51,16 @@
     <string name="address_delivery">Địa chỉ giao hàng</string>
     <string name="method_payment">Phương thức trả</string>
 
+<!--    string resources of layout cart address-->
+    <string name="Name_Address">Tên</string>
+    <string name="Name_Address_edt">Minh Nhực</string>
+    <string name="Phone_Address">Số điện thoại</string>
+    <string name="Phone_Address_edt">0382259845</string>
+    <string name="City_Address">Tỉnh, thành phố</string>
+    <string name="City_Address_edt">Thành phố Hồ Chí Minh</string>
+    <string name="District_Address">Quận, huyện</string>
+    <string name="District_Address_edt">Quận thủ Đức</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_Myshop">Đơn hàng</string>
