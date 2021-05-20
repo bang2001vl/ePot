@@ -74,21 +74,15 @@
             app:layout_constraintTop_toTopOf="@id/txt_totalprice"
             app:layout_constraintBottom_toBottomOf="@id/txt_totalprice"/>
         <Button
+            style="@style/cartButton"
             android:id="@+id/btn_payment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:text="Thanh toán"
-            android:textColor="@color/white"
-            android:textSize="@dimen/large_btn_size"
+            android:text="@string/btn_cart"
             android:background="@drawable/btn_large_background"
-            android:backgroundTint="@color/red"
 
-            android:layout_marginHorizontal="@dimen/large_btn_marhor"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginBottom="20dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

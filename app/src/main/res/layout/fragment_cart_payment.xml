@@ -228,20 +228,16 @@
             app:layout_constraintBottom_toTopOf="@id/btn_payment"/>
 
         <Button
+            style="@style/cartButton"
             android:id="@+id/btn_payment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:text="Đặt hàng"
-            android:textColor="@color/white"
-            android:textSize="@dimen/large_btn_size"
-            android:background="@drawable/btn_large_background"
-            android:backgroundTint="@color/red"
+            android:text="@string/btn_payment"
 
-            android:layout_marginHorizontal="@dimen/large_btn_marhor"
             android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

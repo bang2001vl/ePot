@@ -118,20 +118,14 @@
             app:layout_constraintEnd_toEndOf="@id/name_address_edt"/>
 
         <Button
+            style="@style/cartButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:text="Thêm vào"
-            android:textColor="@color/white"
-            android:textSize="@dimen/large_btn_size"
+            android:text="@string/btn_address"
             android:background="@drawable/btn_large_background"
-            android:backgroundTint="@color/red"
 
-            android:layout_marginHorizontal="@dimen/large_btn_marhor"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginBottom="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
