@@ -51,7 +51,6 @@ public class Title_View extends BaseCustomViewGroup {
 
         title_name = view.findViewById(R.id.Title_Name);
         button_back = view.findViewById(R.id.Button_Back);
-
         ViewGroup.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
         this.addView(view, params);
 

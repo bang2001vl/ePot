@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/icon_background_fail_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_background_fail_payment"
+
+            android:layout_marginRight="35dp"
+            app:layout_constraintEnd_toEndOf="@+id/icon_oop_fail_payment"
+            app:layout_constraintStart_toStartOf="@+id/icon_oop_fail_payment"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/fail_payment_txt"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <ImageView
+            android:id="@+id/icon_oop_fail_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_opp_fail_payment"
+
+            app:layout_constraintBottom_toBottomOf="@+id/icon_background_fail_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/icon_background_fail_payment" />
+
+        <TextView
+            android:id="@+id/fail_payment_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+
+            android:text="@string/fail_payment"
+            android:textColor="@color/black"
+            android:textSize="27dp"
+            app:layout_constraintBottom_toTopOf="@+id/fail_payment_txt2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/icon_background_fail_payment"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <TextView
+            android:id="@+id/fail_payment_txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fail_payment2"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+
+            app:layout_constraintBottom_toTopOf="@+id/btn_again_payment"
+            app:layout_constraintEnd_toEndOf="@id/fail_payment_txt"
+            app:layout_constraintStart_toStartOf="@id/fail_payment_txt"
+            app:layout_constraintTop_toBottomOf="@+id/fail_payment_txt"
+            app:layout_constraintVertical_chainStyle="packed" />
+        <Button
+            android:id="@+id/btn_again_payment"
+            style="@style/cartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="@string/btn_again_payment"
+
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/txt_gohome_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:id="@+id/txt_gohome_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/txt_gohome"
+
+            android:layout_marginBottom="40dp"
+            app:layout_constraintStart_toStartOf="@id/btn_again_payment"
+            app:layout_constraintEnd_toEndOf="@id/btn_again_payment"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</FrameLayout>
