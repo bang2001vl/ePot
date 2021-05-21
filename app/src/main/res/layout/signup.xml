@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:text="@string/Sign_Up"
             android:textColor="@color/Title_login_logout"
-            android:textSize="@dimen/big_title_size_text"
+            android:textSize="@dimen/biggest_title_size_text"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -36,10 +36,9 @@
         android:id="@+id/tv_Enter_Phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
 
         android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="56dp"
         android:text="@string/Enter_Phone"
         android:textColor="@color/black"
         android:textSize="@dimen/big_title_size_text"
@@ -74,7 +73,7 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="47dp"
             android:layout_marginStart="32dp"
             android:spinnerMode="dialog" />
 
@@ -82,13 +81,23 @@
             android:id="@+id/et_Phone"
             style="?android:attr/spinnerItemStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="32dp"
-
-            android:text="+84"
+            android:background="@color/transparent"
+            android:text="@string/Phone_Number"
             app:layout_constraintTop_toBottomOf="@+id/tv_Phone"
             tools:layout_editor_absoluteX="44dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/line"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:layout_editor_absoluteX="32dp" />
 
     <Button
         android:id="@+id/button"
@@ -96,16 +105,17 @@
         android:layout_height="@dimen/Big_btn_size"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/btn_background"
+        android:background="@drawable/btn_red_background"
         android:text="@string/Sent_OTP"
         android:textColor="@color/white"
         android:textSize="@dimen/normal_content_size_text"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintVertical_bias="0.232" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

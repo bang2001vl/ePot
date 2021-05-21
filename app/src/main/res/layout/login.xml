@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:text="@string/Login"
             android:textColor="@color/Title_login_logout"
-            android:textSize="@dimen/big_title_size_text"
+            android:textSize="@dimen/biggest_title_size_text"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -52,6 +52,7 @@
         tools:layout_editor_absoluteX="44dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:inputType="textEmailAddress"
         />
 
     <TextView
@@ -81,7 +82,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:inputType="textPassword"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/Big_btn_size"
         android:layout_marginTop="36dp"
-        android:background="@drawable/btn_background"
+        android:background="@drawable/btn_red_background"
         android:text="@string/Login"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
@@ -168,13 +169,14 @@
             android:layout_width="54dp"
             android:layout_height="match_parent"
             app:cardCornerRadius="15dp"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            >
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/ic_google_20"
-                android:scaleType="center" />
+                android:layout_gravity="center" />
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="54dp"
@@ -183,10 +185,11 @@
             app:cardCornerRadius="15dp">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/icons8_facebook_40"
-                android:scaleType="center" />
+                android:scaleType="center"
+                android:layout_gravity="center"/>
         </androidx.cardview.widget.CardView>
 
 

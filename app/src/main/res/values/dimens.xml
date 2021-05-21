@@ -13,7 +13,12 @@
     <dimen name="normal_content_size_text">17sp</dimen>
     <dimen name="small_content_size_text">12sp</dimen>
 
+    <dimen name="nomal_tag_size_text">10sp</dimen>
+    <dimen name="small_tag_size_text">8sp</dimen>
+    <dimen name="smaller_size_text">7sp</dimen>
+
     <dimen name="normal_button_text">15sp</dimen>
+    <dimen name="biggest_title_size_text">40sp</dimen>
 <!--    Image-->
     <dimen name="small_image_size">120dp</dimen>
 

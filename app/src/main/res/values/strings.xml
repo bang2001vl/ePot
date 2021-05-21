@@ -121,6 +121,19 @@
     
     <string name="Confirm">Xác nhận</string>
     <string name="Time">(30)</string>
+    <string name="Phone_Number">+84</string>
+
+    <string name="Search">Tìm kiếm</string>
+
+    //string resource product_item
+
+    <string name="Sale"> -20% </string>
+    <string name="Cmt">(10)</string>
+    <string name="storename">Store Name</string>
+    <string name="productname">Product name</string>
+    <string name="Sold">sold</string>
+    <string name="new_price">New price đ</string>
+    <string name="old_price">Old price đ</string>
 
 
     
