@@ -71,6 +71,9 @@
         <item name="android:background">@drawable/btn_large_background</item>
     </style>
 
+    <style name="Dropdown_Country">
+    </style>
+
     <style name="CommonButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
@@ -82,5 +85,6 @@
         <item name="android:includeFontPadding">false</item>
         <item name="paddingStart">10dp</item>
         <item name="paddingEnd">10dp</item>
+
     </style>
 </resources>

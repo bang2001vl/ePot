@@ -32,6 +32,8 @@
     <dimen name="btn_size">35dp</dimen>
     <dimen name="margin_hor">15dp</dimen>
 
+    <dimen name="Big_btn_size">55dp</dimen>
+
     <dimen name="method_payment_size">100dp</dimen>
 
 <!--    Dimen resources of layout Cart-->

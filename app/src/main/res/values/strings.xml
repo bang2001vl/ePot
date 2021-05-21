@@ -89,4 +89,40 @@
     <string name="Lock">Đồng hồ</string>
     <string name="Locatin">TP.Hồ Chí Minh, Việt Nam</string>
 
+    // string resources of layout login, logout, splash, reset password  
+    
+    <string name="Login">Đăng nhập</string>
+    <string name="Logout">Đăng xuất</string>
+    <string name="User_Name">Gmail</string>
+    <string name="Password">Mật khẩu</string>
+    <string name="Forgot_password">Quên mật khẩu?</string>
+    <string name="No_Acount">Chưa có tài khoản?  </string>
+    <string name="Social_NetWork">Đăng nhập với tài khoản xã hội</string>
+
+    <string name="Sign_Up">Đăng kí</string>
+    <string name="Enter_Phone">Nhập số điện thoại</string>
+    <string name="Phone">Số điện thoại</string>
+    <string name="Sent_OTP">Gửi OTP</string>
+    
+    <string name="Enter_OTP">Nhập mã OTP</string>
+    <string name="Resent_code">Gửi lại mã</string>
+    <string name="Continue">Tiếp tục</string>
+
+    <string name="Confirm_pass">Xác nhận mật khẩu</string>
+    <string name="Name">Họ tên</string>
+    <string name="Day_of_birth">Ngày sinh</string>
+    <string name="Sex">Giới tính</string>
+    <string name="Note_SignUp">Bằng việc đăng ký, bạn đã đồng ý với Điều khoản Dịch vụ và Chính sách Riêng tư của chúng tôi</string>
+    
+    <string name="Enter_password">Nhập số điện thoại của bạn</string>
+    <string name="Enror_phone">Số điện thoại này chưa được đăng kí tài khoản</string>
+
+    <string name="Code">Mã</string>
+    
+    <string name="Confirm">Xác nhận</string>
+    <string name="Time">(30)</string>
+
+
+    
+
 </resources>
