@@ -26,14 +26,14 @@ public class BaseCustomViewGroup extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        ConstraintLayout view = (ConstraintLayout) getChildAt(0);
+        ViewGroup view = (ViewGroup) getChildAt(0);
 
         if(view != null) {
             view.measure(widthMeasureSpec, heightMeasureSpec);
             int child_right = view.getMeasuredWidth();
             int child_bottom = view.getMeasuredHeight();
-            int maxW = Math.max(view.getMinWidth(), child_right);
-            int maxH = Math.max(view.getMinHeight(), child_bottom);
+            int maxW = Math.max(view.getMinimumHeight(), child_right);
+            int maxH = Math.max(view.getMinimumWidth(), child_bottom);
             setMeasuredDimension( resolveSizeAndState(maxW, widthMeasureSpec, view.getMeasuredState())
                     , resolveSizeAndState(maxH, heightMeasureSpec, view.getMeasuredState()));
         }
@@ -41,7 +41,7 @@ public class BaseCustomViewGroup extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        ConstraintLayout view = (ConstraintLayout) getChildAt(0);
+        ViewGroup view = (ViewGroup) getChildAt(0);
         if(view != null) {
             int w = view.getMeasuredWidth();
             int h = view.getMeasuredHeight();

@@ -6,12 +6,12 @@
     <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
     <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
         Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
+
     <string name="add_to_cart">Thêm hàng vào giỏ</string>
     <string name="submit">Xác nhận</string>
     <string name="agree">Đồng ý</string>
     <string name="cancel">Hủy</string>
     <string name="order">Đặt hàng</string>
-    <string name="amount_formatted" formatted="false">Số lượng: %1$d</string>
     <string name="amount_2dot" formatted="false">Số lượng</string>
     <string name="max_formatted" formatted="false">Tối đa: %1$d</string>
     <string name="price_formatted" formatted="false">Giá: %1$s</string>
@@ -22,6 +22,7 @@
     <string name="all">Tất cả</string>
     <string name="cart">Giỏ hàng</string>
     <string name="find">Tìm kiếm</string>
+    <string name="saled_already">Đã bán</string>
 
     <string name="percent_salepro">50% giảm</string>
 
@@ -34,7 +35,7 @@
     <string name="format_price" formatted="false">%,dđ</string>
     <string name="format_price_strike" formatted="false"><strike>%,dđ</strike></string>
     <string name="default_price" formatted="false">1,000,000đ</string>
-    <string name="default_price_strike" formatted="false"><strike>1,000,000đ</strike></string>
+    <string name="default_price_strike" formatted="false"><strike>1,500,000đ</strike></string>
 
     <!--string resources of layout Cart-->
     <string name="Name_Title">Tên tiêu đề</string>
