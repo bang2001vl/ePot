@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/tv_title_profile"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="10dp"
+    android:background="@drawable/edittext_blur_background">
+        <TextView
+            android:id="@+id/hint_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên đăng nhập"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/gilroy_light"
+            android:textSize="11dp"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text_edittext"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:paddingStart="0dp"
+            android:fontFamily="@font/gilroy_regular"
+            android:paddingTop="5dp"
+            android:textSize="14dp"
+            android:enabled="false"
+            android:textColor="@color/black"
+            android:text="thuytien192"></com.google.android.material.textfield.TextInputEditText>
+</LinearLayout>
