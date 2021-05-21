@@ -93,7 +93,7 @@
     
     <string name="Login">Đăng nhập</string>
     <string name="Logout">Đăng xuất</string>
-    <string name="User_Name">Gmail</string>
+    <string name="User_Name">Tên đăng nhập</string>
     <string name="Password">Mật khẩu</string>
     <string name="Forgot_password">Quên mật khẩu?</string>
     <string name="No_Acount">Chưa có tài khoản?  </string>
