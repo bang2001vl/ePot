@@ -34,16 +34,17 @@
                     android:layout_height="match_parent"
                     android:id="@+id/Image_Product"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sowmi_nam" />
+                    android:src="@drawable/sowmi_nam"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_tag_salepro"
                     android:background="@drawable/bg_rounded"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
-                    android:text=" -20% "
-                    android:textSize="21px"
+                    android:text="@string/Sale"
+                    android:textSize="@dimen/nomal_tag_size_text"
                     android:textAlignment="center"
                     android:textColor="@color/white"
 
@@ -61,7 +62,6 @@
 
             <RatingBar
                 android:id="@+id/ratingbar"
-                android:layout_marginLeft="2dp"
                 style="@style/product_ratingbar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -72,9 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/TotalCmt"
-                android:text="(10)"
-                android:textSize="18px"
-                android:layout_marginLeft="2dp"
+                android:text="@string/Cmt"
+                android:textSize="@dimen/smaller_size_text"
+                android:layout_marginStart="2dp"
                 />
         </LinearLayout>
 
@@ -85,31 +85,32 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginTop="65dp"
-                android:layout_marginLeft="70dp"
-                android:background="@drawable/ic_baseline_favorite_24" />
+                android:layout_marginStart="70dp"
+                android:background="@drawable/red_favorite_24" />
         </FrameLayout>
         <TextView
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/StoreName"
-            android:text="StoreName"
-            android:textSize="18px"
+            android:text="@string/storename"
+            android:textSize="@dimen/small_tag_size_text"
             android:textStyle="bold"
             android:textColor="#9B9B9B"
             android:textAlignment="viewStart"
-            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:visibility="gone"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textview_proName"
-            android:text="ProductName"
-            android:textSize="25px"
+            android:text="@string/productname"
+            android:textSize="@dimen/nomal_tag_size_text"
             android:textStyle="bold"
             android:textColor="#222222"
             android:textAlignment="viewStart"
-            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,11 +120,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textview_proPrice"
-                android:text="New Price đ"
-                android:textSize="15px"
+                android:text="@string/new_price"
+                android:textSize="@dimen/small_tag_size_text"
                 android:textColor="#DB3022"
                 android:textAlignment="viewStart"
-                android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
                 />
 
             <TextView
@@ -132,20 +133,20 @@
                 android:id="@+id/textview_proSold"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
-                android:text="Sold"
+                android:text="@string/Sold"
                 android:textAlignment="viewEnd"
                 android:textColor="#9B9B9B"
-                android:textSize="15px" />
+                android:textSize="@dimen/smaller_size_text" />
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textview_OldproPrice"
-            android:text="Old Price đ"
-            android:textSize="15px"
+            android:text="@string/old_price"
+            android:textSize="@dimen/small_tag_size_text"
             android:textColor="#9B9B9B"
             android:textAlignment="viewStart"
-            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
             />
 
     </LinearLayout>

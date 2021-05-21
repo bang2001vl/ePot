@@ -15,7 +15,8 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -39,7 +40,7 @@
             android:layout_gravity="center"
             android:text="@string/Sign_Up"
             android:textColor="@color/Title_login_logout"
-            android:textSize="@dimen/big_title_size_text"
+            android:textSize="@dimen/biggest_title_size_text"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -47,10 +48,8 @@
         android:id="@+id/tv_Enter_Phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-
         android:layout_marginStart="32dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:text="@string/Enter_OTP"
         android:textColor="@color/black"
         android:textSize="@dimen/big_title_size_text"
@@ -88,8 +87,7 @@
             android:layout_width="303dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-
-            android:text="+84"
+            android:background="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@+id/tv_Phone"
             tools:layout_editor_absoluteX="44dp" />
         <TextView
@@ -102,18 +100,28 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/line"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:layout_editor_absoluteX="-52dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:text="@string/Resent_code"
         android:textColor="@color/mainColor"
         android:textSize="@dimen/small_title_size_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <Button
         android:id="@+id/button"
@@ -121,16 +129,17 @@
         android:layout_height="@dimen/Big_btn_size"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/btn_background"
+        android:background="@drawable/btn_red_background"
         android:text="@string/Continue"
         android:textColor="@color/white"
         android:textSize="@dimen/normal_content_size_text"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintVertical_bias="0.296" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

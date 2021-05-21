@@ -36,6 +36,7 @@
             android:layout_height="40dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
+            app:queryHint="@string/Search"
             android:layout_marginTop="10dp"
             android:background="@drawable/border_searchview" />
 
