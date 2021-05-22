@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:textSize="30sp"
@@ -91,20 +91,46 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <ImageButton
-                                android:id="@+id/imageView2"
+                            <FrameLayout
                                 android:layout_width="150dp"
-                                android:layout_height="200dp"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginStart="5dp"
-                                android:src="@drawable/vans"
-                                />
+                                android:layout_height="200dp">
+
+                                <ImageButton
+                                    android:id="@+id/imageView2"
+                                    android:layout_width="150dp"
+                                    android:layout_height="200dp"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:src="@drawable/vans" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_marginTop="160dp"
+                                    android:background="#CC777777"
+                                    android:gravity="center"
+                                    android:text="Ảnh bìa"
+                                    android:textColor="@color/white"
+                                    android:textSize="19sp" />
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/floatingActionButton"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:background="#CC777777"
+                                    android:clickable="true"
+                                    android:layout_marginStart="120dp"
+                                    app:backgroundTint="#CC777777"
+                                    app:fabSize="mini"
+                                    app:srcCompat="@drawable/ic_vector" />
+                            </FrameLayout>
 
                             <Button
                                 android:layout_width="150dp"
                                 android:layout_height="200dp"
                                 android:text="+ Thêm ảnh"
                                 android:textSize="20sp"
+                                android:layout_marginStart="5dp"
                                 android:textColor="@color/red"
                                 android:background="@drawable/border_red_layout"
                                 />
