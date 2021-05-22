@@ -44,19 +44,19 @@ public class EditTextCustom extends View {
                 attrs, R.styleable.EditTextCustom, defStyle, 0);
 
         mExampleString = a.getString(
-                R.styleable.EditTextCustom_exampleString);
+                R.styleable.EditTextCustom_etString);
         mExampleColor = a.getColor(
-                R.styleable.EditTextCustom_exampleColor,
+                R.styleable.EditTextCustom_etColor,
                 mExampleColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         mExampleDimension = a.getDimension(
-                R.styleable.EditTextCustom_exampleDimension,
+                R.styleable.EditTextCustom_etDimension,
                 mExampleDimension);
 
-        if (a.hasValue(R.styleable.EditTextCustom_exampleDrawable)) {
+        if (a.hasValue(R.styleable.EditTextCustom_etDrawable)) {
             mExampleDrawable = a.getDrawable(
-                    R.styleable.EditTextCustom_exampleDrawable);
+                    R.styleable.EditTextCustom_etDrawable);
             mExampleDrawable.setCallback(this);
         }
 
