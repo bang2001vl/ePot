@@ -1,4 +1,8 @@
 <resources>
     <declare-styleable name="EditTextCustom">
+        <attr name="etString" format="string" />
+        <attr name="etDimension" format="dimension" />
+        <attr name="etColor" format="color" />
+        <attr name="etDrawable" format="color|reference" />
     </declare-styleable>
 </resources>
