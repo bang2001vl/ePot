@@ -134,23 +134,22 @@
             android:layout_gravity="bottom|center">
 
             <Button
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sửa"
                 android:textSize="18sp"
                 android:textColor="@color/red"
-                app:strokeColor="@color/drark_gray" />
+                android:background="@drawable/border_red_layout" />
 
             <Button
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:textColor="@color/red"
                 android:text="Xóa"
                 android:textSize="18sp"
-                app:strokeColor="@color/drark_gray" />
+                android:background="@drawable/border_red_layout"
+                />
         </LinearLayout>
     </FrameLayout>
 
