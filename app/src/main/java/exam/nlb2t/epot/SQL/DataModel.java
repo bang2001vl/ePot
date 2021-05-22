@@ -21,7 +21,11 @@ public class DataModel {
         StrictMode.setThreadPolicy(policy);
         Connection objConn = null;
         String ConnURL = null;
-        DataObject objEntity = new DataObject("137.116.173.141", "sa", "NgocLam_1201", "epot", "1433");
+        DataObject objEntity = new DataObject(
+                "thunder-server-4.southeastasia.cloudapp.azure.com",
+                "NhapMonAndroid",
+                "matkhauVjppro1945-1973",
+                "FirstDB", "1433");
         try {
             Class.forName(objEntity.getsClass());
             ConnURL = "jdbc:jtds:sqlserver://"
@@ -31,11 +35,11 @@ public class DataModel {
                     + ";password=" + objEntity.getsPwd() + ";";
             objConn = DriverManager.getConnection(ConnURL);
         } catch (SQLException se) {
-            Log.e("ERRO", se.getMessage());
+            Log.e("ERROR", se.getMessage());
         } catch (ClassNotFoundException e) {
-            Log.e("ERRO", e.getMessage());
+            Log.e("ERROR", e.getMessage());
         } catch (Exception e) {
-            Log.e("ERRO", e.getMessage());
+            Log.e("ERROR", e.getMessage());
         }
         return objConn;
     }

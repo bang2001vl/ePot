@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">ePot</string>
+
     <string name="menu_home_page">Trang chủ</string>
-    <string name="menu_person">Cá nhân</string>
+    <string name="menu_shop">Cửa hàng</string>
+    <string name="menu_cart">Giỏ hàng</string>
+    <string name="menu_notification">Thông báo</string>
+    <string name="menu_person">Tôi</string>
 
     <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
     <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
