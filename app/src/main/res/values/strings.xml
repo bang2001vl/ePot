@@ -135,7 +135,10 @@
     <string name="new_price">New price đ</string>
     <string name="old_price">Old price đ</string>
 
-
-    
+<!--    string resources of layout My Rating-->
+    <string name="my_rating">Đánh giá của bạn</string>
+    <string name="my_rating2">Hãy chia sẻ cảm nhận về sản phẩm này nhé!</string>
+    <string name="btn_rating">Đánh giá</string>
+    <string name="hint_rating">Hãy chia sẻ những điều bạn thích về sản phẩm này!</string>
 
 </resources>

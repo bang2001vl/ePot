@@ -49,4 +49,6 @@
     <dimen name="large_btn_size">22dp</dimen>
     <dimen name="large_btn_marhor">40dp</dimen>
 
+<!--    Dimen resources of layout My Rating-->
+    <dimen name="radius_rating_background">40dp</dimen>
 </resources>
