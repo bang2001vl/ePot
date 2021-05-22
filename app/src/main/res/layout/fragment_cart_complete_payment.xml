@@ -76,6 +76,7 @@
 
             android:layout_marginBottom="20dp"
 
+            android:layout_marginHorizontal="@dimen/large_btn_marhor"
             android:text="@string/btn_complete_payment"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

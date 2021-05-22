@@ -235,6 +235,7 @@
 
             android:text="@string/btn_payment"
 
+            android:layout_marginHorizontal="@dimen/large_btn_marhor"
             android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
