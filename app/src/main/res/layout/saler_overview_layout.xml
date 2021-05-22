@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avt_saler_product_detail"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/test"
+        android:layout_marginVertical="10dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txt_saler_name_product_detail"
+        android:fontFamily="@font/gilroy_bold"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:translationY="-10dp"
+        android:layout_marginStart="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/avt_saler_product_detail"
+        android:textSize="20dp"
+        android:text="Thủy Tiên" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_username_saler_product_detail"
+        android:fontFamily="@font/gilroy_regular"
+        android:text="thuytien192"
+        android:layout_below="@id/txt_saler_name_product_detail"
+        android:layout_toEndOf="@id/avt_saler_product_detail"
+        android:layout_marginStart="22dp"/>
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/btn_more_saler_product_detail"
+        android:src="@drawable/ic_back_arrow"
+        android:scaleType="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:tint="@color/black"
+        android:backgroundTint="@color/light_gray"
+        android:background="@drawable/button_circle_background"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#E2E2E2"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="#E2E2E2"/>
+</RelativeLayout>
