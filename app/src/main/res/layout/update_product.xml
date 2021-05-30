@@ -26,7 +26,7 @@
             tools:layout_editor_absoluteX="0dp">
 
             <ImageButton
-                android:id="@+id/imageView"
+                android:id="@+id/btnClose"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="5dp"
@@ -48,6 +48,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:id="@+id/button_save"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:background="@color/transparent"
@@ -59,7 +60,7 @@
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:orientation="vertical"
@@ -83,53 +84,44 @@
 
                     <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="4">
-
+                        android:layout_height="match_parent">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:layout_width="150dp"
-                                android:layout_height="200dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
                                 <ImageButton
-                                    android:id="@+id/imageView2"
-                                    android:layout_width="150dp"
-                                    android:layout_height="200dp"
+                                    android:id="@+id/image_primary"
+                                    android:layout_width="@dimen/image_preview_width"
+                                    android:layout_height="@dimen/image_preview_height"
                                     android:layout_marginStart="5dp"
                                     android:layout_marginEnd="5dp"
+                                    android:scaleType="fitCenter"
                                     android:src="@drawable/vans" />
 
                                 <TextView
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:layout_marginTop="160dp"
+                                    android:layout_height="wrap_content"
                                     android:background="#CC777777"
-                                    android:gravity="center"
-                                    android:text="Ảnh bìa"
+                                    android:textAlignment="center"
+                                    android:text="Ảnh chính"
+                                    android:layout_gravity="center_horizontal|bottom"
                                     android:textColor="@color/white"
                                     android:textSize="19sp" />
 
-                                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                    android:id="@+id/floatingActionButton"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:background="#CC777777"
-                                    android:clickable="true"
-                                    android:layout_marginStart="120dp"
-                                    app:backgroundTint="#CC777777"
-                                    app:fabSize="mini"
-                                    app:srcCompat="@drawable/ic_vector" />
-                            </FrameLayout>
+                            </LinearLayout>
 
                             <Button
-                                android:layout_width="150dp"
-                                android:layout_height="200dp"
-                                android:text="+ Thêm ảnh"
+                                android:layout_width="@dimen/image_preview_width"
+                                android:layout_height="@dimen/image_preview_height"
+                                android:id="@+id/buttonAddImage"
+                                android:text="Ảnh mô tả\n(0)"
                                 android:textSize="20sp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginStart="5dp"
                                 android:textColor="@color/red"
                                 android:background="@drawable/border_red_layout"
@@ -152,7 +144,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Tên sản phẩm"
-                        android:textColor="@color/drark_gray"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <EditText
@@ -163,7 +155,7 @@
                         android:layout_marginEnd="20dp"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="Tên sản phẩm" />
+                        android:hint="Tên sản phẩm" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -179,7 +171,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Giá"
-                        android:textColor="@color/drark_gray"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <EditText
@@ -189,8 +181,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:ems="10"
-                        android:inputType="numberDecimal"
-                        android:text="1000000đ" />
+                        android:inputType="number"
+                        android:hint="1000000đ" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -206,7 +198,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Số lượng"
-                        android:textColor="@color/drark_gray"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <EditText
@@ -217,12 +209,12 @@
                         android:layout_marginEnd="20dp"
                         android:ems="10"
                         android:inputType="number"
-                        android:text="1000" />
+                        android:hint="1000" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:orientation="vertical">
 
@@ -233,19 +225,20 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:text="Chi tiết sản phẩm"
-                        android:textColor="@color/drark_gray"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/editTextTextProductInfo"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:lines="10"
+                        android:minLines="4"
+                        android:maxLength="490"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
-                        android:text="Chi tiết sản phẩm" />
+                        android:hint="Chi tiết sản phẩm" />
                 </LinearLayout>
 
 

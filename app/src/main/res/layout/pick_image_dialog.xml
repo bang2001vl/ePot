@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:minWidth="375dp"
+        android:id="@+id/title_view"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnClose"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/button_round_background"
+            android:src="@drawable/ic_back"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textAlignment="center"
+            android:text="ẢNH ĐÃ CHỌN"
+            android:textSize="25dp"
+            android:fontFamily="@font/gilroy_bold"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/title_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:minHeight="400dp"
+        android:minWidth="375dp"
+        >
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="375dp"
+            android:id="@+id/flexbox_layout"
+            app:flexWrap="wrap"
+            android:layout_gravity="start"
+            >
+
+
+            <ImageButton
+                android:layout_width="@dimen/image_preview_width_small"
+                android:layout_height="@dimen/image_preview_height_small"
+                android:id="@+id/buttonAddImage"
+                android:text="Chọn\nThêm ảnh"
+                android:textSize="12sp"
+                android:src="@drawable/ic_add_product_24"
+                android:tint="@color/red"
+                android:layout_margin="5dp"
+                android:textColor="@color/red"
+                android:background="@drawable/border_red_layout"
+                />
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

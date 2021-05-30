@@ -1,34 +1,26 @@
-package exam.nlb2t.epot.Fragments;
+package exam.nlb2t.epot.MyShop;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import exam.nlb2t.epot.Database.DatabaseController;
-import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Fragments.HomepageFragment;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
-import exam.nlb2t.epot.fragment_ProItem_Container;
+import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 
-public class HomepageFragment extends Fragment {
-    HomeShoppingBinding binding;
-
-    public static HomepageFragment newInstance(/*Params here*/)
-    {
-        HomepageFragment fragment = new HomepageFragment();
-        // //TODO : Write code here <Setup new fragment>
-        return fragment;
-    }
+public class Shop_ProductFragment extends Fragment {
+    MyShopProductTabBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = HomeShoppingBinding.inflate(inflater, container, false);
+        binding = MyShopProductTabBinding.inflate(inflater, container, false);
         setEventHandler();
         return binding.getRoot();
     }
@@ -36,13 +28,19 @@ public class HomepageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DatabaseController databaseController = new DatabaseController();
-        databaseController.closeConnection();
         //TODO : Write code here <Get data from database and set to view>
     }
 
     void setEventHandler()
     {
-        //TODO : Write code here <Set all listener in here>
+        binding.buttonAddProduct.setOnClickListener(v -> {
+            AddProductFragment addProductFragment = new AddProductFragment();
+            if(getFragmentManager() == null){return;}
+            addProductFragment.show(getFragmentManager().beginTransaction(), "createProduct");
+            if(addProductFragment.isOK)
+            {
+                Log.e("MY_TAG", "SUCCESS: Write to database");
+            }
+        });
     }
 }

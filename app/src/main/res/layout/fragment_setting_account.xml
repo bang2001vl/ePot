@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_marginHorizontal="10dp" />
     <include layout="@layout/sample_edit_text_custom"
-            android:id="@+id/tv_fullname"
+            android:id="@+id/tv_fullname2"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="10dp" />

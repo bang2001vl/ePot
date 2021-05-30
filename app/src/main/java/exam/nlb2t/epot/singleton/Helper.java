@@ -2,7 +2,13 @@ package exam.nlb2t.epot.singleton;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -46,5 +52,15 @@ public class Helper {
     public interface OnSuccessListener
     {
         void OnSuccess(Object sender);
+    }
+
+    public static byte[] toByteArray(@NonNull Bitmap bitmap)
+    {
+        byte[] rs = null;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if(bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)) {
+            rs = outputStream.toByteArray();
+        }
+        return rs;
     }
 }

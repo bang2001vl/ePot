@@ -23,8 +23,8 @@ public class DataModel {
         String ConnURL = null;
         DataObject objEntity = new DataObject(
                 "thunder-server-4.southeastasia.cloudapp.azure.com",
-                "NhapMonAndroid",
-                "matkhauVjppro1945-1973",
+                "sa",
+                "Bangpro123",
                 "FirstDB", "1433");
         try {
             Class.forName(objEntity.getsClass());
