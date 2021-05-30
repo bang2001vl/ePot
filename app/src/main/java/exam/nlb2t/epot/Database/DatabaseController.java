@@ -86,7 +86,7 @@ public class DatabaseController {
         return true;
     }
 
-    final int MAX_BYTE_IMAGE = 10000;
+    public static final int MAX_BYTE_IMAGE = 2000000;
     public boolean insertProduct(int salerID, int categoryID, String name, int price, int amount, Bitmap imagePrimary, String description, List<Bitmap> images)
     {
         if(images== null || name == null || description == null){
@@ -100,9 +100,9 @@ public class DatabaseController {
             Log.e("MY_TAG", "ERROR: Image is too big");
             return false;
         }
-
+        boolean isOK = false;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("{EXEC createProduct ? ? ? ? ? ? ?}");
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC createProduct ?,?,?,?,?,?,?");
             salerID = 0;
             preparedStatement.setInt(1, salerID);
             categoryID = 0;
@@ -111,30 +111,28 @@ public class DatabaseController {
             preparedStatement.setInt(4, price);
             preparedStatement.setInt(5, amount);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
-            preparedStatement.setBinaryStream(6, inputStream);
+            preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
             preparedStatement.setString(7, description);
-            preparedStatement.addBatch();
 
-            int[] rs = preparedStatement.executeBatch();
+            int rs = preparedStatement.executeUpdate();
             preparedStatement.close();
-            inputStream.close();
-            Log.d("MY_TAG", rs[0]+"");
-            if(rs[0] == 2)
+            Log.d("MY_TAG", rs+"");
+            if(rs != 0)
             {
                 if(images.size() == 0 || insertProduct_Images(images)) {
                     connection.commit();
-                    return true;
+                    isOK = true;
                 }
             }
-            rollback();
-            return false;
+            else {rollback();}
+            inputStream.close();
         }
         catch (SQLException | IOException e)
         {
             e.printStackTrace();
             rollback();
-            return false;
         }
+        return isOK;
     }
 
     // Insert images to latest product
@@ -168,19 +166,24 @@ public class DatabaseController {
 
     public boolean insertProduct_Image(int productID, Bitmap bitmap)
     {
+        byte[] mainImage = Helper.toByteArray(bitmap);
+        if(mainImage.length > MAX_BYTE_IMAGE)
+        {
+            Log.e("MY_TAG", "ERROR: Image is too big");
+            return false;
+        }
         try
         {
-            PreparedStatement statement = connection.prepareStatement("EXEC addImageForProduct ? ?");
+            PreparedStatement statement = connection.prepareStatement("EXEC addImageForProduct ?,?");
             statement.setInt(1, productID);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Helper.toByteArray(bitmap));
-            statement.setBinaryStream(2, inputStream);
-            statement.addBatch();
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
+            statement.setBinaryStream(2, inputStream, mainImage.length);
 
-            int[] rs = statement.executeBatch();
+            int rs = statement.executeUpdate();
 
             inputStream.close();
             statement.close();
-            return rs.length == 1 && rs[0] == 1;
+            return rs == 1;
         }
         catch (SQLException | IOException e)
         {
@@ -194,7 +197,7 @@ public class DatabaseController {
         Bitmap rs = null;
         try
         {
-            String sql = "{select [DATA] from [PRODUCT_IMAGE] where [ID] = ?}";
+            String sql = "select [DATA] from [PRODUCT_IMAGE] where [ID] = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();

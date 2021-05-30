@@ -1,6 +1,5 @@
 package exam.nlb2t.epot.SQL;
 
-
 import android.annotation.SuppressLint;
 import android.os.StrictMode;
 import android.util.Log;
@@ -23,8 +22,8 @@ public class DataModel {
         String ConnURL = null;
         DataObject objEntity = new DataObject(
                 "thunder-server-4.southeastasia.cloudapp.azure.com",
-                "sa",
-                "Bangpro123",
+                "NhapMonAndroid",
+                "matkhauVjppro1945-1973",
                 "FirstDB", "1433");
         try {
             Class.forName(objEntity.getsClass());

@@ -32,10 +32,12 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.BitSet;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.PickImageDialogBinding;
 
@@ -125,7 +127,12 @@ public class ImagesDialog extends DialogFragment {
         InputStream inputStream = null;
         try {
             inputStream = getContext().getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
+            if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
+            {
+                Log.e("MY_TAG", "ERROR: Image is too big");
+                return;
+            }
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -150,7 +157,12 @@ public class ImagesDialog extends DialogFragment {
         InputStream inputStream = null;
         try {
             inputStream = getContext().getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
+            if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
+            {
+                Log.e("MY_TAG", "ERROR: Image is too big");
+                return;
+            }
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }

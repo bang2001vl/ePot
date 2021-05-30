@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +184,7 @@ public class AddProductFragment extends DialogFragment {
 
     String getDescription()
     {
-        EditText editText = binding.editTextTextProductName;
+        EditText editText = binding.editTextTextProductInfo;
         String rs = editText.getText().toString();
         if(rs.length() > 0)
         {
@@ -250,8 +251,13 @@ public class AddProductFragment extends DialogFragment {
             InputStream inputStream;
             try {
                 inputStream = getContext().getContentResolver().openInputStream(data.getData());
+                if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
+                {
+                    Log.e("MY_TAG", "ERROR: Image is too big");
+                    return;
+                }
             }
-            catch (FileNotFoundException e) {
+            catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
