@@ -22,8 +22,8 @@ import java.util.Locale;
 
 public class DatabaseController {
 
-    private DataController dataController = new DataController();
-    private Connection connection;
+    protected DataController dataController = new DataController();
+    protected Connection connection;
 
     public DatabaseController() {
         try{
@@ -36,7 +36,19 @@ public class DatabaseController {
         }
     }
 
-    void rollback()
+    public void commit()
+    {
+        try {
+            connection.commit();
+        }
+        catch (SQLException e)
+        {
+            Log.e("MY_TAG", "ERROR: Failed to commit connection");
+            e.printStackTrace();
+        }
+    }
+
+    public void rollback()
     {
         try {
             connection.rollback();
@@ -87,156 +99,5 @@ public class DatabaseController {
     }
 
     public static final int MAX_BYTE_IMAGE = 2000000;
-    public boolean insertProduct(int salerID, int categoryID, String name, int price, int amount, Bitmap imagePrimary, String description, List<Bitmap> images)
-    {
-        if(images== null || name == null || description == null){
-            Log.e("MY_TAG", "ERROR: insert product with null data");
-            return false;
-        }
-
-        byte[] mainImage = Helper.toByteArray(imagePrimary);
-        if(mainImage.length > MAX_BYTE_IMAGE)
-        {
-            Log.e("MY_TAG", "ERROR: Image is too big");
-            return false;
-        }
-        boolean isOK = false;
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC createProduct ?,?,?,?,?,?,?");
-            salerID = 0;
-            preparedStatement.setInt(1, salerID);
-            categoryID = 0;
-            preparedStatement.setInt(2, categoryID);
-            preparedStatement.setString(3, name);
-            preparedStatement.setInt(4, price);
-            preparedStatement.setInt(5, amount);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
-            preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
-            preparedStatement.setString(7, description);
-
-            int rs = preparedStatement.executeUpdate();
-            preparedStatement.close();
-            Log.d("MY_TAG", rs+"");
-            if(rs != 0)
-            {
-                if(images.size() == 0 || insertProduct_Images(images)) {
-                    connection.commit();
-                    isOK = true;
-                }
-            }
-            else {rollback();}
-            inputStream.close();
-        }
-        catch (SQLException | IOException e)
-        {
-            e.printStackTrace();
-            rollback();
-        }
-        return isOK;
-    }
-
-    // Insert images to latest product
-    public boolean insertProduct_Images(List<Bitmap> bitmaps)
-    {
-        int latestID = -1;
-        try (PreparedStatement statement = connection.prepareStatement("select max([ID]) from [PRODUCT]");
-             ResultSet resultSet = statement.executeQuery();)
-        {
-            if(resultSet.next())
-            {
-                latestID = resultSet.getInt(1);
-                statement.close();
-                resultSet.close();
-                for(Bitmap bitmap: bitmaps) {
-                    if(!insertProduct_Image(latestID, bitmap))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            else {return false;}
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace(); return false;
-        }
-
-    }
-
-    public boolean insertProduct_Image(int productID, Bitmap bitmap)
-    {
-        byte[] mainImage = Helper.toByteArray(bitmap);
-        if(mainImage.length > MAX_BYTE_IMAGE)
-        {
-            Log.e("MY_TAG", "ERROR: Image is too big");
-            return false;
-        }
-        try
-        {
-            PreparedStatement statement = connection.prepareStatement("EXEC addImageForProduct ?,?");
-            statement.setInt(1, productID);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
-            statement.setBinaryStream(2, inputStream, mainImage.length);
-
-            int rs = statement.executeUpdate();
-
-            inputStream.close();
-            statement.close();
-            return rs == 1;
-        }
-        catch (SQLException | IOException e)
-        {
-            e.printStackTrace();
-            return  false;
-        }
-    }
-
-    public Bitmap getImage_Product(int id)
-    {
-        Bitmap rs = null;
-        try
-        {
-            String sql = "select [DATA] from [PRODUCT_IMAGE] where [ID] = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next())
-            {
-                rs = BitmapFactory.decodeStream(resultSet.getBinaryStream(1));
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return rs;
-    }
-
-    public List<ProductBaseDB> getProducts_All()
-    {
-        List<ProductBaseDB> rs = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement("select * from [PRODUCT]"))
-        {
-            rs = new ArrayList<>();
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next())
-            {
-                ProductBaseDB pd = new ProductBaseDB();
-                pd.name = resultSet.getString(3);
-                pd.price = resultSet.getInt(4);
-                pd.amount = resultSet.getInt(5);
-                InputStream inputStream = resultSet.getBinaryStream(6);
-                pd.description = resultSet.getString(7);
-                pd.images = new ArrayList<>();
-                pd.images.add(BitmapFactory.decodeStream(inputStream));
-                rs.add(pd);
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return rs;
-    }
+    public static final int BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL = 700;
 }

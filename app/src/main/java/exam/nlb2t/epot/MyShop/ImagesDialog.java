@@ -155,6 +155,7 @@ public class ImagesDialog extends DialogFragment {
         }
 
         InputStream inputStream = null;
+        Bitmap bitmap = null;
         try {
             inputStream = getContext().getContentResolver().openInputStream(uri);
             if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
@@ -162,12 +163,15 @@ public class ImagesDialog extends DialogFragment {
                 Log.e("MY_TAG", "ERROR: Image is too big");
                 return;
             }
-        } catch (IOException e) {
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        images.add(BitmapFactory.decodeStream(inputStream));
+        images.add(bitmap);
     }
 
     final View.OnLongClickListener longClickImage = new View.OnLongClickListener() {

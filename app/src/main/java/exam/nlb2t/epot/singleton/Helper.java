@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.singleton;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,9 +9,14 @@ import androidx.annotation.NonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import exam.nlb2t.epot.R;
 
@@ -53,14 +59,58 @@ public class Helper {
     {
         void OnSuccess(Object sender);
     }
-
+    public  static  final int QUALITY_STORAGED_IMAGE = 80;
     public static byte[] toByteArray(@NonNull Bitmap bitmap)
     {
         byte[] rs = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        if(bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)) {
+        if(bitmap.compress(Bitmap.CompressFormat.JPEG, QUALITY_STORAGED_IMAGE, outputStream)) {
             rs = outputStream.toByteArray();
         }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return rs;
+    }
+
+    public static byte[] toByteArray(@NonNull Bitmap bitmap, int w, int h)
+    {
+        byte[] rs = null;
+        float scaleX = w * 1f / bitmap.getWidth();
+        float scaleY = h * 1f / bitmap.getHeight();
+        float scale = Math.min(scaleX, scaleY);
+
+        Bitmap scaled;
+        if(scaleX < 1 || scaleY < 1) {
+            scaled = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale)
+                    , (int) (bitmap.getHeight() * scale), true);
+        }
+        else {scaled = bitmap;}
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        if(scaled.compress(Bitmap.CompressFormat.JPEG, QUALITY_STORAGED_IMAGE, outputStream)) {
+            rs = outputStream.toByteArray();
+        }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return rs;
+    }
+
+    public static DateFormat getDateFormat()
+    {
+        @SuppressLint("SimpleDateFormat") DateFormat rs = new SimpleDateFormat("dd/MM/yyyy");
+        rs.setTimeZone(TimeZone.getDefault());
         return rs;
     }
 }

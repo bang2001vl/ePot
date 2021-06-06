@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,14 +33,18 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.Category.DBControllerCategory;
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.UpdateProductBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class AddProductFragment extends DialogFragment {
     UpdateProductBinding binding;
     List<Bitmap> images;
     ImagesDialog imagesDialog;
+    ArrayAdapter<String> adapterCategory;
     public boolean isOK = false;
 
     public AddProductFragment()
@@ -57,6 +62,9 @@ public class AddProductFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = UpdateProductBinding.inflate(inflater, container, false);
         setEventHandler();
+        List<String> categories = DBControllerCategory.getCategoryNames();
+        adapterCategory = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
+        binding.spinnerCategory.setAdapter(adapterCategory);
         binding.textView2.setText("Thêm sản phẩm");
         return binding.getRoot();
     }
@@ -64,7 +72,7 @@ public class AddProductFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TODO : Write code here <Get data from database and set to view>
+
     }
 
     @Override
@@ -98,8 +106,10 @@ public class AddProductFragment extends DialogFragment {
         int price = getPrice();
         if(name != null && description != null && amount != -1 && price != -1)
         {
-            DatabaseController databaseController = new DatabaseController();
-            if(databaseController.insertProduct(0,0,name, price,
+            DBControllerProduct databaseController = new DBControllerProduct();
+            int salerID = Authenticator.getCurrentUser().id;
+            int catagoryID = binding.spinnerCategory.getSelectedItemPosition();
+            if(databaseController.insertProduct(salerID,catagoryID,name, price,
                     amount, getImagePrimary(), description, images)) {
                 this.dismiss();
                 isOK = true;

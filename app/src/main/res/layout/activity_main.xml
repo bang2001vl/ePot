@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <fragment
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/viewPaperMain"
+        />
+        <!--<fragment
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:id="@+id/fragment_container"
             android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_menu"
-            />
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+            />-->
+        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottom_navigation_menu"
@@ -25,6 +27,45 @@
             app:labelVisibilityMode="labeled"
             android:background="@color/main_bottom_navigation_background"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            app:layout_constraintBottom_toBottomOf="parent"/>-->
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIconTint="@color/black"
+            android:id="@+id/tabLayout"
+            app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
+            app:tabPaddingTop="0dp" app:tabPaddingBottom="0dp"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/MyCustomTabText">
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_home_page"
+                android:icon="@drawable/ic_baseline_home_24"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_cart"
+                android:icon="@drawable/ic_baseline_home_24"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_shop"
+                android:icon="@drawable/ic_baseline_home_24"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_notification"
+                android:icon="@drawable/ic_baseline_home_24"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_person"
+                android:icon="@drawable/ic_baseline_home_24"
+                />
+        </com.google.android.material.tabs.TabLayout>
+</LinearLayout>
