@@ -14,10 +14,13 @@ public class ProductBaseDB {
     public int categoryID; //[PRODUCT].[CATEGORY_ID]
     public String name; //[PRODUCT].[NAME]
     public int price; //[PRODUCT].[PRICE]
-    public int amount; //[PRODUCT].[AVAILABLE]
+    public int priceOrigin; //[PRODUCT].[PRICE_ORIGIN]
+    public int amount; //[PRODUCT].[AMOUNT]
+    public int amountSold; //[PRODUCT].[AMOUNT_SOLD]
     public String description; //[PRODUCT].[DETAIL]
     public int imagePrimaryID; //[PRODUCT].[PRIMARY_IMAGE_ID]
-    public LocalDateTime createdDate;
+    public Date createdDate; //[PRODUCT].[CREATED_DATE]
+    public int deleted; //[PRODUCT].[DELETED]
 
     public UserBaseDB getSaler()
     {

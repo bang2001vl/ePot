@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerProduct extends DatabaseController{
@@ -40,17 +42,25 @@ public class DBControllerProduct extends DatabaseController{
             preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
             preparedStatement.setString(7, description);
 
-            int rs = preparedStatement.executeUpdate();
-            preparedStatement.close();
-            Log.d("MY_TAG", rs+"");
-            if(rs != 0)
-            {
-                if(images.size() == 0 || insertProduct_Images(images)) {
-                    connection.commit();
-                    isOK = true;
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                int productID = resultSet.getInt(1);
+                for (Bitmap bitmap : images) {
+                    if (!insertProduct_Image(productID, bitmap)) {
+                        break;
+                    }
                 }
+                isOK = true;
+            }
+
+            if(isOK) {
+                commit();
             }
             else {rollback();}
+
+            preparedStatement.close();
+            resultSet.close();
             inputStream.close();
         }
         catch (SQLException | IOException e)
@@ -65,6 +75,7 @@ public class DBControllerProduct extends DatabaseController{
     public boolean insertProduct_Images(List<Bitmap> bitmaps)
     {
         int latestID = -1;
+        boolean rs = false;
         try (PreparedStatement statement = connection.prepareStatement("select max([ID]) from [PRODUCT]");
              ResultSet resultSet = statement.executeQuery();)
         {
@@ -76,23 +87,24 @@ public class DBControllerProduct extends DatabaseController{
                 for(Bitmap bitmap: bitmaps) {
                     if(!insertProduct_Image(latestID, bitmap))
                     {
-                        return false;
+                        break;
                     }
                 }
-                return true;
+                rs = true;
             }
-            else {return false;}
         }
         catch (SQLException e)
         {
-            e.printStackTrace(); return false;
+            e.printStackTrace();
         }
-
+        return rs;
     }
 
     public boolean insertProduct_Image(int productID, Bitmap bitmap)
     {
-        byte[] mainImage = Helper.toByteArray(bitmap);
+        byte[] mainImage = Helper.toByteArray(bitmap, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL);
+        if(mainImage == null) {return false;}
+
         if(mainImage.length > MAX_BYTE_IMAGE)
         {
             Log.e("MY_TAG", "ERROR: Image is too big");
@@ -131,6 +143,67 @@ public class DBControllerProduct extends DatabaseController{
             {
                 rs = BitmapFactory.decodeStream(resultSet.getBinaryStream(1));
             }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public List<Bitmap> getImages(int productID)
+    {
+        List<Bitmap> rs = new ArrayList<>();
+        try
+        {
+            String sql = "select [DATA] from [PRODUCT_IMAGE] where [PRODUCT_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+            {
+                rs.add(BitmapFactory.decodeStream(resultSet.getBinaryStream(1)));
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public ProductBaseDB getProduct(int productID)
+    {
+        ProductBaseDB rs = null;
+        try
+        {
+            String sql = "select * from [PRODUCT] where [ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next())
+            {
+                rs = new ProductBaseDB();
+                int i = 1;
+                rs.id = resultSet.getInt(i);i++;
+                rs.salerID = resultSet.getInt(i);i++;
+                rs.categoryID = resultSet.getInt(i);i++;
+                rs.name = resultSet.getString(i);i++;
+                rs.price = resultSet.getInt(i);i++;
+                rs.priceOrigin = resultSet.getInt(i);i++;
+                rs.amount = resultSet.getInt(i);i++;
+                rs.amountSold = resultSet.getInt(i);i++;
+                rs.imagePrimaryID = resultSet.getInt(i);i++;
+                rs.description = resultSet.getString(i);i++;
+                rs.createdDate = resultSet.getDate(i);i++;
+                rs.deleted = resultSet.getInt(i);i++;
+            }
+            resultSet.close();
+            statement.close();
         }
         catch (SQLException e)
         {
