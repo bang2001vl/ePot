@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListViewItemWithIcon extends BaseCustomViewGroup {
+public class ListViewItemWithIcon extends MyBaseCustomViewGroup {
 
     public ListViewItemWithIcon(Context context) {
         super(context);

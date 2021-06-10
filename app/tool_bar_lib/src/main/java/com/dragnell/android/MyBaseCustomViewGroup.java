@@ -8,23 +8,23 @@ import android.view.ViewGroup;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class BaseCustomViewGroup extends ViewGroup {
-    public BaseCustomViewGroup(Context context) {
+public class MyBaseCustomViewGroup extends ViewGroup {
+    public MyBaseCustomViewGroup(Context context) {
         super(context);
         init(context, null);
     }
 
-    public BaseCustomViewGroup(Context context, AttributeSet attrs) {
+    public MyBaseCustomViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public BaseCustomViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyBaseCustomViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
-    public BaseCustomViewGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MyBaseCustomViewGroup(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
     }

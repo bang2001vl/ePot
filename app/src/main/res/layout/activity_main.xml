@@ -31,7 +31,7 @@
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIconTint="@color/black"
+            app:tabIconTint="@color/drark_gray"
             android:id="@+id/tabLayout"
             app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
             app:tabPaddingTop="0dp" app:tabPaddingBottom="0dp"

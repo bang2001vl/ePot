@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dragnell.android.ButtonNumberNotification;
@@ -25,6 +27,7 @@ import exam.nlb2t.epot.Fragments.HomepageFragment;
 import exam.nlb2t.epot.Fragments.NotificationFragment;
 import exam.nlb2t.epot.Fragments.PersonFragment;
 import exam.nlb2t.epot.MyShop.ShopFragment;
+import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     List<ProductBuyInfo> buyInfoList;
 
     int color;
+    int color2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         color = typedValue.data;
+        color2 = getResources().getColor(R.color.drark_gray, getTheme());
         binding.tabLayout.setTabTextColors(Color.BLACK, color);
         binding.tabLayout.setSelectedTabIndicatorColor(color);
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(Color.BLACK);
+                tab.getIcon().setTint(color2);
             }
 
             @Override
@@ -70,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void showLoadingScreen()
+    {
+        View view = new LoadingView(this);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.getRoot().addView(view, binding.getRoot().getChildCount());
+    }
+
+    public void closeLoadingScreen()
+    {
+        binding.getRoot().removeViewAt(binding.getRoot().getChildCount() - 1);
     }
 
     public MainFragmentAdapter createAdapter()

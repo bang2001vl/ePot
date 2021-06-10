@@ -148,7 +148,7 @@
                 app:layout_constraintTop_toTopOf="@id/layout_price_product_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
-            <include layout="@layout/saler_overview_layout"
+            <exam.nlb2t.epot.ProductDetail.SalerOverviewView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_saler_product_detail"

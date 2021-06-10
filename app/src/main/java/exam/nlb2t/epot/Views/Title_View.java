@@ -17,22 +17,18 @@ public class Title_View extends BaseCustomViewGroup {
 
     public Title_View(Context context) {
         super(context);
-        init(context, null);
     }
 
     public Title_View(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
     }
 
     public Title_View(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
     }
 
     public Title_View(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context, attrs);
     }
 
     private TextView title_name;
@@ -45,7 +41,8 @@ public class Title_View extends BaseCustomViewGroup {
         return (String)title_name.getText();
     }
 
-    private void init(Context context, @Nullable AttributeSet attrs) {
+    @Override
+    public void init(Context context, @Nullable AttributeSet attrs) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.title_bar_template, this, false);
 

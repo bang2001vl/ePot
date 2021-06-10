@@ -12,8 +12,8 @@ import java.util.TimeZone;
 
 public class UserBaseDB {
     public int id;
-    /*public String username;
-    public String password;*/
+    public String username;
+    public String password;
     public String phoneNumber;
     public String address;
     public int avatarID;

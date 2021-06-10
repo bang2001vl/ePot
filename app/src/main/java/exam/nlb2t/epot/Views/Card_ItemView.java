@@ -23,22 +23,14 @@ import exam.nlb2t.epot.singleton.Helper;
 public class Card_ItemView extends BaseCustomViewGroup{
     public Card_ItemView(Context context) {
         super(context);
-        init(context, null);
     }
 
     public Card_ItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
     }
 
     public Card_ItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
-    }
-
-    public Card_ItemView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context, attrs);
     }
 
     View.OnClickListener onClickDeleteListener= new OnClickListener() {
@@ -78,7 +70,8 @@ public class Card_ItemView extends BaseCustomViewGroup{
     ImageButton btnRemove;
     ImageView itemImage;
 
-    void init(Context context, AttributeSet attrs)
+    @Override
+    public void init(Context context, AttributeSet attrs)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.card_list_item, this, false);
