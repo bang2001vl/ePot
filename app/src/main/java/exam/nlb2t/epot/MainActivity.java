@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.Fragments.CartFragment;
 import exam.nlb2t.epot.Fragments.HomepageFragment;
+import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.Fragments.NotificationFragment;
 import exam.nlb2t.epot.Fragments.PersonFragment;
 import exam.nlb2t.epot.MyShop.ShopFragment;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        /*binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         MainFragmentAdapter adapter = createAdapter();
@@ -74,19 +76,62 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
+
+        loadInBackground();
     }
 
-    public void showLoadingScreen()
+    void loadInBackground()
     {
-        View view = new LoadingView(this);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        binding.getRoot().addView(view, binding.getRoot().getChildCount());
-    }
+        setContentView(new LoadingView(this));
+        Handler handler = new Handler();
+        Runnable runnable = () -> {
+            long start = System.currentTimeMillis();
+            binding = ActivityMainBinding.inflate(getLayoutInflater());
 
-    public void closeLoadingScreen()
-    {
-        binding.getRoot().removeViewAt(binding.getRoot().getChildCount() - 1);
+            MainFragmentAdapter adapter = createAdapter();
+            binding.viewPaperMain.setAdapter(adapter);
+
+            binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
+            setIcons(binding.tabLayout);
+
+            TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            color = typedValue.data;
+            color2 = getResources().getColor(R.color.drark_gray, getTheme());
+            binding.tabLayout.setTabTextColors(Color.BLACK, color);
+            binding.tabLayout.setSelectedTabIndicatorColor(color);
+            binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    tab.getIcon().setTint(color);
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    tab.getIcon().setTint(color2);
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+            long delayInTask = System.currentTimeMillis() - start;
+            if(delayInTask < 2000)
+            {
+                try{
+                    Thread.sleep(2000 - delayInTask);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            handler.post(() -> setContentView(binding.getRoot()));
+        };
+
+        new Thread(runnable).start();
     }
 
     public MainFragmentAdapter createAdapter()

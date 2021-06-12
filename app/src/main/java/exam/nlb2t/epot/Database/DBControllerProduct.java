@@ -211,4 +211,71 @@ public class DBControllerProduct extends DatabaseController{
         }
         return rs;
     }
+
+    public boolean likeProduct(int productID, int userID)
+    {
+        boolean rs = false;
+        try
+        {
+            String sql = "INSERT INTO [LIKE]([USER_ID],[PRODUCT_ID]) VALUES(?,?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            statement.setInt(2, productID);
+            rs = statement.executeUpdate() == 1;
+
+            commit();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            rollback();
+        }
+        return rs;
+    }
+
+    public boolean unlikeProduct(int productID, int userID)
+    {
+        boolean rs = false;
+        try
+        {
+            String sql = "DELETE FROM [LIKE] WHERE [USER_ID]=? AND [PRODUCT_ID]=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            statement.setInt(2, productID);
+            rs = statement.executeUpdate() >0;
+
+            commit();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            rollback();
+        }
+        return rs;
+    }
+
+    public boolean checkLikeProduct(int productID, int userID)
+    {
+        boolean rs = false;
+        try
+        {
+            String sql = "SELECT [USER_ID] FROM [LIKE] WHERE [USER_ID]=? AND [PRODUCT_ID]=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            statement.setInt(2, productID);
+
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
 }

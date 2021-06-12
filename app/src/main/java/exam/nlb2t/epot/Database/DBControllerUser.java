@@ -3,6 +3,8 @@ package exam.nlb2t.epot.Database;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,12 +23,14 @@ public class DBControllerUser extends DatabaseController{
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next())
             {
-                rs = BitmapFactory.decodeStream(resultSet.getBinaryStream(1));
+                InputStream inputStream = resultSet.getBinaryStream(1);
+                rs = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
             }
             resultSet.close();
             statement.close();
         }
-        catch (SQLException e)
+        catch (SQLException | IOException e)
         {
             e.printStackTrace();
         }
@@ -38,7 +42,7 @@ public class DBControllerUser extends DatabaseController{
         UserBaseDB rs = null;
         try
         {
-            String sql = "select [USERNAME],[FULLNAME],[AVATAR_ID] from [USER] where [ID] = ?";
+            String sql = "select [USERNAME],[FULL_NAME],[AVATAR_ID] from [USER] where [ID] = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
@@ -47,7 +51,7 @@ public class DBControllerUser extends DatabaseController{
                 rs = new UserBaseDB();
                 rs.id = userID;
                 rs.username = resultSet.getString(1);
-                rs.fullName = resultSet.getNString(2);
+                rs.fullName = resultSet.getString(2);
                 rs.avatarID = resultSet.getInt(3);
             }
             resultSet.close();

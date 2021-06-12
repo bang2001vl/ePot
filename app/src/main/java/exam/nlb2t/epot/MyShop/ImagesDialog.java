@@ -38,6 +38,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.PickImageDialogBinding;
 
@@ -181,7 +182,8 @@ public class ImagesDialog extends DialogFragment {
             if(imageView != null)
             {
                 selectedIndex = (Integer) imageView.getTag();
-                AlertDialog alertDialog = new AlertDialog.Builder(v.getContext())
+
+                /*AlertDialog alertDialog = new AlertDialog.Builder(v.getContext())
                         .setPositiveButton("Đổi ảnh", (dialog, which) -> {
                             chooseImage_toReplace();
                         })
@@ -189,7 +191,19 @@ public class ImagesDialog extends DialogFragment {
                             removeImage(selectedIndex);
                         })
                         .create();
-                alertDialog.show();
+                alertDialog.show();*/
+
+                String[] options = new String[] {"Đổi ảnh", "Xóa ảnh"};
+                PopupMenuDialog dialog = new PopupMenuDialog(options);
+                dialog.setOnClickOptionListener(str-> {
+                    if (str.equals(options[0])) {
+                        chooseImage_toReplace();
+                    } else {
+                        removeImage(selectedIndex);
+                    }
+                    dialog.dismiss();
+                });
+                dialog.show(getChildFragmentManager(), "my_dialog");
             }
             return  true;
         }
@@ -257,7 +271,7 @@ public class ImagesDialog extends DialogFragment {
                 Log.e("ERROR_TRACER", "ERROR: Pick image failed");
                 return;
             }
-            if(selectedIndex > 0 && selectedIndex < images.size()) {
+            if(selectedIndex > -1 && selectedIndex < images.size()) {
                 replaceImage(data.getData(), selectedIndex);
             }
         }

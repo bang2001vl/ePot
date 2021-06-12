@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.DBControllerUser;
+
 public class ProductBaseDB {
     public int id; //[PRODUCT].[ID]
     public int salerID; //[PRODUCT].[SALER_ID]
@@ -29,7 +32,11 @@ public class ProductBaseDB {
 
     public Bitmap getImagePrimary()
     {
-        return null;
+        Bitmap rs;
+        DBControllerProduct db = new DBControllerProduct();
+        rs = db.getImage_Product(imagePrimaryID);
+        db.closeConnection();
+        return rs;
     }
 
     public ProductBaseDB()

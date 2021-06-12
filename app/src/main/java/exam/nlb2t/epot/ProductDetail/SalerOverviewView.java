@@ -45,10 +45,13 @@ public class SalerOverviewView extends BaseCustomViewGroup {
     {
         TextView txtSalerName = findViewById(R.id.txt_saler_name_product_detail);
         TextView txtSalerUsername = findViewById(R.id.txt_username_saler_product_detail);
-        CircleImageView imageView = findViewById(R.id.avt_saler_product_detail);
 
         txtSalerName.setText(saler.fullName);
         txtSalerUsername.setText(saler.username);
-        imageView.setImageBitmap(avatar);
+
+        if(avatar != null) {
+            CircleImageView imageView = findViewById(R.id.avt_saler_product_detail);
+            imageView.setImageBitmap(avatar);
+        }
     }
 }
