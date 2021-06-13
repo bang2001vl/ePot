@@ -27,25 +27,13 @@ import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
 import exam.nlb2t.epot.ClassInformation.Saler;
 import exam.nlb2t.epot.Database.DatabaseController;
-import exam.nlb2t.epot.databinding.ActivityTestingBinding;
 
 public class TestingActivity extends AppCompatActivity {
 
-    ActivityTestingBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTestingBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        findViewById(R.id.btnTest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id = Integer.valueOf(binding.edtInput.getText().toString());
-                DatabaseController databaseController = new DatabaseController();
-                Bitmap bitmap = databaseController.getImage_Product(id);
-                binding.imageView.setImageBitmap(bitmap);
-            }
-        });
+
     }
 
     public void TestViewGroup()
