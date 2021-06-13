@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class DatabaseController {
-
+    protected String ErrorMsg = null;
+    public String getErrorMsg(){return ErrorMsg;}
+    public boolean hasError(){return ErrorMsg != null;}
     protected DataController dataController = new DataController();
     protected Connection connection;
 
@@ -32,6 +34,7 @@ public class DatabaseController {
         }
         catch (SQLException e)
         {
+            ErrorMsg = "LỖI: Không thể kết nối đến server";
             e.printStackTrace();
         }
     }
@@ -44,6 +47,7 @@ public class DatabaseController {
         catch (SQLException e)
         {
             Log.e("MY_TAG", "ERROR: Failed to commit connection");
+            ErrorMsg = "LỖI: Commit SQLStatement thất bại";
             e.printStackTrace();
         }
     }
@@ -56,6 +60,7 @@ public class DatabaseController {
         catch (SQLException e)
         {
             Log.e("MY_TAG", "ERROR: Failed to rollback connection");
+            ErrorMsg = "LỖI: Rollback SQLStatement thất bại";
             e.printStackTrace();
         }
     }
@@ -66,6 +71,7 @@ public class DatabaseController {
             connection.close();
         } catch (SQLException e) {
             Log.e("MY_TAG", "ERROR: Failed to close connection");
+            ErrorMsg = "LỖI: Đóng kết nối thất bại";
             e.printStackTrace();
         }
     }

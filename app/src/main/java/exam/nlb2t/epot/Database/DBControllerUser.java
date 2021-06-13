@@ -15,6 +15,7 @@ public class DBControllerUser extends DatabaseController{
     public Bitmap getAvatar(int avatarID)
     {
         Bitmap rs = null;
+        if(avatarID == -1) return null;
         try
         {
             String sql = "select [DATA] from [AVATAR] where [ID] = ?";
@@ -32,6 +33,7 @@ public class DBControllerUser extends DatabaseController{
         }
         catch (SQLException | IOException e)
         {
+            ErrorMsg = "LỖI: Câu lệnh SQL không đúng";
             e.printStackTrace();
         }
         return rs;
@@ -59,6 +61,7 @@ public class DBControllerUser extends DatabaseController{
         }
         catch (SQLException e)
         {
+            ErrorMsg = "LỖI: Câu lệnh SQL không đúng";
             e.printStackTrace();
         }
         return rs;
