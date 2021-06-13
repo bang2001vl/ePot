@@ -113,4 +113,9 @@ public class Helper {
         rs.setTimeZone(TimeZone.getDefault());
         return rs;
     }
+
+    public static String getMoneyString(long val)
+    {
+        return String.format(Locale.getDefault(), "%,dđ", val);
+    }
 }

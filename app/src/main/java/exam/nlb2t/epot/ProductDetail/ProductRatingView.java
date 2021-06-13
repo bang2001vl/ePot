@@ -14,6 +14,7 @@ import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.Views.BaseCustomViewGroup;
 import exam.nlb2t.epot.databinding.RatingChartLayoutBinding;
 import exam.nlb2t.epot.databinding.RatingCommentLayoutBinding;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class ProductRatingView extends BaseCustomViewGroup {
 
