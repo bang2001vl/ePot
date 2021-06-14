@@ -13,7 +13,7 @@ public class Shop_TabAdapter extends FragmentStatePagerAdapter {
 
     public Shop_TabAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
-        tagTitles = new String[]{"Tổng quan", "Sản phầm", "Đơn hàng"};
+        tagTitles = new String[]{"Tổng quan", "Sản phẩm", "Đơn hàng"};
         fragments = new Fragment[tagTitles.length];
         fragments[0] = new Shop_OverviewFragment();
         fragments[1] = new Shop_ProductFragment();

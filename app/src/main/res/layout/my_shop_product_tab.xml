@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        >
         <LinearLayout
+            android:id="@+id/layout_product_my_shop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layout_product_my_shop"
-            android:orientation="vertical"
-            >
-            <include layout="@layout/my_shop_product_view"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/my_shop_product_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                />
-            <include layout="@layout/my_shop_product_view"
+                android:layout_marginBottom="15dp" />
+
+            <include
+                layout="@layout/my_shop_product_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                />
-            <include layout="@layout/my_shop_product_view"
+                android:layout_marginBottom="15dp" />
+
+            <include
+                layout="@layout/my_shop_product_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                />
+                android:layout_marginBottom="15dp" />
         </LinearLayout>
     </ScrollView>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:id="@+id/button_add_product"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_add_product_24"
-        android:contentDescription="@string/submit"
         android:layout_margin="16dp"
-        android:scaleType="fitCenter"/>
+        android:contentDescription="@string/submit"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_add_product_24" />
 </RelativeLayout>
