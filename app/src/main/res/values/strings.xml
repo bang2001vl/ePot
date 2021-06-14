@@ -1,4 +1,8 @@
 <resources>
+    <string name="facebook_app_id">4072790202790404</string>
+    <string name="fb_login_protocol_scheme">fb4072790202790404</string>
+
+
     <string name="app_name">ePot</string>
 
     <string name="menu_home_page">Trang chủ</string>
@@ -71,7 +75,7 @@
     <string name="btn_again_payment">Thử lại lần nữa</string>
     <string name="txt_gohome">Trở về trang chủ</string>
 
-<!--    string resources of layout cart address-->
+    <!--    string resources of layout cart address-->
     <string name="Name_Address">Tên</string>
     <string name="Name_Address_edt">Minh Nhực</string>
     <string name="Phone_Address">Số điện thoại</string>
@@ -84,7 +88,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_Myshop">Đơn hàng</string>
-    <string name ="hint_search">Tìm kiếm trên Epot</string>
+    <string name="hint_search">Tìm kiếm trên Epot</string>
     <string name="Selling">Sản phẩm bán chạy</string>
     <string name="Category">Danh mục</string>
     <string name="Suggestion">Gợi ý hôm nay</string>
@@ -94,8 +98,8 @@
     <string name="Lock">Đồng hồ</string>
     <string name="Locatin">TP.Hồ Chí Minh, Việt Nam</string>
 
-    // string resources of layout login, logout, splash, reset password  
-    
+    // string resources of layout login, logout, splash, reset password
+
     <string name="Login">Đăng nhập</string>
     <string name="Logout">Đăng xuất</string>
     <string name="User_Name">Tên đăng nhập</string>
@@ -108,7 +112,7 @@
     <string name="Enter_Phone">Nhập số điện thoại</string>
     <string name="Phone">Số điện thoại</string>
     <string name="Sent_OTP">Gửi OTP</string>
-    
+
     <string name="Enter_OTP">Nhập mã OTP</string>
     <string name="Resent_code">Gửi lại mã</string>
     <string name="Continue">Tiếp tục</string>
@@ -118,12 +122,12 @@
     <string name="Day_of_birth">Ngày sinh</string>
     <string name="Sex">Giới tính</string>
     <string name="Note_SignUp">Bằng việc đăng ký, bạn đã đồng ý với Điều khoản Dịch vụ và Chính sách Riêng tư của chúng tôi</string>
-    
+
     <string name="Enter_password">Nhập số điện thoại của bạn</string>
     <string name="Enror_phone">Số điện thoại này chưa được đăng kí tài khoản</string>
 
     <string name="Code">Mã</string>
-    
+
     <string name="Confirm">Xác nhận</string>
     <string name="Time">(30)</string>
     <string name="Phone_Number">+84</string>
@@ -140,7 +144,7 @@
     <string name="new_price">New price đ</string>
     <string name="old_price">Old price đ</string>
 
-<!--    string resources of layout My Rating-->
+    <!--    string resources of layout My Rating-->
     <string name="my_rating">Đánh giá của bạn</string>
     <string name="my_rating2">Hãy chia sẻ cảm nhận về sản phẩm này nhé!</string>
     <string name="btn_rating">Đánh giá</string>
