@@ -1,25 +1,13 @@
 package exam.nlb2t.epot.ProductDetail;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.DataSetObserver;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,28 +15,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import exam.nlb2t.epot.ChooseItemDetailBottomSheet;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.PlainTextDialog;
-import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.FragmentProductDetailBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.CartDataController;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class ProductDetailFragment extends DialogFragment {
@@ -112,6 +94,7 @@ public class ProductDetailFragment extends DialogFragment {
                     Toast.makeText(getContext(), "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
                     if(onClickAddToCartListener!=null) {
                         onClickAddToCartListener.OnClickSubmit(view, amount, params);
+                        CartDataController.addProduct(getContext(), productID, amount);
                     }
                     bottomSheet.dismiss();
                 }
@@ -238,7 +221,7 @@ public class ProductDetailFragment extends DialogFragment {
             }
             while (product == null);
 
-            imagePrimary = db.getImage_Product(product.imagePrimaryID);
+            imagePrimary = db.getAvatar_Product(product.imagePrimaryID);
             db.closeConnection();
 
             if(db.hasError())

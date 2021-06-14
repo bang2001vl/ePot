@@ -201,7 +201,6 @@ public class ImagesDialog extends DialogFragment {
                     } else {
                         removeImage(selectedIndex);
                     }
-                    dialog.dismiss();
                 });
                 dialog.show(getChildFragmentManager(), "my_dialog");
             }

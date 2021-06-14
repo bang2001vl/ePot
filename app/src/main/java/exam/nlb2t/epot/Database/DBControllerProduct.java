@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,6 @@ public class DBControllerProduct extends DatabaseController{
             return false;
         }
 
-        byte[] mainImage = Helper.toByteArray(imagePrimary, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL);
-        if(mainImage.length > MAX_BYTE_IMAGE)
-        {
-            Log.e("MY_TAG", "ERROR: Image is too big");
-            return false;
-            //throw new SQLException(String.format("LỖI: Ảnh có kích thước quá lớn (>%dkB)", (MAX_BYTE_IMAGE/1000)));
-        }
         boolean isOK = false;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("EXEC createProduct ?,?,?,?,?,?,?");
@@ -38,13 +32,27 @@ public class DBControllerProduct extends DatabaseController{
             preparedStatement.setString(3, name);
             preparedStatement.setInt(4, price);
             preparedStatement.setInt(5, amount);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
-            preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
+
+            // Set image primary
+            if(imagePrimary != null)
+            {
+                byte[] mainImage = Helper.toByteArray(imagePrimary, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL);
+                if(mainImage != null && mainImage.length < MAX_BYTE_IMAGE)
+                {
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
+                    preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
+                    inputStream.close();
+                }
+                else {preparedStatement.setNull(6, Types.VARBINARY);}
+            }
+            else {preparedStatement.setNull(6, Types.VARBINARY);}
+
             preparedStatement.setString(7, description);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next()) {
+                // Get new product's id
                 int productID = resultSet.getInt(1);
                 for (Bitmap bitmap : images) {
                     if (!insertProduct_Image(productID, bitmap)) {
@@ -61,7 +69,6 @@ public class DBControllerProduct extends DatabaseController{
 
             preparedStatement.close();
             resultSet.close();
-            inputStream.close();
         }
         catch (SQLException | IOException e)
         {
@@ -69,35 +76,6 @@ public class DBControllerProduct extends DatabaseController{
             rollback();
         }
         return isOK;
-    }
-
-    // Insert images to latest product
-    public boolean insertProduct_Images(List<Bitmap> bitmaps)
-    {
-        int latestID = -1;
-        boolean rs = false;
-        try (PreparedStatement statement = connection.prepareStatement("select max([ID]) from [PRODUCT]");
-             ResultSet resultSet = statement.executeQuery();)
-        {
-            if(resultSet.next())
-            {
-                latestID = resultSet.getInt(1);
-                statement.close();
-                resultSet.close();
-                for(Bitmap bitmap: bitmaps) {
-                    if(!insertProduct_Image(latestID, bitmap))
-                    {
-                        break;
-                    }
-                }
-                rs = true;
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return rs;
     }
 
     public boolean insertProduct_Image(int productID, Bitmap bitmap)
@@ -130,14 +108,14 @@ public class DBControllerProduct extends DatabaseController{
         }
     }
 
-    public Bitmap getImage_Product(int id)
+    public Bitmap getAvatar_Product(int avatarID)
     {
         Bitmap rs = null;
         try
         {
-            String sql = "select [DATA] from [PRODUCT_IMAGE] where [ID] = ?";
+            String sql = "select [DATA] from [AVATAR] where [ID] = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, avatarID);
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next())
             {

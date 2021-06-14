@@ -1,4 +1,4 @@
-package exam.nlb2t.epot;
+package exam.nlb2t.epot.ProductDetail;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,6 +27,7 @@ import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 import java.util.List;
 import java.util.Locale;
 
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.NumberPickerView;
 import exam.nlb2t.epot.singleton.Helper;
 

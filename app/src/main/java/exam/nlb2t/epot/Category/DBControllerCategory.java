@@ -24,7 +24,7 @@ public class DBControllerCategory extends DatabaseController {
     {
         try{
             PreparedStatement statement = connection.prepareStatement("EXEC insertCategory ?, ?");
-            byte[] arr = Helper.toByteArray(image, 300,300);
+            byte[] arr = Helper.toByteArray(image, MEDIUM_SIZE_IMAGES_IN_PIXEL,MEDIUM_SIZE_IMAGES_IN_PIXEL);
             Log.d("MY_TAG", "IMAGE size = " + arr.length);
             statement.setString(1, name);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(arr);
@@ -43,6 +43,53 @@ public class DBControllerCategory extends DatabaseController {
             rollback();
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public void addAvatar(Bitmap bitmap)
+    {
+        try{
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO [AVATAR] VALUES(?)");
+            byte[] arr = Helper.toByteArray(bitmap, MEDIUM_SIZE_IMAGES_IN_PIXEL,MEDIUM_SIZE_IMAGES_IN_PIXEL);
+            Log.d("MY_TAG", "IMAGE size = " + arr.length);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(arr);
+            statement.setBinaryStream(1, inputStream, arr.length);
+            statement.addBatch();
+
+            int[] rs = statement.executeBatch();
+            Log.d("MY_TAG", ""+ Arrays.toString(rs));
+            statement.close();
+            inputStream.close();
+            commit();
+        }
+        catch (SQLException | IOException e)
+        {
+            rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAvatar(int avatarID, Bitmap bitmap)
+    {
+        try{
+            PreparedStatement statement = connection.prepareStatement("UPDATE [AVATAR] SET [DATA]=? WHERE [ID]=?;");
+            byte[] arr = Helper.toByteArray(bitmap, MEDIUM_SIZE_IMAGES_IN_PIXEL,MEDIUM_SIZE_IMAGES_IN_PIXEL);
+            Log.d("MY_TAG", "IMAGE size = " + arr.length);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(arr);
+            statement.setBinaryStream(1, inputStream, arr.length);
+            statement.setInt(2, avatarID);
+            statement.addBatch();
+
+            int[] rs = statement.executeBatch();
+            Log.d("MY_TAG", ""+ Arrays.toString(rs));
+            statement.close();
+            inputStream.close();
+            commit();
+        }
+        catch (SQLException | IOException e)
+        {
+            rollback();
+            e.printStackTrace();
         }
     }
 

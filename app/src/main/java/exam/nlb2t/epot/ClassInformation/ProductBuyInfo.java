@@ -2,12 +2,9 @@ package exam.nlb2t.epot.ClassInformation;
 
 import android.graphics.Bitmap;
 
-import androidx.annotation.NonNull;
-
 import java.util.Random;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
@@ -27,7 +24,7 @@ public class ProductBuyInfo{
         this.Amount = amount;
         DBControllerProduct db1 = new DBControllerProduct();
         product = db1.getProduct(productID);
-        imagePrimary = db1.getImage_Product(product.imagePrimaryID);
+        imagePrimary = db1.getAvatar_Product(product.imagePrimaryID);
         db1.closeConnection();
 
         salerOverview = product.getSalerOverview();
@@ -55,6 +52,8 @@ public class ProductBuyInfo{
         Random random = new Random(seek);
         productBuyInfo.Amount = 1 + random.nextInt(10 );
         product.price = 10000+1000*(random.nextInt(1000));
+        product.amount = productBuyInfo.Amount + random.nextInt(10);
+        product.amountSold = 0;
         return productBuyInfo;
     }
 }

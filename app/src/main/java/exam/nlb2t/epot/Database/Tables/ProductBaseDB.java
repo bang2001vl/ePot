@@ -2,11 +2,7 @@ package exam.nlb2t.epot.Database.Tables;
 
 import android.graphics.Bitmap;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -43,7 +39,7 @@ public class ProductBaseDB {
     {
         Bitmap rs;
         DBControllerProduct db = new DBControllerProduct();
-        rs = db.getImage_Product(imagePrimaryID);
+        rs = db.getAvatar_Product(imagePrimaryID);
         db.closeConnection();
         return rs;
     }
