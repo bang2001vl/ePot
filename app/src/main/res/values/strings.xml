@@ -12,13 +12,14 @@
         Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
 
     <string name="add_to_cart">Thêm hàng vào giỏ</string>
+    <string name="empty">Hết hàng</string>
     <string name="submit">Xác nhận</string>
     <string name="agree">Đồng ý</string>
     <string name="cancel">Hủy</string>
     <string name="order">Đặt hàng</string>
     <string name="amount_2dot" formatted="false">Số lượng</string>
-    <string name="max_formatted" formatted="false">Tối đa: %1$d</string>
-    <string name="price_formatted" formatted="false">Giá: %1$s</string>
+    <string name="max_formatted" formatted="false">Tối đa: %d</string>
+    <string name="price_formatted" formatted="false">Giá: %s</string>
     <string name="single_price_formatted" formatted="false">Đơn giá: %1$s</string>
     <string name="color">Màu sắc</string>
     <string name="total_money_2dot">Tổng tiền :</string>

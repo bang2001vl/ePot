@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:layout_width="@dimen/small_image_size"
-        android:layout_height="@dimen/small_image_size"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/image_item"
         android:src="@mipmap/mango"
         android:scaleType="fitCenter"
@@ -17,27 +17,28 @@
         android:layout_marginStart="@dimen/normal_padding"
         />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtName_item"
-            android:text="@string/default_product_name"
-            style="@style/TittleBigSize"
-            app:layout_constraintTop_toTopOf="@id/image_item"
-            app:layout_constraintStart_toEndOf="@id/image_item"
-            android:layout_marginStart="@dimen/normal_padding"
-            android:layout_marginTop="@dimen/normal_padding"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/price_origin"
-            android:text="@string/default_price_strike"
-            android:textSize="@dimen/normal_content_size_text"
-            android:textColor="@color/red"
-            app:layout_constraintTop_toBottomOf="@id/txtName_item"
-            app:layout_constraintStart_toStartOf="@id/txtName_item"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtName_item"
+        android:text="@string/default_product_name"
+        style="@style/TittleBigSize"
+        app:layout_constraintTop_toTopOf="@id/image_item"
+        app:layout_constraintStart_toEndOf="@id/image_item"
+        android:layout_marginStart="@dimen/normal_padding"
+        android:layout_marginTop="@dimen/normal_padding"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/price_origin"
+        android:text="@string/default_price_strike"
+        android:textSize="15sp"
+        android:textColor="@color/red"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/price_current"
+        app:layout_constraintStart_toEndOf="@id/price_current"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,10 +46,8 @@
         android:text="@string/default_price"
         android:textSize="@dimen/normal_title_size_text"
         android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="@id/price_origin"
-        app:layout_constraintBottom_toBottomOf="@id/price_origin"
-        app:layout_constraintStart_toEndOf="@id/price_origin"
-        android:layout_marginStart="@dimen/normal_padding"
+        app:layout_constraintTop_toBottomOf="@id/txtName_item"
+        app:layout_constraintStart_toStartOf="@id/txtName_item"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
-        <com.thunderstudio.mylib.Views.ChooseAmountLayout
+        <exam.nlb2t.epot.Views.NumberPickerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/amount_picker"
@@ -121,12 +120,12 @@
             android:layout_weight="1"
             />
        <Button
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_width="200dp"
            android:id="@+id/btn_submit"
-           android:textSize="@dimen/normal_button_text"
+           android:textSize="18sp"
            android:text="@string/add_to_cart"
            android:textAllCaps="false"
+           style="@style/CommonButton"
            />
         <Space
             android:layout_width="wrap_content"

@@ -21,6 +21,7 @@ import exam.nlb2t.epot.databinding.EmptyConstraintLayoutBinding;
 public class PopupMenuDialog extends DialogFragment {
     EmptyConstraintLayoutBinding binding;
     String[] options;
+    public String[] getOptions(){return options;}
     OnClickOptionListener clickOptionListener;
     public void setOnClickOptionListener(OnClickOptionListener listener)
     {

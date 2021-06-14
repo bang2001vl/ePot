@@ -12,7 +12,7 @@ public class ProductBuyInfoParcel extends exam.nlb2t.epot.ClassInformation.Produ
 
     protected ProductBuyInfoParcel(Parcel in) {
 
-        this.product = new Product();
+        /*this.product = new Product();
         this.product.saler = new Saler();
 
         this.product.productName = in.readString();
@@ -21,7 +21,7 @@ public class ProductBuyInfoParcel extends exam.nlb2t.epot.ClassInformation.Produ
         this.product.id = in.readInt();
         this.product.currentPrice = in.readInt();
         this.product.originPrice = in.readInt();
-        this.product.avaiableAmount = in.readInt();
+        this.product.avaiableAmount = in.readInt();*/
 
         this.Amount = in.readInt();
     }
@@ -45,13 +45,13 @@ public class ProductBuyInfoParcel extends exam.nlb2t.epot.ClassInformation.Produ
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(product.productName);
+        /*dest.writeString(product.productName);
         dest.writeString(product.saler.ShopName);
 
         dest.writeInt(product.id);
         dest.writeInt(product.currentPrice);
         dest.writeInt(product.originPrice);
-        dest.writeInt(product.avaiableAmount);
+        dest.writeInt(product.avaiableAmount);*/
 
         dest.writeInt(Amount);
     }

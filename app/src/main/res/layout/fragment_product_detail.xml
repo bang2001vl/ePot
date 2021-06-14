@@ -24,13 +24,6 @@
                 app:layout_constraintTop_toTopOf="parent"
 
                 />
-            <!--<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:id="@+id/product_image_item"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@mipmap/template_product_image"
-                />-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -206,20 +199,11 @@
                     android:text="Đánh giá"
                     style="@style/TittleNormalSize"
                     />
-                <include layout="@layout/rating_chart_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:id="@+id/layout_rating_overview_product_detail"
-                    />
-                <include layout="@layout/rating_comment_layout"
+
+                <exam.nlb2t.epot.ProductDetail.ProductRatingView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/layout_rating_comment_product_layout"
-                    />
-                <include layout="@layout/rating_comment_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/layout_rating_comment_product_layout2"
+                    android:id="@+id/ratingProductView"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -264,6 +248,7 @@
         <Button
             android:layout_width="170dp"
             android:layout_height="40dp"
+            android:id="@+id/btnAddToCart"
             android:text="Thêm vào giỏ"
             style="@style/CommonButton"
             android:backgroundTint="@color/red"

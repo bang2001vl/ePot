@@ -27,6 +27,7 @@ import com.thunderstudio.mylib.Views.ChooseAmountLayout;
 import java.util.List;
 import java.util.Locale;
 
+import exam.nlb2t.epot.Views.NumberPickerView;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
@@ -43,7 +44,7 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
     int productSinglePrice_current = 1000;
 
     List<Pair<String, String[]>> list_options = null;
-    ChooseAmountLayout amountPicker;
+    NumberPickerView amountPicker;
     public int getAmount()
     {
         return (int)amountPicker.controller.getNumber();
@@ -61,7 +62,7 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_choose_item_detail, container, false);
 
-        ChooseAmountLayout chooseAmountLayout = view.findViewById(R.id.amount_picker);
+        NumberPickerView chooseAmountLayout = view.findViewById(R.id.amount_picker);
 
         TextView txtName = view.findViewById(R.id.txtName_item);
         TextView txtMax = view.findViewById(R.id.txtAmount_Max);
@@ -80,13 +81,13 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
         if(productSinglePrice_current < productSinglePrice_origin)
         {
             txtPrice_origin.setPaintFlags(txtPrice_origin.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            txtPrice_origin.setText(Helper.getInstance(getContext()).getPrice(productSinglePrice_origin));
+            txtPrice_origin.setText(Helper.getMoneyString(productSinglePrice_origin));
         }
         else
         {
             txtPrice_origin.setVisibility(View.GONE);
         }
-        txtPrice_current.setText(Helper.getInstance(getContext()).getPrice(productSinglePrice_current));
+        txtPrice_current.setText(Helper.getMoneyString(productSinglePrice_current));
 
         chooseAmountLayout.controller.min = 1;
         chooseAmountLayout.controller.max = productMaxAmount;
@@ -99,7 +100,7 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
             imageView.setImageBitmap(bitmap);
         }
 
-        if(this.list_options != null)
+        /*if(this.list_options != null)
         {
             Context context = view.getContext();
             LinearLayout options_holder = view.findViewById(R.id.options_holder);
@@ -148,49 +149,38 @@ public class ChooseItemDetailBottomSheet extends BottomSheetDialogFragment {
                 }
             }
         }
+*/
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View v) {
 
-                int[] selected_params = null;
+                /*int[] selected_params = null;
                 if(list_options != null) {
                     selected_params = new int[list_options.size()];
                     for (int i = 0; i < selected_params.length; i++) {
                         selected_params[i] = getSelectedOptionIndex(i);
                     }
+                }*/
+                if(onClickSubmitListener != null) {
+                    onClickSubmitListener.OnClickSubmit(view, (int) amountPicker.controller.getNumber(), null);
                 }
-                onClickSubmitListener.OnClickSubmit(view, (int)amountPicker.controller.getNumber(), selected_params);
             }
         });
         return view;
     }
 
-    OnClickSubmitListener onClickSubmitListener = new OnClickSubmitListener() {
-        @Override
-        public void OnClickSubmit(View view, int amount, int[] params) {
-            // Empty body
-        }
-    };
-
-    public static ChooseItemDetailBottomSheet newInstance(@NonNull String productName, int maxAmount, int price_origin, int price_current, @Nullable Bitmap bitmap, @Nullable List<List<String>> list_options)
+    public void setAmountSold(int val)
     {
-        ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet();
-        Bundle bundle = new Bundle();
 
-        bundle.putInt(TAG_MAX, maxAmount);
-        bundle.putString(TAG_NAME, productName);
-        bundle.putInt(TAG_PRICE_ORIGIN, price_origin);
-        bundle.putInt(TAG_PRICE_CURRENT, price_current);
+    }
 
-        if(bitmap != null)
-        {
-            bottomSheet.bitmap = bitmap;
-        }
+    OnClickSubmitListener onClickSubmitListener =  null;
 
-        bottomSheet.setArguments(bundle);
-        return bottomSheet;
+    public void setOnClickSubmitListener(OnClickSubmitListener listener)
+    {
+        onClickSubmitListener = listener;
     }
 
     public ChooseItemDetailBottomSheet()

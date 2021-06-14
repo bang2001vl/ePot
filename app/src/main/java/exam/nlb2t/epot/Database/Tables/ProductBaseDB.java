@@ -30,6 +30,15 @@ public class ProductBaseDB {
         return null;
     }
 
+    public UserBaseDB getSalerOverview()
+    {
+        UserBaseDB salerOverview;
+        DBControllerUser db = new DBControllerUser();
+        salerOverview = db.getUserOverview(salerID);
+        db.closeConnection();
+        return  salerOverview;
+    }
+
     public Bitmap getImagePrimary()
     {
         Bitmap rs;

@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.Views.Card_ItemView;
+import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class CartFragment_Old extends Fragment {
@@ -32,22 +34,27 @@ public class CartFragment_Old extends Fragment {
     private boolean[] checkList;
 
     public CartFragment_Old() {
-        // Required empty public constructor
+
     }
 
-    public static CartFragment_Old newInstance(@NonNull ProductBuyInfo[] buyInfos) {
-        CartFragment_Old fragment = new CartFragment_Old();
-
-        Map<String, List<ProductBuyInfo>> map = groupBySaler(buyInfos);
-        fragment.data = map;
-        fragment.data_ContainerViews = new HashMap<>(fragment.data.size());
-        fragment.checkList = new boolean[map.size()];
-        for (int i = 0; i<fragment.checkList.length; i++)
+    public CartFragment_Old(int[] productIDs, int[] arr_amount_picked) {
+        ProductBuyInfo[] arr = new ProductBuyInfo[productIDs.length];
+        for(int i = 0; i<productIDs.length; i++)
         {
-            fragment.checkList[i] = false;
+            arr[i] = new ProductBuyInfo(productIDs[i], arr_amount_picked[i]);
         }
+        setData(arr);
+    }
 
-        return fragment;
+    public void setData(ProductBuyInfo[] arr)
+    {
+        data = groupBySaler(arr);
+        data_ContainerViews = new HashMap<>(data.size());
+        checkList = new boolean[data.size()];
+        for (int i = 0; i<checkList.length; i++)
+        {
+            checkList[i] = false;
+        }
     }
 
     @Override
@@ -65,18 +72,22 @@ public class CartFragment_Old extends Fragment {
         if(data != null && data.size()>0) {
             initSalerList(view, saler_list_holder, inflater, container);
 
-            txtTotal = view.findViewById(R.id.txt_total_money);
-            btnPurchase = view.findViewById(R.id.button_purchase);
-
+            txtTotal = view.findViewById(R.id.txt_totalprice);
+            btnPurchase = view.findViewById(R.id.btn_payment);
             btnPurchase.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for(List<ProductBuyInfo> buyInfo: data.values())
+                    for(Map.Entry<String, List<ProductBuyInfo>> entry: data.entrySet())
                     {
-
+                        List<ProductBuyInfo> buyInfo = entry.getValue();
                         StringBuilder builder = new StringBuilder();
-                        builder.append("saler : ").append(buyInfo.get(0).product.saler.FullName);
-                        builder.append(" | items count = ").append(buyInfo.size());
+                        builder.append("saler : ").append(entry.getKey()). append(" {");
+                        for(ProductBuyInfo info: buyInfo)
+                        {
+                            builder.append("\n\t").append(info.product.name)
+                            .append(" amount = ").append(info.Amount);
+                        }
+                        builder.append("\n }\n");
                         Log.d("MY_TRACE", builder.toString());
                     }
 
@@ -129,10 +140,10 @@ public class CartFragment_Old extends Fragment {
         List<ProductBuyInfo> buyInfoList = data.get(salerName);
         for(ProductBuyInfo buyInfo: buyInfoList)
         {
-            Card_ItemView card_itemView = new Card_ItemView(container.getContext());
-            card_itemView.setData(buyInfo.product.productName, buyInfo.product.currentPrice, buyInfo.product.originPrice,
-                    buyInfo.product.avaiableAmount, buyInfo.Amount, buyInfo.product.mainImage);
-            card_itemView.setOnClickDeleteListener(onClickDeleteItem);
+            Card_ItemView_New card_itemView = new Card_ItemView_New(container.getContext());
+            card_itemView.setData(buyInfo.product.name, buyInfo.product.price,
+                    buyInfo.product.amount - buyInfo.product.amountSold, buyInfo.Amount, buyInfo.imagePrimary);
+            card_itemView.setOnLongClickListener(onItemLongClick);
             card_itemView.setOnListItemChangedListener(onListItemChangedListener);
             card_itemView.Tag = buyInfo;
             items_container.addView(card_itemView);
@@ -152,7 +163,7 @@ public class CartFragment_Old extends Fragment {
                             isFreezeCalculated = true;
                             for(int i = items_container.getChildCount() -1; i>-1; i--)
                             {
-                                Card_ItemView cardItemView = (Card_ItemView) items_container.getChildAt(i);
+                                Card_ItemView_New cardItemView = (Card_ItemView_New) items_container.getChildAt(i);
                                 cardItemView.setChecked(true);
                             }
                             isFreezeCalculated = false;
@@ -164,7 +175,7 @@ public class CartFragment_Old extends Fragment {
                             isFreezeCalculated = true;
                             for(int i = items_container.getChildCount() -1; i>-1; i--)
                             {
-                                Card_ItemView cardItemView = (Card_ItemView) items_container.getChildAt(i);
+                                Card_ItemView_New cardItemView = (Card_ItemView_New) items_container.getChildAt(i);
                                 cardItemView.setChecked(false);
                             }
                             isFreezeCalculated = false;
@@ -189,20 +200,37 @@ public class CartFragment_Old extends Fragment {
         data_ContainerViews.put(salerName, items_container);
     }
 
+    View.OnLongClickListener onItemLongClick = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            PopupMenuDialog dialog = new PopupMenuDialog(new String[]{"Xóa sản phẩm khỏi giỏ"});
+            dialog.setOnClickOptionListener(new PopupMenuDialog.OnClickOptionListener() {
+                @Override
+                public void onClickOption(String option) {
+                    if(option.equals(dialog.getOptions()[0]))
+                    {
+                        onClickDeleteItem.onClick(v);
+                    }
+                }
+            });
+            return true;
+        }
+    };
+
     View.OnClickListener onClickDeleteItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Card_ItemView card_itemView = (Card_ItemView) v;
+            Card_ItemView_New card_itemView = (Card_ItemView_New) v;
             ProductBuyInfo productBuyInfo = (ProductBuyInfo) card_itemView.Tag;
 
-            data.get(productBuyInfo.product.saler.ShopName).remove(productBuyInfo);
+            data.get(productBuyInfo.salerOverview.fullName).remove(productBuyInfo);
             ((ViewGroup)card_itemView.getParent()).removeView(card_itemView);
 
             if(card_itemView.getChecked()){requireCalculated();}
         }
     };
 
-    Card_ItemView.OnListItemChangedListener onListItemChangedListener = new Card_ItemView.OnListItemChangedListener() {
+    Card_ItemView_New.OnListItemChangedListener onListItemChangedListener = new Card_ItemView_New.OnListItemChangedListener() {
         @Override
         public void onCheckProductChanged(View view, boolean isChecked) {
             requireCalculated();
@@ -210,7 +238,7 @@ public class CartFragment_Old extends Fragment {
 
         @Override
         public void onNumberProductChanged(View view, int newNumber) {
-            Card_ItemView card_itemView = (Card_ItemView)view;
+            Card_ItemView_New card_itemView = (Card_ItemView_New)view;
             ProductBuyInfo buyInfo = (ProductBuyInfo)card_itemView.Tag;
             buyInfo.Amount = newNumber;
             if(card_itemView.getChecked()) {
@@ -227,10 +255,10 @@ public class CartFragment_Old extends Fragment {
 
             for (LinearLayout container : data_ContainerViews.values()) {
                 for (int i = container.getChildCount() - 1; i > -1; i--) {
-                    Card_ItemView card_itemView = (Card_ItemView) container.getChildAt(i);
+                    Card_ItemView_New card_itemView = (Card_ItemView_New) container.getChildAt(i);
                     if (card_itemView.getChecked()) {
                         ProductBuyInfo buyInfo = (ProductBuyInfo) card_itemView.Tag;
-                        total += buyInfo.product.currentPrice * buyInfo.Amount;
+                        total += buyInfo.product.price * buyInfo.Amount;
                     }
                 }
             }
@@ -245,7 +273,7 @@ public class CartFragment_Old extends Fragment {
         String shopname;
         for(int i =0; i<buyInfos.length;i++)
         {
-            shopname = buyInfos[i].product.saler.ShopName;
+            shopname = buyInfos[i].salerOverview.fullName;
             if(map.containsKey(shopname))
             {
                 map.get(shopname).add(buyInfos[i]);

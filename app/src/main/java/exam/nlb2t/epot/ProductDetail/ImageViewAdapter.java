@@ -57,4 +57,9 @@ public class ImageViewAdapter extends FragmentPagerAdapter {
         mContext = context;
         bitmaps = new ArrayList<>();
     }
+
+    public void recycle()
+    {
+        for(Bitmap b : bitmaps){b.recycle();}
+    }
 }
