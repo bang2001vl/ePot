@@ -19,7 +19,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/test"
+                android:src="@drawable/user"
                 android:layout_marginVertical="30dp"
                 android:layout_marginLeft="20dp"/>
 
@@ -60,7 +60,7 @@
                 android:background="#E2E2E2"></View>
         </RelativeLayout>
         <Button
-            android:drawableLeft="@drawable/ic_icon"
+            android:drawableLeft="@drawable/ic_orders_icon"
             android:drawableRight="@drawable/ic_back_arrow"
             android:textAlignment="textStart"
             android:layout_width="match_parent"
@@ -73,7 +73,8 @@
             android:text="Đơn hàng"
             android:textColor="@color/black"
             android:background="@color/transparent"
-            android:textAllCaps="false">
+            android:textAllCaps="false"
+            android:stateListAnimator="@null">
         </Button>
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,7 +135,8 @@
             android:text="Địa chỉ mặc định"
             android:textColor="@color/black"
             android:background="@color/transparent"
-            android:textAllCaps="false">
+            android:textAllCaps="false"
+            android:stateListAnimator="@null">
         </Button>
         <LinearLayout
             android:layout_width="match_parent"
@@ -177,7 +179,8 @@
             android:text="Sản phẩm yêu thích"
             android:textColor="@color/black"
             android:background="@color/transparent"
-            android:textAllCaps="false">
+            android:textAllCaps="false"
+            android:stateListAnimator="@null">
         </Button>
 
         <View
@@ -201,7 +204,8 @@
             android:text="Thiết lập tài khoản"
             android:textColor="@color/black"
             android:background="@color/transparent"
-            android:textAllCaps="false">
+            android:textAllCaps="false"
+            android:stateListAnimator="@null">
         </Button>
         <View
             android:layout_width="match_parent"
@@ -225,7 +229,8 @@
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:iconPadding="20dp"></Button>
+            app:iconPadding="20dp"
+            android:stateListAnimator="@null"></Button>
 
         <View
             android:layout_width="match_parent"
