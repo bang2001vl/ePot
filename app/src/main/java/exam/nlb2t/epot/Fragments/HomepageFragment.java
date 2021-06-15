@@ -18,7 +18,7 @@ import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 import exam.nlb2t.epot.fragment_ProItem_Container;
 
 public class HomepageFragment extends Fragment {
-    /*HomeShoppingBinding binding;
+    HomeShoppingBinding binding;
 
     public static HomepageFragment newInstance(*//*Params here*//*)
     {
@@ -46,23 +46,5 @@ public class HomepageFragment extends Fragment {
     void setEventHandler()
     {
         //TODO : Write code here <Set all listener in here>
-    }*/
-
-    ActivityTestingBinding binding;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = ActivityTestingBinding.inflate(getLayoutInflater());
-        binding.btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductDetailFragment fragment = new ProductDetailFragment();
-                fragment.productID = Integer.parseInt(binding.edtInput.getText().toString());
-
-                fragment.show(getChildFragmentManager(), "");
-            }
-        });
-        return binding.getRoot();
     }
 }
