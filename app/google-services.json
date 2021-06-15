@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "776072205333",
+    "project_id": "epot-bdf7d",
+    "storage_bucket": "epot-bdf7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776072205333:android:6054b3625fac6856812a1c",
+        "android_client_info": {
+          "package_name": "exam.nlb2t.epot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776072205333-chrub68alh7btc3vj53uo04f1e47e65g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "exam.nlb2t.epot",
+            "certificate_hash": "bfa4c564a917912c0ac1496f1e90d54767d9d9b9"
+          }
+        },
+        {
+          "client_id": "776072205333-jbi61qn3q564af74anklbtepdb4havjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuTo8XiamIaFtdPwuZ9DGsv31DYoW4gRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776072205333-jbi61qn3q564af74anklbtepdb4havjn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

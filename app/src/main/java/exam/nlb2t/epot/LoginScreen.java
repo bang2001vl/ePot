@@ -2,6 +2,8 @@ package exam.nlb2t.epot;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +27,13 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import exam.nlb2t.epot.Views.forgotpass_enter_phone;
 import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.Views.signup;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 //for login with facebook
 
@@ -41,10 +47,13 @@ public class LoginScreen extends AppCompatActivity {
     private Button btn_login;
     private TextView tv_signup;
     private LoginButton lgb_login;
+    private TextView tv_resent_otp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_login_screen);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -57,6 +66,66 @@ public class LoginScreen extends AppCompatActivity {
         btn_login = (Button) findViewById(R.id.btn_login);
         lgb_login = (LoginButton) findViewById(R.id.login_button);
 
+
+        Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
+
+        et_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = pattern.matcher(et_username.getText().toString());
+                if( matcher.find())
+                {
+                    et_username.setError("Chỉ chứa kí tự a-z, A-Z, 0-9");
+                }
+                else
+                {
+                    et_username.setError(null);
+                    if (et_username.getText().toString().length() > 50)
+                    {
+                        et_username.setError("Độ dài không quá 50 kí tự");
+                    }
+                    else
+                    {
+                        et_username.setError(null);
+                    }
+                }
+            }
+        });
+
+        tet_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (tet_password.getText().toString().length() > 50)
+                {
+                    tet_password.setError("Độ dài không quá 50 kí tự");
+                }
+                else
+                {
+                    tet_password.setError(null);
+                }
+            }
+        });
+
         tv_forgotpass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +137,15 @@ public class LoginScreen extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if ( et_username.getError() != null || tet_password.getError()!= null ) return;
+                Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
+
                 Intent intent = new Intent(LoginScreen.this, home_shopping.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("EXIT", true);
                 startActivity(intent);
+                finish();
             }
         });
         tv_signup.setOnClickListener(new View.OnClickListener() {
