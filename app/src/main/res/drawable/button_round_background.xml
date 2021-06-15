@@ -12,4 +12,6 @@
     <!--  Pressed
      -->
     <item android:state_pressed="true" android:drawable="@drawable/background_round_button_clicked" />
+
+    <item android:state_enabled="false" android:drawable="@color/drark_gray"/>
 </selector>

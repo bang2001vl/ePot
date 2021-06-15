@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="Notification">
+        <attr name="NotiString" format="string" />
+        <attr name="NotiDimension" format="dimension" />
+        <attr name="NotiColor" format="color" />
+        <attr name="NotiDrawable" format="color|reference" />
+    </declare-styleable>
+</resources>

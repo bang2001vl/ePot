@@ -1,58 +1,62 @@
 package exam.nlb2t.epot.ProductDetail;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.DataSetObserver;
+import android.app.Dialog;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.PlainTextDialog;
-import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.FragmentProductDetailBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.CartDataController;
 import exam.nlb2t.epot.singleton.Helper;
 
-public class ProductDetailFragment extends Fragment {
+public class ProductDetailFragment extends DialogFragment {
 
     FragmentProductDetailBinding binding;
     public int productID;
+    ChooseItemDetailBottomSheet.OnClickSubmitListener onClickAddToCartListener;
+    public void setOnClickAddToCartListener(ChooseItemDetailBottomSheet.OnClickSubmitListener listener)
+    {
+        this.onClickAddToCartListener = listener;
+    }
 
     ProductBaseDB product;
     UserBaseDB saler;
+    Bitmap imagePrimary;
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen){
+            @Override
+            public void onBackPressed() {
+                this.dismiss();
+            }
+        };
+    }
 
     @Nullable
     @Override
@@ -77,12 +81,38 @@ public class ProductDetailFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {}
         });
 
+        binding.btnBackFromProductDetail.setOnClickListener(v->this.dismiss());
+
+        binding.btnAddToCart.setOnClickListener(v->{
+            // Init bottomSheet
+            ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet(product.name,
+                    product.amount - product.amountSold, product.priceOrigin, product.price,
+                    imagePrimary, null);
+            bottomSheet.setOnClickSubmitListener(new ChooseItemDetailBottomSheet.OnClickSubmitListener() {
+                @Override
+                public void OnClickSubmit(View view, int amount, int[] params) {
+                    Toast.makeText(getContext(), "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
+                    if(onClickAddToCartListener!=null) {
+                        onClickAddToCartListener.OnClickSubmit(view, amount, params);
+                        CartDataController.addProduct(getContext(), productID, amount);
+                    }
+                    bottomSheet.dismiss();
+                }
+            });
+            bottomSheet.show(getChildFragmentManager(), "ChooseAmount");
+        });
+
         showLoadingScreen();
 
         new Thread(getImagesFromDB()).start();
         new Thread(getProductFromDB()).start();
 
         return binding.getRoot();
+    }
+
+    public void setAmountSold(int val)
+    {
+
     }
 
     public void showLoadingScreen()
@@ -153,6 +183,17 @@ public class ProductDetailFragment extends Fragment {
             binding.txtPriceSaleProductDetail.setVisibility(View.GONE);
             binding.txtPriceNormalProductDetail.setText(helper.getPrice(product.price));
         }
+
+        if(product.amountSold < product.amount)
+        {
+            binding.btnAddToCart.setEnabled(true);
+            binding.btnAddToCart.setText(getResources().getText(R.string.add_to_cart));
+        }
+        else
+        {
+            binding.btnAddToCart.setEnabled(false);
+            binding.btnAddToCart.setText(getResources().getText(R.string.empty));
+        }
     }
 
     public void setSaler(@NonNull UserBaseDB saler, Bitmap avatar)
@@ -169,7 +210,6 @@ public class ProductDetailFragment extends Fragment {
             // Get data in background
             DBControllerProduct db = new DBControllerProduct();
             List<Bitmap> data = db.getImages(productID);
-            db.closeConnection();
 
             do
             {
@@ -181,15 +221,30 @@ public class ProductDetailFragment extends Fragment {
             }
             while (product == null);
 
-            // Update UI when done
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setImages(data);
-                    closeLoadingScreen();
-                    initEvent();
-                }
-            });
+            imagePrimary = db.getAvatar_Product(product.imagePrimaryID);
+            db.closeConnection();
+
+            if(db.hasError())
+            {
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), db.getErrorMsg(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            else {
+                // Update UI when done
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setImages(data);
+                        closeLoadingScreen();
+                        initEvent();
+
+                    }
+                });
+            }
         };
         return runnable;
     }
@@ -204,8 +259,6 @@ public class ProductDetailFragment extends Fragment {
                 String.format(Locale.getDefault(),"%d/%d",1, adapter.getCount())
         );
     }
-
-
 
     void initEvent() {
         binding.buttonFavouriteProductDetail.setOnCheckedChangeListener((btn, isChecked) -> {
@@ -238,6 +291,8 @@ public class ProductDetailFragment extends Fragment {
                 }).show();
 
         });
+
+
 
         // Event for description text
         if(binding.txtDescriptionProductDetail.getLineCount() < binding.txtDescriptionProductDetail.getMaxLines())

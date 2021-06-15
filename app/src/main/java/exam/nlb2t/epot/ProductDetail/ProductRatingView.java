@@ -32,8 +32,10 @@ public class ProductRatingView extends BaseCustomViewGroup {
         this.addView(linearLayout);
 
         mContext = context;
-        setStar(0,0,1,0,0);
-        addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
+
+        setStar(0,0,1,0,1);
+        //addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
+        //addComment("Tiên Tri Zũ Trụ", 5, "Xài thì cũng được được. Không xịn lắm", null, "30/04/1975");
     }
 
     public void setStar(int star1, int star2, int star3, int star4, int star5)
@@ -71,8 +73,8 @@ public class ProductRatingView extends BaseCustomViewGroup {
     {
         LinearLayout linearLayout = (LinearLayout) bindingTitle.getRoot().getParent();
         if(linearLayout == null) return;
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        RatingCommentLayoutBinding bindingItem = RatingCommentLayoutBinding.inflate(inflater, this, false);
+        LayoutInflater inflater = LayoutInflater.from(linearLayout.getContext());
+        RatingCommentLayoutBinding bindingItem = RatingCommentLayoutBinding.inflate(inflater, linearLayout, false);
         bindingItem.txtCustomerNameCommentRating.setText(name);
         bindingItem.txtContentCommentRating.setText(comment);
         bindingItem.txtDateCommentRating.setText(date);

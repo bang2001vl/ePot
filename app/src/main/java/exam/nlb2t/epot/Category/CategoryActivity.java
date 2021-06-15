@@ -36,13 +36,21 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCategoryBinding.inflate(getLayoutInflater());
 
-        binding.btnSubmit.setOnClickListener(v->{
-            DBControllerCategory dbControllerCategory = new DBControllerCategory();
+        binding.btnSubmitAvatar.setOnClickListener(v->{
+            String txt = binding.txtName.getText().toString();
+            DBControllerCategory db = new DBControllerCategory();
+            if(txt.length() == 0)
+            {
+                db.addAvatar(selectedImage);
+            }
+            else {db.updateAvatar(Integer.parseInt(txt), selectedImage);}
+            db.closeConnection();
+            /*DBControllerCategory dbControllerCategory = new DBControllerCategory();
             if(dbControllerCategory.createCategory(binding.txtName.getText().toString(), selectedImage))
             {
                 Toast.makeText(this, "Thanh cong", Toast.LENGTH_LONG).show();
             }
-            dbControllerCategory.closeConnection();
+            dbControllerCategory.closeConnection();*/
         });
 
         binding.imageView.setOnClickListener(v->{
@@ -54,14 +62,14 @@ public class CategoryActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
-        List<Pair<String, Bitmap>> list = DBControllerCategory.getCategories();
+        /*List<Pair<String, Bitmap>> list = DBControllerCategory.getCategories();
 
         if(list != null && list.size() > 0)
         {
             binding.txtName.setText(list.get(0).first);
             binding.imageView.setImageBitmap(list.get(0).second);
         }
-        else {Log.d("MY_TAG", "FAILED: Cannot load category");}
+        else {Log.d("MY_TAG", "FAILED: Cannot load category");}*/
     }
 
     @Override

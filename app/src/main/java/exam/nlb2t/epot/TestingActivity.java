@@ -1,13 +1,11 @@
 package exam.nlb2t.epot;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dragnell.android.SearchBar;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -92,7 +89,7 @@ public class TestingActivity extends AppCompatActivity {
             Saler saler = Saler.createRandom(i);
             for (int k = 0; k<number_product; k++) {
                 ProductBuyInfo productBuyInfo = ProductBuyInfo.createRandom(k);
-                productBuyInfo.product.saler = saler;
+               /* productBuyInfo.product.saler = saler;*/
                 productBuyInfos.add(productBuyInfo);
             }
         }

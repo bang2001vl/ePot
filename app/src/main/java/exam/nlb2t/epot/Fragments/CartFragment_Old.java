@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.Fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
@@ -22,84 +24,149 @@ import java.util.List;
 import java.util.Map;
 
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
+import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.Views.Card_ItemView;
+import exam.nlb2t.epot.Views.Card_ItemView_New;
+import exam.nlb2t.epot.Views.LoadingView;
+import exam.nlb2t.epot.databinding.FragmentCartBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class CartFragment_Old extends Fragment {
     private Map<String, List<ProductBuyInfo>> data;
     private Map<String, LinearLayout> data_ContainerViews;
     private boolean[] checkList;
+    View.OnClickListener onItemDeleted;
+    View.OnClickListener onItemAmountChanged;
+    public void setOnItemDeleted(View.OnClickListener listener){onItemDeleted = listener;}
+    public void setOnItemAmountChanged(View.OnClickListener listener){onItemAmountChanged = listener;}
+    
+    FragmentCartBinding binding;
 
     public CartFragment_Old() {
-        // Required empty public constructor
+
     }
 
-    public static CartFragment_Old newInstance(@NonNull ProductBuyInfo[] buyInfos) {
-        CartFragment_Old fragment = new CartFragment_Old();
+    public void requestLoadData(List<Pair<Integer, Integer>> list) {
+        showLoadingScreen();
+        Handler handler = new Handler();
 
-        Map<String, List<ProductBuyInfo>> map = groupBySaler(buyInfos);
-        fragment.data = map;
-        fragment.data_ContainerViews = new HashMap<>(fragment.data.size());
-        fragment.checkList = new boolean[map.size()];
-        for (int i = 0; i<fragment.checkList.length; i++)
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ProductBuyInfo[] arr = new ProductBuyInfo[list.size()];
+                for(int i = 0; i<arr.length; i++)
+                {
+                    arr[i] = new ProductBuyInfo(list.get(i).first, list.get(i).second);
+                }
+                setData(arr);
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutData();
+                        closeLoadingScreen();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void showLoadingScreen()
+    {
+        View view = new LoadingView(getContext());
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.getRoot().addView(view, binding.getRoot().getChildCount());
+    }
+
+    public void closeLoadingScreen()
+    {
+        binding.getRoot().removeViewAt(binding.getRoot().getChildCount() - 1);
+    }
+
+    public void setData(ProductBuyInfo[] arr)
+    {
+        data = groupBySaler(arr);
+        data_ContainerViews = new HashMap<>(data.size());
+        checkList = new boolean[data.size()];
+        for (int i = 0; i<checkList.length; i++)
         {
-            fragment.checkList[i] = false;
+            checkList[i] = false;
+        }
+    }
+
+
+    public Map<String, List<ProductBuyInfo>> groupBySaler(ProductBuyInfo[] buyInfos)
+    {
+        Map<String, List<ProductBuyInfo>> map = new HashMap<>(10);
+        String shopname;
+        for(int i =0; i<buyInfos.length;i++)
+        {
+            shopname = buyInfos[i].salerOverview.fullName;
+            if(map.containsKey(shopname))
+            {
+                map.get(shopname).add(buyInfos[i]);
+            }
+            else
+            {
+                List<ProductBuyInfo> list = new ArrayList<>(3);
+                list.add(buyInfos[i]);
+                map.put(shopname, list);
+            }
         }
 
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        return  map;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        LinearLayout saler_list_holder = view.findViewById(R.id.saler_layout_holder);
-
+        binding = FragmentCartBinding.inflate(inflater, container, false);
+        
         if(data != null && data.size()>0) {
-            initSalerList(view, saler_list_holder, inflater, container);
-
-            txtTotal = view.findViewById(R.id.txt_total_money);
-            btnPurchase = view.findViewById(R.id.button_purchase);
-
-            btnPurchase.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for(List<ProductBuyInfo> buyInfo: data.values())
-                    {
-
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("saler : ").append(buyInfo.get(0).product.saler.FullName);
-                        builder.append(" | items count = ").append(buyInfo.size());
-                        Log.d("MY_TRACE", builder.toString());
-                    }
-
-                }
-            });
-
-            requireCalculated();
+            layoutData();
         }
         else {
-            TextView textView = new TextView(view.getContext());
+            TextView textView = new TextView(getContext());
             textView.setText("Empty cart");
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-            saler_list_holder.addView(textView, params);
+            binding.salerLayoutHolder.addView(textView, params);
         }
-        return view;
+        return binding.getRoot();
     }
 
-    TextView txtTotal;
-    Button btnPurchase;
+    public void layoutData()
+    {
+        View view = (View)binding.salerLayoutHolder.getParent().getParent();
+        binding.salerLayoutHolder.removeAllViews();
 
-    void initSalerList(View root, LinearLayout saler_list_holder, LayoutInflater inflater, ViewGroup container)
+        initSalerList(view, binding.salerLayoutHolder, getLayoutInflater(), (ViewGroup) view);
+
+        binding.btnPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(Map.Entry<String, List<ProductBuyInfo>> entry: data.entrySet())
+                {
+                    List<ProductBuyInfo> buyInfo = entry.getValue();
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("saler : ").append(entry.getKey()). append(" {");
+                    for(ProductBuyInfo info: buyInfo)
+                    {
+                        builder.append("\n\t").append(info.product.name)
+                                .append(" amount = ").append(info.Amount);
+                    }
+                    builder.append("\n }\n");
+                    Log.d("MY_TRACE", builder.toString());
+                }
+
+            }
+        });
+
+        requireCalculated();
+    }
+
+    void initSalerList(View root, LinearLayout salerLayoutHolder, LayoutInflater inflater, ViewGroup container)
     {
         List<String> salerNameSet = new ArrayList<>(data.keySet());
         Collections.sort(salerNameSet);
@@ -112,97 +179,99 @@ public class CartFragment_Old extends Fragment {
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(0,0,0, getResources().getDimensionPixelSize(R.dimen.normal_padding));
-            saler_list_holder.addView(item_list_container, params);
+            binding.salerLayoutHolder.addView(item_list_container, params);
 
         }
     }
 
-    void initItemList(@NonNull LinearLayout container, String salerName)
+    void initItemList(@NonNull LinearLayout saler_container, String salerName)
     {
-        TextView txtSalerName = container.findViewById(R.id.saler_name);
-        ImageButton btnMore = container.findViewById(R.id.button_more_saler);
+        TextView txtSalerName = saler_container.findViewById(R.id.saler_name);
+        ImageButton btnMore = saler_container.findViewById(R.id.button_more_saler);
 
         txtSalerName.setText(salerName);
 
-        LinearLayout items_container = container.findViewById(R.id.linearLayout);
+        LinearLayout items_container = saler_container.findViewById(R.id.linearLayout);
 
         List<ProductBuyInfo> buyInfoList = data.get(salerName);
         for(ProductBuyInfo buyInfo: buyInfoList)
         {
-            Card_ItemView card_itemView = new Card_ItemView(container.getContext());
-            card_itemView.setData(buyInfo.product.productName, buyInfo.product.currentPrice, buyInfo.product.originPrice,
-                    buyInfo.product.avaiableAmount, buyInfo.Amount, buyInfo.product.mainImage);
-            card_itemView.setOnClickDeleteListener(onClickDeleteItem);
-            card_itemView.setOnListItemChangedListener(onListItemChangedListener);
-            card_itemView.Tag = buyInfo;
-            items_container.addView(card_itemView);
+            Card_ItemView_New item = new Card_ItemView_New(saler_container.getContext());
+            item.setData(buyInfo.product.name, buyInfo.product.price,
+                    buyInfo.product.amount - buyInfo.product.amountSold, buyInfo.Amount, buyInfo.imagePrimary);
+            item.setOnLongClickListener(onItemLongClick);
+            item.setOnListItemChangedListener(onListItemChangedListener);
+            item.Tag = buyInfo;
+
+            item.setPadding(3,6,6,5);
+            items_container.addView(item);
         }
 
-        btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                popupMenu.inflate(R.menu.card_saler_item_menu);
+        // Set event for context menu of saler_layout
+        btnMore.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+            popupMenu.inflate(R.menu.card_saler_item_menu);
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId()==R.id.menu_select_all)
-                        {
-                            isFreezeCalculated = true;
-                            for(int i = items_container.getChildCount() -1; i>-1; i--)
-                            {
-                                Card_ItemView cardItemView = (Card_ItemView) items_container.getChildAt(i);
-                                cardItemView.setChecked(true);
-                            }
-                            isFreezeCalculated = false;
-                            requireCalculated();
-                            return true;
-                        }
-                        else if (item.getItemId() == R.id.menu_deselect_all)
-                        {
-                            isFreezeCalculated = true;
-                            for(int i = items_container.getChildCount() -1; i>-1; i--)
-                            {
-                                Card_ItemView cardItemView = (Card_ItemView) items_container.getChildAt(i);
-                                cardItemView.setChecked(false);
-                            }
-                            isFreezeCalculated = false;
-                            requireCalculated();
-                            return true;
-                        }
-                        else if (item.getItemId() == R.id.menu_delete_all)
-                        {
-                            data.remove(salerName);
-                            ((ViewGroup)container.getParent()).removeView(container);
-                            return true;
-                        }
-                        return  false;
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    isFreezeCalculated = true;
+                    if (item.getItemId()==R.id.menu_select_all)
+                    {
+                        onClickSelectedAll(salerName);
                     }
-                });
+                    else if (item.getItemId() == R.id.menu_deselect_all)
+                    {
+                        onClickUnselectedAll(salerName);
+                    }
+                    else if (item.getItemId() == R.id.menu_delete_all)
+                    {
+                        onClickRemoveSaler(salerName);
+                    }
+                    isFreezeCalculated = false;
+                    requireCalculated();
+                    return true;
+                }
+            });
 
-                popupMenu.show();
-            }
+            popupMenu.show();
         });
 
 
         data_ContainerViews.put(salerName, items_container);
     }
 
-    View.OnClickListener onClickDeleteItem = new View.OnClickListener() {
+    View.OnLongClickListener onItemLongClick = new View.OnLongClickListener() {
         @Override
-        public void onClick(View v) {
-            Card_ItemView card_itemView = (Card_ItemView) v;
-            ProductBuyInfo productBuyInfo = (ProductBuyInfo) card_itemView.Tag;
-
-            data.get(productBuyInfo.product.saler.ShopName).remove(productBuyInfo);
-            ((ViewGroup)card_itemView.getParent()).removeView(card_itemView);
-
-            if(card_itemView.getChecked()){requireCalculated();}
+        public boolean onLongClick(View v) {
+            PopupMenuDialog dialog = new PopupMenuDialog(new String[]{"Xóa sản phẩm khỏi giỏ"});
+            dialog.setOnClickOptionListener(new PopupMenuDialog.OnClickOptionListener() {
+                @Override
+                public void onClickOption(String option) {
+                    if(option.equals(dialog.getOptions()[0]))
+                    {
+                        onClickDeleteItem.onClick(v);
+                    }
+                }
+            });
+            dialog.show(getChildFragmentManager(), null);
+            return true;
         }
     };
 
-    Card_ItemView.OnListItemChangedListener onListItemChangedListener = new Card_ItemView.OnListItemChangedListener() {
+    View.OnClickListener onClickDeleteItem = v -> {
+        Card_ItemView_New item = (Card_ItemView_New) v;
+        ProductBuyInfo productBuyInfo = (ProductBuyInfo) item.Tag;
+        data.get(productBuyInfo.salerOverview.fullName).remove(productBuyInfo);
+        ((ViewGroup)item.getParent()).removeView(item);
+
+        if(item.getChecked()){requireCalculated();}
+        if(onItemDeleted != null) {
+            onItemDeleted.onClick(item);
+        }
+    };
+
+    Card_ItemView_New.OnListItemChangedListener onListItemChangedListener = new Card_ItemView_New.OnListItemChangedListener() {
         @Override
         public void onCheckProductChanged(View view, boolean isChecked) {
             requireCalculated();
@@ -210,52 +279,77 @@ public class CartFragment_Old extends Fragment {
 
         @Override
         public void onNumberProductChanged(View view, int newNumber) {
-            Card_ItemView card_itemView = (Card_ItemView)view;
-            ProductBuyInfo buyInfo = (ProductBuyInfo)card_itemView.Tag;
-            buyInfo.Amount = newNumber;
-            if(card_itemView.getChecked()) {
+            Log.d("MY_TAG", "On Number changed");
+            Card_ItemView_New item = (Card_ItemView_New)view;
+            ProductBuyInfo productBuyInfo = (ProductBuyInfo)item.Tag;
+            productBuyInfo.Amount = newNumber;
+            if(item.getChecked()) {
                 requireCalculated();
+            }
+
+            if(onItemAmountChanged!=null)
+            {
+                onItemAmountChanged.onClick(item);
             }
         }
     };
+
+    void onClickSelectedAll(String salerName)
+    {
+        LinearLayout container = data_ContainerViews.get(salerName);
+        if(container == null) return;
+        for(int i = container.getChildCount() -1; i>-1; i--)
+        {
+            Card_ItemView_New cardItemView = (Card_ItemView_New) container.getChildAt(i);
+            cardItemView.setChecked(true);
+        }
+    }
+
+    void onClickUnselectedAll(String salerName)
+    {
+        LinearLayout container = data_ContainerViews.get(salerName);
+        if(container == null) return;
+        for(int i = container.getChildCount() -1; i>-1; i--)
+        {
+            Card_ItemView_New cardItemView = (Card_ItemView_New) container.getChildAt(i);
+            cardItemView.setChecked(false);
+        }
+    }
+
+    public void onClickRemoveSaler(String salerName)
+    {
+        ViewGroup item_container = data_ContainerViews.get(salerName);
+        if(item_container == null) return;
+        ViewGroup saler_container = (ViewGroup) item_container.getParent();
+        if(saler_container == null) return;
+        data.remove(salerName);
+        ((ViewGroup)saler_container.getParent()).removeView(saler_container);
+        data_ContainerViews.remove(salerName);
+
+        if(onItemDeleted == null) {return;}
+        for(int i = 0; i<item_container.getChildCount(); i++)
+        {
+            onItemDeleted.onClick(item_container.getChildAt(i));
+        }
+    }
 
     boolean isFreezeCalculated = false;
     void requireCalculated()
     {
         if(!isFreezeCalculated) {
             int total = 0;
-
             for (LinearLayout container : data_ContainerViews.values()) {
                 for (int i = container.getChildCount() - 1; i > -1; i--) {
-                    Card_ItemView card_itemView = (Card_ItemView) container.getChildAt(i);
+                    Card_ItemView_New card_itemView = (Card_ItemView_New) container.getChildAt(i);
                     if (card_itemView.getChecked()) {
                         ProductBuyInfo buyInfo = (ProductBuyInfo) card_itemView.Tag;
-                        total += buyInfo.product.currentPrice * buyInfo.Amount;
+                        total += buyInfo.product.price * buyInfo.Amount;
                     }
                 }
             }
-            txtTotal.setText(Helper.getInstance(getContext()).getPrice(total));
-            btnPurchase.setEnabled(total > 0);
+            binding.txtTotalprice.setText(Helper.getInstance(getContext()).getPrice(total));
+            binding.btnPayment.setEnabled(total > 0);
         }
     }
 
-    public static Map<String, List<ProductBuyInfo>> groupBySaler(ProductBuyInfo[] buyInfos)
-    {
-        Map<String, List<ProductBuyInfo>> map = new HashMap<>(10);
-        String shopname;
-        for(int i =0; i<buyInfos.length;i++)
-        {
-            shopname = buyInfos[i].product.saler.ShopName;
-            if(map.containsKey(shopname))
-            {
-                map.get(shopname).add(buyInfos[i]);
-            }
-            else
-            {
-                map.put(shopname, new ArrayList<>(10));
-            }
-        }
-
-        return  map;
-    }
 }
