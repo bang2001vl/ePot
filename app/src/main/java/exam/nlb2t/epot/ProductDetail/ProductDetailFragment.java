@@ -92,9 +92,9 @@ public class ProductDetailFragment extends DialogFragment {
                 @Override
                 public void OnClickSubmit(View view, int amount, int[] params) {
                     Toast.makeText(getContext(), "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
+                    CartDataController.addProduct(getContext(), productID, amount);
                     if(onClickAddToCartListener!=null) {
                         onClickAddToCartListener.OnClickSubmit(view, amount, params);
-                        CartDataController.addProduct(getContext(), productID, amount);
                     }
                     bottomSheet.dismiss();
                 }

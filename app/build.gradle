@@ -60,6 +60,4 @@ dependencies {
 
     //for login with facebook
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
-
-
 }

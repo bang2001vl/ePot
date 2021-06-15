@@ -74,6 +74,7 @@ public class DBControllerProduct extends DatabaseController{
         {
             e.printStackTrace();
             rollback();
+            ErrorMsg = e.getMessage();
         }
         return isOK;
     }
@@ -177,7 +178,7 @@ public class DBControllerProduct extends DatabaseController{
                 rs.amountSold = resultSet.getInt(i);i++;
                 rs.imagePrimaryID = resultSet.getInt(i);i++;
                 rs.description = resultSet.getString(i);i++;
-                rs.createdDate = resultSet.getDate(i);i++;
+                rs.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
                 rs.deleted = resultSet.getInt(i);i++;
             }
             resultSet.close();
