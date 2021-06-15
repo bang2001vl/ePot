@@ -120,7 +120,11 @@ public class Card_ItemView_New extends BaseCustomViewGroup{
     {
         if(this.amount==val)return;
         this.amount = val;
-        binding.quantityProduct.setText(String.valueOf(val));
+        binding.quantityProduct.setText(String.valueOf(amount));
+        if(onListItemChangedListener != null)
+        {
+            onListItemChangedListener.onNumberProductChanged(this, amount);
+        }
     }
 
     public void setChecked(boolean isChecked)
@@ -139,17 +143,15 @@ public class Card_ItemView_New extends BaseCustomViewGroup{
             @Override
             public void onClick(View v) {
                 if(amount>=amount_max) return;
-                setAmount(amount++);
-                onListItemChangedListener.onNumberProductChanged(Card_ItemView_New.this, amount);
+                setAmount(amount + 1);
             }
         });
 
-        binding.btnIncreaseProduct.setOnClickListener(new OnClickListener() {
+        binding.btnDecreaseProduct.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(amount < 2) return;
-                setAmount(amount--);
-                onListItemChangedListener.onNumberProductChanged(Card_ItemView_New.this, amount);
+                setAmount(amount - 1);
             }
         });
 

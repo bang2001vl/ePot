@@ -46,10 +46,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:id="@+id/linearLayout"
-            android:background="@color/drark_gray"
-            android:showDividers="beginning"
-            android:dividerPadding="2dp"
+            android:background="@color/white"
+            android:divider="@drawable/divider"
+            android:showDividers="middle"
+            android:dividerPadding="5dp"
             android:animateLayoutChanges="true"
+            android:paddingTop="5dp"
             >
         </LinearLayout>
 
