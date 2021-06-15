@@ -18,10 +18,10 @@ public class CartDataController {
         SharedPreferences preferences =context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
         List<Pair<Integer, Integer>> rs = new ArrayList<>();
         Map<String, ?> data = preferences.getAll();
-        for(Map.Entry<String, ?> entry : data.entrySet())
+        /*for(Map.Entry<String, ?> entry : data.entrySet())
         {
-            rs.add(new Pair<>(Integer.valueOf(entry.getKey()), (int)entry.getValue()));
-        }
+            rs.add(new Pair<>(Integer.valueOf(entry.getKey()), (Integer) entry.getValue()));
+        }*/
         return rs;
     }
 
