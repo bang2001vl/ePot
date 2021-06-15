@@ -1,24 +1,11 @@
 package exam.nlb2t.epot.Database;
 
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import exam.nlb2t.epot.SQL.DataController;
-import exam.nlb2t.epot.singleton.Helper;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
+import exam.nlb2t.epot.SQL.DataController;
 
 public class DatabaseController {
     protected String ErrorMsg = null;

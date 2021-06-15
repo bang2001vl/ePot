@@ -6,27 +6,27 @@
     android:layout_height="wrap_content"
     android:background="@color/BG_login_logout">
 
+
     <TextView
         android:id="@+id/tv_Enter_Phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
-        android:text="@string/Enter_OTP"
+        android:layout_marginTop="10dp"
+        android:text="@string/Enter_Phone"
         android:textColor="@color/black"
         android:textSize="@dimen/big_title_size_text"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        tools:ignore="UnknownIdInLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_Phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/Code"
+        android:layout_marginTop="36dp"
+        android:text="@string/Phone"
         android:textColor="@color/Title"
         android:textSize="@dimen/normal_title_size_text"
         android:textStyle="bold"
@@ -38,53 +38,38 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Phone"
         app:layout_constraintVertical_bias="0.03">
 
-        <EditText
-            android:id="@+id/et_otp"
-            style="?android:attr/spinnerItemStyle"
-            android:layout_width="303dp"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
             android:layout_marginStart="32dp"
-            android:background="@android:color/transparent"
+            android:spinnerMode="dialog" />
+
+        <EditText
+            android:id="@+id/et_Phone"
+            style="?android:attr/spinnerItemStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="32dp"
+            android:background="@color/transparent"
             app:layout_constraintTop_toBottomOf="@+id/tv_Phone"
             tools:layout_editor_absoluteX="44dp" />
-        <TextView
-            android:id="@+id/tv_countdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Time"
-            android:layout_marginEnd="32dp"
-            android:textColor="@color/mainColor"
-            />
-
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/line"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        tools:layout_editor_absoluteX="-52dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <TextView
-        android:id="@+id/tv_sent_otp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/Resent_code"
-        android:textColor="@color/mainColor"
-        android:textSize="@dimen/small_title_size_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        tools:layout_editor_absoluteX="32dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
