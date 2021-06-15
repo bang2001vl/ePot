@@ -377,7 +377,7 @@ public class CartFragment_Old extends Fragment {
             public void OnSuccess(Object sender) {
                 if(getContext() == null) {return;}
                 DBControllerBill db = new DBControllerBill();
-                boolean rs = db.addBill(Authenticator.getCurrentUser().id, checkedProduct);
+                boolean rs = db.addBill(Authenticator.getCurrentUser().id, fragment.address, checkedProduct);
                 db.closeConnection();
 
                 if(rs)

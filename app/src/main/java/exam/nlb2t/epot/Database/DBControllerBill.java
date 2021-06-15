@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DBControllerBill extends  DatabaseController{
-    public boolean addBill(int userID, List<Pair<Integer, Integer>> list)
+    public boolean addBill(int userID, String address, List<Pair<Integer, Integer>> list)
     {
         boolean rs = false;
         try {
@@ -27,7 +27,7 @@ public class DBControllerBill extends  DatabaseController{
             {
                 builder.append("INSERT INTO @para VALUES(?,?);");
             }
-            builder.append("EXEC dbo.createBill ?,@para;");
+            builder.append("EXEC dbo.createBill ?, ?,@para;");
 
             PreparedStatement statement = connection.prepareStatement(builder.toString());
 
@@ -40,6 +40,8 @@ public class DBControllerBill extends  DatabaseController{
                 i++;
             }
             statement.setInt(i, userID);
+            i++;
+            statement.setString(i, address);
             statement.addBatch();
 
             int[] r = statement.executeBatch();

@@ -26,6 +26,7 @@ public class PaymentDialogFragment extends DialogFragment {
     String receiverAddress;
     int productMoney;
     int shipMoney = 19000;
+    public String address;
 
     Helper.OnSuccessListener onSubmitOKListener;
     public void setOnSubmitOKListener(Helper.OnSuccessListener listener){this.onSubmitOKListener = listener;}
@@ -36,18 +37,19 @@ public class PaymentDialogFragment extends DialogFragment {
         this.shipMoney = shipMoney;
 
         int userID = Authenticator.getCurrentUser().id;
-        DBControllerUser db = new DBControllerUser();
-        UserBaseDB user = db.getUserInfo(userID);
-        db.closeConnection();
-        String[] address = user.getAddress();
-        receiverName = address[0];
-        receiverPhone = address[1];
-        receiverAddress = String.format(Locale.getDefault(), "%s, %s, %s", address[2], address[3], address[4]);
+        loadUser(userID);
     }
 
     void loadUser(int userID)
     {
-
+        DBControllerUser db = new DBControllerUser();
+        UserBaseDB user = db.getUserInfo(userID);
+        db.closeConnection();
+        address = user.address;
+        String[] address = user.getAddress();
+        receiverName = address[0];
+        receiverPhone = address[1];
+        receiverAddress = String.format(Locale.getDefault(), "%s, %s, %s", address[2], address[3], address[4]);
     }
 
     public PaymentDialogFragment(String receiverName, String receiverPhone, String receiverAddress, int productMoney, int shipMoney) {
