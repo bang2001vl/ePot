@@ -20,7 +20,7 @@ public class CartDataController {
         Map<String, ?> data = preferences.getAll();
         for(Map.Entry<String, ?> entry : data.entrySet())
         {
-            rs.add(new Pair<>(Integer.valueOf(entry.getKey()), (int)entry.getValue()));
+            //rs.add(new Pair<>(Integer.valueOf(entry.getKey()), (int)entry.getValue()));
         }
         return rs;
     }

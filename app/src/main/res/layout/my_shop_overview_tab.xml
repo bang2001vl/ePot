@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -47,19 +48,17 @@
             android:id="@+id/item_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:background="@color/transparent"
             app:OverviewName="@string/myshop_overview_txt_onConfirming"
             app:OverviewValue="0" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <exam.nlb2t.epot.Views.MyShopOverview_Item
@@ -98,7 +97,7 @@
             android:id="@+id/item_outofstock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:background="@color/transparent"
             app:OverviewName="@string/myshop_overview_txt_onOutOfStock"
             app:OverviewValue="0" />
