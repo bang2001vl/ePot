@@ -16,11 +16,10 @@
             android:background="@color/Background">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avt_profile"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/user"
-                android:layout_marginVertical="30dp"
+                android:src="@drawable/profile_user"
                 android:layout_marginLeft="20dp"/>
 
             <TextView
