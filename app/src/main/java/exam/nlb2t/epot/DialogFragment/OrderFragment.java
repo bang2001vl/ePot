@@ -1,9 +1,9 @@
-package exam.nlb2t.epot;
+package exam.nlb2t.epot.DialogFragment;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class OrderFragment extends Fragment {
+import exam.nlb2t.epot.OrderAdapter;
+import exam.nlb2t.epot.OrderTab;
+import exam.nlb2t.epot.R;
+
+public class OrderFragment extends DialogFragment{
 
     View myFragment;
     TabLayout tabLayout;
@@ -21,7 +25,10 @@ public class OrderFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    @Override
+    public int getTheme() {
+        return R.style.FullScreenDialog;
+    }
     public static OrderFragment getInstance(){
         return new OrderFragment();
     }

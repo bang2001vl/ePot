@@ -11,7 +11,7 @@
     <string name="menu_notification">Thông báo</string>
     <string name="menu_person">Cá nhân</string>
 
-    <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
+    <string name="on_workănging_description">Công trình đang thi công. Xin vui lòng đợi.</string>
     <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
         Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
 
@@ -92,7 +92,7 @@
     <string name="Selling">Sản phẩm bán chạy</string>
     <string name="Category">Danh mục</string>
     <string name="Suggestion">Gợi ý hôm nay</string>
-    <string name="See_All">Xem tất cả -></string>
+    <string name="See_All">Xem tất cả </string>
     <string name="Shoes">Giày</string>
     <string name="Clothes">Quần áo</string>
     <string name="Lock">Đồng hồ</string>
@@ -108,7 +108,7 @@
     <string name="No_Acount">Chưa có tài khoản?  </string>
     <string name="Social_NetWork">Đăng nhập với tài khoản xã hội</string>
 
-    <string name="Sign_Up">Đăng kí</string>
+    <string name="Sign_Up">Đăng ký</string>
     <string name="Enter_Phone">Nhập số điện thoại</string>
     <string name="Phone">Số điện thoại</string>
     <string name="Sent_OTP">Gửi OTP</string>

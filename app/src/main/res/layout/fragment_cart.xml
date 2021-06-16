@@ -68,8 +68,8 @@
                 android:layout_height="wrap_content"
 
                 android:text="@string/btn_cart"
-                android:background="@drawable/btn_large_background"
-
+                android:background="@drawable/epot_btn_bg"
+                android:stateListAnimator="@null"
                 android:layout_marginHorizontal="@dimen/large_btn_marhor"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

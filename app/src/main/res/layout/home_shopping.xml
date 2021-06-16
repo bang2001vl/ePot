@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/Locatin"
+            android:fontFamily="@font/gilroy_bold"
             android:textColor="#000000"
             android:textSize="22dp"
             android:textStyle="bold"
@@ -65,19 +66,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Selling"
-            android:textSize="22dp"
+            android:fontFamily="@font/gilroy_bold"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="#DB3022"
             android:gravity="bottom"
             />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textColor="#808080"
             android:text="@string/See_All"
             android:textSize="15dp"
             android:textAlignment="textEnd"
-
             />
        </LinearLayout>
     <fragment
@@ -98,7 +99,8 @@
             android:gravity="bottom"
             android:text="@string/Category"
             android:textColor="#DB3022"
-            android:textSize="22dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/gilroy_bold"
             android:textStyle="bold" />
 
         <TextView
@@ -205,6 +207,7 @@
         android:textColor="#DB3022"
         android:gravity="bottom"
         android:layout_margin="10dp"
+        android:fontFamily="@font/gilroy_bold"
         />
     <ScrollView
         android:layout_width="match_parent"
