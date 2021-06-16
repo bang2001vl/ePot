@@ -45,7 +45,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/Sale"
-                    android:textSize="7"
+                    android:textSize="7dp"
                     android:padding="2dp"
                     android:textAlignment="center"
                     android:textColor="@color/white"
