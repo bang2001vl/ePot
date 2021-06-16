@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.regex.Pattern;
-
 import exam.nlb2t.epot.R;
 
 public class fragment_signup_enterotp extends Fragment {
@@ -27,7 +25,6 @@ public class fragment_signup_enterotp extends Fragment {
         tv_sent_otp = (TextView) view.findViewById(R.id.tv_sent_otp);
         tv_coundown = (TextView) view.findViewById(R.id.tv_countdown);
 
-        Pattern pattern = Pattern.compile("^0-9");
 
         new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {

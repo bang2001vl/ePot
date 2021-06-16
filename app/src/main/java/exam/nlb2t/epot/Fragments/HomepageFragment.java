@@ -4,26 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import exam.nlb2t.epot.Database.DatabaseController;
-import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
-import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.databinding.ActivityTestingBinding;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
-import exam.nlb2t.epot.fragment_ProItem_Container;
 
 public class HomepageFragment extends Fragment {
     HomeShoppingBinding binding;
 
-    public static HomepageFragment newInstance(*//*Params here*//*)
+    public static HomepageFragment newInstance(/*Params here*/)
     {
         HomepageFragment fragment = new HomepageFragment();
-        // //TODO : Write code here <Setup new fragment>
+        // //TODO : Write code here <Setup new fragmenzt>
         return fragment;
     }
 

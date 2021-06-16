@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link signup_enterphone#newInstance} factory method to
+ * Use the {@link signup_enterphone#} factory method to
  * create an instance of this fragment.
  */
 public class signup_enterphone extends Fragment {
@@ -30,7 +30,7 @@ public class signup_enterphone extends Fragment {
         View view =inflater.inflate(R.layout.fragment_signup_enterphone, container, false);
         edt_phone = (EditText) view.findViewById(R.id.et_Phone);
 
-        Pattern pattern = Pattern.compile("^0-9");
+        Pattern pattern = Pattern.compile(".*\\D.*");
         edt_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -45,14 +45,8 @@ public class signup_enterphone extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 Matcher matcher = pattern.matcher(edt_phone.getText().toString());
-                if( !matcher.find())
-                {
+                if( matcher.find()) {
                     edt_phone.setError("Chỉ được nhập số!");
-                }
-                else
-                {
-                    if (edt_phone.getText().toString().length() != 10)
-                        edt_phone.setError("Vui lòng nhập đúng định dạng!");
                 }
             }
         });
