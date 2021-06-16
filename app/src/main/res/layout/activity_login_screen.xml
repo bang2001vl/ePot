@@ -27,8 +27,9 @@
             android:layout_gravity="center"
             android:text="@string/Login"
             android:textColor="@color/Title_login_logout"
-            android:textSize="@dimen/biggest_title_size_text"
-            android:textStyle="bold" />
+            android:textSize="34dp"
+           android:fontFamily="@font/gilroy_bold"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 
     <TextView
@@ -41,6 +42,7 @@
         android:textColor="@color/Title"
         android:textSize="@dimen/normal_title_size_text"
         android:textStyle="bold"
+        android:fontFamily="@font/gilroy_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
@@ -63,7 +65,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/Password"
         android:textColor="@color/Title"
-
+        android:fontFamily="@font/gilroy_medium"
         android:textSize="@dimen/normal_title_size_text"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +100,7 @@
         android:text="@string/Forgot_password"
         android:textColor="@color/mainColor"
         android:textSize="@dimen/small_title_size_text"
+        android:fontFamily="@font/gilroy_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
@@ -113,6 +116,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/normal_content_size_text"
         android:textStyle="bold"
+        android:fontFamily="@font/gilroy_bold"
+        android:stateListAnimator="@null"
         app:layout_constraintTop_toBottomOf="@+id/tv_forgotpass"
         tools:layout_editor_absoluteX="32dp" />
 
@@ -131,7 +136,8 @@
             android:text="@string/No_Acount"
             android:textSize="@dimen/small_title_size_text"
             app:layout_constraintTop_toBottomOf="@+id/button"
-            tools:layout_editor_absoluteX="108dp" />
+            tools:layout_editor_absoluteX="108dp"
+            android:fontFamily="@font/gilroy_medium"/>
 
         <TextView
             android:id="@+id/tv_signup"
@@ -141,7 +147,8 @@
             android:textColor="@color/mainColor"
             android:textSize="@dimen/small_title_size_text"
             tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="569dp" />
+            tools:layout_editor_absoluteY="569dp"
+            android:fontFamily="@font/gilroy_medium"/>
     </LinearLayout>
 
     <TextView
@@ -157,7 +164,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        android:fontFamily="@font/gilroy_medium"/>
 
 
     <com.facebook.login.widget.LoginButton
