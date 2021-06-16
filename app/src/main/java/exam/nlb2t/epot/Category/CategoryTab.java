@@ -1,9 +1,13 @@
-/*
 package exam.nlb2t.epot.Category;
 
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,74 +15,73 @@ import java.util.List;
 
 import exam.nlb2t.epot.R;
 
-public class CategoryTab extends RecyclerView.Adapter<CategoryTab.AdapterDataObserver> {
+public class CategoryTab extends RecyclerView.Adapter<CategoryTab.CategoryViewHolder> {
 
     private Context context;
-    private int layout;
-    private List<Category> categoryList;
+    private List<Category> listCategory;
 
-    public CategoryTab(Context context, int layout, List<Category> categoryList) {
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
         this.context = context;
-        this.layout = layout;
-        this.categoryList = categoryList;
     }
 
-    @Override
-    public CategoryTab.DataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public List<Category> getListCategory() {
+        return listCategory;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CategoryTab.AdapterDataObserver holder, int position) {
-
+    public void setListCategory(List<Category> listCategory) {
+        this.listCategory = listCategory;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.AdapterDataObserver holder, int position) {
-
+    public CategoryTab(Context context) {
+        this.context = context;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.Adapter holder, int position) {
+    public void setData(List<Category> list)
+    {
+        listCategory = list;
+        notifyDataSetChanged();
+    }
 
+    public class CategoryViewHolder extends RecyclerView.ViewHolder{
+
+        private ImageView imageView;
+        private TextView textView;
+        public CategoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            imageView = itemView.findViewById(R.id.imageCategory);
+            textView =itemView.findViewById(R.id.textViewNameCategory);
+        }
     }
 
     @NonNull
     @Override
-    public RecyclerDataAdapter.DataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_tab, parent, false);
+        return new CategoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerDataAdapter.DataViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+        Category category = listCategory.get(position);
+        if (category != null)
+        {
+            holder.imageView.setImageBitmap(category.getAvatar_id());
+            holder.textView.setText(category.getName());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return categoryList == null ? 0 : categoryList.size();
+        if (listCategory.size() != 0) return listCategory.size();
+        return 0;
+
     }
 
-    public class AdapterDataObserver extends RecyclerView.ViewHolder {
-    }
 
-    */
-/*@Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        convertView = layoutInflater.inflate(layout, null);
-        Category category = categoryList.get(position);
-        TextView textView = convertView.findViewById(R.id.imageCategory);
-        ImageView imageView = convertView.findViewById(R.id.imageCategory);
-        textView.setText(category.getName());
-        imageView.setImageResource(category.getAvatar_id());
-        return convertView;
-    }*//*
 
 }
-*/

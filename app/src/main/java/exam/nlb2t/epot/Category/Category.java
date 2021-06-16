@@ -1,23 +1,25 @@
 package exam.nlb2t.epot.Category;
 
-public class Category {
-    private String id;
-    private String name;
-    private int avatar_id;
+import android.graphics.Bitmap;
 
-    public Category(String id, String name, int avatar_id) {
-        this.id = id;
+public class Category {
+    //private String id;
+    private String name;
+    private Bitmap avatar_id;
+
+    public Category(String name, Bitmap avatar_id) {
+        //this.id = id;
         this.name = name;
         this.avatar_id = avatar_id;
     }
 
-    public String getId() {
+    /*public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -27,11 +29,11 @@ public class Category {
         this.name = name;
     }
 
-    public int getAvatar_id() {
+    public Bitmap getAvatar_id() {
         return avatar_id;
     }
 
-    public void setAvatar_id(int avatar_id) {
+    public void setAvatar_id(Bitmap avatar_id) {
         this.avatar_id = avatar_id;
     }
 }
