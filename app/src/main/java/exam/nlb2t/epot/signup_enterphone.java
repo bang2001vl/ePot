@@ -48,6 +48,13 @@ public class signup_enterphone extends Fragment {
                 if( matcher.find()) {
                     edt_phone.setError("Chỉ được nhập số!");
                 }
+                else
+                {
+                    if (!(edt_phone.length() != 10 && edt_phone.getText().toString().charAt(0) != '0') || !(edt_phone.length() != 12 && edt_phone.getText().toString().substring(0,3) != "+84"))
+                    {
+                        edt_phone.setError("Nhập sai định dạng sđt!");
+                    }
+                }
             }
         });
         return view;

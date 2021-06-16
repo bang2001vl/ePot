@@ -1,13 +1,16 @@
 package exam.nlb2t.epot.Views;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,8 +23,13 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.signup_enterphone;
 
@@ -32,8 +40,14 @@ public class signup extends AppCompatActivity {
     private EditText edt_phonenumber;
     private EditText edt_otp;
     private FirebaseAuth mAuth;
+    private String phone;
+    private LinearLayout ln_logo;
 
     private String verificationId;
+    private int count = 0;
+    private String Code;
+    ConstraintLayout.LayoutParams params;
+    boolean Issend = true;
 
     private fragment_signup_enterotp fg_signup_enterotp;
     private signup_enterphone fg_signup_enterphone;
@@ -53,16 +67,19 @@ public class signup extends AppCompatActivity {
 
         btn_back = (Button) findViewById(R.id.btn_back);
         btn_next = (Button) findViewById(R.id.btn_next);
+        ln_logo = (LinearLayout) findViewById(R.id.ln_logo);
+
+         params = ( ConstraintLayout.LayoutParams) ln_logo.getLayoutParams();
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP)))
                 {
+                    fg_signup_enterotp.edt_otp = edt_otp;
                     ReplaceFragment(fg_signup_enterotp);
                     btn_next.setText(R.string.Continue);
-                    btn_next.setEnabled(false);
-                    String phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
+                    phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
                     sendVerificationCode(phone);
                 }
                 else
@@ -74,7 +91,11 @@ public class signup extends AppCompatActivity {
                     }
                     else
                     {
-                        finish();
+                            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                            Date date = new Date(System.currentTimeMillis());
+                            DBControllerUser controllerUser = new DBControllerUser();
+                            controllerUser.InsertUser(phone,  "", fg_signup_new_account.tit_pass.getText().toString(), fg_signup_new_account.edt_name.getText().toString(), fg_signup_new_account.acs_sex.getSelectedItemPosition(),formatter.format(date), fg_signup_new_account.edt_birth.getText().toString(), "", fg_signup_new_account.edt_usename.getText().toString(),0, "");
+                            finish();
                     }
                 }
             }
@@ -88,8 +109,11 @@ public class signup extends AppCompatActivity {
                 }
                 else
                 {
+                    params.setMargins(0, 116, 0, 0);
+                    ln_logo.setLayoutParams(params);
                     if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
                     {
+                       /* fg_signup_enterotp.btn_next = btn_next;*/
                        ReplaceFragment(fg_signup_enterphone);
                         btn_next.setText(R.string.Sent_OTP);
                     }
@@ -101,6 +125,17 @@ public class signup extends AppCompatActivity {
                 }
             }
         });
+
+        if (fg_signup_enterotp.tv_sent_otp != null && phone != null)
+        {
+            fg_signup_enterotp.tv_sent_otp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendVerificationCode(phone);
+                    fg_signup_enterotp.tv_sent_otp.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
     }
 
     private  void ReplaceFragment(Fragment fragment)
@@ -108,12 +143,9 @@ public class signup extends AppCompatActivity {
         if (fragment != null)
         {
             FragmentTransaction fg_transaction = getSupportFragmentManager().beginTransaction();
-           /* fg_transaction.add(R.id.container_body, fragment);
-            fg_transaction.addToBackStack(fragment.getClass().getSimpleName());*/
             fg_transaction.replace(R.id.container_body, fragment);
             fg_transaction.commit();
         }
-
     }
 
 
@@ -127,7 +159,11 @@ public class signup extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // if the code is correct and the task is successful
                             // Mở  fragment đăng kí mới
-                            ReplaceFragment(new fragment_login_new_account());
+
+                            params.setMargins(0, 30, 0, 0);
+                            ln_logo.setLayoutParams(params);
+
+                            ReplaceFragment(fg_signup_new_account);
                             btn_next.setText(R.string.Sign_Up);
 
                         } else {
@@ -158,43 +194,41 @@ public class signup extends AppCompatActivity {
             // verification callback method.
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-        // below method is used when
-        // OTP is sent from Firebase
+        // below method is used when OTP is sent from Firebase
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            // when we receive the OTP it
-            // contains a unique id which
-            // we are storing in our string
-            // which we have already created.
-            verificationId = s;
+            // when we receive the OTP it contains a unique id which we are storing in our string which we have already created.
+
+             verificationId = s;
+            new CountDownTimer(120000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    fg_signup_enterotp.tv_coundown.setText( "(" + millisUntilFinished / 1000 + ")");
+                }
+                public void onFinish() {
+                    fg_signup_enterotp.tv_coundown.setText( "(0)");
+                    fg_signup_enterotp.tv_sent_otp.setVisibility(View.VISIBLE);
+                    Issend = false;
+
+                    fg_signup_enterotp.tv_sent_otp.setOnClickListener(v -> {
+                        Issend = true;
+                        sendVerificationCode(phone);
+                        fg_signup_enterotp.tv_sent_otp.setVisibility(View.INVISIBLE);
+                    });
+                }
+            }.start();
+
         }
 
-        // this method is called when user
-        // receive OTP from Firebase.
+        // this method is called when user receive OTP from Firebase.
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            // below line is used for getting OTP code
-            // which is sent in phone auth credentials.
-            final String code = phoneAuthCredential.getSmsCode();
-
-            // checking if the code
-            // is null or not.
-            if (code != null) {
-                // if the code is not null then
-                // we are setting that code to
-                // our OTP edittext field.
-                edt_otp.setText(code);
-
-                // after setting this code
-                // to OTP edittext field we
-                // are calling our verifycode method.
-                verifyCode(code);
-            }
+            // below line is used for getting OTP code  which is sent in phone auth credentials.
+            Code = phoneAuthCredential.getSmsCode();
+            // checking if the code is null or not.
         }
 
-        // this method is called when firebase doesn't
-        // sends our OTP code due to any error or issue.
+        // this method is called when firebase doesn't sends our OTP code due to any error or issue.
         @Override
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
@@ -203,14 +237,34 @@ public class signup extends AppCompatActivity {
     };
 
     // below method is use to verify code from Firebase.
-    private void verifyCode(String code) {
-        // below line is used for getting getting
-        // credentials from our verification id and code.
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+    private Boolean verifyCode(String code) {
+        // below line is used for getting getting credentials from our verification id and code.
+        Pattern pattern = Pattern.compile(".*\\D.*");
+        Matcher matcher = pattern.matcher(code);
+        if ( code.length() != 6 || matcher.find() )
+        {
+            return false;
+        }
+        else
+        {
+            if (count == 5)
+            {
+                Toast.makeText(this, "Nhập sãi mã OTP 5 lần, vui lòng đăng kí lại!", Toast.LENGTH_LONG).show();
+                count = 0;
+                finish();
+            }
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+            // after getting credential we are calling sign in method.
 
-        // after getting credential we are
-        // calling sign in method.
-        signInWithCredential(credential);
+            if ( Issend && code != credential.getSmsCode())
+            {
+                ++count;
+                Toast.makeText(this, "Nhập sai mã OTP!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            signInWithCredential(credential);
+        }
+    return true;
     }
 
 }

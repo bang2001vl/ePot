@@ -29,7 +29,6 @@
         android:text="@string/Code"
         android:textColor="@color/Title"
         android:textSize="@dimen/normal_title_size_text"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Enter_Phone" />
 
