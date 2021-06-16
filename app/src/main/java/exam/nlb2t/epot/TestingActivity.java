@@ -31,7 +31,7 @@ public class TestingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_testing);
     }
 
     public void TestViewGroup()
@@ -53,30 +53,30 @@ public class TestingActivity extends AppCompatActivity {
         }
     }
 
-    public void TestChooseDetail()
-    {
-        int n = 5;
-        String[] option = new String[n];
-        for(int i =0; i< n; i++)
-        {
-            option[i] = "Option " + i;
-            for(int j = i; j>=0; j--)
-            { option[i] += j;}
-        }
-        Pair<String, String[]> options_1 = new Pair<>("Colors", option);
-        Pair<String, String[]> options_2 = new Pair<>("Sizes", option);
-
-        List<Pair<String, String[]>> list_options = new ArrayList<>(2);
-        list_options.add(options_1);
-        list_options.add(options_2);
-
-        Random random = new Random(System.currentTimeMillis());
-        Product product = Product.createRandom(random.nextInt(100));
-        ChooseItemDetailBottomSheet dialog = new ChooseItemDetailBottomSheet("Xoai Ngot", product.avaiableAmount
-                , product.originPrice, product.currentPrice,
-                BitmapFactory.decodeResource(getResources(), R.mipmap.mango), list_options);
-        dialog.show(TestingActivity.this.getSupportFragmentManager(), "MY_TAG");
-    }
+//    public void TestChooseDetail()
+//    {
+//        int n = 5;
+//        String[] option = new String[n];
+//        for(int i =0; i< n; i++)
+//        {
+//            option[i] = "Option " + i;
+//            for(int j = i; j>=0; j--)
+//            { option[i] += j;}
+//        }
+//        Pair<String, String[]> options_1 = new Pair<>("Colors", option);
+//        Pair<String, String[]> options_2 = new Pair<>("Sizes", option);
+//
+//        List<Pair<String, String[]>> list_options = new ArrayList<>(2);
+//        list_options.add(options_1);
+//        list_options.add(options_2);
+//
+//        Random random = new Random(System.currentTimeMillis());
+//        Product product = Product.createRandom(random.nextInt(100));
+//        ChooseItemDetailBottomSheet dialog = new ChooseItemDetailBottomSheet("Xoai Ngot", product.avaiableAmount
+//                , product.originPrice, product.currentPrice,
+//                BitmapFactory.decodeResource(getResources(), R.mipmap.mango), list_options);
+//        dialog.show(TestingActivity.this.getSupportFragmentManager(), "MY_TAG");
+//    }
 
     public void TestCart()
     {

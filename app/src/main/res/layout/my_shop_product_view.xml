@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/my_shop_imageProduct"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@drawable/vans" />
@@ -27,6 +28,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/my_shop_nameProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -49,6 +51,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/my_shop_priceProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1 000 000đ"
@@ -72,6 +75,7 @@
                         android:src="@drawable/ic_icon_kho" />
 
                     <TextView
+                        android:id="@+id/my_shop_txt_numberWarehouse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -93,6 +97,7 @@
                         android:scaleType="fitCenter"/>
 
                     <TextView
+                        android:id="@+id/my_shop_txt_numberSale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -118,6 +123,7 @@
                         android:src="@drawable/ic_shape" />
 
                     <TextView
+                        android:id="@+id/my_shop_txt_numberLike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -139,6 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"/>
         <Button
+            android:id="@+id/my_shop_btn_change"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:text="Sửa"
@@ -150,6 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <Button
+            android:id="@+id/my_shop_btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:textColor="@color/red"
