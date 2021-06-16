@@ -92,7 +92,7 @@ public class TestingActivity extends AppCompatActivity {
             Saler saler = Saler.createRandom(i);
             for (int k = 0; k<number_product; k++) {
                 ProductBuyInfo productBuyInfo = ProductBuyInfo.createRandom(k);
-                productBuyInfo.product.saler = saler;
+                //productBuyInfo.product.saler = saler;
                 productBuyInfos.add(productBuyInfo);
             }
         }
