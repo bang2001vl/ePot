@@ -63,13 +63,6 @@ public class DatabaseController {
         }
     }
 
-    public boolean InsertUser(String phone, String email, String password, String fullname,
-                              int gender, String joinday, String birthday, String address,
-                              String shopname,  int follower, String info)
-    {
-
-        return true;
-    }
 
     public boolean CheckUserExist(String username){
 

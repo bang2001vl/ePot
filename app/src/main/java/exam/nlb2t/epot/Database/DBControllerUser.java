@@ -99,4 +99,13 @@ public class DBControllerUser extends DatabaseController{
         }
         return rs;
     }
+    //insert new user into database
+    public boolean InsertUser(String phone, String email, String password, String fullname,
+                              int gender, String joinday, String birthday, String address,
+                              String shopname,  int follower, String info)
+    {
+
+        return true;
+    }
+
 }
