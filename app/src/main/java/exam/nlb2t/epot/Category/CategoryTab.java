@@ -1,3 +1,4 @@
+/*
 package exam.nlb2t.epot.Category;
 
 
@@ -66,7 +67,8 @@ public class CategoryTab extends RecyclerView.Adapter<CategoryTab.AdapterDataObs
     public class AdapterDataObserver extends RecyclerView.ViewHolder {
     }
 
-    /*@Override
+    */
+/*@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         convertView = layoutInflater.inflate(layout, null);
@@ -76,5 +78,7 @@ public class CategoryTab extends RecyclerView.Adapter<CategoryTab.AdapterDataObs
         textView.setText(category.getName());
         imageView.setImageResource(category.getAvatar_id());
         return convertView;
-    }*/
+    }*//*
+
 }
+*/
