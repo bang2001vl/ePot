@@ -26,11 +26,11 @@ public class UserBaseDB {
     public Date birthday;
     public Date createdDate;
 
-    public Bitmap getAvatar()
+    public Bitmap getAvatar(int avatarID)
     {
         Bitmap rs;
         DBControllerUser db = new DBControllerUser();
-        rs  = db.getAvatar(avatarID);
+        rs  = db.getAvatar(this.avatarID);
         db.closeConnection();
         return rs;
     }
