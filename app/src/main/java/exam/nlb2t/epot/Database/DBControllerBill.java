@@ -58,4 +58,17 @@ public class DBControllerBill extends  DatabaseController{
         }
         return rs;
     }
+    public int getBillSuccess(int UserID) {
+        //TODO: InsertCodeHere
+    }
+    public int getBillShip(int UserID) {
+        //TODO: InsertCodeHere
+    }
+    public int getBillConfirm(int UserID) {
+        //TODO: InsertCodeHere
+    }
+    public int getBillCancel(int UserID) {
+        //TODO: InsertCodeHere
+    }
+
 }

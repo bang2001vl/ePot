@@ -59,5 +59,7 @@
     <dimen name="image_preview_width_small">75dp</dimen>
 
 <!--    Dimen resources of layout My Shop Overview-->
-    <dimen name="my_shop_overview_item_size">20dp</dimen>
+    <dimen name="my_shop_overview_item_size">15dp</dimen>
+    <dimen name="my_shop_product_txtsize">15dp</dimen>
+    <dimen name="my_shop_product_iconsize">20dp</dimen>
 </resources>

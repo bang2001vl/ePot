@@ -19,19 +19,19 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:background="@color/white"
             android:orientation="horizontal"
-            tools:layout_editor_absoluteX="0dp">
+            android:layout_marginTop="10dp">
 
             <ImageButton
                 android:id="@+id/btnClose"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
                 android:background="@color/white"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
             <TextView
@@ -39,21 +39,22 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:textSize="30sp"
-                android:text="Sửa sản phẩm"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
+                android:textSize="28dp"
+                android:text="Thêm sản phẩm"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/black" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/button_save"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
                 android:background="@color/transparent"
-                android:text="lưu"
-                android:textSize="18sp"
+                android:text="LƯU"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textSize="17dp"
+                android:textStyle="bold"
                 android:textColor="@android:color/holo_red_dark" />
         </LinearLayout>
 
@@ -109,7 +110,7 @@
                                     android:background="#CC777777"
                                     android:textAlignment="center"
                                     android:text="Ảnh chính"
-                                    android:layout_gravity="center_horizontal|bottom"
+                                    android:layout_gravity="center_horizontal"
                                     android:textColor="@color/white"
                                     android:textSize="19sp" />
 
@@ -206,9 +207,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:ems="10"
+                        android:maxLength="15"
                         android:inputType="number"
-                        android:hint="1000000đ" />
+                        android:hint="10.000.000đ" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -233,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:ems="10"
+                        android:maxLength="10"
                         android:inputType="number"
                         android:hint="1000" />
                 </LinearLayout>

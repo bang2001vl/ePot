@@ -55,4 +55,7 @@ public class ProductBaseDB {
         rs = db.getNumberLikeProduct(this.id);
         return rs;
     }
+    public void setData(ProductBaseDB product) {
+
+    }
 }

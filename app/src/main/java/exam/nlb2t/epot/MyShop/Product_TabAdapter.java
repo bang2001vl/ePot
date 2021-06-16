@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.MyShop;
 
+import android.content.Context;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +30,7 @@ import exam.nlb2t.epot.singleton.Helper;
 
 public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder> {
     List<ProductBaseDB> products;
+    Context context;
 
     public Product_TabAdapter(int userID) {
         DBControllerProduct db = new DBControllerProduct();
@@ -37,6 +41,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_shop_product_view, parent, false);
 
         return new ViewHolder(view);
@@ -47,9 +52,9 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         holder.getNameView().setText(products.get(position).name);
         holder.getPriceView().setText(Helper.getMoneyString(products.get(position).price));
         holder.getImageView().setImageBitmap(products.get(position).getImagePrimary());
-        holder.getLikeView().setText(String.valueOf(products.get(position).getNumberLike()));
-        holder.getWarehouseView().setText(String.valueOf(products.get(position).amount - products.get(position).amountSold));
-        holder.getSellView().setText(String.valueOf(products.get(position).amountSold));
+        holder.getLikeView().setText("Yêu thích: " + products.get(position).getNumberLike());
+        holder.getWarehouseView().setText("Kho hàng: " + (products.get(position).amount - products.get(position).amountSold));
+        holder.getSellView().setText("Đã bán: " + products.get(position).amountSold);
 
         setEventHandler(holder);
     }
@@ -116,7 +121,8 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             @Override
             public void onClick(View v) {
                 //TODO: Open dialog view update_product.xml
-
+                AddProductFragment dialog = new AddProductFragment(products.get(holder.getAdapterPosition()));
+                dialog.show(((AppCompatActivity)context).getSupportFragmentManager(),AddProductFragment.NAMEDIALOG);
             }
         });
 
