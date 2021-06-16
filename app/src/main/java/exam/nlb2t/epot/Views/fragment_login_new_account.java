@@ -1,8 +1,6 @@
 package exam.nlb2t.epot.Views;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.R;
@@ -47,7 +44,7 @@ public class fragment_login_new_account extends Fragment {
 
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
 
-        edt_usename.addTextChangedListener(new TextWatcher() {
+       /* edt_usename.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -136,7 +133,7 @@ public class fragment_login_new_account extends Fragment {
                     tit_define_pass.setError("Xác nhận mật khẩu sai!");
                 }
             }
-        });
+        });*/
         return view;
     }
 }

@@ -50,7 +50,10 @@ public class signup_enterphone extends Fragment {
                 }
                 else
                 {
-                    if (!(edt_phone.length() != 10 && edt_phone.getText().toString().charAt(0) != '0') || !(edt_phone.length() != 12 && edt_phone.getText().toString().substring(0,3) != "+84"))
+                    if ((edt_phone.length() == 10 && edt_phone.getText().toString().charAt(0) == '0') || (edt_phone.length() == 12 && edt_phone.getText().toString().substring(0,3) == "+84"))
+                    {
+                    }
+                    else
                     {
                         edt_phone.setError("Nhập sai định dạng sđt!");
                     }
