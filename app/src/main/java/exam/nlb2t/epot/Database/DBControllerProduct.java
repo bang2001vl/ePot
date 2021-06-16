@@ -191,6 +191,46 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
+    public List<ProductBaseDB> getProducts(int userID)
+    {
+        List<ProductBaseDB> rs = new ArrayList<>();
+        try
+        {
+            String sql = "select * from [PRODUCT] where [SALER_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            ProductBaseDB item = new ProductBaseDB();
+            while (resultSet.next())
+            {
+                int i = 1;
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.description = resultSet.getString(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);i++;
+
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return rs;
+    }
+
     public boolean likeProduct(int productID, int userID)
     {
         boolean rs = false;
@@ -255,6 +295,26 @@ public class DBControllerProduct extends DatabaseController{
         {
             e.printStackTrace();
         }
+        return rs;
+    }
+
+    public int getNumberLikeProduct(int productID)
+    {
+        int rs = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM [LIKE] WHERE [PRODUCT_ID]=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            ResultSet rsSet = statement.executeQuery();
+            if (rsSet.next()) {
+                rs = rsSet.getInt(1);
+            }
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return rs;
     }
 }

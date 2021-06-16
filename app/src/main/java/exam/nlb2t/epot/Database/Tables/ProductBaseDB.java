@@ -48,4 +48,11 @@ public class ProductBaseDB {
     {
 
     }
+
+    public int getNumberLike() {
+        int rs;
+        DBControllerProduct db = new DBControllerProduct();
+        rs = db.getNumberLikeProduct(this.id);
+        return rs;
+    }
 }
