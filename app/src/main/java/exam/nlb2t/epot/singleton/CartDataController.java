@@ -17,10 +17,14 @@ public class CartDataController {
     {
         SharedPreferences preferences =context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
         List<Pair<Integer, Integer>> rs = new ArrayList<>();
-        Map<String, ?> data = preferences.getAll();
-        for(Map.Entry<String, ?> entry : data.entrySet())
+        Set<String> keys = preferences.getAll().keySet();
+        for(String key : keys)
         {
-            //rs.add(new Pair<>(Integer.valueOf(entry.getKey()), (int)entry.getValue()));
+            int val = preferences.getInt(key, -1);
+            if( val != -1) {
+                rs.add(new Pair<>(Integer.valueOf(key), val));
+            }
+            else {preferences.edit().remove(key).apply();}
         }
         return rs;
     }

@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -105,6 +106,15 @@ public class Helper {
         }
 
         return rs;
+    }
+
+    public static Date getDateLocalFromUTC(Date utcDate)
+    {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.setTime(utcDate);
+        calendar.setTimeZone(TimeZone.getDefault());
+
+        return new Date(calendar.getTimeInMillis());
     }
 
     public static DateFormat getDateFormat()

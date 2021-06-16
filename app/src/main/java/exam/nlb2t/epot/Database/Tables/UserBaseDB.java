@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -31,6 +32,33 @@ public class UserBaseDB {
         DBControllerUser db = new DBControllerUser();
         rs  = db.getAvatar(avatarID);
         db.closeConnection();
+        return rs;
+    }
+
+    public void setAddress(String receiverName, String receiverPhone, String address, String dictrict, String province)
+    {
+        String separator = "|-|";
+        StringBuilder builder = new StringBuilder();
+        builder.append(separator).append(receiverName);
+        builder.append(separator).append(receiverPhone);
+        builder.append(separator).append(address);
+        builder.append(separator).append(dictrict);
+        builder.append(separator).append(province);
+        builder.append(separator);
+    }
+
+    public String[] getAddress()
+    {
+        String separator = "|-|";
+        String[] rs = new String[5];
+        int temp = separator.length();
+        int start = temp;
+        for(int i = 0; i<rs.length; i++)
+        {
+            int end = address.indexOf(separator, start);
+            rs[i] = address.substring(start, end);
+            start = end + temp;
+        }
         return rs;
     }
 
