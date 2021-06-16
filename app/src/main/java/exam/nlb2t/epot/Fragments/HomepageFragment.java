@@ -20,7 +20,7 @@ import exam.nlb2t.epot.fragment_ProItem_Container;
 public class HomepageFragment extends Fragment {
     HomeShoppingBinding binding;
 
-    public static HomepageFragment newInstance(*//*Params here*//*)
+    public static HomepageFragment newInstance(/*Params here*/)
     {
         HomepageFragment fragment = new HomepageFragment();
         // //TODO : Write code here <Setup new fragment>
