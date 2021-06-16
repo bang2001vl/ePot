@@ -24,6 +24,7 @@ import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
 import exam.nlb2t.epot.ClassInformation.Saler;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.ProductDetail.ChooseItemDetailBottomSheet;
 
 public class TestingActivity extends AppCompatActivity {
 
