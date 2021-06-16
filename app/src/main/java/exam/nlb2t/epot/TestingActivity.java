@@ -1,13 +1,11 @@
 package exam.nlb2t.epot;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dragnell.android.SearchBar;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -27,13 +24,14 @@ import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
 import exam.nlb2t.epot.ClassInformation.Saler;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.ProductDetail.ChooseItemDetailBottomSheet;
 
 public class TestingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_testing);
     }
 
     public void TestViewGroup()
@@ -55,30 +53,30 @@ public class TestingActivity extends AppCompatActivity {
         }
     }
 
-    public void TestChooseDetail()
-    {
-        int n = 5;
-        String[] option = new String[n];
-        for(int i =0; i< n; i++)
-        {
-            option[i] = "Option " + i;
-            for(int j = i; j>=0; j--)
-            { option[i] += j;}
-        }
-        Pair<String, String[]> options_1 = new Pair<>("Colors", option);
-        Pair<String, String[]> options_2 = new Pair<>("Sizes", option);
-
-        List<Pair<String, String[]>> list_options = new ArrayList<>(2);
-        list_options.add(options_1);
-        list_options.add(options_2);
-
-        Random random = new Random(System.currentTimeMillis());
-        Product product = Product.createRandom(random.nextInt(100));
-        ChooseItemDetailBottomSheet dialog = new ChooseItemDetailBottomSheet("Xoai Ngot", product.avaiableAmount
-                , product.originPrice, product.currentPrice,
-                BitmapFactory.decodeResource(getResources(), R.mipmap.mango), list_options);
-        dialog.show(TestingActivity.this.getSupportFragmentManager(), "MY_TAG");
-    }
+//    public void TestChooseDetail()
+//    {
+//        int n = 5;
+//        String[] option = new String[n];
+//        for(int i =0; i< n; i++)
+//        {
+//            option[i] = "Option " + i;
+//            for(int j = i; j>=0; j--)
+//            { option[i] += j;}
+//        }
+//        Pair<String, String[]> options_1 = new Pair<>("Colors", option);
+//        Pair<String, String[]> options_2 = new Pair<>("Sizes", option);
+//
+//        List<Pair<String, String[]>> list_options = new ArrayList<>(2);
+//        list_options.add(options_1);
+//        list_options.add(options_2);
+//
+//        Random random = new Random(System.currentTimeMillis());
+//        Product product = Product.createRandom(random.nextInt(100));
+//        ChooseItemDetailBottomSheet dialog = new ChooseItemDetailBottomSheet("Xoai Ngot", product.avaiableAmount
+//                , product.originPrice, product.currentPrice,
+//                BitmapFactory.decodeResource(getResources(), R.mipmap.mango), list_options);
+//        dialog.show(TestingActivity.this.getSupportFragmentManager(), "MY_TAG");
+//    }
 
     public void TestCart()
     {
@@ -92,7 +90,7 @@ public class TestingActivity extends AppCompatActivity {
             Saler saler = Saler.createRandom(i);
             for (int k = 0; k<number_product; k++) {
                 ProductBuyInfo productBuyInfo = ProductBuyInfo.createRandom(k);
-                //productBuyInfo.product.saler = saler;
+               /* productBuyInfo.product.saler = saler;*/
                 productBuyInfos.add(productBuyInfo);
             }
         }

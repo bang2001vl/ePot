@@ -17,10 +17,17 @@
         android:textSize="18sp"
         android:layout_marginVertical="10dp"
         />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSubmit"
-        android:text="Submit"
+        android:id="@+id/btnSubmitAvatar"
+        android:text="Submit Avatar"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSubmitImage"
+        android:text="Submit Image"
         />
 </LinearLayout>

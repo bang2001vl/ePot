@@ -1,7 +1,9 @@
 package exam.nlb2t.epot;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -13,24 +15,26 @@ import android.os.Handler;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dragnell.android.ButtonNumberNotification;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.Fragments.CartFragment;
+import exam.nlb2t.epot.Fragments.CartFragment_Old;
 import exam.nlb2t.epot.Fragments.HomepageFragment;
-import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.Fragments.NotificationFragment;
 import exam.nlb2t.epot.Fragments.PersonFragment;
 import exam.nlb2t.epot.MyShop.ShopFragment;
+import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.ActivityMainBinding;
+import exam.nlb2t.epot.singleton.CartDataController;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -91,6 +95,26 @@ public class MainActivity extends AppCompatActivity {
 
             MainFragmentAdapter adapter = createAdapter();
             binding.viewPaperMain.setAdapter(adapter);
+            binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    switch (position){
+                        case 1:
+                            onOpenTabCart((CartFragment_Old) adapter.getItem(position));
+                            break;
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
 
             binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
             setIcons(binding.tabLayout);
@@ -99,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
             getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
             color = typedValue.data;
             color2 = getResources().getColor(R.color.drark_gray, getTheme());
-            binding.tabLayout.setTabTextColors(Color.BLACK, color);
-            binding.tabLayout.setSelectedTabIndicatorColor(color);
+
             binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -117,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+            binding.tabLayout.setTabTextColors(Color.BLACK, color);
+            binding.tabLayout.setSelectedTabIndicatorColor(color);
+            binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
             long delayInTask = System.currentTimeMillis() - start;
             if(delayInTask < 2000)
@@ -134,15 +160,68 @@ public class MainActivity extends AppCompatActivity {
         new Thread(runnable).start();
     }
 
+    void onOpenTabCart(CartFragment_Old fragmentOld)
+    {
+        if(fragmentOld.getContext() == null){return;}
+        List<Pair<Integer, Integer>> list = CartDataController.getAllData(fragmentOld.getContext());
+
+        fragmentOld.requestLoadData(list);
+    }
+
+    public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();
     public MainFragmentAdapter createAdapter()
     {
+        CartFragment_Old cartFragment = new CartFragment_Old(){
+           /* @Override
+            public void onItemDeleted(ProductBuyInfo productBuyInfo) {
+                super.onItemDeleted(productBuyInfo);
+                if(getContext() == null) return;
+                CartDataController.removeProduct(getContext(), productBuyInfo.product.id);
+            }
+
+            @Override
+            public void onItemAmountChanged(ProductBuyInfo productBuyInfo) {
+                super.onItemAmountChanged(productBuyInfo);
+                if(getContext() == null) return;
+                CartDataController.setProduct(getContext(), productBuyInfo.product.id, productBuyInfo.Amount);
+            }*/
+/*
+            @Override
+            public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+                super.onViewCreated(view, savedInstanceState);
+                if(getContext() == null){return;}
+                List<Pair<Integer, Integer>> list = CartDataController.getAllData(getContext());
+                ProductBuyInfo[] arr = new ProductBuyInfo[list.size()];
+                for(int i = 0; i<arr.length; i++)
+                {
+                    arr[i] = new ProductBuyInfo(list.get(i).first, list.get(i).second);
+                }
+                setData(arr);
+            }*/
+        };
+
         Fragment[] fragments = new Fragment[]{
                 new HomepageFragment(),
-                new CartFragment(),
+                new CartFragment_Old(),
                 new ShopFragment(),
                 new NotificationFragment(),
                 new PersonFragment()
         };
+
+        CartFragment_Old fragmentOld = (CartFragment_Old) fragments[1];
+        fragmentOld.setOnItemDeleted(view -> {
+            Card_ItemView_New item = (Card_ItemView_New)view;
+            ProductBuyInfo productBuyInfo = (ProductBuyInfo)item.Tag;
+            if(view.getContext() == null) return;
+            CartDataController.removeProduct(view.getContext(), productBuyInfo.product.id);
+        });
+        fragmentOld.setOnItemAmountChanged(view -> {
+            Card_ItemView_New item = (Card_ItemView_New)view;
+            ProductBuyInfo productBuyInfo = (ProductBuyInfo)item.Tag;
+            if(view.getContext() == null) return;
+            CartDataController.setProduct(view.getContext(), productBuyInfo.product.id, productBuyInfo.Amount);
+        });
+
         Resources resources = getResources();
         String[] titles = new String[]{
                 resources.getString(R.string.menu_home_page),

@@ -1,24 +1,11 @@
 package exam.nlb2t.epot.Database;
 
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import exam.nlb2t.epot.SQL.DataController;
-import exam.nlb2t.epot.singleton.Helper;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
+import exam.nlb2t.epot.SQL.DataController;
 
 public class DatabaseController {
     protected String ErrorMsg = null;
@@ -106,4 +93,5 @@ public class DatabaseController {
 
     public static final int MAX_BYTE_IMAGE = 2000000;
     public static final int BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL = 700;
+    public static final int MEDIUM_SIZE_IMAGES_IN_PIXEL = 300;
 }

@@ -3,13 +3,10 @@ package exam.nlb2t.epot.MyShop;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,11 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -39,13 +32,28 @@ import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.UpdateProductBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class AddProductFragment extends DialogFragment {
     UpdateProductBinding binding;
     List<Bitmap> images;
     ImagesDialog imagesDialog;
     ArrayAdapter<String> adapterCategory;
+
+    Bitmap imagePrimary;
+    Bitmap getImagePrimary()
+    {
+        if(imagePrimary == null)
+        {
+            return BitmapFactory.decodeResource(getResources(), R.drawable.vans);
+        }
+        return imagePrimary;
+    }
+
     public boolean isOK = false;
+    Helper.OnSuccessListener onSubmitOKListener;
+    public  void setOnSubmitOKListener(Helper.OnSuccessListener listener){
+        onSubmitOKListener = listener;}
 
     public AddProductFragment()
     {
@@ -112,7 +120,10 @@ public class AddProductFragment extends DialogFragment {
             if(databaseController.insertProduct(salerID,catagoryID,name, price,
                     amount, getImagePrimary(), description, images)) {
                 this.dismiss();
-                isOK = true;
+                if(onSubmitOKListener != null)
+                {
+                    onSubmitOKListener.OnSuccess(AddProductFragment.this);
+                }
             }
             else {
                 Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
@@ -124,15 +135,6 @@ public class AddProductFragment extends DialogFragment {
         imagesDialog.show(getChildFragmentManager(), "choose image");
     }
 
-    Bitmap imagePrimary;
-    Bitmap getImagePrimary()
-    {
-        if(imagePrimary == null)
-        {
-            return BitmapFactory.decodeResource(getResources(), R.drawable.vans);
-        }
-        return imagePrimary;
-    }
 
     int getPrice()
     {
@@ -278,5 +280,17 @@ public class AddProductFragment extends DialogFragment {
                 binding.imagePrimary.setImageBitmap(bitmap);
             }
         }
+    }
+
+    public void recycle()
+    {
+        for(int i = images.size() - 1; i > -1 ; i--)
+        {
+            images.get(i).recycle();
+            images.remove(i);
+        }
+        imagePrimary.recycle();
+
+        binding = null;
     }
 }

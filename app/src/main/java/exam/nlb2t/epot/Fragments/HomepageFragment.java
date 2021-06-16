@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +15,7 @@ import java.util.List;
 
 import exam.nlb2t.epot.Category.DBControllerCategory;
 import exam.nlb2t.epot.Database.DatabaseController;
-import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
-import exam.nlb2t.epot.fragment_ProItem_Container;
 
 public class HomepageFragment extends Fragment {
     HomeShoppingBinding binding;
@@ -26,7 +23,7 @@ public class HomepageFragment extends Fragment {
     public static HomepageFragment newInstance(/*Params here*/)
     {
         HomepageFragment fragment = new HomepageFragment();
-        // //TODO : Write code here <Setup new fragment>
+        // //TODO : Write code here <Setup new fragmenzt>
         return fragment;
     }
 

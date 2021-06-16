@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.EmptyConstraintLayoutBinding;
 
 public class PopupMenuDialog extends DialogFragment {
-    EmptyConstraintLayoutBinding binding;
     String[] options;
     public String[] getOptions(){return options;}
     OnClickOptionListener clickOptionListener;
@@ -31,7 +31,9 @@ public class PopupMenuDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = EmptyConstraintLayoutBinding.inflate(inflater, container, false);
+        LinearLayout root = new LinearLayout(inflater.getContext());
+        root.setOrientation(LinearLayout.VERTICAL);
+
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         for(String str: options)
@@ -39,10 +41,18 @@ public class PopupMenuDialog extends DialogFragment {
             linearLayout.addView(createOptionView(str));
         }
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        linearLayout.setPadding(15,0,15,0);
+        linearLayout.setPadding(5,10,5,10);
 
-        binding.getRoot().addView(linearLayout, params);
-        return binding.getRoot();
+        View spaceTop = new View(getContext());
+        spaceTop.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10));
+
+        View spaceBottom = new View(getContext());
+        spaceBottom.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10));
+
+        root.addView(spaceTop);
+        root.addView(linearLayout, params);
+        root.addView(spaceBottom);
+        return root;
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -53,6 +63,7 @@ public class PopupMenuDialog extends DialogFragment {
         txt1.setText(str);
 
         view.setOnClickListener(v->{
+            this.dismiss();
             if(clickOptionListener != null){clickOptionListener.onClickOption(txt1.getText().toString());}
         });
         return view;
