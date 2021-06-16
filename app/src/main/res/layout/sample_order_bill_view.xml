@@ -126,6 +126,7 @@
            android:fontFamily="@font/gilroy_bold"
            android:layout_marginLeft="20dp"
            android:paddingHorizontal="30dp"
+           android:stateListAnimator="@null"
            android:background="@drawable/btn_background"
            android:layout_marginVertical="15dp"/>
    </RelativeLayout>

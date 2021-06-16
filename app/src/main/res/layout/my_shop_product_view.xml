@@ -34,6 +34,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="Name product"
+                    android:fontFamily="@font/gilroy_medium"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -55,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1 000 000đ"
+                    android:fontFamily="@font/gilroy_medium"
                     android:textColor="@color/red" />
             </LinearLayout>
 
@@ -80,7 +82,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_gravity="center_vertical"
-                        android:text="Kho hàng: 00" />
+                        android:text="Kho hàng: 00"
+                        android:fontFamily="@font/gilroy_medium"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -91,18 +94,20 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
                         android:src="@drawable/ic_box"
+                        app:tint="@color/gray_400"
                         android:scaleType="fitCenter"/>
 
                     <TextView
                         android:id="@+id/my_shop_txt_numberSale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                       android:layout_gravity="center_vertical"
                         android:layout_marginStart="5dp"
-                        android:text="Đã bán: 00" />
+                        android:text="Đã bán: 00"
+                        android:fontFamily="@font/gilroy_medium"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -127,6 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:fontFamily="@font/gilroy_medium"
                         android:layout_gravity="center_vertical"
                         android:text="Yêu thích: 00" />
                 </LinearLayout>

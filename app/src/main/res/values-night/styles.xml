@@ -3,5 +3,7 @@
     <style name="Widget.Theme.EPot.MyView" parent="">
         <item name="android:background">@color/gray_600</item>
         <item name="exampleColor">@color/light_blue_600</item>
+        <item name="android:fontFamily">@font/gilroy_medium</item>
+        <item name="fontFamily">@font/gilroy_medium</item>
     </style>
 </resources>

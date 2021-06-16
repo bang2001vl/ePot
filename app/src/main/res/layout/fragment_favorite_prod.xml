@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="1000dp"
-    android:minHeight="1000dp"
-    tools:context=".DialogFragment.DefaultAddressFragment"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".DialogFragment.FavoriteProdFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -15,8 +12,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/layout_blur_shadow">
         <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
             android:background="@color/transparent"
             android:layout_marginLeft="10dp"
@@ -24,26 +21,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Địa chỉ mặc định"
+            android:text="Yêu thích"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_marginVertical="30dp"
             android:fontFamily="@font/gilroy_bold"
             android:textColor="@color/black"
-            android:textSize="28dp"/>
+            android:textSize="30dp"/>
 
     </RelativeLayout>
 
-    <android.widget.Button
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/epot_btn_bg"
-        android:textSize="26dp"
-        android:fontFamily="@font/gilroy_bold"
-        android:text="Lưu"
-        android:padding="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:textColor="@color/white"/>
-
-</LinearLayout>
+</RelativeLayout>
