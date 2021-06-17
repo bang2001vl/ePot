@@ -150,7 +150,7 @@
     <string name="btn_rating">Đánh giá</string>
     <string name="hint_rating">Hãy chia sẻ những điều bạn thích về sản phẩm này!</string>
 
-<!--    string resources of layout MyShop Overview-->
+    <!--    string resources of layout MyShop Overview-->
     <string name="myshop_overview_txt_onOutOfStock">Hết hàng</string>
     <string name="myshop_overview_txt_onSelling">Đang bán</string>
     <string name="myshop_overview_txt_Cancelled">Đã hủy</string>
