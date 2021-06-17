@@ -113,7 +113,7 @@ public class DBControllerBill extends  DatabaseController{
                 bill.createdDate = resultSet.getDate("CREATED_DATE");
                 bill.keyBill = resultSet.getString("KEYBILL");
 
-                //if not null, return current status, else return status in the table
+                // if not null, return current status, else return status in the table
                 if (statusBill != null) bill.status = statusBill;
                 else bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt("STATUS")];
 

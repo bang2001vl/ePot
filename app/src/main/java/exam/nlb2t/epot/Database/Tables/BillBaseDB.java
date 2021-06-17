@@ -38,9 +38,8 @@ public class BillBaseDB {
     public static int getNumberBill(int userID, BillStatus status) {
         DBControllerBill db = new DBControllerBill();
         int number = db.getNumberBillbyStatus(userID, status);
-
-        db.getBillsOverviewbyStatus(1, null);
         db.closeConnection();
+
         return number;
     }
 }
