@@ -1,52 +1,44 @@
 package exam.nlb2t.epot.NotificationWorkspace;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import exam.nlb2t.epot.Views.BaseCustomViewGroup;
-import exam.nlb2t.epot.databinding.SampleNotificationBinding;
-
-public class NewBillNotificationView extends VertifyBillNotificationView{
-    public NewBillNotificationView(Context context) {
+public class SuccessBillNotifyView_Customer extends VertifyBillNotificationView{
+    public SuccessBillNotifyView_Customer(Context context) {
         super(context);
     }
 
-    public NewBillNotificationView(Context context, AttributeSet attrs) {
+    public SuccessBillNotifyView_Customer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public NewBillNotificationView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SuccessBillNotifyView_Customer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public NewBillNotificationView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SuccessBillNotifyView_Customer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
     public void init(Context context, AttributeSet attributeSet) {
         super.init(context, attributeSet);
-        setTitle("Bạn có đơn hàng mới");
-        setAfterWord("Vui lòng nhanh chóng xác nhận đơn hàng và tiến hành giao hàng.");
+
+        setTitle("Nhận hàng thành công");
+        setAfterWord("Mong bạn có thể dành chút thời gian để nhận xét về sản phẩm");
     }
 
-    public void setBillKey(String key)
-    {
+    @Override
+    public void setBillKey(String key) {
         SpannableString span1 = new SpannableString("Đơn hàng ");
         SpannableString spannableString = new SpannableString(key);
         spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, key.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        SpannableString span2 = new SpannableString(" vừa được gửi đến bạn.");
+        SpannableString span2 = new SpannableString(" đã được giao đến bạn. Cảm ơn bạn đã tin tưởng và sử dụng ePot");
 
         binding.txtDetail.append(span1);
         binding.txtDetail.append(spannableString);

@@ -42,13 +42,13 @@
                 <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                <exam.nlb2t.epot.NotificationWorkspace.VertifyBillNotificationView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                <exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Customer
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                <exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Saler
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

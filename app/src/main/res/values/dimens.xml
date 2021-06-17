@@ -62,7 +62,6 @@
     <dimen name="my_shop_overview_item_size">15dp</dimen>
     <dimen name="my_shop_product_txtsize">15dp</dimen>
     <dimen name="my_shop_product_iconsize">20dp</dimen>
-    <dimen name="my_shop_overview_item_size">20dp</dimen>
 
     <dimen name="button_common_height">50dp</dimen>
     <dimen name="title_common_font_size">30dp</dimen>

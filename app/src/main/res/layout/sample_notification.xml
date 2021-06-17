@@ -7,6 +7,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:id="@+id/image_icon"
         android:src="@drawable/sowmi_nam"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
@@ -23,7 +24,7 @@
             android:id="@+id/tv_Noti_Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Xác nhận đơn hàng"
+            android:text="Đơn hàng đã được xác nhận !"
             android:textColor="@color/black"
             android:fontFamily="@font/gilroy_medium"
             android:textSize="14dp"
