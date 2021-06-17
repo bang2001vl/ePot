@@ -3,6 +3,7 @@ package exam.nlb2t.epot.Views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class MyShopOverview_Item extends BaseCustomViewGroup {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyShopOverview_Item);
             String name = typedArray.getString(R.styleable.MyShopOverview_Item_OverviewName);
             int value = typedArray.getInt(R.styleable.MyShopOverview_Item_OverviewValue, 0);
-            float size = typedArray.getDimension(R.styleable.MyShopOverview_Item_OverviewSize, getResources().getDimension(R.dimen.my_shop_overview_item_size)/getResources().getDisplayMetrics().density);
+            float size = typedArray.getDimension(R.styleable.MyShopOverview_Item_OverviewSize, getResources().getDimension(R.dimen.my_shop_overview_item_size));
 
             setData(name,value,size);
             typedArray.recycle();
@@ -61,10 +62,14 @@ public class MyShopOverview_Item extends BaseCustomViewGroup {
     }
 
     private void setData(String name, int value, float size) {
-        ItemValueView.setTextSize(size);
-        ItemNameView.setTextSize(size);
+        ItemValueView.setTextSize(size/getResources().getDisplayMetrics().density);
+        ItemNameView.setTextSize(size/getResources().getDisplayMetrics().density);
 
         ItemValueView.setText(String.valueOf(value));
         ItemNameView.setText(name);
+    }
+
+    public void setValue(int value) {
+        ItemValueView.setText(String.valueOf(value));
     }
 }

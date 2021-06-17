@@ -79,6 +79,66 @@ public class DBControllerProduct extends DatabaseController{
         return isOK;
     }
 
+    public boolean updateProduct(int productID, int categoryID, String name, int price, int newExsistAmount, Bitmap imagePrimary, String description, List<Bitmap> images) {
+        if(productID < 0 || images == null || name == null || description == null){
+            Log.e("MY_TAG", "ERROR: update product with null data");
+            return false;
+        }
+        boolean isOK = false;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC updateProduct ?,?,?,?,?,?,?");
+            preparedStatement.setInt(1, productID);
+            preparedStatement.setInt(2, categoryID);
+            preparedStatement.setString(3, name);
+            preparedStatement.setInt(4, price);
+            preparedStatement.setInt(5, newExsistAmount);
+
+            // Set image primary
+            if(imagePrimary != null)
+            {
+                byte[] mainImage = Helper.toByteArray(imagePrimary, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL);
+                if(mainImage != null && mainImage.length < MAX_BYTE_IMAGE)
+                {
+                    ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
+                    preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
+                    inputStream.close();
+                }
+                else {preparedStatement.setNull(6, Types.VARBINARY);}
+            }
+            else {preparedStatement.setNull(6, Types.VARBINARY);}
+
+            preparedStatement.setString(7, description);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // TODO: Add Images to db
+            // TODO: Something wrongs here
+            if(resultSet.next()) {
+                for (Bitmap bitmap : images) {
+                    if (!insertProduct_Image(productID, bitmap)) {
+                        break;
+                    }
+                }
+                isOK = true;
+            }
+
+            if(isOK) {
+                commit();
+            }
+            else {rollback();}
+
+            preparedStatement.close();
+            resultSet.close();
+        }
+        catch (SQLException | IOException e)
+        {
+            e.printStackTrace();
+            rollback();
+            ErrorMsg = e.getMessage();
+        }
+        return isOK;
+    }
+
     public boolean insertProduct_Image(int productID, Bitmap bitmap)
     {
         byte[] mainImage = Helper.toByteArray(bitmap, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL, BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL);
@@ -201,10 +261,11 @@ public class DBControllerProduct extends DatabaseController{
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
 
-            ProductBaseDB item = new ProductBaseDB();
             while (resultSet.next())
             {
                 int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
                 item.id = resultSet.getInt(i);i++;
                 item.salerID = resultSet.getInt(i);i++;
                 item.categoryID = resultSet.getInt(i);i++;

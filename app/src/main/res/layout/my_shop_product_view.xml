@@ -2,141 +2,123 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/my_shop_imageProduct"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/vans" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginStart="5dp">
 
                 <TextView
                     android:id="@+id/my_shop_nameProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="Name product"
                     android:fontFamily="@font/gilroy_medium"
+                    android:text="Name product"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20dp" />
 
                 <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@color/white"
-                    android:scaleType="fitEnd"
+                    android:scaleType="center"
                     android:src="@drawable/ic_baseline_more_vert_24" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/my_shop_priceProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gilroy_medium"
+                android:text="1 000 000đ"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/red"
+                android:textSize="17dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/my_shop_product_iconsize"
+                    android:layout_height="@dimen/my_shop_product_iconsize"
+                    android:src="@drawable/ic_icon_kho" />
 
                 <TextView
-                    android:id="@+id/my_shop_priceProduct"
+                    android:id="@+id/my_shop_txt_numberWarehouse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 000 000đ"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/gilroy_medium"
-                    android:textColor="@color/red" />
+                    android:layout_marginStart="2dp"
+                    android:text="Kho hàng: 00"
+                    android:textSize="@dimen/my_shop_product_txtsize" />
+
+                <ImageView
+                    android:layout_width="@dimen/my_shop_product_iconsize"
+                    android:layout_height="@dimen/my_shop_product_iconsize"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_box"
+                    app:tint="@color/gray_400" />
+
+                <TextView
+                    android:id="@+id/my_shop_txt_numberSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/gilroy_medium"
+                    android:text="Đã bán: 00"
+                    android:textSize="@dimen/my_shop_product_txtsize" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:layout_width="@dimen/my_shop_product_iconsize"
+                    android:layout_height="@dimen/my_shop_product_iconsize"
+                    android:src="@drawable/ic_shape" />
+
+                <TextView
+                    android:id="@+id/my_shop_txt_numberLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_icon_kho" />
-
-                    <TextView
-                        android:id="@+id/my_shop_txt_numberWarehouse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_gravity="center_vertical"
-                        android:text="Kho hàng: 00"
-                        android:fontFamily="@font/gilroy_medium"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:src="@drawable/ic_box"
-                        app:tint="@color/gray_400"
-                        android:scaleType="fitCenter"/>
-
-                    <TextView
-                        android:id="@+id/my_shop_txt_numberSale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                       android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:text="Đã bán: 00"
-                        android:fontFamily="@font/gilroy_medium"/>
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="2dp"
+                    android:fontFamily="@font/gilroy_medium"
+                    android:text="Yêu thích: 00"
+                    android:textSize="@dimen/my_shop_product_txtsize" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_shape" />
-
-                    <TextView
-                        android:id="@+id/my_shop_txt_numberLike"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:fontFamily="@font/gilroy_medium"
-                        android:layout_gravity="center_vertical"
-                        android:text="Yêu thích: 00" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -144,36 +126,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
+        android:gravity="center"
         android:orientation="horizontal">
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"/>
+
         <Button
             android:id="@+id/my_shop_btn_change"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/border_red_layout"
             android:text="Sửa"
-            android:textSize="18sp"
             android:textColor="@color/red"
-            android:background="@drawable/border_red_layout" />
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:textSize="@dimen/my_shop_product_txtsize" />
+
         <Button
             android:id="@+id/my_shop_btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textColor="@color/red"
-            android:text="Xóa"
-            android:textSize="18sp"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/border_red_layout"
-            />
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"/>
+            android:text="Xóa"
+            android:textColor="@color/red"
+            android:textSize="@dimen/my_shop_product_txtsize" />
     </LinearLayout>
 </LinearLayout>
