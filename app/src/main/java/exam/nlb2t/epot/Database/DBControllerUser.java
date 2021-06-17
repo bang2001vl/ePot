@@ -102,21 +102,13 @@ public class DBControllerUser extends DatabaseController{
         }
         return rs;
     }
-    //insert new user into database
-    public boolean InsertUser(String phone, String email, String password, String fullname,
-                              int gender, String joinday, String birthday, String address,
-                              String shopname,  int follower, String info)
-    {
-
-        return true;
-    }
 
     public boolean checkExistUsername(String username)
     {
         boolean rs = false;
         try
         {
-            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]=?;");
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]=?");
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             rs = resultSet.next();
@@ -162,5 +154,44 @@ public class DBControllerUser extends DatabaseController{
             ErrorMsg = "FAILED: Cannot execute statement";
         }
         return newUserID;
+    }
+
+    public boolean checkExistPhone(String phone)
+    {
+        boolean rs = false;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [PHONE]= ?");
+            statement.setString(1, phone);
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public boolean UpdatePassword(String phone, String pass)
+    {
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(null, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+
+            PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [PASSWORD] = ? WHERE [PHONE] = ?");
+            statement.setBinaryStream(1, inputStream, passEncypted.length);
+            statement.setString(2, phone);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+            return false;
+        }
+        return true;
     }
 }
