@@ -30,7 +30,8 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exam.nlb2t.epot.Views.forgotpass_enter_phone;
+import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Views.forgotpassword;
 import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.Views.signup;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -129,7 +130,7 @@ public class LoginScreen extends AppCompatActivity {
         tv_forgotpass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this, forgotpass_enter_phone.class);
+                Intent intent = new Intent(LoginScreen.this, forgotpassword.class);
                 startActivity(intent);
             }
         });
@@ -139,13 +140,22 @@ public class LoginScreen extends AppCompatActivity {
             public void onClick(View v) {
 
                 if ( et_username.getError() != null || tet_password.getError()!= null ) return;
-                Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
 
-                Intent intent = new Intent(LoginScreen.this, home_shopping.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("EXIT", true);
-                startActivity(intent);
-                finish();
+                DBControllerUser controllerUser = new DBControllerUser();
+                if (controllerUser.CheckUserLogin(et_username.getText().toString(), tet_password.getText().toString()))
+                {
+                    Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
+
+                    Intent intent = new Intent(LoginScreen.this, home_shopping.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(v.getContext(), getResources().getString(R.string.error_wrong_username_pass), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         tv_signup.setOnClickListener(new View.OnClickListener() {
