@@ -83,10 +83,18 @@ public class signup extends AppCompatActivity {
                 {
                     if (fg_signup_enterphone.edt_phone.getError() == null)
                     {
-                        ReplaceFragment(fg_signup_enterotp);
-                        btn_next.setText(R.string.Continue);
+                            DBControllerUser controllerUser = new DBControllerUser();
                         if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
-                        sendVerificationCode(phone);
+                        if (!controllerUser.checkExistPhone(phone))
+                        {
+                            ReplaceFragment(fg_signup_enterotp);
+                            btn_next.setText(R.string.Continue);
+                            sendVerificationCode(phone);
+                        }
+                        else
+                        {
+                            fg_signup_enterphone.edt_phone.setError(getResources().getString(R.string.error_duplicate_phone_number));
+                        }
                     }
                 }
                 else
@@ -138,8 +146,8 @@ public class signup extends AppCompatActivity {
                 }
                 else
                 {
-                    params.setMargins(0, 116, 0, 0);
-                    ln_logo.setLayoutParams(params);
+                 /*   params.setMargins(0, 116, 0, 0);
+                    ln_logo.setLayoutParams(params);*/
                     if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
                     {
                        ReplaceFragment(fg_signup_enterphone);

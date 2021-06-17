@@ -7,6 +7,7 @@
 <!--    Text    -->
     <dimen name="big_title_size_text">26sp</dimen>
     <dimen name="normal_title_size_text">20sp</dimen>
+    <dimen name="small1_title_size_text">17sp</dimen>
     <dimen name="small_title_size_text">14sp</dimen>
 
     <dimen name="big_content_size_text">24sp</dimen>

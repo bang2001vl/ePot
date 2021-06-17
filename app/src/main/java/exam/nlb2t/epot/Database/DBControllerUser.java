@@ -189,8 +189,11 @@ public class DBControllerUser extends DatabaseController{
             statement.setString(2, phone);
 
             statement.executeUpdate();
+            statement.close();
+            inputStream.close();
+            commit();
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             ErrorMsg = "FAILED: Cannot execute statement";
             return false;

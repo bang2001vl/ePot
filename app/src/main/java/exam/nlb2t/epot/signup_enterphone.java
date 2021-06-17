@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import exam.nlb2t.epot.Database.DBControllerUser;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link signup_enterphone#} factory method to
@@ -65,6 +67,7 @@ public class signup_enterphone extends Fragment {
                     {
                         edt_phone.setError("Nhập sai định dạng sđt!");
                     }
+
                 }
             }
         });

@@ -45,9 +45,10 @@
         <EditText
             android:id="@+id/et_otp"
             style="?android:attr/spinnerItemStyle"
-            android:layout_width="303dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_weight="10"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@+id/tv_Phone"
             tools:layout_editor_absoluteX="44dp" />
@@ -56,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Time"
+            android:layout_weight="1"
             android:fontFamily="@font/gilroy_medium"
             android:layout_marginEnd="32dp"
             android:textColor="@color/mainColor"
@@ -67,7 +69,6 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="12dp"
         android:background="@drawable/line"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         tools:layout_editor_absoluteX="-52dp"
