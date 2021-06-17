@@ -95,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
             MainFragmentAdapter adapter = createAdapter();
             binding.viewPaperMain.setAdapter(adapter);
+
+            // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
+            // App would be terrible-lagging without it
+            binding.viewPaperMain.setOffscreenPageLimit(5);
+
             binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -153,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
             handler.post(() -> setContentView(binding.getRoot()));
         };
 
@@ -164,8 +168,9 @@ public class MainActivity extends AppCompatActivity {
     {
         if(fragmentOld.getContext() == null){return;}
         List<Pair<Integer, Integer>> list = CartDataController.getAllData(fragmentOld.getContext());
-
-        fragmentOld.requestLoadData(list);
+        if(list.size() > 0) {
+            fragmentOld.requestLoadData(list);
+        }
     }
 
     public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();

@@ -42,4 +42,10 @@ public class HomepageFragment extends Fragment {
     {
         //TODO : Write code here <Set all listener in here>
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

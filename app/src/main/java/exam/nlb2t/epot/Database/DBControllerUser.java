@@ -3,13 +3,16 @@ package exam.nlb2t.epot.Database;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerUser extends DatabaseController{
@@ -108,4 +111,56 @@ public class DBControllerUser extends DatabaseController{
         return true;
     }
 
+    public boolean checkExistUsername(String username)
+    {
+        boolean rs = false;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]=?;");
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public int insertUser(String username, String password,String phone, String fullname, int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
+    {
+        int newUserID = -1;
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(username, password);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+
+            Date birthday = Helper.getDateFromLocalToUTC(birthdayYear, birthdayMonth, birthdayDay, 6,0);
+
+            PreparedStatement statement = connection.prepareStatement("EXEC createUser ?,?,?,?,?,?;");
+            statement.setString(1, username);
+            statement.setBinaryStream(2, inputStream, passEncypted.length);
+            statement.setString(3, phone);
+            statement.setString(4, fullname);
+            statement.setInt(5, gender);
+            statement.setDate(6, birthday);
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                newUserID = resultSet.getInt(1);
+            }
+
+            statement.close();
+            inputStream.close();
+            resultSet.close();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return newUserID;
+    }
 }

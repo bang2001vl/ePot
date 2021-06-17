@@ -6,42 +6,48 @@
     tools:context=".NotificationFragment"
     android:orientation="vertical">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_back"
-        android:background="@color/transparent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"/>
-    <TextView
+    <RelativeLayout
+        android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thông báo"
-        android:fontFamily="@font/gilroy_bold"
-        android:textColor="@color/black"
-        android:textSize="36dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:padding="5dp"/>
-
-    <ScrollView
+        android:background="@color/title_bar_background"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            android:text="@string/menu_notification"
+            android:layout_centerInParent="true"
+            style="@style/CommonTitle"
+            />
+    </RelativeLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
-
-        <LinearLayout
+        android:id="@+id/contentLayout"
+        >
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <include layout="@layout/sample_notification" />
-            <include layout="@layout/sample_notification" />
-            <include layout="@layout/sample_notification" />
-            <include layout="@layout/sample_notification" />
+            android:layout_marginTop="5dp"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="true">
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/sample_notification" />
+                <include layout="@layout/sample_notification" />
+                <include layout="@layout/sample_notification" />
+                <include layout="@layout/sample_notification" />
 
-    </ScrollView>
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </LinearLayout>

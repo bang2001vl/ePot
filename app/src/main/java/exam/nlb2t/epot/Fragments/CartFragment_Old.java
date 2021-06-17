@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -31,6 +30,7 @@ import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
+import exam.nlb2t.epot.databinding.EmptyCartLayoutBinding;
 import exam.nlb2t.epot.databinding.FragmentCartBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
@@ -46,6 +46,7 @@ public class CartFragment_Old extends Fragment {
     public void setOnItemAmountChanged(View.OnClickListener listener){onItemAmountChanged = listener;}
     
     FragmentCartBinding binding;
+    EmptyCartLayoutBinding bindingEmpty;
 
     public CartFragment_Old() {
 
@@ -78,9 +79,8 @@ public class CartFragment_Old extends Fragment {
 
     public void showLoadingScreen()
     {
-        View view = new LoadingView(getContext());
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        binding.getRoot().addView(view, binding.getRoot().getChildCount());
+        binding.getRoot().addView(new LoadingView(getContext()), binding.getRoot().getChildCount()
+        , new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public void closeLoadingScreen()
@@ -125,37 +125,51 @@ public class CartFragment_Old extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentCartBinding.inflate(inflater, container, false);
-        
-        if(data != null && data.size()>0) {
-            layoutData();
+        if(binding == null) {
+            binding = FragmentCartBinding.inflate(inflater, container, false);
         }
-        else {
-            TextView textView = new TextView(getContext());
-            textView.setText("Empty cart");
-            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-            binding.salerLayoutHolder.addView(textView, params);
-        }
+        layoutData();
 
         return binding.getRoot();
     }
 
     public void layoutData()
     {
-        View view = (View)binding.salerLayoutHolder.getParent().getParent();
+        if(data == null || data.size() < 1)
+        {
+            if(bindingEmpty == null)
+            {
+                LayoutInflater inflater = LayoutInflater.from(binding.getRoot().getContext());
+                bindingEmpty = EmptyCartLayoutBinding.inflate(getLayoutInflater(), binding.salerLayoutHolder, false);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                binding.contentLayout.addView(bindingEmpty.getRoot(), binding.contentLayout.getChildCount(), params);
+            }
+
+            binding.txtTotalprice.setText(Helper.getMoneyString(0));
+            return;
+        }
+        else
+        {
+            if(bindingEmpty != null) {
+                binding.contentLayout.removeViewAt(binding.contentLayout.getChildCount() - 1);
+                bindingEmpty = null;
+            }
+        }
+
         binding.salerLayoutHolder.removeAllViews();
 
-        initSalerList(view, binding.salerLayoutHolder, getLayoutInflater(), (ViewGroup) view);
+        View view = (View)binding.salerLayoutHolder.getParent().getParent();
+        initSalerList(getLayoutInflater(), (ViewGroup) view);
 
         binding.btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Pair<Integer, Integer>> checked = new ArrayList<>();
+                // DEBUG
                 /*for(Map.Entry<String, List<ProductBuyInfo>> entry: data.entrySet())
                 {
-                    *//*List<ProductBuyInfo> buyInfo = entry.getValue();
+                    List<ProductBuyInfo> buyInfo = entry.getValue();
                     StringBuilder builder = new StringBuilder();
                     builder.append("saler : ").append(entry.getKey()). append(" {");
                     for(ProductBuyInfo info: buyInfo)
@@ -164,25 +178,35 @@ public class CartFragment_Old extends Fragment {
                                 .append(" amount = ").append(info.Amount);
                     }
                     builder.append("\n }\n");
-                    Log.d("MY_TRACE", builder.toString());*//*
+                    Log.d("MY_TRACE", builder.toString());
                 }*/
+
+                Map<Integer, List<Pair<Integer, Integer>>> buyMap = new HashMap<>();
+                int count = 0;
                 for (LinearLayout container : data_ContainerViews.values()) {
+                    boolean has = false;
+                    List<Pair<Integer, Integer>> checked = new ArrayList<>();
                     for (int i = container.getChildCount() - 1; i > -1; i--) {
                         Card_ItemView_New card_itemView = (Card_ItemView_New) container.getChildAt(i);
                         if (card_itemView.getChecked()) {
                             ProductBuyInfo buyInfo = (ProductBuyInfo) card_itemView.Tag;
                             checked.add(new Pair<>(buyInfo.product.id, buyInfo.Amount));
+                            has = true;
                         }
                     }
+                    if(checked.size() > 0){
+                        int salerID = ((ProductBuyInfo)((Card_ItemView_New) container.getChildAt(0)).Tag).salerOverview.id;
+                        buyMap.put(salerID, checked);
+                    }
                 }
-                onClickPayment(checked);
+                onClickPayment(buyMap, count);
             }
         });
 
         requireCalculated();
     }
 
-    void initSalerList(View root, LinearLayout salerLayoutHolder, LayoutInflater inflater, ViewGroup container)
+    void initSalerList(LayoutInflater inflater, ViewGroup container)
     {
         List<String> salerNameSet = new ArrayList<>(data.keySet());
         Collections.sort(salerNameSet);
@@ -369,25 +393,31 @@ public class CartFragment_Old extends Fragment {
         }
     }
 
-    public void onClickPayment(List<Pair<Integer, Integer>> checkedProduct)
+    public void onClickPayment(Map<Integer,List<Pair<Integer, Integer>>> buyMap, int numSaler)
     {
-        PaymentDialogFragment fragment = new PaymentDialogFragment(Integer.parseInt(binding.btnPayment.getTag().toString()), 21000);
+        int total = Integer.parseInt(binding.btnPayment.getTag().toString());
+
+        PaymentDialogFragment fragment = new PaymentDialogFragment(total, 21000 * numSaler);
         fragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {
+                fragment.dismiss();
                 if(getContext() == null) {return;}
+                boolean rs;
                 DBControllerBill db = new DBControllerBill();
-                boolean rs = db.addBill(Authenticator.getCurrentUser().id, fragment.address, checkedProduct);
+                 rs = db.addBill(Authenticator.getCurrentUser().id, fragment.address, buyMap);
                 db.closeConnection();
 
                 if(rs)
                 {
-                    for(Pair<Integer, Integer> p: checkedProduct)
-                    {
-                        CartDataController.removeProduct(getContext(), p.first);
+                    for(List<Pair<Integer, Integer>> checkedProduct: buyMap.values()) {
+                        for (Pair<Integer, Integer> p : checkedProduct) {
+                            CartDataController.removeProduct(getContext(), p.first);
+                        }
                     }
                     Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
                 }
+                else {Toast.makeText(getContext(), "Failed: Error while sending data to server", Toast.LENGTH_LONG).show();}
             }
         });
         fragment.show(getChildFragmentManager(), "payment");

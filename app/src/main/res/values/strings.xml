@@ -157,5 +157,6 @@
     <string name="myshop_overview_txt_onConfirming">Chờ xác nhận</string>
     <string name="myshop_overview_txt_onShipping">Đang giao</string>
     <string name="myshop_overview_txt_complete">Thành công</string>
+    <string name="your_cart_is_empty">Giỏ hàng của bạn đang trống</string>
 
 </resources>
