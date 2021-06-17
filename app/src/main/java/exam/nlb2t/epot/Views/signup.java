@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.Views;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -23,8 +24,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +49,8 @@ public class signup extends AppCompatActivity {
     ConstraintLayout.LayoutParams params;
     boolean Issend = true;
 
+    Context context;
+
     private fragment_signup_enterotp fg_signup_enterotp;
     private signup_enterphone fg_signup_enterphone;
     private fragment_login_new_account fg_signup_new_account;
@@ -62,12 +64,16 @@ public class signup extends AppCompatActivity {
         fg_signup_enterphone = new signup_enterphone();
         fg_signup_new_account = new fragment_login_new_account();
 
+       /* check create new acc
+       ReplaceFragment(fg_signup_new_account);*/
+
         ReplaceFragment(fg_signup_enterphone);
         mAuth = FirebaseAuth.getInstance();
 
         btn_back = (Button) findViewById(R.id.btn_back);
         btn_next = (Button) findViewById(R.id.btn_next);
         ln_logo = (LinearLayout) findViewById(R.id.ln_logo);
+        context = this;
 
          params = ( ConstraintLayout.LayoutParams) ln_logo.getLayoutParams();
 
@@ -91,11 +97,30 @@ public class signup extends AppCompatActivity {
                     }
                     else
                     {
-                            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-                            Date date = new Date(System.currentTimeMillis());
-                            DBControllerUser controllerUser = new DBControllerUser();
-                            controllerUser.InsertUser(phone,  "", fg_signup_new_account.tit_pass.getText().toString(), fg_signup_new_account.edt_name.getText().toString(), fg_signup_new_account.acs_sex.getSelectedItemPosition(),formatter.format(date), fg_signup_new_account.edt_birth.getText().toString(), "", fg_signup_new_account.edt_usename.getText().toString(),0, "");
-                            finish();
+                        if (CheckErrorUserInfo() == -1)
+                        {
+                            Toast.makeText(context , getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            if (CheckErrorUserInfo() == 0)
+                            {
+                                Toast.makeText(context , getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
+                                int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5));
+                                int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
+
+                                DBControllerUser controllerUser =  new DBControllerUser();
+                                controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), Objects.requireNonNull(fg_signup_new_account.tit_pass.getText()).toString(),phone, fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                        }
+
                     }
                 }
             }
@@ -265,6 +290,19 @@ public class signup extends AppCompatActivity {
             signInWithCredential(credential);
         }
     return true;
+    }
+
+    private int CheckErrorUserInfo()
+    {
+        if (fg_signup_new_account.edt_usename.getText().toString().equals("")|| (fg_signup_new_account.edt_name.getText().toString().equals("")) || fg_signup_new_account.edt_birth.getText().toString().equals("")|| fg_signup_new_account.tit_pass.getText().toString().equals("") || fg_signup_new_account.tit_define_pass.getText().toString().equals(""))
+        {
+            return -1;
+        }
+        if (fg_signup_new_account.edt_usename.getError() != null || fg_signup_new_account.edt_birth.getError() != null || fg_signup_new_account.tit_pass.getError() != null || fg_signup_new_account.tit_define_pass.getError() != null || fg_signup_new_account.edt_name.getError() != null)
+        {
+            return 0;
+        }
+        return 1;
     }
 
 }

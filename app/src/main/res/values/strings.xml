@@ -159,4 +159,17 @@
     <string name="myshop_overview_txt_complete">Thành công</string>
     <string name="your_cart_is_empty">Giỏ hàng của bạn đang trống</string>
 
+    <!--  Error-->
+    <string name="error_not_enough_info">Chưa điền đầy đủ thông tin!</string>
+    <string name="error_incorrect_info">Có thông tin điền lỗi, vui lòng kiểm tra lại!</string>
+    <string name="error_existing_username">Tên đăng nhập đã tồn tại!</string>
+    <string name="error_not_50_char">Độ dài không quá 50 kí tự!</string>
+    <string name="error_not_special_char">Chỉ chứa kí tự a–z, A-Z, 0-9!</string>
+    <string name="error_define_pass">Xác nhận mật khẩu sai!</string>
+    <string name="error_length_6_to_50">Độ dài mật khẩu tối thiểu 6, tối đa 50 kí tự!</string>
+
+    <!-- Announce-->
+    <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
+
+
 </resources>
