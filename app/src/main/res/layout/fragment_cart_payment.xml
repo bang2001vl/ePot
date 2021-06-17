@@ -27,10 +27,10 @@
             android:layout_height="wrap_content"
 
             android:text="@string/address_delivery"
-            android:textSize="18dp"
-            android:textColor="@color/black"
+            style="@style/TittleNormalSize"
 
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/title_payment"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -103,10 +103,8 @@
             android:layout_height="wrap_content"
 
             android:text="@string/method_payment"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:fontFamily="@font/gilroy_medium"
-            android:layout_marginLeft="10dp"
+            style="@style/TittleNormalSize"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="30dp"
             app:layout_constraintTop_toBottomOf="@id/destination_container"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -129,6 +127,7 @@
             android:layout_height="wrap_content"
 
             android:text="@string/txt_productprice_payment"
+            android:textColor="@color/black"
             android:textSize="18dp"
             android:fontFamily="@font/gilroy_medium"
             android:layout_marginVertical="20dp"
@@ -156,6 +155,7 @@
 
             android:text="@string/txt_transportprice_payment"
             android:textSize="18dp"
+            android:textColor="@color/black"
             android:fontFamily="@font/gilroy_medium"
             android:layout_marginVertical="20dp"
             android:layout_marginLeft="10dp"
@@ -182,6 +182,7 @@
 
             android:text="@string/txt_voucher_payment"
             android:textSize="18dp"
+            android:textColor="@color/black"
             android:fontFamily="@font/gilroy_medium"
             android:layout_marginVertical="20dp"
             android:layout_marginLeft="10dp"
@@ -198,6 +199,7 @@
             android:textColor="@color/black"
 
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/totalprice_payment"/>
 
@@ -205,11 +207,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/txt_totalprice_payment"
             android:textSize="25dp"
+            android:textColor="@color/black"
             android:fontFamily="@font/gilroy_bold"
-            android:layout_marginVertical="20dp"
             android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/totalprice_payment"
@@ -232,12 +233,13 @@
             style="@style/cartButton"
             android:id="@+id/btn_payment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_common_height"
             android:stateListAnimator="@null"
             android:text="@string/btn_payment"
+            android:textSize="25sp"
             android:fontFamily="@font/gilroy_bold"
             android:layout_marginHorizontal="@dimen/large_btn_marhor"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

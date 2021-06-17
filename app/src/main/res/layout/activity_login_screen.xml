@@ -11,10 +11,10 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="44dp"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp">
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -37,10 +37,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="88dp"
         android:text="@string/User_Name"
         android:textColor="@color/Title"
         android:textSize="@dimen/normal_title_size_text"
+
         android:textStyle="bold"
         android:fontFamily="@font/gilroy_medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +68,6 @@
         android:textColor="@color/Title"
         android:fontFamily="@font/gilroy_medium"
         android:textSize="@dimen/normal_title_size_text"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_usename" />
 
@@ -108,14 +108,16 @@
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="@dimen/Big_btn_size"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/btn_red_background"
-        android:text="@string/Login"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_red_background"
+        android:text="@string/Login"
         android:textColor="@color/white"
         android:textSize="@dimen/normal_content_size_text"
         android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="parent"
         android:fontFamily="@font/gilroy_bold"
         android:stateListAnimator="@null"
         app:layout_constraintTop_toBottomOf="@+id/tv_forgotpass"
@@ -125,7 +127,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
         tools:layout_editor_absoluteX="0dp">
@@ -155,7 +157,7 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/Social_NetWork"
         android:textColor="@color/black"
@@ -173,10 +175,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
