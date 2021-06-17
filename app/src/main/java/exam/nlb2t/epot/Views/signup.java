@@ -24,7 +24,6 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,10 +83,9 @@ public class signup extends AppCompatActivity {
                 {
                     if (fg_signup_enterphone.edt_phone.getError() == null)
                     {
-                        fg_signup_enterotp.edt_otp = edt_otp;
                         ReplaceFragment(fg_signup_enterotp);
                         btn_next.setText(R.string.Continue);
-                        if (phone.length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
+                        if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
                         sendVerificationCode(phone);
                     }
                 }
@@ -120,7 +118,7 @@ public class signup extends AppCompatActivity {
                                 int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
                                 DBControllerUser controllerUser =  new DBControllerUser();
-                                controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), Objects.requireNonNull(fg_signup_new_account.tit_pass.getText()).toString(),phone, fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone, fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
                                 Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
                                 finish();
                             }

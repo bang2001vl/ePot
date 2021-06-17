@@ -101,6 +101,7 @@ public class forgotpassword extends AppCompatActivity {
                             if (fg_fogotpass_create_newpass.tit_pass.getError() == null && fg_fogotpass_create_newpass.tit_define_pass.getError() == null)
                             {
                                 DBControllerUser controllerUser = new DBControllerUser();
+                                controllerUser.UpdatePassword(phone, fg_fogotpass_create_newpass.tit_pass.getText().toString());
                                 finish();
                             }
                         }

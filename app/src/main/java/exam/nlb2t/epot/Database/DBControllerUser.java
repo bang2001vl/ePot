@@ -194,4 +194,28 @@ public class DBControllerUser extends DatabaseController{
         }
         return true;
     }
+
+    public boolean CheckUserLogin(String username, String pass)
+    {
+        boolean rs = false;
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(username, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
+            statement.setString(1, username);
+            statement.setBinaryStream(2, inputStream, passEncypted.length);
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+
 }
