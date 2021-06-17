@@ -39,10 +39,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <include layout="@layout/sample_notification" />
-                <include layout="@layout/sample_notification" />
-                <include layout="@layout/sample_notification" />
-                <include layout="@layout/sample_notification" />
+                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
