@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_marginHorizontal="20dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="fill">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá Hiện tại"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/sale_dialog_price_origin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:layout_weight="1"
+            android:text="100.000đ"
+            android:textSize="20dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá Giảm giá"
+            android:textSize="20dp"/>
+        <EditText
+            android:id="@+id/sale_dialog_price_sale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="000.000đ"
+            android:layout_marginStart="50dp"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:textSize="20dp"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/sale_dialog_btn_confirm"
+        android:layout_marginTop="10dp"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_red_background"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:text="Xác nhận"
+        android:textSize="14dp"/>
+</LinearLayout>
