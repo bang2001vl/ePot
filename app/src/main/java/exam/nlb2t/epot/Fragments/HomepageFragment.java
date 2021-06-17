@@ -41,14 +41,16 @@ public class HomepageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         /*DatabaseController databaseController = new DatabaseController();
         databaseController.closeConnection();*/
-
-
-        rcViCategory = rcViCategory.findViewById(R.id.recycleViewCategory);
+        
+        rcViCategory = binding.recycleViewCategory;
         categoryTab = new CategoryTab(view.getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcViCategory.setLayoutManager(linearLayoutManager);
 
         categoryTab.setData(getListCategory());
+
+        // Add adapter to recyclerview
+        rcViCategory.setAdapter(categoryTab);
     }
 
     private List<Category> getListCategory()
