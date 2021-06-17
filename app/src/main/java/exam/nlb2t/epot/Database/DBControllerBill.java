@@ -13,10 +13,10 @@ import java.util.Map;
 import exam.nlb2t.epot.Database.DatabaseController;
 
 public class DBControllerBill extends DatabaseController {
-    public boolean addBill(int customerID, String address, Map<Integer,List<Pair<Integer, Integer>>> buyMap) {
+    public boolean addBill(int customerID, int priceShip, String address, Map<Integer,List<Pair<Integer, Integer>>> buyMap) {
         boolean rs = true;
         for (Map.Entry<Integer, List<Pair<Integer, Integer>>> entry : buyMap.entrySet()) {
-            rs = rs && addBill(customerID, entry.getKey(), address, entry.getValue());
+            rs = rs && addBill(customerID, entry.getKey(), priceShip, address, entry.getValue());
         }
         if (rs) {
             commit();
@@ -25,7 +25,7 @@ public class DBControllerBill extends DatabaseController {
         }
         return rs;
     }
-    private boolean addBill(int customerID, int salerID, String address, List<Pair<Integer, Integer>> list)
+    private boolean addBill(int customerID, int salerID, int priceShip, String address, List<Pair<Integer, Integer>> list)
     {
         boolean rs = false;
         try {
@@ -36,7 +36,7 @@ public class DBControllerBill extends DatabaseController {
             {
                 builder.append("INSERT INTO @para VALUES(?,?);");
             }
-            builder.append("EXEC dbo.createBill ?, ?, ?,@para;");
+            builder.append("EXEC dbo.createBill ?, ?, ?, ?,@para;");
 
             PreparedStatement statement = connection.prepareStatement(builder.toString());
 
@@ -51,6 +51,8 @@ public class DBControllerBill extends DatabaseController {
             statement.setInt(i, customerID);
             i++;
             statement.setInt(i, salerID);
+            i++;
+            statement.setInt(i, priceShip);
             i++;
             statement.setString(i, address);
 

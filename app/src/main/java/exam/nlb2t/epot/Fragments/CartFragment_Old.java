@@ -32,6 +32,7 @@ import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.EmptyCartLayoutBinding;
 import exam.nlb2t.epot.databinding.FragmentCartBinding;
+import exam.nlb2t.epot.databinding.FragmentEmptyBagBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
 import exam.nlb2t.epot.singleton.Helper;
@@ -46,7 +47,7 @@ public class CartFragment_Old extends Fragment {
     public void setOnItemAmountChanged(View.OnClickListener listener){onItemAmountChanged = listener;}
     
     FragmentCartBinding binding;
-    EmptyCartLayoutBinding bindingEmpty;
+    FragmentEmptyBagBinding bindingEmpty;
 
     public CartFragment_Old() {
 
@@ -141,7 +142,7 @@ public class CartFragment_Old extends Fragment {
             if(bindingEmpty == null)
             {
                 LayoutInflater inflater = LayoutInflater.from(binding.getRoot().getContext());
-                bindingEmpty = EmptyCartLayoutBinding.inflate(getLayoutInflater(), binding.salerLayoutHolder, false);
+                bindingEmpty = FragmentEmptyBagBinding.inflate(getLayoutInflater(), binding.salerLayoutHolder, false);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                 binding.contentLayout.addView(bindingEmpty.getRoot(), binding.contentLayout.getChildCount(), params);
@@ -182,16 +183,13 @@ public class CartFragment_Old extends Fragment {
                 }*/
 
                 Map<Integer, List<Pair<Integer, Integer>>> buyMap = new HashMap<>();
-                int count = 0;
                 for (LinearLayout container : data_ContainerViews.values()) {
-                    boolean has = false;
                     List<Pair<Integer, Integer>> checked = new ArrayList<>();
                     for (int i = container.getChildCount() - 1; i > -1; i--) {
                         Card_ItemView_New card_itemView = (Card_ItemView_New) container.getChildAt(i);
                         if (card_itemView.getChecked()) {
                             ProductBuyInfo buyInfo = (ProductBuyInfo) card_itemView.Tag;
                             checked.add(new Pair<>(buyInfo.product.id, buyInfo.Amount));
-                            has = true;
                         }
                     }
                     if(checked.size() > 0){
@@ -199,7 +197,7 @@ public class CartFragment_Old extends Fragment {
                         buyMap.put(salerID, checked);
                     }
                 }
-                onClickPayment(buyMap, count);
+                onClickPayment(buyMap);
             }
         });
 
@@ -393,11 +391,12 @@ public class CartFragment_Old extends Fragment {
         }
     }
 
-    public void onClickPayment(Map<Integer,List<Pair<Integer, Integer>>> buyMap, int numSaler)
+    public void onClickPayment(Map<Integer,List<Pair<Integer, Integer>>> buyMap)
     {
         int total = Integer.parseInt(binding.btnPayment.getTag().toString());
-
-        PaymentDialogFragment fragment = new PaymentDialogFragment(total, 21000 * numSaler);
+        int numSaler = buyMap.size();
+        int priceShip = 21 * 1000;
+        PaymentDialogFragment fragment = new PaymentDialogFragment(total, priceShip * numSaler);
         fragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {
@@ -405,7 +404,7 @@ public class CartFragment_Old extends Fragment {
                 if(getContext() == null) {return;}
                 boolean rs;
                 DBControllerBill db = new DBControllerBill();
-                 rs = db.addBill(Authenticator.getCurrentUser().id, fragment.address, buyMap);
+                 rs = db.addBill(Authenticator.getCurrentUser().id, priceShip, fragment.address, buyMap);
                 db.closeConnection();
 
                 if(rs)
