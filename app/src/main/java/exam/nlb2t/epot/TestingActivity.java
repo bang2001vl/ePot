@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -23,15 +24,50 @@ import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
 import exam.nlb2t.epot.ClassInformation.Saler;
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.Fragments.CartFragment_Old;
 import exam.nlb2t.epot.ProductDetail.ChooseItemDetailBottomSheet;
+import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
+import exam.nlb2t.epot.databinding.ActivityTestingBinding;
 
 public class TestingActivity extends AppCompatActivity {
-
+    ActivityTestingBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_testing);
+        //setContentView(R.layout.activity_testing);
+
+        testProductDetail();
+        //testCart();
+    }
+
+    public void testProductDetail()
+    {
+        binding = ActivityTestingBinding.inflate(getLayoutInflater());
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductDetailFragment fragment = new ProductDetailFragment();
+                int id = Integer.parseInt(binding.editText.getText().toString());
+                fragment.productID = id;
+                fragment.show(getSupportFragmentManager(), "detail");
+            }
+        });
+        setContentView(binding.getRoot());
+    }
+
+    public void testCart()
+    {
+        binding = ActivityTestingBinding.inflate(getLayoutInflater());
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestCart();
+            }
+        });
+        setContentView(binding.getRoot());
     }
 
     public void TestViewGroup()
@@ -86,24 +122,20 @@ public class TestingActivity extends AppCompatActivity {
         List<ProductBuyInfo> productBuyInfos = new ArrayList<>(number_saler*6);
         for(int i = 0; i< number_saler; i++)
         {
-            number_product = 10 + random.nextInt(6);
-            Saler saler = Saler.createRandom(i);
+            number_product = 2 + random.nextInt(6);
+            UserBaseDB saler = new UserBaseDB();
+            saler.id = i;
+            saler.fullName = "Saler " + i;
             for (int k = 0; k<number_product; k++) {
                 ProductBuyInfo productBuyInfo = ProductBuyInfo.createRandom(k);
-               /* productBuyInfo.product.saler = saler;*/
+                productBuyInfo.salerOverview = saler;
                 productBuyInfos.add(productBuyInfo);
             }
         }
 
-        ArrayList<ProductBuyInfoParcel> parcels = new ArrayList<>(productBuyInfos.size());
-        for(ProductBuyInfo buyInfo: productBuyInfos)
-        {
-            ProductBuyInfoParcel parcel = new ProductBuyInfoParcel(buyInfo);
-            parcels.add(parcel);
-        }
-
-        Intent intent = new Intent(this, CartActivity.class);
-        intent.putExtra(CartActivity.NAME_PARCEL, parcels);
-        startActivity(intent);
+        CartFragment_Old fragmentOld = new CartFragment_Old();
+        fragmentOld.setData(productBuyInfos.toArray(new ProductBuyInfo[0]));
+        binding.frameLayout.removeAllViews();
+        getSupportFragmentManager().beginTransaction().replace(binding.frameLayout.getId(), fragmentOld).commit();
     }
 }

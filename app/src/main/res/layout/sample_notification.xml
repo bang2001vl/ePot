@@ -9,8 +9,9 @@
         android:layout_height="60dp"
         android:id="@+id/image_icon"
         android:src="@drawable/sowmi_nam"
+        android:scaleType="fitCenter"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginVertical="5dp"/>
     <LinearLayout
         android:layout_width="match_parent"

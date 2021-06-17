@@ -1,11 +1,14 @@
 package exam.nlb2t.epot.NotificationWorkspace;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+
+import exam.nlb2t.epot.R;
 
 public class SuccessBillNotifyView_Saler extends VertifyBillNotificationView{
     public SuccessBillNotifyView_Saler(Context context) {
@@ -25,11 +28,10 @@ public class SuccessBillNotifyView_Saler extends VertifyBillNotificationView{
     }
 
     @Override
-    public void init(Context context, AttributeSet attributeSet) {
-        super.init(context, attributeSet);
-
+    public void createData() {
         setTitle("Giao hàng thành công");
         setAfterWord("Chúc bạn sẽ có nhiều đơn hàng thành công hơn nữa với ePot");
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_paid));
     }
 
     @Override

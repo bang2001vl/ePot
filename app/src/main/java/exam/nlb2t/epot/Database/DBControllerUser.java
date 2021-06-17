@@ -128,7 +128,8 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    public int insertUser(String username, String password,String phone, String fullname, int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
+    public int insertUser(String username, String password,String phone, String fullname,
+                          int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
     {
         int newUserID = -1;
         try
@@ -156,10 +157,12 @@ public class DBControllerUser extends DatabaseController{
             statement.close();
             inputStream.close();
             resultSet.close();
+            commit();
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             ErrorMsg = "FAILED: Cannot execute statement";
+            rollback();
         }
         return newUserID;
     }
