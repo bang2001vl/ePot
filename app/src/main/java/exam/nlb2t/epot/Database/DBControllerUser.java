@@ -223,5 +223,29 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
+    public int findUserID(String username, String pass)
+    {
+        int rs = -1;
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(username, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
 
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
+            statement.setString(1, username);
+            statement.setBinaryStream(2, inputStream, passEncypted.length);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
 }
