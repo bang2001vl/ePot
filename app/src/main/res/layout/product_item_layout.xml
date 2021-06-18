@@ -86,6 +86,7 @@
                 android:id="@+id/Favorite"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:visibility="gone"
                 android:layout_marginTop="60dp"
                 android:layout_marginStart="78dp"
                 android:background="@drawable/red_favorite_24" />

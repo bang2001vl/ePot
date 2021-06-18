@@ -10,15 +10,16 @@ public class Product extends BaseProductInfo{
     public String Description;
     public String ShopName;
     public Bitmap[] Images;
-
-
-
     public int numberSold;
 
-    public Product()
-    {
-
+    public Product(String description, String shopName, Bitmap[] images, int numberSold) {
+        Description = description;
+        ShopName = shopName;
+        Images = images;
+        this.numberSold = numberSold;
     }
+
+    public Product()    {}
 
     public Product(BaseProductInfo baseProductInfo)
     {

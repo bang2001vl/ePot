@@ -3,6 +3,7 @@ package exam.nlb2t.epot.Database.Tables;
 import android.graphics.Bitmap;
 
 import java.util.Date;
+import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -49,10 +50,23 @@ public class ProductBaseDB {
 
     }
 
+    public int getDiscount()
+    {
+        return (price*100/priceOrigin);
+    }
+
     public int getNumberLike() {
         int rs;
         DBControllerProduct db = new DBControllerProduct();
         rs = db.getNumberLikeProduct(this.id);
+        return rs;
+    }
+
+    public int getTotalCmt()
+    {
+        int rs = 0;
+        DBControllerProduct db = new DBControllerProduct();
+        rs = db.getCountRating(this.id);
         return rs;
     }
 }
