@@ -1,5 +1,6 @@
 package exam.nlb2t.epot;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -22,8 +25,8 @@ import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder>{
     public List<BillBaseDB> billList;
-    private Context context;
-    public List<UserBaseDB> shops;
+    public Context context;
+    public final List<UserBaseDB> shops = new ArrayList();
 
     public BillRecyclerViewAdapter() {
 

@@ -1,9 +1,11 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +20,11 @@ import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.singleton.Authenticator;
 
-public class Bill_TabAdapter extends BillRecyclerViewAdapter {
+public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
+    private OnStatusTableChangedListener notifyStatusChangedListener;
 
-    public  Bill_TabAdapter(BillBaseDB.BillStatus status) {
+    public Bill_TabAdapter(BillBaseDB.BillStatus status) {
         super();
         this.status = status;
 
@@ -36,17 +39,21 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter {
         db.closeConnection();
     }
 
+    public void setNotifyStatusChangedListener(OnStatusTableChangedListener notifyStatusChangedLintener) {
+        this.notifyStatusChangedListener = notifyStatusChangedLintener;
+    }
+
     @NonNull
     @Override
     public BillRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         BillRecyclerViewAdapter.ViewHolder holder;
 
         if (status != BillBaseDB.BillStatus.WAIT_CONFIRM) {
             holder = new BillRecyclerViewAdapter.ViewHolder(inflater.inflate(R.layout.sample_order_bill_view, parent, false));
-        }
-        else {
-            holder = new EditProductViewHolder(inflater.inflate(R.layout.sample_order_bill_view, parent, false));
+        } else {
+            holder = new EditProductViewHolder(inflater.inflate(R.layout.sample_order_bill_confirm_view, parent, false));
         }
 
         return holder;
@@ -54,7 +61,7 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder,position);
+        super.onBindViewHolder(holder, position);
 
 //        holder.getShopImage().setImageBitmap(Authenticator.getCurrentUser().getAvatar(Authenticator.getCurrentUser().avatarID));
 //        holder.getTv_shopName().setText(Authenticator.getCurrentUser().username);
@@ -65,21 +72,54 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter {
 //        holder.getTv_Amount().setText("");
 
         if (holder instanceof EditProductViewHolder) {
-
-        }
-        else if (holder instanceof BillRecyclerViewAdapter.ViewHolder) {
-
-        }
-        else {
-            //TODO: something wrong here
+            ((EditProductViewHolder) holder).getBtnConfirm().setOnClickListener(v -> onBtnConfirmClick(holder));
+            ((EditProductViewHolder) holder).getBtnCancel().setOnClickListener(v -> onBtnCancelClick(holder));
         }
     }
 
-    public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder{
+    private void onBtnCancelClick(RecyclerView.ViewHolder holder) {
+        //TODO: Cancel the bill
+        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.DEFAULT);
+    }
+
+    private void onBtnConfirmClick(RecyclerView.ViewHolder holder) {
+        //TODO: Confirm the bill
+        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.IN_SHIPPING);
+    }
+
+    private void changeStatus(int position, BillBaseDB.BillStatus newstatus) {
+        billList.get(position).status = newstatus;
+
+        DBControllerBill db = new DBControllerBill();
+        db.setStatusBill(billList.get(position).id, newstatus);
+        db.closeConnection();
+
+        notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus);
+        billList.remove(position);
+        //notifyItemRemoved(position);
+    }
+
+    public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder {
+        private final TextView btnConfirm;
+        private final TextView btnCancel;
 
         public EditProductViewHolder(@NonNull View itemView) {
             super(itemView);
             //TODO: btn Confirm or Cancel
+            btnConfirm = (TextView) itemView.findViewById(R.id.btnConfirm);
+            btnCancel = (TextView) itemView.findViewById(R.id.btnCancel);
         }
+
+        public TextView getBtnConfirm() {
+            return btnConfirm;
+        }
+
+        public TextView getBtnCancel() {
+            return btnCancel;
+        }
+    }
+
+    public interface OnStatusTableChangedListener {
+        void notifyChanged(BillBaseDB.BillStatus from, BillBaseDB.BillStatus to);
     }
 }

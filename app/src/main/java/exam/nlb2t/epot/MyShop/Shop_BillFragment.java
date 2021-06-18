@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.EmptyBillFragment;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;
 import exam.nlb2t.epot.databinding.FragmentOrderTabBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -31,27 +34,28 @@ public class Shop_BillFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        DBControllerBill db = new DBControllerBill();
-        int countBills = db.getNumberBillbyStatus(Authenticator.getCurrentUser().id, statusBill);
-        db.closeConnection();
+        binding = FragmentOrderTabBinding.inflate(inflater, container, false);
 
-        if (countBills == 0) {
-            emptybinding = FragmentEmptyBillBinding.inflate(inflater,container,false);
+        adapter = new Bill_TabAdapter(statusBill);
+        adapter.setNotifyStatusChangedListener(notifyStatusChangedListener);
 
-            return emptybinding.getRoot();
-        }
-        else {
-            binding = FragmentOrderTabBinding.inflate(inflater, container, false);
-            adapter = new Bill_TabAdapter(statusBill);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.RecycelviewBill.setLayoutManager(layoutManager);
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            binding.RecycelviewBill.setLayoutManager(layoutManager);
+        binding.RecycelviewBill.setAdapter(adapter);
 
-            binding.RecycelviewBill.setAdapter(adapter);
-            //TODO:Set adapter for binding
-
-            return binding.getRoot();
-        }
+        return binding.getRoot();
     }
+
+    Bill_TabAdapter.OnStatusTableChangedListener notifyStatusChangedListener;
+
+    public void setNotifyStatusChangedListener(Bill_TabAdapter.OnStatusTableChangedListener notifyStatusChanged) {
+        this.notifyStatusChangedListener = notifyStatusChanged;
+    }
+
+    public Bill_TabAdapter getBill_Tab_Adapter() {
+        return adapter;
+    }
+
 }

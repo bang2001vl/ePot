@@ -1,5 +1,7 @@
 package exam.nlb2t.epot.Database.Tables;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,28 @@ public class BillBaseDB {
         public int getValue() {
             return value;
         }
+
+
+        @NonNull
+        @Override
+        public String toString() {
+            String rs = "";
+            switch (this) {
+                case SUCCESS:
+                    rs = "Thành công";
+                    break;
+                case DEFAULT:
+                    rs = "Hủy bỏ";
+                    break;
+                case IN_SHIPPING:
+                    rs = "Đang giao";
+                    break;
+                case WAIT_CONFIRM:
+                    rs = "Chờ xác nhận";
+                    break;
+            }
+            return rs;
+        }
     }
 
     public int id; //[BILL].[ID]
@@ -30,6 +54,7 @@ public class BillBaseDB {
     public String address; //[BILL].[ADDRESS]
     public BillStatus status; //[BILL].[STATUS]
     public long total; //[BILL].[TOTAL]
+    public int salerID; //[BILL].[SALER_ID]
     public List<ProductBaseDB> productinBill;
 
     public BillBaseDB() {
