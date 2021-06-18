@@ -10,6 +10,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ImageButton
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -24,56 +25,212 @@
             android:textColor="@color/black"
             android:textSize="34dp"
             android:layout_marginLeft="20dp"/>
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+        <TextView
             android:id="@+id/tv_title_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hồ sơ"
             android:fontFamily="@font/gilroy_bold"
             android:textColor="@color/black"
-            android:textSize="18dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"/>
+            android:textSize="18dp" />
+        <Button
+            android:minHeight="0dp" android:minWidth="0dp"
+            android:id="@+id/btn_changeprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thay đổi"
+            android:background="@color/transparent"
+            android:fontFamily="@font/gilroy_medium"
+            android:textSize="14dp"
+            android:padding="0dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/mainColor"
+            android:textAllCaps="false"
+            android:layout_alignParentRight="true"/>
+        <Button
+            android:minHeight="0dp" android:minWidth="0dp"
+            android:id="@+id/btn_saveprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:visibility="invisible"
+            android:background="@color/transparent"
+            android:fontFamily="@font/gilroy_medium"
+            android:textSize="14dp"
+            android:padding="0dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/mainColor"
+            android:textAllCaps="false"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
-    <include layout="@layout/sample_edit_text_custom"
-        android:id="@+id/tv_user_name"
-        android:layout_height="wrap_content"
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp"/>
-    <include layout="@layout/sample_edit_text_custom"
-            android:id="@+id/tv_fullname"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="10dp" />
-    <include layout="@layout/sample_edit_text_custom"
-            android:id="@+id/tv_fullname2"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="10dp" />
+        android:background="@drawable/edittext_blur_background"
+        android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/title_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/gilroy_light"
+            android:text="Tên đăng nhập"
+            android:textSize="12dp"
+            android:layout_gravity="top"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tv_username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="5dp"
+            android:paddingStart="0dp"
+            android:enabled="false"
+            android:fontFamily="@font/gilroy_regular"
+            android:text="thuytien192"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:gravity="bottom"
+            android:layout_marginBottom="15dp"></com.google.android.material.textfield.TextInputEditText>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp">
-        <include layout="@layout/sample_edit_text_custom"
-            android:id="@+id/tv_birthday"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="10dp"
+
+        android:background="@drawable/edittext_blur_background">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.65"/>
-        <include layout="@layout/sample_edit_text_custom"
-            android:id="@+id/tv_sex"
+            android:text="Họ tên"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/gilroy_light"
+            android:textSize="12dp"
+            android:layout_gravity="top"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tv_fullname"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_birthday"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginHorizontal="25dp"
+            android:paddingStart="0dp"
+            android:fontFamily="@font/gilroy_regular"
+            android:textSize="16dp"
+            android:enabled="false"
+            android:textColor="@color/black"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp"
+            android:text="Võ Thị Thủy Tiên"></com.google.android.material.textfield.TextInputEditText>
+    </LinearLayout>
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:columnCount="2"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnWeight="0.65"
+            android:layout_columnSpan="1"
+            android:background="@drawable/edittext_blur_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/gilroy_light"
+                android:text="Ngày sinh"
+                android:textSize="12dp"
+                android:layout_gravity="top"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_birthday"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:enabled="false"
+                android:fontFamily="@font/gilroy_regular"
+                android:inputType="date"
+                android:paddingStart="0dp"
+                android:hint="dd/mm/yy"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_column="1"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="0.35"
+            android:background="@drawable/edittext_blur_background">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giới tính"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/gilroy_light"
+                android:textSize="12dp"
+                android:layout_gravity="top"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/tv_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:fontFamily="@font/gilroy_regular"
+                android:paddingStart="0dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="15dp"
+                android:paddingVertical="16dp"
+                android:textColor="@color/black"
+                android:spinnerMode="dropdown"
+                android:textSize="16dp"></androidx.appcompat.widget.AppCompatSpinner>
+        </LinearLayout>
+
+    </GridLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="70dp">
         <TextView
             android:id="@+id/tv_title_Change_pasword"
             android:layout_width="wrap_content"
@@ -83,23 +240,52 @@
             android:textColor="@color/black"
             android:textSize="18dp"
             android:layout_centerVertical="true"/>
-        <TextView
+        <Button
+            android:minHeight="0dp" android:minWidth="0dp"
+            android:id="@+id/btn_changepassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đổi mật khẩu"
+            android:text="Thay đổi"
             android:background="@color/transparent"
             android:fontFamily="@font/gilroy_medium"
             android:textSize="14dp"
             android:padding="0dp"
-            android:textColor="#9B9B9B"
+            android:gravity="center_vertical"
+            android:textColor="@color/mainColor"
+            android:textAllCaps="false"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
-
-    <include layout="@layout/sample_edit_text_custom"
-        android:id="@+id/tv_password"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/edittext_blur_background">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="top"
+            android:fontFamily="@font/gilroy_light"
+            android:textSize="12dp"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:paddingStart="0dp"
+            android:fontFamily="@font/gilroy_regular"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:inputType="textPassword"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:enabled="false"
+            android:text="123456789"></com.google.android.material.textfield.TextInputEditText>
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -1,8 +1,13 @@
 package exam.nlb2t.epot.MyShop;
 
+import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
 import android.text.Layout;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,13 +33,25 @@ import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.databinding.MyShopProductViewBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
-public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder> {
-    List<ProductBaseDB> products;
+public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder>{
+    public List<ProductBaseDB> products;
+    int userID;
     Context context;
+    boolean isfullProducts;
+    int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public Product_TabAdapter(int userID) {
+        this.userID = userID;
         DBControllerProduct db = new DBControllerProduct();
-        products = db.getProducts(userID);
+        products = db.getLIMITProduct(userID, 0, 10);
         db.closeConnection();
     }
 
@@ -43,14 +60,14 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_shop_product_view, parent, false);
-
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getNameView().setText(products.get(position).name);
-        holder.getPriceView().setText(Helper.getMoneyString(products.get(position).price));
+        holder.getPriceView().setText(Helper.getMoneyString(products.get(position).priceOrigin));
         holder.getImageView().setImageBitmap(products.get(position).getImagePrimary());
         holder.getLikeView().setText("Yêu thích: " + products.get(position).getNumberLike());
         holder.getWarehouseView().setText("Kho hàng: " + (products.get(position).amount - products.get(position).amountSold));
@@ -59,13 +76,18 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         setEventHandler(holder);
     }
 
+    public void setTextItemPrice() {
+        //TODO: Set PriceOrigin and Price of ProductItem here
+    }
+
     @Override
     public int getItemCount() {
         return products.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
+        private final ImageView btnShowContextMenu;
 
         private final TextView nameView;
         private final TextView priceView;
@@ -80,6 +102,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             super(itemView);
 
             imageView = (ImageView) itemView.findViewById(R.id.my_shop_imageProduct);
+            btnShowContextMenu = (ImageView) itemView.findViewById(R.id.my_shop_context_menu_item);
 
             nameView = (TextView) itemView.findViewById(R.id.my_shop_nameProduct);
             priceView = (TextView) itemView.findViewById(R.id.my_shop_priceProduct);
@@ -93,6 +116,9 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
         public ImageView getImageView() {
             return imageView;
+        }
+        public ImageView getBtnShowContextMenu() {
+            return btnShowContextMenu;
         }
         public TextView getNameView() {
             return nameView;
@@ -130,9 +156,50 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             @Override
             public void onClick(View v) {
                 //TODO: Delete product from My Shop
+                DBControllerProduct db = new DBControllerProduct();
+                if (!db.deleteProduct(products.get(holder.getAdapterPosition()).id)) {
+                    Log.e("Lỗi", "Không có món cần tìm hoặc không thể xóa món");
+                }
+                db.closeConnection();
+
                 products.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
             }
         });
+        holder.btnShowContextMenu.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(Menu.NONE, R.id.my_shop_context_menu_item, Menu.NONE, "Giảm giá");
+            }
+        });
+        holder.btnShowContextMenu.setOnLongClickListener(v->{
+            setPosition(holder.getAdapterPosition());
+            return false;
+        });
+    }
+
+
+    public void addItemToList(int number) {
+        if (isfullProducts) return;
+        DBControllerProduct db = new DBControllerProduct();
+        int maxsize = db.getNumberProductsbyUser(userID);
+        List<ProductBaseDB> newlist;
+        int offset = products.size();
+
+        if (offset == maxsize) {
+            isfullProducts = true;
+            return;
+        }
+        if (number + offset > maxsize) {
+            newlist = db.getLIMITProduct(userID, offset, maxsize - offset);
+        }
+        else {
+            newlist = db.getLIMITProduct(userID, offset, number);
+        };
+
+        products.addAll(newlist);
+        db.closeConnection();
+
+        notifyItemRangeInserted(offset, products.size());
     }
 }

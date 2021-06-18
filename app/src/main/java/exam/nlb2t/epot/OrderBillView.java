@@ -1,189 +1,62 @@
 package exam.nlb2t.epot;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
-import android.util.AttributeSet;
-import android.view.View;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * TODO: document your custom view class.
  */
-public class OrderBillView extends View {
-    private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
+public class OrderBillView  {
+    public Bitmap shopImage;
+    public String tv_shopName;
+    public String  tv_Amount;
+    public String tv_IDBill;
+    public String tv_total;
+    public String tv_DateCreate;
+    public String tv_Status;
 
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
-
-    public OrderBillView(Context context) {
-        super(context);
-        init(null, 0);
+    public OrderBillView() {
     }
 
-    public OrderBillView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(attrs, 0);
+    public OrderBillView(Bitmap shopImage, String tv_shopName, String tv_Amount, String tv_IDBill, String tv_total, String tv_DateCreate, String tv_Status) {
+        this.shopImage = shopImage;
+        this.tv_shopName = tv_shopName;
+        this.tv_Amount = tv_Amount;
+        this.tv_IDBill = tv_IDBill;
+        this.tv_total = tv_total;
+        this.tv_DateCreate = tv_DateCreate;
+        this.tv_Status = tv_Status;
+    }
+    public Bitmap getShopImage() {
+        return shopImage;
     }
 
-    public OrderBillView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(attrs, defStyle);
+    public String getTv_shopName() {
+        return tv_shopName;
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.OrderBillView, defStyle, 0);
-
-        mExampleString = a.getString(
-                R.styleable.OrderBillView_exampleString);
-        mExampleColor = a.getColor(
-                R.styleable.OrderBillView_exampleColor,
-                mExampleColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        mExampleDimension = a.getDimension(
-                R.styleable.OrderBillView_exampleDimension,
-                mExampleDimension);
-
-        if (a.hasValue(R.styleable.OrderBillView_exampleDrawable)) {
-            mExampleDrawable = a.getDrawable(
-                    R.styleable.OrderBillView_exampleDrawable);
-            mExampleDrawable.setCallback(this);
-        }
-
-        a.recycle();
-
-        // Set up a default TextPaint object
-        mTextPaint = new TextPaint();
-        mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
-
-        // Update TextPaint and text measurements from attributes
-        invalidateTextPaintAndMeasurements();
+    public String getTv_Amount() {
+        return tv_Amount;
     }
 
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
-
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
+    public String getTv_IDBill() {
+        return tv_IDBill;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
-
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
-
-        // Draw the text.
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
-        }
+    public String getTv_total() {
+        return tv_total;
     }
 
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
+    public String getTv_DateCreate() {
+        return tv_DateCreate;
     }
 
-    /**
-     * Sets the view"s example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
+    public String getTv_Status() {
+        return tv_Status;
     }
 
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
 
-    /**
-     * Sets the view"s example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-
-    /**
-     * Sets the view"s example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-
-    /**
-     * Sets the view"s example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
-    }
 }

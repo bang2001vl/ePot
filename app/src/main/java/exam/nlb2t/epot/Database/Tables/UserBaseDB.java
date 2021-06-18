@@ -1,15 +1,9 @@
 package exam.nlb2t.epot.Database.Tables;
 
 import android.graphics.Bitmap;
-import android.os.Build;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -35,22 +29,22 @@ public class UserBaseDB {
         return rs;
     }
 
-    public void setAddress(String receiverName, String receiverPhone, String address, String dictrict, String province)
+    public void setAddress(String receiverName, String receiverPhone, String address_detail, String province)
     {
         String separator = "|-|";
         StringBuilder builder = new StringBuilder();
         builder.append(separator).append(receiverName);
         builder.append(separator).append(receiverPhone);
-        builder.append(separator).append(address);
-        builder.append(separator).append(dictrict);
+        builder.append(separator).append(address_detail);
         builder.append(separator).append(province);
         builder.append(separator);
+        address = builder.toString();
     }
 
     public String[] getAddress()
     {
         String separator = "|-|";
-        String[] rs = new String[5];
+        String[] rs = new String[4];
         int temp = separator.length();
         int start = temp;
         for(int i = 0; i<rs.length; i++)
@@ -75,10 +69,11 @@ public class UserBaseDB {
     public UserBaseDB(){
         id = 1;
         phoneNumber = "0965903108";
-        address = "Chợ Lớn, Sài Gòn";
+        setAddress("Hải", "+84965108903", "Chợ Lớn", "Sài Gòn");
         avatarID = 1;
         fullName = "Hải Quay Xe";
         gender = 0;
+        username="haingunguc";
         setBirthday(1945, 4, 30);
     }
 }

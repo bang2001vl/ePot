@@ -251,6 +251,24 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
+    public boolean deleteProduct(int productID) {
+        boolean rs = false;
+        try {
+            String sql = "DELETE FROM [PRODUCT] WHERE [ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            rs = statement.executeUpdate() == 1;
+
+            commit();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
     public List<ProductBaseDB> getProducts(int userID)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
@@ -259,6 +277,47 @@ public class DBControllerProduct extends DatabaseController{
             String sql = "select * from [PRODUCT] where [SALER_ID] = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.description = resultSet.getString(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);i++;
+
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return rs;
+    }
+    public List<ProductBaseDB> getLIMITProduct(int userID, int offset, int number)
+    {
+        List<ProductBaseDB> rs = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("EXEC getLIMITProduct ?,?,?");
+            statement.setInt(1, userID);
+            statement.setInt(2, offset);
+            statement.setInt(3, number);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next())
@@ -415,9 +474,45 @@ public class DBControllerProduct extends DatabaseController{
         }
         catch (SQLException e)
         {
+           e.printStackTrace();
+        }
+
+        return rs;
+    }
+
+  public int getNumberProductsbyUser(int userID) {
+        int rs = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID]=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                rs = resultSet.getInt(1);
+            }
+            statement.close();
+        }
+        catch (SQLException e) {
+
             e.printStackTrace();
         }
 
         return rs;
+    }
+
+    public void setSalePriceProduct(int productID, int newSalePrice) {
+        try {
+            String sql = "UPDATE [PRODUCT] SET [PRICE] = ? WHERE [ID]=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,newSalePrice);
+            statement.setInt(2, productID);
+            ResultSet resultSet = statement.executeQuery();
+
+            commit();
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

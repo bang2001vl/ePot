@@ -28,6 +28,7 @@ public class ShopFragment extends Fragment {
         adapter = new Shop_TabAdapter(getChildFragmentManager()
                 , FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         binding.myShopViewPaper.setAdapter(adapter);
+        binding.myShopViewPaper.setOffscreenPageLimit(3);
         binding.myShopTabLayout.setupWithViewPager(binding.myShopViewPaper);
 
         return binding.getRoot();

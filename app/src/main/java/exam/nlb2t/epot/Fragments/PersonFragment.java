@@ -1,6 +1,5 @@
 package exam.nlb2t.epot.Fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
-import exam.nlb2t.epot.DialogFragment.OrderFragment;
+import exam.nlb2t.epot.OrderFragment;
 import exam.nlb2t.epot.DialogFragment.SettingAccountFragment;
 import exam.nlb2t.epot.databinding.FragmentProfileBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -23,6 +22,12 @@ import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 public class PersonFragment<DialogLayoutBinding> extends Fragment {
     FragmentProfileBinding binding;
     private UserBaseDB currentuser=Authenticator.getCurrentUser();
+    private String[] mAddress=new String[2];
+    /*MainActivity mainActivity=new MainActivity();
+    public PersonFragment(MainActivity ma)
+    {
+        mainActivity=ma;
+    }*/
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,7 +43,9 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.tvName.setText(currentuser.fullName);
         binding.tvUsername.setText(currentuser.username);
         binding.avtProfile.setImageBitmap(currentuser.getAvatar(currentuser.avatarID));
-        binding.tvCityAddress.setText(currentuser.address);
+        getAddress();
+        binding.tvCityAddress.setText(mAddress[0]);
+        binding.tvStreetAddress.setText(mAddress[1]);
 
     }
 
@@ -47,7 +54,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ShowDialog(new OrderFragment());
+               ShowDialog(new OrderFragment(currentuser.id));
             }
         });
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +75,49 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 ShowDialog(new FavoriteProdFragment());
             }
         });
+        /*binding.btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAlertDialog();
+            }
+        });*/
     }
     private void ShowDialog(DialogFragment dialogFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         dialogFragment.show(ft, "dialog");
     }
+    private void getAddress()
+    {
+        mAddress[0]="";
+        mAddress[1]="";
+       if (currentuser.address!=null)
+       {
+           mAddress[0]=currentuser.getAddress()[2];
+           mAddress[1]=currentuser.getAddress()[3];
+       }
+    }
+   /* private void openAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Đăng xuất khỏi tài khoản này")
+                .setTitle("Đăng xuất");
+
+        AlertDialog alert =builder.create();
+        alert.show();
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent newIntent = new Intent(mainActivity, LoginScreen.class);
+                startActivity(newIntent);
+                mainActivity.finish();
+                dialog.dismiss();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        }
+*/
+
 
 
 

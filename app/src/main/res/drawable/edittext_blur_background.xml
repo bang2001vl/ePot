@@ -6,7 +6,7 @@
                 android:bottom="2dp"
                 android:left="2dp"
                 android:right="2dp"
-                android:top="0dp" />
+                android:top="2dp" />
             <corners android:radius="5dp"/>
             <solid android:color="#0DCCCCCC" />
         </shape>
@@ -31,28 +31,6 @@
                 android:top="2dp" />
             <solid android:color="#15CCCCCC" />
             <corners android:radius="8dp" />
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle">
-            <padding
-                android:bottom="2dp"
-                android:left="2dp"
-                android:right="2dp"
-                android:top="2dp" />
-            <corners android:radius="5dp"/>
-            <solid android:color="#20CCCCCC" />
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle">
-            <padding
-                android:bottom="2dp"
-                android:left="2dp"
-                android:right="2dp"
-                android:top="2dp" />
-            <corners android:radius="5dp"/>
-            <solid android:color="#25CCCCCC" />
         </shape>
     </item>
     <item>
