@@ -140,10 +140,71 @@
         android:layout_margin="10dp"
         android:fontFamily="@font/gilroy_bold"
         />
-    <androidx.recyclerview.widget.RecyclerView
+    <!--<androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/recycleViewNewProduct"/>
+        android:id="@+id/recycleViewNewProduct"/>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/grid_new_product"
+            android:columnCount="4"
+            >
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/button_more_product_new"
+                android:text="More"
+                android:layout_gravity="center_vertical"
+                android:layout_columnWeight="1"
+                />
+        </GridLayout>
+    </ScrollView>
+
 
 </LinearLayout>

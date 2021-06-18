@@ -72,4 +72,20 @@ public class ProductBaseDB {
         rs = db.getCountRating(this.id);
         return rs;
     }
+
+    public void testData()
+    {
+        id = 1;
+        salerID = 1;
+        categoryID = 0;
+        name = "Product";
+        price = 10000;
+        priceOrigin = 15000;
+        amount = 100;
+        amountSold = 1;
+        description = "description";
+        imagePrimaryID = 3;
+        createdDate = new Date(System.currentTimeMillis());
+        deleted = 0;
+    }
 }

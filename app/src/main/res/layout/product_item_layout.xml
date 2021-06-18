@@ -9,8 +9,10 @@
     <LinearLayout
         android:layout_width="98dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/product_item"
         android:orientation="vertical">
         <FrameLayout
