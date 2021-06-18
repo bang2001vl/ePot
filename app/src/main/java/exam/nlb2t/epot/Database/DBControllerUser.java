@@ -223,39 +223,29 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    /*public UserBaseDB getUserlogin(String pass, String username)
+
+    public int findUserID(String username, String pass)
     {
-        UserBaseDB rs = null;
+        int rs = -1;
         try
         {
             Authenticator authenticator = new Authenticator();
             byte[] passEncypted = authenticator.encyptPassword(username, pass);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
-
-            String sql = "select from [USER] where [username] = ? and [password] = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
             statement.setString(1, username);
             statement.setBinaryStream(2, inputStream, passEncypted.length);
             ResultSet resultSet = statement.executeQuery();
-
             if(resultSet.next())
             {
-                rs = new UserBaseDB();
-                rs.id = userID;
-                rs.username = resultSet.getString(1);
-                rs.fullName = resultSet.getString(2);
-                rs.avatarID = resultSet.getInt(3);
+                rs = resultSet.getInt(1);
             }
             resultSet.close();
             statement.close();
-        }
-        catch (SQLException e)
-        {
-            ErrorMsg = "LỖI: Câu lệnh SQL không đúng";
+        } catch (SQLException e) {
             e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
         }
         return rs;
-    }*/
-
+    }
 }
