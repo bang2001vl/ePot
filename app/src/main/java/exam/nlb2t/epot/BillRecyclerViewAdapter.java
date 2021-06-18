@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,24 +18,33 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder>{
-    private List<BillBaseDB> billList;
+    public List<BillBaseDB> billList;
     private Context context;
-    private UserBaseDB shop;
-    DBControllerUser dbControllerUser;
+    public List<UserBaseDB> shops;
 
+    public BillRecyclerViewAdapter() {
 
-    public BillRecyclerViewAdapter (List<BillBaseDB> bill, Context mcontext)
+    }
+
+    public BillRecyclerViewAdapter (List<BillBaseDB> bills, Context mcontext)
     {
-        this.billList = bill;
+        this.billList = bills;
         this.context = mcontext;
+
+        DBControllerUser db = new DBControllerUser();
+        for (BillBaseDB bill : billList) {
+            shops.add(db.getUserInfo(bill.userID));
+        }
+        db.closeConnection();
     }
 
     @NonNull
     @Override
     public BillRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sample_order_bill_view, parent, false);
 
         BillRecyclerViewAdapter.ViewHolder viewHolder;
@@ -48,14 +58,30 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
     public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
 
         BillBaseDB currentbill= billList.get(position);
-        shop=dbControllerUser.getUserInfo(currentbill.userID);
-        holder.getShopImage().setImageBitmap(shop.getAvatar(currentbill.userID));
-        holder.getTv_shopName().setText(shop.username);
+        UserBaseDB currentshop = shops.get(position);
+
+        holder.getShopImage().setImageBitmap(currentshop.getAvatar(currentbill.userID));
+        holder.getTv_shopName().setText(currentshop.username);
         holder.getTv_IDBill().setText(currentbill.keyBill);
         holder.getTv_DateCreate().setText(currentbill.createdDate.toString());
         holder.getTv_Status().setText(currentbill.status.toString());
-        holder.getTv_total().setText("");
+        holder.getTv_total().setText(String.valueOf(currentbill.total));
         holder.getTv_Amount().setText("");
+
+        setEventHandler(holder);
+    }
+
+    private void setEventHandler(ViewHolder holder) {
+        holder.getBtn_Detail().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    //TODO: open detail Bill
+                    DetailBillFragment dialog = new DetailBillFragment();
+                    dialog.show(((AppCompatActivity)context).getSupportFragmentManager(),DetailBillFragment.NAMEDIALOG);
+                }
+            }
+        });
     }
 
     @Override
@@ -63,7 +89,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
         return billList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    public class ViewHolder extends RecyclerView.ViewHolder
     {
         public ImageView shopImage;
         public TextView tv_shopName;
@@ -83,19 +109,9 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
             tv_IDBill= itemView.findViewById(R.id.tv_ID_Order);
             tv_DateCreate = itemView.findViewById(R.id.date_order);
             tv_total = itemView.findViewById(R.id.tv_total);
-            tv_Status=itemView.findViewById(R.id.tv_Status);
+            tv_Status = itemView.findViewById(R.id.tv_Status);
             parent_layout = itemView.findViewById(R.id.bill_view);
-            btn_Detail=itemView.findViewById(R.id.btn_detail_bill);
-
-            btn_Detail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    {
-
-                    }
-
-                }
-            });
+            btn_Detail = itemView.findViewById(R.id.btn_detail_bill);
         }
         public ImageView getShopImage() {
             return shopImage;

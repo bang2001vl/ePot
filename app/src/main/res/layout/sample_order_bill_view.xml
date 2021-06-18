@@ -120,14 +120,14 @@
        <android.widget.Button
            android:id="@+id/btn_detail_bill"
            android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_height="40dp"
            android:textColor="@color/black"
            android:text="Chi tiết"
            android:textAllCaps="false"
            android:layout_centerVertical="true"
            android:fontFamily="@font/gilroy_bold"
-           android:layout_marginLeft="20dp"
-           android:paddingHorizontal="30dp"
+           android:layout_marginLeft="30dp"
+           android:paddingHorizontal="25dp"
            android:stateListAnimator="@null"
            android:background="@drawable/btn_background"
            android:layout_marginVertical="15dp"/>

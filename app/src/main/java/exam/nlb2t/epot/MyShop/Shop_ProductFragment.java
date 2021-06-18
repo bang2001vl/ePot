@@ -46,7 +46,7 @@ public class Shop_ProductFragment extends Fragment {
         binding.layoutProductMyShop.setLayoutManager(layout);
 
         //TODO: Find UserID to login app
-        adapter = new Product_TabAdapter(1);
+        adapter = new Product_TabAdapter();
         //adapter.setHasStableIds(true);
 
         binding.layoutProductMyShop.setItemViewCacheSize(10);

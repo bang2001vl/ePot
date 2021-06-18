@@ -14,6 +14,7 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.databinding.MyShopOverviewTabBinding;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Shop_OverviewFragment extends Fragment {
     MyShopOverviewTabBinding binding;
@@ -38,17 +39,17 @@ public class Shop_OverviewFragment extends Fragment {
     }
 
     public void loadData() {
-//        DBControllerBill db = new DBControllerBill();
-//        int[] listNumber = db.getAllNumberBill(9);
-//        if (listNumber != null) {
-//            binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
-//            binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
-//            binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
-//            binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
-//        }
-//        db.closeConnection();
+        DBControllerBill db = new DBControllerBill();
+        int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
+        if (listNumber != null) {
+            binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
+            binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
+            binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
+            binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
+        }
+        db.closeConnection();
 
-        binding.itemSell.setValue(1);
-        binding.itemOutofstock.setValue(1);
+        binding.itemSell.setValue(0);
+        binding.itemOutofstock.setValue(0);
     }
 }

@@ -28,6 +28,7 @@ public class Shop_OrderFragment extends Fragment {
 
         adapter = new Order_TabAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         binding.myShopOrderViewpager.setAdapter(adapter);
+        binding.myShopOrderViewpager.setOffscreenPageLimit(4);
         binding.myShopOrderTab.setupWithViewPager(binding.myShopOrderViewpager);
 
         return binding.getRoot();
