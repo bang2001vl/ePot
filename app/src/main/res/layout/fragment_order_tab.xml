@@ -7,18 +7,13 @@
     tools:context=".OrderTab">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Recycelview_bill"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="5dp"
-        android:paddingVertical="10dp">
-        <include layout="@layout/sample_order_bill_view"/>
-        <include layout="@layout/sample_order_bill_view"/>
-        <include layout="@layout/sample_order_bill_view"/>
-        <include layout="@layout/sample_order_bill_view"/>
-        <include layout="@layout/sample_order_bill_view"/>
-        <include layout="@layout/sample_order_bill_view"/>
-    </LinearLayout>
+
+        tools:listitem="@layout/sample_order_bill_view"/>
 
 </ScrollView>

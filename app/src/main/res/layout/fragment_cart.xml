@@ -15,7 +15,7 @@
             android:id="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/title_bar_background"
+            android:background="@color/mainColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -26,9 +26,11 @@
                 android:layout_marginBottom="5dp"
                 android:textAlignment="center"
                 android:text="@string/menu_cart"
+                android:layout_marginVertical="10dp"
                 android:layout_centerInParent="true"
-                style="@style/CommonTitle"
-                />
+                android:textSize="28dp"
+                android:fontFamily="@font/gilroy_bold"
+                android:textColor="@color/white"/>
         </RelativeLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,7 +45,6 @@
                 android:id="@+id/scroll_view_layout"
                 android:scrollbars="vertical"
                 android:nestedScrollingEnabled="true"
-                android:background="@color/empty_screen_background"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/bottom_layout"
                 >
