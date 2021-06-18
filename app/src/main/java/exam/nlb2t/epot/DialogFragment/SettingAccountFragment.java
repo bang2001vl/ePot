@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +31,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import exam.nlb2t.epot.ChangePasswordFragment;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
@@ -38,6 +43,8 @@ public class SettingAccountFragment extends DialogFragment {
     FragmentSettingAccountBinding binding;
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
     Calendar myCalendar;
+    DBControllerUser dbControllerUser=new DBControllerUser();
+    Context context;
 
     public SettingAccountFragment() {
         // Required empty public constructor
@@ -53,7 +60,7 @@ public class SettingAccountFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSettingAccountBinding.inflate(inflater, container, false);
-        setEventHandler(container);
+        setEventHandler();
         return binding.getRoot();
 
     }
@@ -68,7 +75,9 @@ public class SettingAccountFragment extends DialogFragment {
         binding.tvSex.setSelection(currentuser.gender);
 
     }
-    private void setEventHandler( @Nullable ViewGroup container) {
+    private void setEventHandler() {
+            binding.btnChangeprofile.setVisibility(View.VISIBLE);
+            setVisible();
             binding.btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,12 +87,40 @@ public class SettingAccountFragment extends DialogFragment {
             binding.btnChangeprofile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    binding.btnChangeprofile.setVisibility(View.INVISIBLE);
                     setVisible();
 
                 }
             });
-        String[] items = new String[]{"Nữ", "Nam"};
-        ArrayAdapter<String> adapter = new  ArrayAdapter<String>(container.getContext(), android.R.layout.simple_spinner_item ,items);
+            binding.btnSaveprofile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (CheckErrorUserInfo() == -1) {
+                        Toast.makeText(context, getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (CheckErrorUserInfo() == 0) {
+                            Toast.makeText(context, getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                        } else {
+                            binding.btnChangeprofile.setVisibility(View.VISIBLE);
+                            setVisible();
+                            int day = Integer.parseInt(binding.tvBirthday.getText().toString().substring(0, 2));
+                            int month = Integer.parseInt(binding.tvBirthday.getText().toString().substring(3, 5)) - 1;
+                            int year = Integer.parseInt(binding.tvBirthday.getText().toString().substring(6, 10));
+                            dbControllerUser.updateUser(currentuser.id, binding.tvFullname.getText().toString(), binding.tvSex.getSelectedItemPosition(), day, month, year);
+                        }
+                    }
+                }
+            });
+            binding.btnChangepassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ChangePasswordFragment changePasswordFragment=new ChangePasswordFragment();
+                    changePasswordFragment.show(getFragmentManager(),"Tag");
+
+                }
+            });
+        String[] items = new String[]{"Nam", "Nữ"};
+        ArrayAdapter<String> adapter = new  ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item ,items);
         binding.tvSex.setAdapter(adapter);
 
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
@@ -107,7 +144,7 @@ public class SettingAccountFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(container.getContext(), date, myCalendar
+                new DatePickerDialog(getContext(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -156,18 +193,28 @@ public class SettingAccountFragment extends DialogFragment {
     private void setVisible()
     {
         if (binding.btnChangeprofile.getVisibility()==View.VISIBLE){
-            binding.btnChangeprofile.setVisibility(View.INVISIBLE);
-            binding.btnSaveprofile.setVisibility(View.VISIBLE);
+            binding.btnSaveprofile.setVisibility(View.INVISIBLE);
             binding.tvFullname.setEnabled(false);
             binding.tvSex.setEnabled(false);
             binding.tvBirthday.setEnabled(false);
         }
         else {
-            binding.btnChangeprofile.setVisibility(View.VISIBLE);
-            binding.btnSaveprofile.setVisibility(View.INVISIBLE);
+            binding.btnSaveprofile.setVisibility(View.VISIBLE);
             binding.tvFullname.setEnabled(true);
             binding.tvSex.setEnabled(true);
             binding.tvBirthday.setEnabled(true);
         }
+    }
+    private int CheckErrorUserInfo()
+    {
+        if (binding.tvFullname.getText().toString().equals("")|| (binding.tvBirthday.getText().toString().equals("")))
+        {
+            return -1;
+        }
+        if (binding.tvFullname.getError() != null || binding.tvBirthday.getError() != null)
+        {
+            return 0;
+        }
+        return 1;
     }
 }

@@ -20,6 +20,7 @@ import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class OrderFragment extends DialogFragment{
 
@@ -28,10 +29,9 @@ public class OrderFragment extends DialogFragment{
     ViewPager viewPager;
     ImageButton back;
     DBControllerBill dbControllerBill=new DBControllerBill();
-    int UserID;
+
 
     public OrderFragment(int ID) {
-        UserID=ID;
     }
 
     @Override
@@ -77,9 +77,9 @@ public class OrderFragment extends DialogFragment{
 
     private void setUpViewPager(ViewPager viewPager) {
         OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("SUCCESS"))), "Đã mua");
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("IN_SHIPPING"))), "Đang giao");
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("DEFAULT"))), "Đã hủy");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.IN_SHIPPING)), "Đang giao");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.DEFAULT)), "Đã hủy");
 
         viewPager.setAdapter(adapter);
     }
