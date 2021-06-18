@@ -7,10 +7,10 @@ import exam.nlb2t.epot.Database.DBControllerBill;
 
 public class BillBaseDB {
     public enum BillStatus {
-        DEFAULT(1), //MEANS: Default
-        WAIT_CONFIRM(2), //MEANS: Success payment but not confirm from saler
-        IN_SHIPPING(3), //MEANS: Success confirm but buyer not give product
-        SUCCESS(4); //MEANS: Success Deal
+        DEFAULT(0), //MEANS: Default
+        WAIT_CONFIRM(1), //MEANS: Success payment but not confirm from saler
+        IN_SHIPPING(2), //MEANS: Success confirm but buyer not give product
+        SUCCESS(3); //MEANS: Success Deal
 
         private final int value;
 

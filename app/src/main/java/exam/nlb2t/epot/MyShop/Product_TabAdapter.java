@@ -67,13 +67,17 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getNameView().setText(products.get(position).name);
-        holder.getPriceView().setText(Helper.getMoneyString(products.get(position).price));
+        holder.getPriceView().setText(Helper.getMoneyString(products.get(position).priceOrigin));
         holder.getImageView().setImageBitmap(products.get(position).getImagePrimary());
         holder.getLikeView().setText("Yêu thích: " + products.get(position).getNumberLike());
         holder.getWarehouseView().setText("Kho hàng: " + (products.get(position).amount - products.get(position).amountSold));
         holder.getSellView().setText("Đã bán: " + products.get(position).amountSold);
 
         setEventHandler(holder);
+    }
+
+    public void setTextItemPrice() {
+        //TODO: Set PriceOrigin and Price of ProductItem here
     }
 
     @Override

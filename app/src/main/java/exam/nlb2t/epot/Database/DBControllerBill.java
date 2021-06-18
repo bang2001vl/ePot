@@ -96,6 +96,34 @@ public class DBControllerBill extends DatabaseController {
         return number;
     }
 
+    public int[] getAllNumberBill(int userID) {
+        int[] list = new int[4];
+        try {
+            String sql =
+                    "SELECT COUNT(case [STATUS] when 0 then 1 else null end) as [DEFAULT], " +
+                            "COUNT(case [STATUS] when 1 then 1 else null end) as [WAIT_CONFIRM], " +
+                            "COUNT(case [STATUS] when 2 then 1 else null end) as [IN_SHIPPING], " +
+                            "COUNT(case [STATUS] when 3 then 1 else null end) as [SUCCESS]" +
+                            "FROM [BILL] WHERE [USER_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                for (int i=0; i < 4; i++) {
+                    list[i] = resultSet.getInt(i+1);
+                }
+            }
+
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return list;
+    }
+
     /**
      * Get Bills overview without detailBill by user id and status of the bill
      * @param userID The id of the user want to get
