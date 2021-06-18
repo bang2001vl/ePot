@@ -11,8 +11,6 @@ public class Product extends BaseProductInfo{
     public String ShopName;
     public Bitmap[] Images;
 
-
-
     public int numberSold;
 
     public Product()

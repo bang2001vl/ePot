@@ -1,35 +1,19 @@
 package exam.nlb2t.epot;
 
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.dragnell.android.SearchBar;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-import exam.nlb2t.epot.Activities.CartActivity;
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
-import exam.nlb2t.epot.ClassInformation.Saler;
-import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.Fragments.CartFragment_Old;
-import exam.nlb2t.epot.ProductDetail.ChooseItemDetailBottomSheet;
-import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
+import exam.nlb2t.epot.Views.fragment_search;
 import exam.nlb2t.epot.databinding.ActivityTestingBinding;
 
 public class TestingActivity extends AppCompatActivity {
@@ -37,13 +21,18 @@ public class TestingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_testing);
+        setContentView(R.layout.activity_testing);
 
-        testProductDetail();
+        fragment_search fg_search = new fragment_search();
+        FragmentTransaction fg_transaction = getSupportFragmentManager().beginTransaction();
+        fg_transaction.replace(R.id.fg_search, fg_search);
+        fg_transaction.commit();
+
+     /*   testProductDetail();*/
         //testCart();
     }
 
-    public void testProductDetail()
+   /* public void testProductDetail()
     {
         binding = ActivityTestingBinding.inflate(getLayoutInflater());
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +76,7 @@ public class TestingActivity extends AppCompatActivity {
             Toast.makeText(this, "Don't existed !!", Toast.LENGTH_LONG);
             Log.d("MY_TRACK", "Don't existed !!");
         }
-    }
+    }*/
 
 //    public void TestChooseDetail()
 //    {
