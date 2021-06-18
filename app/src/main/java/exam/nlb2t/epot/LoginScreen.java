@@ -166,7 +166,7 @@ public class LoginScreen extends AppCompatActivity {
                 {
                     Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
 
-                    Intent intent = new Intent(LoginScreen.this, home_shopping.class);
+                    Intent intent = new Intent(LoginScreen.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("EXIT", true);
                     startActivity(intent);
