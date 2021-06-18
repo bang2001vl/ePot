@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.databinding.MyShopOverviewTabBinding;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 
@@ -34,12 +37,18 @@ public class Shop_OverviewFragment extends Fragment {
         //TODO : Write code here <Set all listener in here>
     }
 
-    private void loadData() {
-        binding.itemComplete.setValue(0);
-        binding.itemShipping.setValue(0);
-        binding.itemSell.setValue(0);
-        binding.itemOutofstock.setValue(0);
-        binding.itemConfirm.setValue(0);
-        binding.itemCancel.setValue(0);
+    public void loadData() {
+//        DBControllerBill db = new DBControllerBill();
+//        int[] listNumber = db.getAllNumberBill(9);
+//        if (listNumber != null) {
+//            binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
+//            binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
+//            binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
+//            binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
+//        }
+//        db.closeConnection();
+
+        binding.itemSell.setValue(1);
+        binding.itemOutofstock.setValue(1);
     }
 }
