@@ -41,7 +41,6 @@ public class DBControllerProduct extends DatabaseController{
                 {
                     ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
                     preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
-                    inputStream.close();
                 }
                 else {preparedStatement.setNull(6, Types.VARBINARY);}
             }
@@ -70,7 +69,7 @@ public class DBControllerProduct extends DatabaseController{
             preparedStatement.close();
             resultSet.close();
         }
-        catch (SQLException | IOException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
             rollback();
