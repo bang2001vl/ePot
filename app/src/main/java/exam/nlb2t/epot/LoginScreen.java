@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
@@ -30,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -70,7 +72,7 @@ public class LoginScreen extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-        //for login with google
+        // require infor from user
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -85,7 +87,7 @@ public class LoginScreen extends AppCompatActivity {
         btn_signin_gg = (SignInButton) findViewById(R.id.sign_in_button);
 
         btn_signin_gg.setSize(SignInButton.SIZE_STANDARD);
-
+        setGooglePlusButtonText(btn_signin_gg, "Tiếp tục với Google");
 
 
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
@@ -189,8 +191,7 @@ public class LoginScreen extends AppCompatActivity {
         btn_signin_gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, 9);
+                signIn();
             }
         });
 
@@ -261,6 +262,7 @@ public class LoginScreen extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("EXIT", true);
             startActivity(intent);
+            signOut();
             finish();
 
             // Signed in successfully, show authenticated UI.
@@ -271,6 +273,32 @@ public class LoginScreen extends AppCompatActivity {
             Log.w("Lỗi", "signInResult:failed code=" + e.getStatusCode());
             /*updateUI(null);*/
         }
+    }
+
+    // signin acct gg
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, 9);
+    }
+    // signOut acct gg
+    public void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+    }
+    // disconnect acct gg with Epot, delete all infor of user
+    public void revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
     }
 
     private void getFbInfo() {
@@ -298,6 +326,19 @@ public class LoginScreen extends AppCompatActivity {
             parameters.putString("fields", "id,name,link");
             request.setParameters(parameters);
             request.executeAsync();
+        }
+    }
+
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
         }
     }
 }

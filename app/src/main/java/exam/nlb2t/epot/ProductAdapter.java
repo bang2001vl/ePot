@@ -1,5 +1,6 @@
 package exam.nlb2t.epot;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -18,15 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import exam.nlb2t.epot.ClassInformation.Product;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private final List<Product> productList;
+    private final List<ProductBaseDB> productList;
     private final Context context;
 
 
-    ProductAdapter (List<Product> products, Context mcontext)
+    ProductAdapter (List<ProductBaseDB > products, Context mcontext)
     {
         this.productList = products;
         this.context = mcontext;
@@ -47,28 +48,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Product product = productList.get(position);
+        ProductBaseDB  product = productList.get(position);
 
-        String price = product.originPrice + " đ";
+        String price = product.priceOrigin + " đ";
         SpannableString oldproprice = new SpannableString(price);
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        if (product.originPrice == product.currentPrice)
+        if (product.priceOrigin == product.price)
         {
             holder.tag_salepro.setVisibility(View.GONE);
             holder.tv_Oldproprice.setVisibility(View.GONE);
         }
         else
         {
-            holder.tag_salepro.setText(" -" + (product.currentPrice*100 / product.originPrice) +"% ");
+            holder.tag_salepro.setText(" -" + (product.price*100 / product.priceOrigin) +"% ");
             holder.tv_Oldproprice.setText(oldproprice);
         }
 
-        holder.tv_Pricepro.setText(product.currentPrice + " đ");
-        holder.tv_Namepro.setText(" " + product.productName + " ");
-        holder.imagePro.setImageBitmap(product.mainImage);
-        holder.tv_Amountpro.setText("Đã bán " + product.numberSold);
-
+        holder.tv_Pricepro.setText(product.price + " đ");
+        holder.tv_Namepro.setText(" " + product.name + " ");
+        holder.imagePro.setImageBitmap(product.getImagePrimary());
+        holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
     }
 
     @Override
@@ -105,18 +105,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             btn_favorites = itemView.findViewById(R.id.Favorite);
 
             btn_favorites.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("UseCompatLoadingForDrawables")
                 @Override
                 public void onClick(View v) {
                     {
                         //change status of favorites button
-                        btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
+                         if (btn_favorites.getBackground() == v.getContext().getResources().getDrawable(R.drawable.red_favorite_24))
+                         {
+                             btn_favorites.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+                         }
+                         else
+                         {
+                             btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
+                         }
                     }
-
                 }
             });
-
             itemView.setPadding(2, 2 , 2, 2);
-
         }
     }
 
