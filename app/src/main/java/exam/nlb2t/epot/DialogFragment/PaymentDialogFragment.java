@@ -24,14 +24,14 @@ public class PaymentDialogFragment extends DialogFragment {
     String receiverName;
     String receiverPhone;
     String receiverAddress;
-    int productMoney;
+    long productMoney;
     int shipMoney = 19000;
     public String address;
 
     Helper.OnSuccessListener onSubmitOKListener;
     public void setOnSubmitOKListener(Helper.OnSuccessListener listener){this.onSubmitOKListener = listener;}
 
-    public PaymentDialogFragment(int productMoney, int shipMoney)
+    public PaymentDialogFragment(long productMoney, int shipMoney)
     {
         this.productMoney = productMoney;
         this.shipMoney = shipMoney;

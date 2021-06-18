@@ -29,6 +29,7 @@ public class BillBaseDB {
     public String keyBill; //[BILL].[KEYBILL]
     public String address; //[BILL].[ADDRESS]
     public BillStatus status; //[BILL].[STATUS]
+    public long total; //[BILL].[TOTAL]
     public List<ProductBaseDB> productinBill;
 
     public BillBaseDB() {
