@@ -248,4 +248,69 @@ public class DBControllerUser extends DatabaseController{
         }
         return rs;
     }
+
+    public boolean updateUser(UserBaseDB userBaseDB)
+    {
+        boolean rs = false;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [ADDRESS] = ? WHERE [ID] = ?;");
+            statement.setString(1, userBaseDB.address);
+            statement.setInt(2, userBaseDB.id);
+
+            rs = statement.executeUpdate() > 0;
+            statement.close();
+            commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public boolean updateAddress(int userID, String receiverName, String receiverPhone, String address_detail, String district, String province)
+    {
+        boolean rs = false;
+        try
+        {
+            UserBaseDB userBaseDB = new UserBaseDB();
+            userBaseDB.setAddress(receiverName, receiverPhone, address_detail, district, province);
+
+            PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [ADDRESS] = ? WHERE [ID] = ?;");
+            statement.setString(1, userBaseDB.address);
+            statement.setInt(2, userID);
+
+            rs = statement.executeUpdate() > 0;
+            statement.close();
+            commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public boolean updateUser(int userID, String fullName, int gender, int birthDay_year, int birthDay_month, int birthDay_day)
+    {
+        boolean rs = false;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [FULL_NAME]=?,[GENDER]=?,[BIRTHDAY]=? WHERE [ID] = ?;");
+            statement.setString(1, fullName);
+            statement.setInt(2, gender);
+            statement.setDate(3, Helper.getDateFromLocalToUTC(birthDay_year, birthDay_month, birthDay_day, 6, 0));
+            statement.setInt(4, userID);
+
+            rs = statement.executeUpdate() > 0;
+            statement.close();
+            commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
 }
