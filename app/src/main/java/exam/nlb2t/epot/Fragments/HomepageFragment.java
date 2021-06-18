@@ -39,22 +39,16 @@ public class HomepageFragment extends Fragment {
     private RecyclerView rcVCategory;
     private CategoryTab categoryTab;
 
-    /*private RecyclerView rcVNewProduct;
-    private NewProductAdapter newProductAdapter;
-    private List<ProductBaseDB> newHintProductTodayList;
-    private List<ProductBaseDB> newProductList;
-    private boolean isLoading;
-    private boolean isLastPage;
+    private RecyclerView rcVNewProduct;
 
     private int totalPage;
     private int currentPage = 1;
 
-    private int start = 0;
-    private int end = 20;*/
+    private ProductAdapter productAdapter;
 
     int step = 10;
     int currentLastIndex = 0;
-
+    String sql;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,53 +71,15 @@ public class HomepageFragment extends Fragment {
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            getMoreData();
+            productAdapter = new ProductAdapter(getMoreData(), view.getContext());
         });
-        getMoreData();
 
-        /*
-        //new product
         rcVNewProduct = binding.recycleViewNewProduct;
-        newProductAdapter = new NewProductAdapter();
+        productAdapter = new ProductAdapter(getMoreData(), view.getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
         rcVNewProduct.setLayoutManager(gridLayoutManager);
-        rcVNewProduct.setAdapter(newProductAdapter);
-        *//*RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
-        rcVNewProduct.addItemDecoration(itemDecoration);*//*
-        newProductList = new ArrayList<>();
-        *//*DBControllerProduct dbControllerProduct = new DBControllerProduct();
-        newProductList = dbControllerProduct.getNewProductList();*//*
+        rcVNewProduct.setAdapter(productAdapter);
 
-        int max_size = 10;
-        for(int  i = 0; i<max_size ; i++)
-        {
-            ProductBaseDB productBaseDB = new ProductBaseDB();
-            productBaseDB.testData();
-            productBaseDB.id = i;
-            newProductList.add(productBaseDB);
-        }
-
-        totalPage = (newProductList.size() > ((int)(newProductList.size() / end)*end) ? (int)newProductList.size()/end +1 : newProductList.size()/end);
-        setFirstData();
-
-        rcVNewProduct.addOnScrollListener(new PaginationScrollListener(gridLayoutManager ) {
-            @Override
-            public void loadMoreItem() {
-                isLoading = true;
-                currentPage++;
-                loadNextPage();
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-        });*/
     }
 
     private List<Category> getListCategory(){
@@ -185,26 +141,30 @@ public class HomepageFragment extends Fragment {
         }, 2000);
     }*/
 
-    public void getMoreData()
+    public List<ProductBaseDB> getMoreData()
     {
         List<ProductBaseDB> list = new ArrayList<>();
-        /*
-            Load data from (currentLastIndex)->(currentLastIndex + step)
-         */
 
-        for(ProductBaseDB p : list)
+        sql = "SELECT TOP " + (currentLastIndex + step) + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7" +
+                "EXCEPT SELECT TOP " + currentLastIndex  + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7";
+        DBControllerProduct dbControllerProduct = new DBControllerProduct();
+        list = dbControllerProduct.getNewProductList(sql);
+
+
+       /* for(ProductBaseDB p : list)
         {
+
+
             // Create new custom view to display product
-            View view = getLayoutInflater().inflate(R.layout.product_item_layout, binding.gridNewProduct,false);
+            //View view = getLayoutInflater().inflate(R.layout.product_item_layout, binding.gridNewProduct,false);
             // Set data from p to new view
 
 
-
             // Add new view to grid
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            *//*GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            binding.gridNewProduct.addView(view, binding.gridNewProduct.getChildCount() - 1, params);
-        }
+            binding.gridNewProduct.addView(view, binding.gridNewProduct.getChildCount() - 1, params);*//*
+        }*/
 
         if(list.size() < step)
         {
@@ -212,7 +172,9 @@ public class HomepageFragment extends Fragment {
             binding.buttonMoreProductNew.setVisibility(View.GONE);
         }
 
-        currentLastIndex = currentLastIndex + list.size();
+        currentLastIndex += list.size();
+
+        return list;
     }
 
     @Override

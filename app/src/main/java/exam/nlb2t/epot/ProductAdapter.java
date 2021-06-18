@@ -27,7 +27,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private final Context context;
 
 
-    ProductAdapter (List<ProductBaseDB > products, Context mcontext)
+    public ProductAdapter (List<ProductBaseDB > products, Context mcontext)
     {
         this.productList = products;
         this.context = mcontext;

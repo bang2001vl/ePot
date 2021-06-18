@@ -65,8 +65,8 @@ public class NewProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             newProductViewHolder.imageViewProduct.setImageBitmap(productBaseDB.getImagePrimary());
             newProductViewHolder.textViewNameProduct.setText(productBaseDB.name);
-            newProductViewHolder.textViewNewPrice.setText("New price " + productBaseDB.price +"đ");
-            newProductViewHolder.textViewOldPrice.setText("Old price" + productBaseDB.priceOrigin + "đ");
+            newProductViewHolder.textViewNewPrice.setText(productBaseDB.price +"đ");
+            newProductViewHolder.textViewOldPrice.setText(productBaseDB.priceOrigin + "đ");
             newProductViewHolder.textViewAmountSold.setText("Đã bán: " + productBaseDB.amountSold);
             newProductViewHolder.textViewSale.setText(productBaseDB.getDiscount() + "%");
             newProductViewHolder.textViewCmt.setText("(" + productBaseDB.getTotalCmt() + ")");

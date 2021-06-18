@@ -140,12 +140,12 @@
         android:layout_margin="10dp"
         android:fontFamily="@font/gilroy_bold"
         />
-    <!--<androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/recycleViewNewProduct"/>-->
-    <ScrollView
+        android:id="@+id/recycleViewNewProduct"/>
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -195,16 +195,15 @@
                 android:layout_rowWeight="1"
                 android:layout_gravity="start|end"
                 />
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/button_more_product_new"
-                android:text="More"
-                android:layout_gravity="center_vertical"
-                android:layout_columnWeight="1"
-                />
-        </GridLayout>
-    </ScrollView>
 
+        </GridLayout>-->
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:id="@+id/button_more_product_new"
+        android:text="More"
+        android:layout_gravity="center_vertical"
+        android:layout_columnWeight="1"
+        />
 
 </LinearLayout>

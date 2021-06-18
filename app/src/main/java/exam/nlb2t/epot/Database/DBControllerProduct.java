@@ -351,12 +351,12 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
-    public List<ProductBaseDB> getNewProductList()
+    public List<ProductBaseDB> getNewProductList(String sql)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
         try
         {
-            String sql = "SELECT * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7";
+
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 
