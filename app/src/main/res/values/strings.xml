@@ -59,7 +59,7 @@
     <string name="txt_totalprice_payment">Tổng tiền</string>
 
     <string name="address_delivery">Địa chỉ giao hàng</string>
-    <string name="method_payment">Phương thức trả</string>
+    <string name="method_payment">Phương thức thanh toán</string>
 
     <string name="complete_payment">Thành công!</string>
     <string name="complete_payment2">Đơn hàng của bạn sẽ được sớm giao đến</string>
