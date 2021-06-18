@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,8 +73,8 @@ public class HomepageFragment extends Fragment {
         //new product
         rcVNewProduct = binding.recycleViewNewProduct;
         newProductAdapter = new NewProductAdapter();
-        LinearLayoutManager linearLayoutManagerNewProduct = new LinearLayoutManager(view.getContext());
-        rcVNewProduct.setLayoutManager(linearLayoutManagerNewProduct);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
+        rcVNewProduct.setLayoutManager(gridLayoutManager);
         rcVNewProduct.setAdapter(newProductAdapter);
         /*RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL);
         rcVNewProduct.addItemDecoration(itemDecoration);*/
@@ -83,7 +84,7 @@ public class HomepageFragment extends Fragment {
         totalPage = (newProductList.size() > ((int)(newProductList.size() / end)*end) ? (int)newProductList.size()/end +1 : newProductList.size()/end);
         setFirstData();
 
-        rcVNewProduct.addOnScrollListener(new PaginationScrollListener(linearLayoutManagerNewProduct ) {
+        rcVNewProduct.addOnScrollListener(new PaginationScrollListener(gridLayoutManager ) {
             @Override
             public void loadMoreItem() {
                 isLoading = true;
@@ -160,5 +161,11 @@ public class HomepageFragment extends Fragment {
                 }
             }
         }, 2000);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
