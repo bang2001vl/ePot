@@ -110,6 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/Big_btn_size"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/btn_red_background"
         android:fontFamily="@font/gilroy_bold"
@@ -126,7 +127,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
         tools:layout_editor_absoluteX="0dp">
@@ -134,22 +135,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_medium"
             android:text="@string/No_Acount"
             android:textSize="@dimen/small_title_size_text"
             app:layout_constraintTop_toBottomOf="@+id/button"
-            tools:layout_editor_absoluteX="108dp"
-            android:fontFamily="@font/gilroy_medium"/>
+            tools:layout_editor_absoluteX="108dp" />
 
         <TextView
             android:id="@+id/tv_signup"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/gilroy_medium"
             android:text="@string/Sign_Up"
             android:textColor="@color/mainColor"
             android:textSize="@dimen/small_title_size_text"
             tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="569dp"
-            android:fontFamily="@font/gilroy_medium"/>
+            tools:layout_editor_absoluteY="569dp" />
     </LinearLayout>
 
     <TextView
@@ -170,11 +171,14 @@
 
 
     <com.facebook.login.widget.LoginButton
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
@@ -186,9 +190,9 @@
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

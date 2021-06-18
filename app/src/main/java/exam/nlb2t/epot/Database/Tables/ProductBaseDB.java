@@ -62,7 +62,6 @@ public class ProductBaseDB {
         return rs;
     }
     public void setData(ProductBaseDB product) {
-
     }
 
     public int getTotalCmt()

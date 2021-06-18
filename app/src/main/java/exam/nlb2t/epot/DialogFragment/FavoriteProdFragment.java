@@ -2,6 +2,8 @@ package exam.nlb2t.epot.DialogFragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -9,36 +11,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.databinding.FragmentFavoriteProdBinding;
+import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 
 public class FavoriteProdFragment extends DialogFragment {
 
 
+    FragmentFavoriteProdBinding binding;
+    private UserBaseDB currentuser= Authenticator.getCurrentUser();
     public FavoriteProdFragment() {
         // Required empty public constructor
     }
-
     @Override
     public int getTheme() {
         return R.style.FullScreenDialog;
     }
 
-    public static FavoriteProdFragment newInstance(String param1, String param2) {
-        FavoriteProdFragment fragment = new FavoriteProdFragment();
-        Bundle args = new Bundle();
-        return fragment;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentFavoriteProdBinding.inflate(inflater, container, false);
+        setEventHandler();
+        return binding.getRoot();
+
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_prod, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
+    private void setEventHandler() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
 }

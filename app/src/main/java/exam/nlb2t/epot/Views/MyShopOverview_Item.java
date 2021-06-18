@@ -56,6 +56,7 @@ public class MyShopOverview_Item extends BaseCustomViewGroup {
             int value = typedArray.getInt(R.styleable.MyShopOverview_Item_OverviewValue, 0);
             float size = typedArray.getDimension(R.styleable.MyShopOverview_Item_OverviewSize, getResources().getDimension(R.dimen.my_shop_overview_item_size));
 
+            if (name == null) name = "Name of item";
             setData(name,value,size);
             typedArray.recycle();
         }
@@ -71,5 +72,9 @@ public class MyShopOverview_Item extends BaseCustomViewGroup {
 
     public void setValue(int value) {
         ItemValueView.setText(String.valueOf(value));
+    }
+
+    public void setName(String name) {
+        ItemNameView.setText(name);
     }
 }
