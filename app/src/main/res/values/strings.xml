@@ -11,7 +11,7 @@
     <string name="menu_notification">Thông báo</string>
     <string name="menu_person">Cá nhân</string>
 
-    <string name="on_working_description">Công trình đang thi công. Xin vui lòng đợi.</string>
+    <string name="on_workănging_description">Công trình đang thi công. Xin vui lòng đợi.</string>
     <string name="on_testing_description">Đây là khu vực test thuộc TestingActivity - activity_testing.
         Mọi thay đổi trong này sẽ ko đc đưa lên Github.</string>
 
@@ -92,7 +92,7 @@
     <string name="Selling">Sản phẩm bán chạy</string>
     <string name="Category">Danh mục</string>
     <string name="Suggestion">Gợi ý hôm nay</string>
-    <string name="See_All">Xem tất cả -></string>
+    <string name="See_All">Xem tất cả </string>
     <string name="Shoes">Giày</string>
     <string name="Clothes">Quần áo</string>
     <string name="Lock">Đồng hồ</string>
@@ -108,7 +108,7 @@
     <string name="No_Acount">Chưa có tài khoản?  </string>
     <string name="Social_NetWork">Đăng nhập với tài khoản xã hội</string>
 
-    <string name="Sign_Up">Đăng kí</string>
+    <string name="Sign_Up">Đăng ký</string>
     <string name="Enter_Phone">Nhập số điện thoại</string>
     <string name="Phone">Số điện thoại</string>
     <string name="Sent_OTP">Gửi OTP</string>
@@ -129,7 +129,7 @@
     <string name="Code">Mã</string>
 
     <string name="Confirm">Xác nhận</string>
-    <string name="Time">(30)</string>
+    <string name="Time">(120)</string>
     <string name="Phone_Number">+84</string>
 
     <string name="Search">Tìm kiếm</string>
@@ -150,12 +150,28 @@
     <string name="btn_rating">Đánh giá</string>
     <string name="hint_rating">Hãy chia sẻ những điều bạn thích về sản phẩm này!</string>
 
-<!--    string resources of layout MyShop Overview-->
+    <!--    string resources of layout MyShop Overview-->
     <string name="myshop_overview_txt_onOutOfStock">Hết hàng</string>
     <string name="myshop_overview_txt_onSelling">Đang bán</string>
     <string name="myshop_overview_txt_Cancelled">Đã hủy</string>
     <string name="myshop_overview_txt_onConfirming">Chờ xác nhận</string>
     <string name="myshop_overview_txt_onShipping">Đang giao</string>
     <string name="myshop_overview_txt_complete">Thành công</string>
+    <string name="your_cart_is_empty">Giỏ hàng của bạn đang trống</string>
 
+    <!--  Error-->
+    <string name="error_not_enough_info">Chưa điền đầy đủ thông tin!</string>
+    <string name="error_incorrect_info">Có thông tin điền lỗi, vui lòng kiểm tra lại!</string>
+    <string name="error_existing_username">Tên đăng nhập đã tồn tại!</string>
+    <string name="error_not_50_char">Độ dài không quá 50 kí tự!</string>
+    <string name="error_not_special_char">Chỉ chứa kí tự a–z, A-Z, 0-9!</string>
+    <string name="error_define_pass">Xác nhận mật khẩu sai!</string>
+    <string name="error_length_6_to_50">Độ dài mật khẩu tối thiểu 6, tối đa 50 kí tự!</string>
+    <string name="error_wrong_username_pass">Tên đăng nhập hoặc mật khẩu sai!</string>
+    <string name="error_duplicate_phone_number">Số điện thoại đã đăng kí tài khoản!</string>
+
+    <!-- Announce-->
+    <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
+
+    <string name="watch_more">Xem thêm</string>
 </resources>

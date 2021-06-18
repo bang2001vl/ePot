@@ -16,7 +16,6 @@
         android:text="@string/Enter_Phone"
         android:textColor="@color/black"
         android:textSize="@dimen/big_title_size_text"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +28,6 @@
         android:text="@string/Phone"
         android:textColor="@color/Title"
         android:textSize="@dimen/normal_title_size_text"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Enter_Phone" />
 
@@ -46,6 +44,7 @@
         app:layout_constraintVertical_bias="0.03">
 
         <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/acs_country"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_marginStart="32dp"
@@ -71,5 +70,19 @@
         android:background="@drawable/line"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
         tools:layout_editor_absoluteX="32dp" />
+    <TextView
+        android:id="@+id/Error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="32dp"
+        android:text="@string/Enror_phone"
+        android:textColor="@color/mainColor"
+        android:fontFamily="@font/gilroy_medium"
+        android:textSize="@dimen/small_title_size_text"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

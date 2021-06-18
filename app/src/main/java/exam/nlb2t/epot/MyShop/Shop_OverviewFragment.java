@@ -20,6 +20,7 @@ public class Shop_OverviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = MyShopOverviewTabBinding.inflate(inflater, container, false);
         setEventHandler();
+        loadData();
         return binding.getRoot();
     }
 
@@ -31,5 +32,14 @@ public class Shop_OverviewFragment extends Fragment {
 
     void setEventHandler() {
         //TODO : Write code here <Set all listener in here>
+    }
+
+    private void loadData() {
+        binding.itemComplete.setValue(0);
+        binding.itemShipping.setValue(0);
+        binding.itemSell.setValue(0);
+        binding.itemOutofstock.setValue(0);
+        binding.itemConfirm.setValue(0);
+        binding.itemCancel.setValue(0);
     }
 }

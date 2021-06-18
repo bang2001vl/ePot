@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.MyShop;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -15,12 +16,22 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
 
         tabtitles = new String[]{"Tất cả", "Chờ xác nhận", "Đang giao", "Đã hủy"};
         fragments = new Fragment[tabtitles.length];
+        fragments[0] = new Shop_OverviewFragment();
+        fragments[1] = new Shop_OverviewFragment();
+        fragments[2] = new Shop_OverviewFragment();
+        fragments[3] = new Shop_OverviewFragment();
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
         return fragments[position];
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabtitles[position];
     }
 
     @Override

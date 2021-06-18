@@ -44,11 +44,13 @@ public class Helper {
     {
         return String.format(Locale.getDefault(), price_format, price);
     }
-    public String getDateTime(Calendar calendar)
+    public static Date getDateFromLocalToUTC(int year, int month, int day, int hour, int minute)
     {
-        return  String.format(Locale.getDefault(), "%d-%d-%d %d:%d:%d", calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.HOUR_OF_DAY),  calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.set(year, month, day, hour, minute);
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date rs = new Date(calendar.getTimeInMillis());
+        return  rs;
     }
     public String getDate(Calendar calendar)
     {

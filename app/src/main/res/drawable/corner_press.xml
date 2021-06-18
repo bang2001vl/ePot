@@ -9,7 +9,7 @@
 <!--                    <stroke-->
 <!--                        android:width="@dimen/corner_thin"-->
 <!--                        android:color="@color/ashgray" />-->
-                    <solid android:color="#990000"/>
+                    <solid android:color="@color/mainColor"/>
                     <size
                         android:width="@dimen/corner_size"
                         android:height="@dimen/corner_size"/>

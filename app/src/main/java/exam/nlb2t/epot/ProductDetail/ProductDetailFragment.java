@@ -264,7 +264,8 @@ public class ProductDetailFragment extends DialogFragment {
         binding.buttonFavouriteProductDetail.setOnCheckedChangeListener((btn, isChecked) -> {
             if(btn.getTag() != null)
             {
-                btn.setTag(null); return;
+                btn.setTag(null);
+                return;
             }
 
             String message;
@@ -286,8 +287,8 @@ public class ProductDetailFragment extends DialogFragment {
             })
             .setNegativeButton(R.string.cancel, (d, w) ->
                 {
-                    btn.setChecked(!isChecked);
                     btn.setTag("a");
+                    btn.setChecked(!isChecked);
                 }).show();
 
         });

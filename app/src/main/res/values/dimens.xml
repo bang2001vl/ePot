@@ -7,6 +7,7 @@
 <!--    Text    -->
     <dimen name="big_title_size_text">26sp</dimen>
     <dimen name="normal_title_size_text">20sp</dimen>
+    <dimen name="small1_title_size_text">17sp</dimen>
     <dimen name="small_title_size_text">14sp</dimen>
 
     <dimen name="big_content_size_text">24sp</dimen>
@@ -59,5 +60,11 @@
     <dimen name="image_preview_width_small">75dp</dimen>
 
 <!--    Dimen resources of layout My Shop Overview-->
-    <dimen name="my_shop_overview_item_size">20dp</dimen>
+    <dimen name="my_shop_overview_item_size">15dp</dimen>
+    <dimen name="my_shop_product_txtsize">15dp</dimen>
+    <dimen name="my_shop_product_iconsize">20dp</dimen>
+
+    <dimen name="button_common_height">50dp</dimen>
+    <dimen name="title_common_font_size">30dp</dimen>
+  
 </resources>

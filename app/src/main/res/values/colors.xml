@@ -35,5 +35,7 @@
     <color name="gray_600">#FF757575</color>
 
     <color name="rating_bar">#FAEF28</color>
+    <color name="title_bar_background">#FF5252</color>
+    <color name="empty_screen_background">#E1F5FE</color>
 
 </resources>

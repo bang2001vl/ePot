@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
 
-        <android.widget.Button
+        <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
@@ -31,7 +31,9 @@
             android:text="Tìm kiếm"
             android:textColor="#DB3022"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gilroy_bold"/>
     </LinearLayout>
 
     <ListView
