@@ -269,13 +269,13 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    public boolean updateAddress(int userID, String receiverName, String receiverPhone, String address_detail, String district, String province)
+    public boolean updateAddress(int userID, String receiverName, String receiverPhone, String address_detail, String province)
     {
         boolean rs = false;
         try
         {
             UserBaseDB userBaseDB = new UserBaseDB();
-            userBaseDB.setAddress(receiverName, receiverPhone, address_detail, district, province);
+            userBaseDB.setAddress(receiverName, receiverPhone, address_detail, province);
 
             PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [ADDRESS] = ? WHERE [ID] = ?;");
             statement.setString(1, userBaseDB.address);
