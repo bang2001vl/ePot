@@ -102,21 +102,13 @@ public class DBControllerUser extends DatabaseController{
         }
         return rs;
     }
-    //insert new user into database
-    public boolean InsertUser(String phone, String email, String password, String fullname,
-                              int gender, String joinday, String birthday, String address,
-                              String shopname,  int follower, String info)
-    {
-
-        return true;
-    }
 
     public boolean checkExistUsername(String username)
     {
         boolean rs = false;
         try
         {
-            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]=?;");
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]=?");
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             rs = resultSet.next();
@@ -128,7 +120,8 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    public int insertUser(String username, String password,String phone, String fullname, int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
+    public int insertUser(String username, String password,String phone, String fullname,
+                          int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
     {
         int newUserID = -1;
         try
@@ -156,11 +149,103 @@ public class DBControllerUser extends DatabaseController{
             statement.close();
             inputStream.close();
             resultSet.close();
+            commit();
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             ErrorMsg = "FAILED: Cannot execute statement";
+            rollback();
         }
         return newUserID;
+    }
+
+    public boolean checkExistPhone(String phone)
+    {
+        boolean rs = false;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [PHONE]= ?");
+            statement.setString(1, phone);
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public boolean UpdatePassword(String phone, String pass)
+    {
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(null, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+
+            PreparedStatement statement = connection.prepareStatement("UPDATE [USER] SET [PASSWORD] = ? WHERE [PHONE] = ?");
+            statement.setBinaryStream(1, inputStream, passEncypted.length);
+            statement.setString(2, phone);
+
+            statement.executeUpdate();
+            statement.close();
+            inputStream.close();
+            commit();
+
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+            return false;
+        }
+        return true;
+    }
+
+    public boolean CheckUserLogin(String username, String pass)
+    {
+        boolean rs = false;
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(username, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
+            statement.setString(1, username);
+            statement.setBinaryStream(2, inputStream, passEncypted.length);
+            ResultSet resultSet = statement.executeQuery();
+            rs = resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+
+    public int findUserID(String username, String pass)
+    {
+        int rs = -1;
+        try
+        {
+            Authenticator authenticator = new Authenticator();
+            byte[] passEncypted = authenticator.encyptPassword(username, pass);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
+            statement.setString(1, username);
+            statement.setBinaryStream(2, inputStream, passEncypted.length);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
     }
 }

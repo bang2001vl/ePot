@@ -1,18 +1,29 @@
 package exam.nlb2t.epot.singleton;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
 public class Authenticator {
     public static boolean Login(String username, String password)
     {
-        currentUser = new UserBaseDB();
-        return true;
+        DBControllerUser db = new DBControllerUser();
+        int id = db.findUserID(username, password);
+
+        if(id > 0)
+        {
+            currentUser = db.getUserInfo(id);
+            currentUser.password = password;
+            db.closeConnection();
+            return true;
+        }
+        else {
+            db.closeConnection();
+            return false;
+        }
     }
     private static UserBaseDB currentUser;
     public static UserBaseDB getCurrentUser()

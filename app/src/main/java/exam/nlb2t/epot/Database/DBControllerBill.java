@@ -16,6 +16,7 @@ import java.util.Map;
 
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerBill extends DatabaseController {
     public boolean addBill(int customerID, int priceShip, String address, Map<Integer,List<Pair<Integer, Integer>>> buyMap) {
@@ -96,6 +97,34 @@ public class DBControllerBill extends DatabaseController {
         return number;
     }
 
+    public int[] getAllNumberBill(int userID) {
+        int[] list = new int[4];
+        try {
+            String sql =
+                    "SELECT COUNT(case [STATUS] when 0 then 1 else null end) as [DEFAULT], " +
+                            "COUNT(case [STATUS] when 1 then 1 else null end) as [WAIT_CONFIRM], " +
+                            "COUNT(case [STATUS] when 2 then 1 else null end) as [IN_SHIPPING], " +
+                            "COUNT(case [STATUS] when 3 then 1 else null end) as [SUCCESS]" +
+                            "FROM [BILL] WHERE [USER_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                for (int i=0; i < 4; i++) {
+                    list[i] = resultSet.getInt(i+1);
+                }
+            }
+
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return list;
+    }
+
     /**
      * Get Bills overview without detailBill by user id and status of the bill
      * @param userID The id of the user want to get
@@ -138,6 +167,39 @@ public class DBControllerBill extends DatabaseController {
         catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+        return rs;
+    }
+
+    // Get from start to end. start and end is included
+    public List<BillBaseDB> getBillbyUser_Overview(int userID, int startIndex, int endIndex)
+    {
+        List<BillBaseDB> rs = null;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("EXEC getBILL_byUSERID ?, ?, ?;");
+            statement.setInt(1, userID);
+            statement.setInt(2, startIndex);
+            statement.setInt(3, endIndex);
+
+            ResultSet resultSet = statement.executeQuery();
+            rs = new ArrayList<>();
+            while(resultSet.next())
+            {
+                BillBaseDB bill = new BillBaseDB();
+                bill.id = resultSet.getInt(1);
+                bill.keyBill = resultSet.getString(2);
+                bill.total = resultSet.getLong(3);
+                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(4));
+                bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt(5)];
+                rs.add(bill);
+            }
+
+            statement.close();
+            resultSet.close();
+        } catch (SQLException throwables) {
+            ErrorMsg = "FAILED: Cannot get data from server";
+            throwables.printStackTrace();
         }
         return rs;
     }

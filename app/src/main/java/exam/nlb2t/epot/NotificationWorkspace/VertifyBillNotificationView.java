@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.BaseCustomViewGroup;
 import exam.nlb2t.epot.databinding.SampleNotificationBinding;
 
@@ -46,6 +47,13 @@ public class VertifyBillNotificationView extends BaseCustomViewGroup {
 
         setBillKey("NTVD651321161");
         setTime(new Date(System.currentTimeMillis()));
+
+        createData();
+    }
+
+    public void createData()
+    {
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_vertify_bill));
     }
 
     public void setTitle(String title)

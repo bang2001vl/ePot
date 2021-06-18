@@ -150,7 +150,7 @@
     <string name="btn_rating">Đánh giá</string>
     <string name="hint_rating">Hãy chia sẻ những điều bạn thích về sản phẩm này!</string>
 
-<!--    string resources of layout MyShop Overview-->
+    <!--    string resources of layout MyShop Overview-->
     <string name="myshop_overview_txt_onOutOfStock">Hết hàng</string>
     <string name="myshop_overview_txt_onSelling">Đang bán</string>
     <string name="myshop_overview_txt_Cancelled">Đã hủy</string>
@@ -167,12 +167,12 @@
     <string name="error_not_special_char">Chỉ chứa kí tự a–z, A-Z, 0-9!</string>
     <string name="error_define_pass">Xác nhận mật khẩu sai!</string>
     <string name="error_length_6_to_50">Độ dài mật khẩu tối thiểu 6, tối đa 50 kí tự!</string>
-
-    <!-- Announce-->
+    <string name="error_wrong_username_pass">Tên đăng nhập hoặc mật khẩu sai!</string>
+    <string name="error_duplicate_phone_number">Số điện thoại đã đăng kí tài khoản!</string>
     <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
     <string-array name="Sexarray">
         <item>Nam</item>
         <item>Nữ</item>
     </string-array>
-
+    <string name="watch_more">Xem thêm</string>
 </resources>

@@ -393,7 +393,7 @@ public class CartFragment_Old extends Fragment {
 
     public void onClickPayment(Map<Integer,List<Pair<Integer, Integer>>> buyMap)
     {
-        int total = Integer.parseInt(binding.btnPayment.getTag().toString());
+        long total = Integer.parseInt(binding.btnPayment.getTag().toString());
         int numSaler = buyMap.size();
         int priceShip = 21 * 1000;
         PaymentDialogFragment fragment = new PaymentDialogFragment(total, priceShip * numSaler);

@@ -2,6 +2,7 @@ package exam.nlb2t.epot.NotificationWorkspace;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -13,6 +14,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.BaseCustomViewGroup;
 import exam.nlb2t.epot.databinding.SampleNotificationBinding;
 
@@ -34,10 +36,10 @@ public class NewBillNotificationView extends VertifyBillNotificationView{
     }
 
     @Override
-    public void init(Context context, AttributeSet attributeSet) {
-        super.init(context, attributeSet);
+    public void createData() {
         setTitle("Bạn có đơn hàng mới");
         setAfterWord("Vui lòng nhanh chóng xác nhận đơn hàng và tiến hành giao hàng.");
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_new_bill));
     }
 
     public void setBillKey(String key)
