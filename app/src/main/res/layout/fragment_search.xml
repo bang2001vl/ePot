@@ -1,18 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.SearchView
+    <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        app:searchIcon="@drawable/ic_baseline_search_24"
-        android:background="@drawable/border_textview"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        tools:layout_editor_absoluteX="-16dp">
+
+        <ImageView
+            android:id="@+id/Button_Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/Margin_Title"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/sv_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:iconifiedByDefault="true"
+            app:showAsAction="always"
+            android:background="@drawable/border_searchview"
+            app:searchIcon="@drawable/ic_baseline_search_24" />
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@color/transparent"
+            android:text="@string/Search"
+            android:textColor="@color/mainColor"
+            android:textSize="19dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/body_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/emplty_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="Opp! Có vẻ như không có sản phẩm nào như tìm kiếm của bạn!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/normal_content_size_text"
+        android:textColor="@color/mainColor"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

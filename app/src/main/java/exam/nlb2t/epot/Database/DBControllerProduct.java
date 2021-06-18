@@ -378,4 +378,46 @@ public class DBControllerProduct extends DatabaseController{
 
         return rs;
     }
+
+    public List<ProductBaseDB> getProductsBaseName(String name)
+    {
+        List<ProductBaseDB> rs = new ArrayList<>();
+        name = name.toUpperCase();
+        try
+        {
+            String sql = "select * from [PRODUCT] where UPPER(NAME) LIKE '%" + name + "%'";
+            PreparedStatement statement = connection.prepareStatement(sql);
+           /* statement.setString(1, name);*/
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.description = resultSet.getString(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);
+                i++;
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return rs;
+    }
 }

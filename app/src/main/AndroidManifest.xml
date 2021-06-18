@@ -36,13 +36,13 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".LoginScreen">
+        <!--<activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity android:name=".Views.home_shopping">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,16 +68,14 @@
         </activity>
         <activity android:name=".TestingActivity">
 
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
 
-        <activity android:name=".MainActivity">
+      <!--  <activity android:name=".MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,7 +83,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CartActivity" />
+        <activity android:name=".Activities.CartActivity" />-->
 
     </application>
 

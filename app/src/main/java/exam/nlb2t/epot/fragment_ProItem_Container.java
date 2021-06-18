@@ -5,13 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import exam.nlb2t.epot.ClassInformation.Product;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +21,7 @@ import exam.nlb2t.epot.ClassInformation.Product;
  */
 public class fragment_ProItem_Container extends Fragment {
 
-    List<Product> productList ;
+    List<ProductBaseDB> productList ;
     RecyclerView proGrid;
     ProductAdapter productAdapter;
 
@@ -29,8 +30,7 @@ public class fragment_ProItem_Container extends Fragment {
         // Required empty public constructor
     }
 
-
-    public static fragment_ProItem_Container newInstance(List<Product> productList) {
+    public static fragment_ProItem_Container newInstance(List<ProductBaseDB> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
         fragment.productList = productList;
         return fragment;
@@ -39,12 +39,10 @@ public class fragment_ProItem_Container extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
@@ -58,7 +56,6 @@ public class fragment_ProItem_Container extends Fragment {
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 4));
         }
-
         return view;
     }
 
