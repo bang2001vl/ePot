@@ -170,6 +170,9 @@
 
     <!-- Announce-->
     <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
-
+    <string-array name="Sexarray">
+        <item>Nam</item>
+        <item>Nữ</item>
+    </string-array>
 
 </resources>

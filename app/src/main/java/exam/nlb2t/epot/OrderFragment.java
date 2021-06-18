@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.DialogFragment;
+package exam.nlb2t.epot;
 
 import android.os.Bundle;
 
@@ -8,29 +8,35 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
-import exam.nlb2t.epot.OrderAdapter;
-import exam.nlb2t.epot.OrderTab;
-import exam.nlb2t.epot.R;
+import java.util.List;
+import exam.nlb2t.epot.databinding.FragmentOrderBinding;
+import exam.nlb2t.epot.ClassInformation.User;
+import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
 public class OrderFragment extends DialogFragment{
 
     View myFragment;
     TabLayout tabLayout;
     ViewPager viewPager;
+    ImageButton back;
+    DBControllerBill dbControllerBill=new DBControllerBill();
+    int UserID;
 
-    public OrderFragment() {
-        // Required empty public constructor
+    public OrderFragment(int ID) {
+        UserID=ID;
     }
 
     @Override
     public int getTheme() {
         return R.style.FullScreenDialog;
-    }
-    public static OrderFragment getInstance(){
-        return new OrderFragment();
     }
 
     @Override
@@ -39,13 +45,15 @@ public class OrderFragment extends DialogFragment{
         myFragment= inflater.inflate(R.layout.fragment_order, container, false);
         viewPager=myFragment.findViewById(R.id.order_viewpager);
         tabLayout=myFragment.findViewById(R.id.order_tablayout);
+        back=myFragment.findViewById(R.id.btn_back1);
+
         return myFragment;
 
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        setEventHandler();
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -69,11 +77,19 @@ public class OrderFragment extends DialogFragment{
 
     private void setUpViewPager(ViewPager viewPager) {
         OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderTab(), "Đã mua");
-        adapter.addFragment(new OrderTab(), "Đang giao");
-        adapter.addFragment(new OrderTab(), "Đã hủy");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("SUCCESS"))), "Đã mua");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("IN_SHIPPING"))), "Đang giao");
+        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(UserID,BillBaseDB.BillStatus.valueOf("DEFAULT"))), "Đã hủy");
 
         viewPager.setAdapter(adapter);
+    }
+    private void setEventHandler() {
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
 }
