@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,7 @@ public class DefaultAddressFragment extends DialogFragment {
 
     FragmentDefaultAddressBinding binding;
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
-    private String[] address=new String[5];
+    private String[] address=new String[4];
 
     public DefaultAddressFragment() {
         // Required empty public constructor
@@ -49,6 +51,34 @@ public class DefaultAddressFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
        openView();
+        Pattern pattern = Pattern.compile(".*\\D.*");
+        binding.phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = pattern.matcher(binding.phone.getText().toString());
+                if( matcher.find()) {
+                    binding.phone.setError("Chỉ được nhập số!");
+                }
+                else
+                {
+                    if(binding.phone.length() != 9)
+                    {
+                        binding.phone.setError("Nhập sai định dạng sđt!");
+                    }
+
+                }
+            }
+        });
 
     }
     private void setEventHandler() {
@@ -63,6 +93,32 @@ public class DefaultAddressFragment extends DialogFragment {
             public void onClick(View v) {
                 currentuser.setAddress(binding.name.getText().toString(),binding.phone.getText().toString(),binding.DetailAddress.getText().toString(),"");
                 dismiss();
+            }
+        });
+        Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
+        binding.name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Matcher matcher = pattern.matcher(binding.name.getText().toString());
+                if (matcher.find()) {
+                    binding.name.setError(getResources().getString(R.string.error_not_special_char));
+                } else {
+                    if (binding.name.getText().toString().length() > 50) {
+                        binding.name.setError(getResources().getString(R.string.error_not_50_char));
+                    } else {
+                        binding.name.setError(null);
+                    }
+                }
             }
         });
     }
