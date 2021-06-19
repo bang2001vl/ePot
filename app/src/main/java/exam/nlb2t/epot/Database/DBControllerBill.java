@@ -17,6 +17,7 @@ import java.util.Map;
 
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerBill extends DatabaseController {
@@ -316,5 +317,35 @@ public class DBControllerBill extends DatabaseController {
         }
 
         return number;
+    }
+
+    public BillBaseDB getBillbyID(int billID) {
+        BillBaseDB bill = new BillBaseDB();
+        try {
+            String sql = "SELECT TOP(1) * FROM BILL WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1,billID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                bill.id = resultSet.getInt("ID");
+                bill.keyBill = resultSet.getString("KEYBILL");
+                bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt("STATUS")];
+                bill.address = resultSet.getString("ADDRESS");
+                bill.total = resultSet.getInt("TOTAL");
+                bill.createdDate = resultSet.getDate("CREATED_DATE");
+                bill.salerID = resultSet.getInt("SALER_ID");
+                bill.userID = resultSet.getByte("USER_ID");
+            }
+            else {
+                throw new SQLException();
+            }
+        }
+        catch (SQLException throwables) {
+            ErrorMsg = "FAILED: Cannot find bill by this ID: " + billID;
+            throwables.printStackTrace();
+            return null;
+        }
+        return bill;
     }
 }

@@ -35,7 +35,7 @@ import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder>{
-    public List<ProductBaseDB> products;
+    public final List<ProductBaseDB> products;
     Context context;
     boolean isfullProducts;
     int position;
@@ -48,10 +48,8 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         this.position = position;
     }
 
-    public Product_TabAdapter() {
-        DBControllerProduct db = new DBControllerProduct();
-        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 10);
-        db.closeConnection();
+    public Product_TabAdapter(List<ProductBaseDB> products) {
+        this.products = products;
     }
 
     @NonNull
@@ -74,6 +72,8 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
         setEventHandler(holder);
     }
+
+
 
     public void setTextItemPrice() {
         //TODO: Set PriceOrigin and Price of ProductItem here
@@ -181,7 +181,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     public void addItemToList(int number) {
         if (isfullProducts) return;
         DBControllerProduct db = new DBControllerProduct();
-        int maxsize = db.getNumberProductsbyUser(Authenticator.getCurrentUser().id);
+        int maxsize = db.getNumberProducts(Authenticator.getCurrentUser().id);
         List<ProductBaseDB> newlist;
         int offset = products.size();
 

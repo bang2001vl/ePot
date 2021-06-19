@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,7 +42,8 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
     {
         this.billList = bills;
         this.context = mcontext;
-        shops = new ArrayList<>();
+        this.shops = new ArrayList<>();
+      
         DBControllerUser db = new DBControllerUser();
         for (BillBaseDB bill : billList) {
             shops.add(db.getUserInfo(bill.salerID));
@@ -92,7 +94,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
             public void onClick(View v) {
                 {
                     //TODO: open detail Bill
-                    DetailBillFragment dialog = new DetailBillFragment();
+                    DetailBillFragment dialog = new DetailBillFragment(billList.get(holder.getAdapterPosition()).id, context);
                     dialog.show(((AppCompatActivity)context).getSupportFragmentManager(),DetailBillFragment.NAMEDIALOG);
                 }
             }
