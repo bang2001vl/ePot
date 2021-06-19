@@ -21,9 +21,9 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
  */
 public class fragment_ProItem_Container extends Fragment {
 
-    List<ProductBaseDB> productList ;
+    public List<ProductBaseDB> productList ;
     RecyclerView proGrid;
-    ProductAdapter productAdapter;
+    public  ProductAdapter productAdapter;
 
 
     public fragment_ProItem_Container() {
@@ -33,6 +33,7 @@ public class fragment_ProItem_Container extends Fragment {
     public static fragment_ProItem_Container newInstance(List<ProductBaseDB> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
         fragment.productList = productList;
+
         return fragment;
     }
 
@@ -54,9 +55,11 @@ public class fragment_ProItem_Container extends Fragment {
             productAdapter = new ProductAdapter(productList, this.getContext());
 
             proGrid.setAdapter(productAdapter);
-            proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 4));
+            proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
         }
         return view;
     }
+
+
 
 }

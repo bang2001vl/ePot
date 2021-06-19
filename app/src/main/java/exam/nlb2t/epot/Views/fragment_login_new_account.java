@@ -23,7 +23,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
 
 public class fragment_login_new_account extends Fragment {
@@ -104,11 +103,6 @@ public class fragment_login_new_account extends Fragment {
                         }
                         else
                             {
-                                DBControllerUser controllerUser = new DBControllerUser();
-                                if (controllerUser.checkExistUsername(edt_usename.getText().toString()))
-                                {
-                                    edt_usename.setError(getResources().getString(R.string.error_existing_username));
-                                }
                                 edt_usename.setError(null);
                              }
                     }
