@@ -1,5 +1,6 @@
 package exam.nlb2t.epot;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -21,12 +24,17 @@ import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder>{
-    public List<BillBaseDB> billList;
-    private Context context;
-    public List<UserBaseDB> shops;
+    protected List<BillBaseDB> billList;
+    protected Context context;
+    private List<UserBaseDB> shops;
+    protected OnStatusTableChangedListener notifyStatusChangedListener;
 
-    public BillRecyclerViewAdapter() {
+    public void setNotifyStatusChangedListener(OnStatusTableChangedListener notifyStatusChangedLintener) {
+        this.notifyStatusChangedListener = notifyStatusChangedLintener;
+    }
 
+    protected BillRecyclerViewAdapter() {
+        //MEANS: It use for Bill_TabAdapter.java, should not write anymore here
     }
 
     public BillRecyclerViewAdapter (List<BillBaseDB> bills, Context mcontext)
@@ -36,7 +44,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
 
         DBControllerUser db = new DBControllerUser();
         for (BillBaseDB bill : billList) {
-            shops.add(db.getUserInfo(bill.userID));
+            shops.add(db.getUserInfo(bill.salerID));
         }
         db.closeConnection();
     }
@@ -56,22 +64,29 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
-
         BillBaseDB currentbill= billList.get(position);
         UserBaseDB currentshop = shops.get(position);
 
-        holder.getShopImage().setImageBitmap(currentshop.getAvatar(currentbill.userID));
-        holder.getTv_shopName().setText(currentshop.username);
-        holder.getTv_IDBill().setText(currentbill.keyBill);
-        holder.getTv_DateCreate().setText(currentbill.createdDate.toString());
-        holder.getTv_Status().setText(currentbill.status.toString());
-        holder.getTv_total().setText(String.valueOf(currentbill.total));
-        holder.getTv_Amount().setText("");
+        setBillInfor(holder,currentbill);
+        setShopInfor(holder, currentshop);
 
         setEventHandler(holder);
     }
 
-    private void setEventHandler(ViewHolder holder) {
+    protected void setBillInfor(@NonNull BillRecyclerViewAdapter.ViewHolder holder, BillBaseDB currentbill) {
+        holder.getTv_IDBill().setText(currentbill.keyBill);
+        holder.getTv_DateCreate().setText(currentbill.createdDate.toString());
+        holder.getTv_Status().setText(currentbill.status.toString());
+        holder.getTv_total().setText(String.valueOf(currentbill.total));
+        holder.getTv_Amount().setText(String.valueOf(currentbill.getAmountProduct()));
+    }
+
+    protected void setShopInfor(@NonNull BillRecyclerViewAdapter.ViewHolder holder, UserBaseDB currentshop) {
+        holder.getShopImage().setImageBitmap(currentshop.getAvatar());
+        holder.getTv_shopName().setText(currentshop.username);
+    }
+
+    protected void setEventHandler(ViewHolder holder) {
         holder.getBtn_Detail().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,5 +152,13 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
         public Button getBtn_Detail() {
             return btn_Detail;
         }
+    }
+
+    public interface OnStatusTableChangedListener {
+        void notifyChanged(BillBaseDB.BillStatus from, BillBaseDB.BillStatus to, BillBaseDB bill);
+    }
+
+    public void addNewItem() {
+
     }
 }
