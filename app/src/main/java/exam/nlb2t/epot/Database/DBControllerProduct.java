@@ -356,14 +356,14 @@ public class DBControllerProduct extends DatabaseController{
         List<ProductBaseDB> rs = new ArrayList<>();
         try
         {
-
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 
-            ProductBaseDB item = new ProductBaseDB();
             while (resultSet.next())
             {
                 int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
                 item.id = resultSet.getInt(i);i++;
                 item.salerID = resultSet.getInt(i);i++;
                 item.categoryID = resultSet.getInt(i);i++;

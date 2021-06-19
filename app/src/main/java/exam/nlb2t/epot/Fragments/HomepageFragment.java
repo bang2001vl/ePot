@@ -40,7 +40,7 @@ public class HomepageFragment extends Fragment {
     private CategoryTab categoryTab;
 
     private RecyclerView rcVNewProduct;
-
+    List<ProductBaseDB> productBaseDBList;
     private int totalPage;
     private int currentPage = 1;
 
@@ -71,12 +71,17 @@ public class HomepageFragment extends Fragment {
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            productAdapter = new ProductAdapter(getMoreData(), view.getContext());
+            List<ProductBaseDB> list = getMoreData();
+
+            productBaseDBList.addAll(list);
+            productAdapter.notifyDataSetChanged();
         });
 
         rcVNewProduct = binding.recycleViewNewProduct;
-        productAdapter = new ProductAdapter(getMoreData(), view.getContext());
+        productAdapter = new ProductAdapter(view.getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
+        productBaseDBList = getMoreData();
+        productAdapter.setData(productBaseDBList);
         rcVNewProduct.setLayoutManager(gridLayoutManager);
         rcVNewProduct.setAdapter(productAdapter);
 
@@ -145,11 +150,10 @@ public class HomepageFragment extends Fragment {
     {
         List<ProductBaseDB> list = new ArrayList<>();
 
-        sql = "SELECT TOP " + (currentLastIndex + step) + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7" +
-                "EXCEPT SELECT TOP " + currentLastIndex  + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7";
+        sql = "SELECT TOP " + (currentLastIndex + step) + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7 " +
+                " EXCEPT SELECT TOP " + currentLastIndex  + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         list = dbControllerProduct.getNewProductList(sql);
-
 
        /* for(ProductBaseDB p : list)
         {
