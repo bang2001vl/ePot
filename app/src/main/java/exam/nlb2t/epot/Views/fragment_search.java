@@ -94,6 +94,7 @@ public class fragment_search extends Fragment {
 
                 if (productList.size() != 0)
                 {
+                    ln_product.setVisibility(View.VISIBLE);
                     tv_emplty_result.setVisibility(View.GONE);
                     fg_ProItem_container =  fragment_ProItem_Container.newInstance(productList);
                     ReplaceFragment(fg_ProItem_container);
