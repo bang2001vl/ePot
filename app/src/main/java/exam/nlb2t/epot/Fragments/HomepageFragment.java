@@ -30,6 +30,7 @@ import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapter;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.fragment_search;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 
 public class HomepageFragment extends Fragment implements OnItemClickListener {
@@ -113,6 +114,10 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     void setEventHandler(){
         //TODO : Write code here <Set all listener in here>
+        binding.searchBar.setOnClickListener(v->{
+            fragment_search dialog = new fragment_search();
+            dialog.show(getChildFragmentManager(), "search");
+        });
     }
 
 
