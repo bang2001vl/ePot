@@ -49,7 +49,9 @@ public class Shop_OverviewFragment extends Fragment {
             binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
         }
 
-        binding.itemSell.setValue(0);
-        binding.itemOutofstock.setValue(0);
+        DBControllerProduct db2 = new DBControllerProduct();
+        binding.itemSell.setValue(db2.getNumberProducts(Authenticator.getCurrentUser().id));
+        binding.itemOutofstock.setValue(db2.getNumberProductOutofStock(Authenticator.getCurrentUser().id));
+        db2.closeConnection();
     }
 }

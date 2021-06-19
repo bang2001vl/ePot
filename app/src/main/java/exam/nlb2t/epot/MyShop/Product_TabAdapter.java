@@ -181,7 +181,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     public void addItemToList(int number) {
         if (isfullProducts) return;
         DBControllerProduct db = new DBControllerProduct();
-        int maxsize = db.getNumberProductsbyUser(Authenticator.getCurrentUser().id);
+        int maxsize = db.getNumberProducts(Authenticator.getCurrentUser().id);
         List<ProductBaseDB> newlist;
         int offset = products.size();
 

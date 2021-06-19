@@ -568,12 +568,12 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
-  public int getNumberProductsbyUser(int userID) {
+  public int getNumberProducts(int saler) {
         int rs = 0;
         try {
             String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID]=?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1,userID);
+            statement.setInt(1,saler);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 rs = resultSet.getInt(1);
@@ -664,6 +664,29 @@ public class DBControllerProduct extends DatabaseController{
             throwables.printStackTrace();
             ErrorMsg = "FAILED: Cannot find product with billID: " + billID;
         }
+        return rs;
+    }
+
+    public int getNumberProductOutofStock(int salerID) {
+        final int LIMIT_NUMBER_OUTOFSTOCK = 5;
+        int rs = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID] = ? AND (AMOUNT - AMOUNT_SOLD) <= ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, salerID);
+            statement.setInt(2, LIMIT_NUMBER_OUTOFSTOCK);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                rs = resultSet.getInt(1);
+            }
+
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return rs;
     }
 }
