@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/linear_layout_main"
                 android:orientation="vertical">
-                <exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
+                <!--<exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <exam.nlb2t.epot.NotificationWorkspace.VertifyBillNotificationView
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"/>
                 <exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Saler
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"/>-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"

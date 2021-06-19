@@ -239,6 +239,7 @@ public class DBControllerProduct extends DatabaseController{
                 rs.description = resultSet.getString(i);i++;
                 rs.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
                 rs.deleted = resultSet.getInt(i);i++;
+                rs.starAverage = resultSet.getFloat(i);i++;
             }
             resultSet.close();
             statement.close();
@@ -513,5 +514,33 @@ public class DBControllerProduct extends DatabaseController{
         catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<ProductBaseDB> getLikedProduct(int userID)
+    {
+        List<ProductBaseDB> rs = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT [PRODUCT_ID] FROM [LIKE] WHERE [USER_ID]=?;");
+            statement.setInt(1, userID);
+
+            ResultSet resultSet = statement.executeQuery();
+            List<Integer> productIDs = new ArrayList<>();
+            while (resultSet.next())
+            {
+                productIDs.add(resultSet.getInt(1));
+            }
+            resultSet.close();
+            statement.close();
+
+            rs = new ArrayList<>();
+            for(Integer id: productIDs)
+            {
+                rs.add(getProduct(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "FAILED: Cannot get data from server";
+        }
+        return rs;
     }
 }

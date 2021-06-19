@@ -16,6 +16,7 @@ import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.NotificationBaseDB;
 import exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView;
+import exam.nlb2t.epot.NotificationWorkspace.NotifycationInfo;
 import exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Customer;
 import exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Saler;
 import exam.nlb2t.epot.NotificationWorkspace.VertifyBillNotificationView;
@@ -27,25 +28,35 @@ import exam.nlb2t.epot.singleton.Authenticator;
 public class NotificationFragment extends Fragment {
     FragmentNotificationBinding binding;
     EmptyCartLayoutBinding bindingEmpty;
-    int lastIndex = 0;
-    int step = 10;
+    int lastIndex = 1;
+    int step = 2;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentNotificationBinding.inflate(inflater, container, false);
         setEventHandler();
+        binding.nextButtonLayout.setOnClickListener(v->{
+            loadMore();
+        });
+        loadMore();
         return binding.getRoot();
     }
 
-    public void requestLoadData()
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void loadMore()
     {
-        List<NotificationBaseDB> list = new ArrayList<>();
+        List<NotifycationInfo> list = new ArrayList<>();
         DBControllerNotification db = new DBControllerNotification();
         list = db.getNotidication(Authenticator.getCurrentUser().id, lastIndex, lastIndex+step-1);
         db.closeConnection();
 
-        if(list.size() == 0 && lastIndex == 0)
+        if(list.size() == 0 && lastIndex == 1)
         {
             if(bindingEmpty != null)
             {
@@ -63,41 +74,34 @@ public class NotificationFragment extends Fragment {
             binding.contentLayout.removeViewAt(binding.contentLayout.getChildCount() -1);
         }
 
-        List<BillBaseDB> bills = new ArrayList<>();
-        for(NotificationBaseDB noti:list)
-        {
-            // get bills overview
-        }
-
         for(int i = 0; i<list.size(); i++)
         {
-            NotificationBaseDB noti = list.get(i);
-            BillBaseDB bill = bills.get(i);
+            NotifycationInfo info = list.get(i);
+            NotificationBaseDB noti = info.notification;
 
             View view = null;
             if(noti.newStatus == 1)
             {
-                view = createNotify_New(noti, bill.keyBill);
+                view = createNotify_New(noti, info.keyBill);
             }
             else if(noti.newStatus == 2)
             {
-                view = createNotify_Vertify(noti, bill.keyBill);
+                view = createNotify_Vertify(noti, info.keyBill);
             }
             else if(noti.newStatus == 3)
             {
-                if(noti.receiverID == bill.userID)
+                if(noti.receiverID != info.salerID)
                 {
-                    view = createNotify_SuccessCustomer(noti, bill.keyBill);
+                    view = createNotify_SuccessCustomer(noti, info.keyBill);
                 }
                 else {
-                    view = createNotify_SuccessSaler(noti, bill.keyBill);
+                    view = createNotify_SuccessSaler(noti, info.keyBill);
                 }
             }
 
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            view.setLayoutParams(params);
 
-            binding.linearLayoutMain.addView(view, lastIndex);
+            binding.linearLayoutMain.addView(view, binding.linearLayoutMain.getChildCount() - 1, params);
         }
 
         if(list.size() < step)
@@ -138,12 +142,6 @@ public class NotificationFragment extends Fragment {
         rs.setBillKey(key);
         rs.setTime(noti.createdDate);
         return rs;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //TODO : Write code here <Get data from database and set to view>
     }
 
     void setEventHandler()
