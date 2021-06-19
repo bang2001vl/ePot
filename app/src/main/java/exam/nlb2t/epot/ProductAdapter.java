@@ -25,6 +25,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private final List<ProductBaseDB> productList;
     private final Context context;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
 
     ProductAdapter (List<ProductBaseDB > products, Context mcontext)
@@ -39,8 +40,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
 
+
         ViewHolder viewHolder;
         viewHolder = new ViewHolder(view);
+
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*ClipData.Item item = viewHolder.getPosition(viewHolder.getAdapterPosition());
+                outsideClickListener.onItemClicked(item);*/
+            }});
 
         return viewHolder;
     }
@@ -69,6 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.tv_Namepro.setText(" " + product.name + " ");
         holder.imagePro.setImageBitmap(product.getImagePrimary());
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
+
     }
 
     @Override
@@ -127,7 +138,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
     public void addproduct(List<ProductBaseDB> subpro) {
         productList.addAll(subpro);
-        this.notifyDataSetChanged();
+        this.notifyItemRangeInserted(productList.size(), subpro.size());
     }
 
 }

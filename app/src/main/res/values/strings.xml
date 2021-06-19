@@ -170,7 +170,7 @@
     <string name="error_wrong_username_pass">Tên đăng nhập hoặc mật khẩu sai!</string>
     <string name="error_duplicate_phone_number">Số điện thoại đã đăng kí tài khoản!</string>
     <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
-    <string name="btn_see_all">Xem tất cả</string>
+    <string name="btn_see_more">Xem thêm</string>
 
     <string-array name="Sexarray">
         <item>Nam</item>

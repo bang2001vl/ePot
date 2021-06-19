@@ -115,9 +115,13 @@ public class fragment_search extends Fragment {
                 DBControllerProduct controllerProduct = new DBControllerProduct();
 
                 subpro  = controllerProduct.getProductsBaseName(name, productList.size(), number_pro);
-                if (subpro != null)
+                if (subpro.size() != 0)
                 {
                     fg_ProItem_container.productAdapter.addproduct(subpro);
+                }
+                else
+                {
+                    btn_more.setVisibility(View.GONE);
                 }
             }
         });

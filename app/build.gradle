@@ -85,4 +85,6 @@ dependencies {
     // for login with google
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
 }

@@ -53,6 +53,11 @@ public class fragment_ProItem_Container extends Fragment {
          {
             proGrid =  view.findViewById(R.id.Gridpro);
             productAdapter = new ProductAdapter(productList, this.getContext());
+            proGrid.setHasFixedSize(true);
+            proGrid.setItemViewCacheSize(20);
+            proGrid.setDrawingCacheEnabled(true);
+            proGrid.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
 
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
