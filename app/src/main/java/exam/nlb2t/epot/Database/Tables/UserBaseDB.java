@@ -69,7 +69,7 @@ public class UserBaseDB {
     public UserBaseDB(){
         id = 1;
         phoneNumber = "0965903108";
-        setAddress("Hải", "+84965108903", "Chợ Lớn", "Sài Gòn");
+        setAddress("Hải", "+84965108903", "Chợ Lớn", "Thành phố Hồ Chí Minh");
         avatarID = 1;
         fullName = "Hải Quay Xe";
         gender = 0;
