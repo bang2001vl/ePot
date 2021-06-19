@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,14 +24,46 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private final List<ProductBaseDB> productList;
-    private final Context context;
+    private List<ProductBaseDB> productList;
+    private Context context;
+    private OnItemClickListener onItemClickListener;
+    ProductBaseDB  product;
 
-
-    ProductAdapter (List<ProductBaseDB > products, Context mcontext)
+    public ProductAdapter (List<ProductBaseDB > products, Context mcontext, OnItemClickListener onItemClickListener)
     {
         this.productList = products;
         this.context = mcontext;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public ProductAdapter(List<ProductBaseDB> productList, Context context) {
+        this.productList = productList;
+        this.context = context;
+    }
+
+    public ProductAdapter(Context context) {
+        this.context = context;
+    }
+
+    public List<ProductBaseDB> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<ProductBaseDB> productList) {
+        this.productList = productList;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public void setData(List<ProductBaseDB> list){
+        productList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -38,18 +71,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
-
-        ViewHolder viewHolder;
-        viewHolder = new ViewHolder(view);
-
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ProductBaseDB  product = productList.get(position);
-
+        this.product =  productList.get(position);
+        holder.id = product.id;
         String price = product.priceOrigin + " đ";
         SpannableString oldproprice = new SpannableString(price);
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -76,8 +105,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return productList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView imagePro;
         public TextView tv_Oldproprice;
         public TextView tv_Namepro;
@@ -89,6 +117,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public TextView tv_Cmt;
         public Button btn_favorites;
         LinearLayout parent_layout;
+        public int id;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -122,9 +151,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     }
                 }
             });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getContext(),"id: " + id,Toast.LENGTH_LONG).show();
+                    onItemClickListener.onItemClickProduct(id);
+                }
+            });
             itemView.setPadding(2, 2 , 2, 2);
         }
     }
+
     public void addproduct(List<ProductBaseDB> subpro) {
         productList.addAll(subpro);
         this.notifyDataSetChanged();

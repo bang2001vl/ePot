@@ -6,89 +6,104 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        >
+
+        android:textAlignment="center">
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/ic_baseline_location_on_24"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_baseline_location_on_24" />
 
-            />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:gravity="start|center"
             android:text="@string/Locatin"
             android:fontFamily="@font/gilroy_bold"
             android:textColor="#000000"
             android:textSize="22dp"
             android:textStyle="bold"
-            android:gravity="start|center"
-
 
 
             />
     </LinearLayout>
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            app:queryHint="@string/Search"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/border_searchview" />
 
-    <androidx.cardview.widget.CardView
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="15dp"
-        >
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="121dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_searchview"
+        app:queryHint="@string/Search" />
 
-        android:src="@mipmap/banner"
-        android:scaleType="centerCrop"
-        android:background="@drawable/border_textview"
-        />
-    </androidx.cardview.widget.CardView>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Selling"
-            android:fontFamily="@font/gilroy_bold"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="#DB3022"
-            android:gravity="bottom"
-            />
-        <TextView
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="#808080"
-            android:text="@string/See_All"
-            android:textSize="15dp"
-            android:textAlignment="textEnd"
-            />
-       </LinearLayout>
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragment_product_selling"
-        android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-        />
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="15dp"
+                >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
 
-    <LinearLayout
+                android:src="@mipmap/banner"
+                android:scaleType="centerCrop"
+                android:background="@drawable/border_textview"
+                />
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Selling"
+                    android:fontFamily="@font/gilroy_bold"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#DB3022"
+                    android:gravity="bottom"
+                    />
+                <!--<TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#808080"
+                    android:text="@string/See_All"
+                    android:textSize="15dp"
+                    android:textAlignment="textEnd"
+                    />-->
+               </LinearLayout>
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_product_selling"
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/recycleViewMaxSold"/>
+            </fragment>
+
+            <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -103,53 +118,114 @@
             android:fontFamily="@font/gilroy_bold"
             android:textStyle="bold" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/See_All"
             android:textAlignment="textEnd"
             android:textColor="#808080"
-            android:textSize="15dp" />
+            android:textSize="15dp" />-->
     </LinearLayout>
 
-    <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:gravity="center"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycleViewCategory"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
+
+
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Suggestion"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:textColor="#DB3022"
+                android:gravity="bottom"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/gilroy_bold"
+                />
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_product_new"
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/recycleViewNewProduct"/>
+            </fragment>
+    <!--<ScrollView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
         >
-
-        <androidx.recyclerview.widget.RecyclerView
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycleViewCategory"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:id="@+id/grid_new_product"
+            android:columnCount="4"
+            >
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
+            <include
+                layout="@layout/product_item_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="start|end"
+                />
 
-
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Suggestion"
-        android:textSize="22dp"
-        android:textStyle="bold"
-        android:textColor="#DB3022"
-        android:gravity="bottom"
-        android:layout_margin="10dp"
-        android:fontFamily="@font/gilroy_bold"
-        />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragment_product_suggestion"
-        android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-        />
+        </GridLayout>-->
+        <Button
+            android:id="@+id/button_more_product_new"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:text="More" />
+        </LinearLayout>
     </ScrollView>
-
-
-
 </LinearLayout>

@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.Views;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,7 +27,7 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
 
-public class fragment_search extends Fragment {
+public class fragment_search extends DialogFragment {
     private Button btn_search;
     private androidx.appcompat.widget.SearchView sv_search;
     private ImageView iv_search;
@@ -123,6 +127,20 @@ public class fragment_search extends Fragment {
         });
         return view;
     }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen){
+            @Override
+            public void onBackPressed() {
+                fragment_search.this.dismiss();
+            }
+        };
+
+        return dialog;
+    }
+
     private  void ReplaceFragment(Fragment fragment)
     {
         if (fragment != null)

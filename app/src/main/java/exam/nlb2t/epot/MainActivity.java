@@ -176,35 +176,6 @@ public class MainActivity extends AppCompatActivity {
     public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();
     public MainFragmentAdapter createAdapter()
     {
-        CartFragment_Old cartFragment = new CartFragment_Old(){
-           /* @Override
-            public void onItemDeleted(ProductBuyInfo productBuyInfo) {
-                super.onItemDeleted(productBuyInfo);
-                if(getContext() == null) return;
-                CartDataController.removeProduct(getContext(), productBuyInfo.product.id);
-            }
-
-            @Override
-            public void onItemAmountChanged(ProductBuyInfo productBuyInfo) {
-                super.onItemAmountChanged(productBuyInfo);
-                if(getContext() == null) return;
-                CartDataController.setProduct(getContext(), productBuyInfo.product.id, productBuyInfo.Amount);
-            }*/
-/*
-            @Override
-            public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-                super.onViewCreated(view, savedInstanceState);
-                if(getContext() == null){return;}
-                List<Pair<Integer, Integer>> list = CartDataController.getAllData(getContext());
-                ProductBuyInfo[] arr = new ProductBuyInfo[list.size()];
-                for(int i = 0; i<arr.length; i++)
-                {
-                    arr[i] = new ProductBuyInfo(list.get(i).first, list.get(i).second);
-                }
-                setData(arr);
-            }*/
-        };
-
         Fragment[] fragments = new Fragment[]{
                 new HomepageFragment(),
                 new CartFragment_Old(),

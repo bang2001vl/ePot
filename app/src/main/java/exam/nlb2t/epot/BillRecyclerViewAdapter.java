@@ -27,7 +27,7 @@ import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder>{
     protected List<BillBaseDB> billList;
     protected Context context;
-    private List<UserBaseDB> shops;
+    private List<UserBaseDB> shops=new ArrayList<>();
     protected OnStatusTableChangedListener notifyStatusChangedListener;
 
     public void setNotifyStatusChangedListener(OnStatusTableChangedListener notifyStatusChangedLintener) {
@@ -43,7 +43,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
         this.billList = bills;
         this.context = mcontext;
         this.shops = new ArrayList<>();
-
+      
         DBControllerUser db = new DBControllerUser();
         for (BillBaseDB bill : billList) {
             shops.add(db.getUserInfo(bill.salerID));
