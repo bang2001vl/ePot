@@ -31,11 +31,11 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.databinding.MyShopProductViewBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder>{
     public List<ProductBaseDB> products;
-    int userID;
     Context context;
     boolean isfullProducts;
     int position;
@@ -48,10 +48,9 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         this.position = position;
     }
 
-    public Product_TabAdapter(int userID) {
-        this.userID = userID;
+    public Product_TabAdapter() {
         DBControllerProduct db = new DBControllerProduct();
-        products = db.getLIMITProduct(userID, 0, 10);
+        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 10);
         db.closeConnection();
     }
 
@@ -182,7 +181,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     public void addItemToList(int number) {
         if (isfullProducts) return;
         DBControllerProduct db = new DBControllerProduct();
-        int maxsize = db.getNumberProductsbyUser(userID);
+        int maxsize = db.getNumberProductsbyUser(Authenticator.getCurrentUser().id);
         List<ProductBaseDB> newlist;
         int offset = products.size();
 
@@ -191,10 +190,10 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             return;
         }
         if (number + offset > maxsize) {
-            newlist = db.getLIMITProduct(userID, offset, maxsize - offset);
+            newlist = db.getLIMITProduct(Authenticator.getCurrentUser().id, offset, maxsize - offset);
         }
         else {
-            newlist = db.getLIMITProduct(userID, offset, number);
+            newlist = db.getLIMITProduct(Authenticator.getCurrentUser().id, offset, number);
         };
 
         products.addAll(newlist);

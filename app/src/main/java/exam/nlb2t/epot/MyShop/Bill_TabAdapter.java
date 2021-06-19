@@ -1,7 +1,11 @@
 package exam.nlb2t.epot.MyShop;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,43 +13,98 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import java.util.List;
 
+import exam.nlb2t.epot.BillRecyclerViewAdapter;
+import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.singleton.Authenticator;
 
-public class Bill_TabAdapter extends RecyclerView.Adapter<Bill_TabAdapter.ViewHolder> {
-    List<BillBaseDB> bills;
-    int userID;
+public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
 
-    public  Bill_TabAdapter(int userID, BillBaseDB.BillStatus status) {
+    public Bill_TabAdapter(List<BillBaseDB> listBill, BillBaseDB.BillStatus status) {
+        super();
         this.status = status;
-        this.userID = userID;
-
-        DBControllerBill db = new DBControllerBill();
-        bills = db.getBillsOverviewbyStatus(userID, status);
-        db.closeConnection();
+        this.billList = listBill;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public BillRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        BillRecyclerViewAdapter.ViewHolder holder;
+
+        if (status != BillBaseDB.BillStatus.WAIT_CONFIRM) {
+            holder = new BillRecyclerViewAdapter.ViewHolder(inflater.inflate(R.layout.sample_order_bill_view, parent, false));
+        } else {
+            holder = new EditProductViewHolder(inflater.inflate(R.layout.sample_order_bill_confirm_view, parent, false));
+        }
+
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
+        BillBaseDB bill = billList.get(position);
+        setBillInfor(holder, bill);
+        setShopInfor(holder, Authenticator.getCurrentUser());
+        setEventHandler(holder);
 
+        if (holder instanceof EditProductViewHolder) {
+            ((EditProductViewHolder) holder).getBtnConfirm().setOnClickListener(v -> onBtnConfirmClick(holder));
+            ((EditProductViewHolder) holder).getBtnCancel().setOnClickListener(v -> onBtnCancelClick(holder));
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return bills.size();
+    private void onBtnCancelClick(RecyclerView.ViewHolder holder) {
+        //TODO: Cancel the bill
+        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.DEFAULT);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    private void onBtnConfirmClick(RecyclerView.ViewHolder holder) {
+        //TODO: Confirm the bill
+        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.IN_SHIPPING);
+    }
 
-        public ViewHolder(@NonNull View itemView) {
+    private void changeStatus(int position, BillBaseDB.BillStatus newstatus) {
+        BillBaseDB bill = billList.get(position);
+        bill.status = newstatus;
+
+        Thread thread = new Thread(()-> {
+            DBControllerBill db = new DBControllerBill();
+            db.setStatusBill(bill.id, bill.status);
+            db.closeConnection();
+        });
+
+        billList.remove(position);
+
+        notifyItemRemoved(position);
+        notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus, bill);
+
+        thread.start();
+    }
+
+    public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder {
+        private final TextView btnConfirm;
+        private final TextView btnCancel;
+
+        public EditProductViewHolder(@NonNull View itemView) {
             super(itemView);
+            //TODO: btn Confirm or Cancel
+            btnConfirm = (TextView) itemView.findViewById(R.id.btnConfirm);
+            btnCancel = (TextView) itemView.findViewById(R.id.btnCancel);
+        }
+
+        public TextView getBtnConfirm() {
+            return btnConfirm;
+        }
+
+        public TextView getBtnCancel() {
+            return btnCancel;
         }
     }
 }

@@ -22,6 +22,7 @@ public class ProductBaseDB {
     public Date createdDate; //[PRODUCT].[CREATED_DATE]
     public int deleted; //[PRODUCT].[DELETED]
     public Bitmap imageProduct;
+    public float starAverage; //[PRODUCT].[STAR_AVG]
 
     public UserBaseDB getSaler()
     {

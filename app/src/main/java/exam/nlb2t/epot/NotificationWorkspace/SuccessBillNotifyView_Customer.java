@@ -42,7 +42,7 @@ public class SuccessBillNotifyView_Customer extends VertifyBillNotificationView{
 
         SpannableString span2 = new SpannableString(" đã được giao đến bạn. Cảm ơn bạn đã tin tưởng và sử dụng ePot");
 
-        binding.txtDetail.append(span1);
+        binding.txtDetail.setText(span1);
         binding.txtDetail.append(spannableString);
         binding.txtDetail.append(span2);
     }

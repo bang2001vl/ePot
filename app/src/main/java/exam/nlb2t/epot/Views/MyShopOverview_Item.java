@@ -19,28 +19,28 @@ public class MyShopOverview_Item extends BaseCustomViewGroup {
 
     public MyShopOverview_Item(Context context) {
         super(context);
-        init(context,null);
+        initCustomView(context,null);
     }
 
     public MyShopOverview_Item(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context,attrs);
+        initCustomView(context,attrs);
     }
 
     public MyShopOverview_Item(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context,attrs);
+        initCustomView(context,attrs);
     }
 
     public MyShopOverview_Item(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
+        initCustomView(context,attrs);
     }
 
     TextView ItemValueView;
     TextView ItemNameView;
 
-    public void init(Context context, AttributeSet attrs) {
+    public void initCustomView(Context context, AttributeSet attrs) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_shop_overview_item, this, false);
 

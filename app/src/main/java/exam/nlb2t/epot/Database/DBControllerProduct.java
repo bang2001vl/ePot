@@ -41,7 +41,6 @@ public class DBControllerProduct extends DatabaseController{
                 {
                     ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
                     preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
-                    inputStream.close();
                 }
                 else {preparedStatement.setNull(6, Types.VARBINARY);}
             }
@@ -70,7 +69,7 @@ public class DBControllerProduct extends DatabaseController{
             preparedStatement.close();
             resultSet.close();
         }
-        catch (SQLException | IOException e)
+        catch (SQLException e)
         {
             e.printStackTrace();
             rollback();
@@ -240,6 +239,7 @@ public class DBControllerProduct extends DatabaseController{
                 rs.description = resultSet.getString(i);i++;
                 rs.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
                 rs.deleted = resultSet.getInt(i);i++;
+                rs.starAverage = resultSet.getFloat(i);i++;
             }
             resultSet.close();
             statement.close();
@@ -497,15 +497,16 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
-    public List<ProductBaseDB> getProductsBaseName(String name)
+    public List<ProductBaseDB> getProductsBaseName( String name, int offset, int rows)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
         name = name.toUpperCase();
         try
         {
-            String sql = "select * from [PRODUCT] where UPPER(NAME) LIKE '%" + name + "%'";
+            String sql = "select * from [PRODUCT] where UPPER(NAME) LIKE '%" + name + "%' ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
-           /* statement.setString(1, name);*/
+            statement.setInt(1, offset);
+            statement.setInt(2, rows);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next())
@@ -534,6 +535,90 @@ public class DBControllerProduct extends DatabaseController{
         catch (SQLException e)
         {
            e.printStackTrace();
+        }
+
+        return rs;
+    }
+    public List<ProductBaseDB> getProductsBaseCategory( String name, int offset, int rows)
+    {
+        List<ProductBaseDB> rs = new ArrayList<>();
+        name = name.toUpperCase();
+        try
+        {
+            String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, P.DETAIL, P.CREATED_DATE, P.DELETED from [PRODUCT] AS P INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID AND UPPER(C.NAME) LIKE'%" + name + "%' ORDER BY P.CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"  ; /*LIMIT 2 OFFSET 0";*/
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, offset);
+            statement.setInt(2, rows);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.description = resultSet.getString(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);
+                i++;
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return rs;
+    }
+
+    public List<ProductBaseDB> getProductsBaseSaler( String name, int offset, int rows)
+    {
+        List<ProductBaseDB> rs = new ArrayList<>();
+        name = name.toUpperCase();
+        try
+        {
+            String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, P.DETAIL, P.CREATED_DATE, P.DELETED from [PRODUCT] AS P INNER JOIN [USER]  AS U on P.SALER_ID = U.ID AND UPPER(U.USERNAME) LIKE'%" + name + "%' ORDER BY P.CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"  ; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, offset);
+            statement.setInt(2, rows);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.description = resultSet.getString(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);
+                i++;
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return rs;
@@ -573,5 +658,33 @@ public class DBControllerProduct extends DatabaseController{
         catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<ProductBaseDB> getLikedProduct(int userID)
+    {
+        List<ProductBaseDB> rs = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT [PRODUCT_ID] FROM [LIKE] WHERE [USER_ID]=?;");
+            statement.setInt(1, userID);
+
+            ResultSet resultSet = statement.executeQuery();
+            List<Integer> productIDs = new ArrayList<>();
+            while (resultSet.next())
+            {
+                productIDs.add(resultSet.getInt(1));
+            }
+            resultSet.close();
+            statement.close();
+
+            rs = new ArrayList<>();
+            for(Integer id: productIDs)
+            {
+                rs.add(getProduct(id));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "FAILED: Cannot get data from server";
+        }
+        return rs;
     }
 }
