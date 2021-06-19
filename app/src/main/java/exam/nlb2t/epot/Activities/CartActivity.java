@@ -33,7 +33,8 @@ public class CartActivity extends AppCompatActivity {
 
     public static final String NAME_PARCEL = "parcel";
 
-    void init()
+    void init
+            ()
     {
         setContentView(R.layout.activity_cart);
     }

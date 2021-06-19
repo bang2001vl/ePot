@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerRating extends DatabaseController{
     public boolean insertRating(int productID, int userID, int star, String comment)
@@ -24,7 +25,7 @@ public class DBControllerRating extends DatabaseController{
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            ErrorMsg = "FAILED: Cannot write data to database";
+            ErrorMsg = "THẤT BẠI: Không thể viết dữ liệu vào server";
             rollback();
         }
         return rs;
@@ -45,7 +46,7 @@ public class DBControllerRating extends DatabaseController{
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            ErrorMsg = "FAILED: Cannot write data to database";
+            ErrorMsg = "THẤT BẠI: Không thể viết dữ liệu vào server";
             rollback();
         }
         return rs;
@@ -63,7 +64,7 @@ public class DBControllerRating extends DatabaseController{
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            ErrorMsg = "FAILED: Cannot write data to database";
+            ErrorMsg = "THẤT BẠI: Không thể viết dữ liệu vào server";
             rollback();
         }
         return rs;
@@ -74,7 +75,7 @@ public class DBControllerRating extends DatabaseController{
         List<RatingBaseDB> rs = null;
         try
         {
-            PreparedStatement statement = connection.prepareStatement("EXEC [dbo].[getRating_ByProduct] ?,?,?;;");
+            PreparedStatement statement = connection.prepareStatement("EXEC [dbo].[getRating_ByProduct] ?,?,?;");
             statement.setInt(1, productID);
             statement.setInt(2, startIndex);
             statement.setInt(3, endIndex);
@@ -89,7 +90,7 @@ public class DBControllerRating extends DatabaseController{
                         resultSet.getInt(2),
                         resultSet.getInt(3),
                         resultSet.getString(4),
-                        null
+                        Helper.getDateLocalFromUTC(resultSet.getDate(5))
                 );
                 rs.add(rating);
             }
@@ -98,7 +99,7 @@ public class DBControllerRating extends DatabaseController{
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            ErrorMsg = "FAILED: Cannot get data from server";
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ server";
         }
         return rs;
     }
@@ -123,7 +124,7 @@ public class DBControllerRating extends DatabaseController{
                         userID,
                         resultSet.getInt(3),
                         resultSet.getString(4),
-                        null
+                        Helper.getDateLocalFromUTC(resultSet.getDate(5))
                 );
                 rs.add(rating);
             }
@@ -132,8 +133,67 @@ public class DBControllerRating extends DatabaseController{
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            ErrorMsg = "FAILED: Cannot get data from server";
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ server";
         }
         return rs;
     }
+
+    public RatingBaseDB getRating(int userID, int productID)
+    {
+        RatingBaseDB rs = null;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID],[STAR],[COMMENT],[CREATED_TIME] WHERE [USER_ID]=? AND [PRODUCT_ID]=?;");
+            statement.setInt(1, userID);
+            statement.setInt(2, productID);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next())
+            {
+                rs = new RatingBaseDB(
+                        resultSet.getInt(1),
+                        productID,
+                        userID,
+                        resultSet.getInt(2),
+                        resultSet.getString(3),
+                        Helper.getDateLocalFromUTC(resultSet.getDate(4))
+                );
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ server";
+        }
+        return rs;
+    }
+
+    public int[] getRatingStar(int productID)
+    {
+        int[] rs = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("EXEC getRatingOverview ?;");
+            statement.setInt(1, productID);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            rs = new int[]{0,0,0,0,0};
+            if(resultSet.next())
+            {
+                rs[0] = resultSet.getInt(1);
+                rs[1] = resultSet.getInt(2);
+                rs[2] = resultSet.getInt(3);
+                rs[3] = resultSet.getInt(4);
+                rs[4] = resultSet.getInt(5);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ server";
+        }
+        return rs;
+    }
+
 }
