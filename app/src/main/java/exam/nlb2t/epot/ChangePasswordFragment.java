@@ -1,64 +1,147 @@
 package exam.nlb2t.epot;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChangePasswordFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ChangePasswordFragment extends Fragment {
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.Calendar;
+import java.util.Objects;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.Views.forgotpassword;
+import exam.nlb2t.epot.databinding.FragmentChangePasswordBinding;
+import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
+
+
+public class ChangePasswordFragment extends BottomSheetDialogFragment {
+
+    FragmentChangePasswordBinding binding;
+    private UserBaseDB currentuser= Authenticator.getCurrentUser();
+    DBControllerUser dbControllerUser=new DBControllerUser();
+    Context context;
 
     public ChangePasswordFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChangePasswordFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChangePasswordFragment newInstance(String param1, String param2) {
-        ChangePasswordFragment fragment = new ChangePasswordFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@Nullable  LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable  Bundle savedInstanceState) {
+        binding = FragmentChangePasswordBinding.inflate(inflater, container, false);
+        setEventHandler();
+        return binding.getRoot();
+    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+    private void setEventHandler(){
+        binding.newPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ( binding.newPass.length() < 6 ||  binding.newPass.length() > 50)
+                {
+                    binding.newPass.setError(getResources().getString(R.string.error_length_6_to_50));
+                }
+            }
+        });
+        binding.rePass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!Objects.requireNonNull(binding.newPass.getText()).toString().equals(s.toString()))
+                {
+                    binding.rePass.setError(getResources().getString(R.string.error_define_pass));
+                }
+                else
+                {
+                    binding.rePass.setError(null);
+                }
+            }
+        });
+
+       binding.btnSavePass.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if (CheckErrorUserInfo() == -1) {
+                   Toast.makeText(getActivity(), getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+               } else {
+                   if (CheckErrorUserInfo() == 0) {
+                       Toast.makeText(getActivity(), getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                   } else {
+                         if (checkPass())
+                         {
+                             dbControllerUser.UpdatePassword(currentuser.phoneNumber,binding.newPass.getText().toString());
+                             Toast.makeText(getContext(), getResources().getString(R.string.ChangePassword_Successful), Toast.LENGTH_SHORT).show();
+                             dismiss();
+                         }
+                         else Toast.makeText(getContext(), getResources().getString(R.string.NotcorrectPassword), Toast.LENGTH_SHORT).show();
+                   }
+               }
+           }
+       });
+       binding.btnForgotPass.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent(getActivity(), forgotpassword.class);
+               startActivity(intent);
+           }
+       });
+    }
+    private int CheckErrorUserInfo()
+    {
+        if (binding.newPass.getText().toString().equals("")|| (binding.etOldPass.getText().equals(""))|| (binding.rePass.getText().toString().equals("")))
+        {
+            return -1;
         }
+        if (binding.rePass.getError() != null || binding.newPass.getError() != null)
+        {
+            return 0;
+        }
+        return 1;
     }
+    private boolean checkPass()
+    {
+        if (dbControllerUser.findUserID(currentuser.username,binding.etOldPass.getText().toString())==-1)
+        {
+            return false;
+        }
+        return true;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_change_password, container, false);
     }
 }

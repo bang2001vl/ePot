@@ -70,7 +70,7 @@ public class VertifyBillNotificationView extends BaseCustomViewGroup {
 
         SpannableString span2 = new SpannableString(" đã được xác nhận thành công.");
 
-        binding.txtDetail.append(span1);
+        binding.txtDetail.setText(span1);
         binding.txtDetail.append(spannableString);
         binding.txtDetail.append(span2);
     }

@@ -1,5 +1,7 @@
 package exam.nlb2t.epot.Fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,12 +9,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
+import exam.nlb2t.epot.HelpFragment;
+import exam.nlb2t.epot.LoginScreen;
+import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.OrderFragment;
 import exam.nlb2t.epot.DialogFragment.SettingAccountFragment;
 import exam.nlb2t.epot.databinding.FragmentProfileBinding;
@@ -23,11 +29,11 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
     FragmentProfileBinding binding;
     private UserBaseDB currentuser=Authenticator.getCurrentUser();
     private String[] mAddress=new String[2];
-    /*MainActivity mainActivity=new MainActivity();
+    MainActivity mainActivity;
     public PersonFragment(MainActivity ma)
     {
         mainActivity=ma;
-    }*/
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,12 +81,18 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 ShowDialog(new FavoriteProdFragment());
             }
         });
-        /*binding.btnLogout.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openAlertDialog();
             }
-        });*/
+        });
+        binding.btnHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new HelpFragment());
+            }
+        });
     }
     private void ShowDialog(DialogFragment dialogFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -96,13 +108,13 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
            mAddress[1]=currentuser.getAddress()[3];
        }
     }
-   /* private void openAlertDialog() {
+    private void openAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Đăng xuất khỏi tài khoản này")
                 .setTitle("Đăng xuất");
 
-        AlertDialog alert =builder.create();
-        alert.show();
+
+
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent newIntent = new Intent(mainActivity, LoginScreen.class);
@@ -115,8 +127,10 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 dialog.dismiss();
             }
         });
+        AlertDialog alert =builder.create();
+        alert.show();
         }
-*/
+
 
 
 

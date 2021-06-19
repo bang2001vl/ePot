@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.MyShop.AddProductFragment;
 import exam.nlb2t.epot.MyShop.Product_TabAdapter;
+import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -27,6 +29,7 @@ public class OrderTab extends Fragment {
     View v;
     List<BillBaseDB> bills;
     RecyclerView recyclerView;
+    ViewBinding emptybinding;
     public OrderTab(){};
 
     public OrderTab(List<BillBaseDB> Listbill)
@@ -37,12 +40,18 @@ public class OrderTab extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //TODO: Find UserID to login app
+        if (bills.size() == 0) {
+            emptybinding = FragmentEmptyBillBinding.inflate(inflater,container,false);
+
+            return emptybinding.getRoot();
+        }
+        else {
         v=inflater.inflate(R.layout.fragment_order_tab,container,false);
         recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);
         BillRecyclerViewAdapter recyclerViewAdapter=new BillRecyclerViewAdapter(bills,getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
-        return v;
+        return v;}
     }
 
     @Override

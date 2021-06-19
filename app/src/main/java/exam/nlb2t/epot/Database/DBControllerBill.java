@@ -75,13 +75,21 @@ public class DBControllerBill extends DatabaseController {
         }
         return rs;
     }
-    public int getNumberBillbyStatus(int userID, BillBaseDB.BillStatus statusBill) {
+    public int getNumberBillbyStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill) {
         int number = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM [BILL] WHERE [USER_ID] = ? and [STATUS] = ?";
+            String sql;
+            if (statusBill != null) {
+                sql = "SELECT COUNT(*) FROM [BILL] WHERE [USER_ID] = ? and [STATUS] = ?";
+            }
+            else {
+                sql = "SELECT COUNT(*) FROM [BILL] WHERE [USER_ID] = ?";
+            }
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userID);
-            statement.setInt(2, statusBill.getValue());
+            if (statusBill!=null) {
+                statement.setInt(2, statusBill.getValue());
+            }
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -153,6 +161,7 @@ public class DBControllerBill extends DatabaseController {
                 bill.address = resultSet.getString("ADDRESS");
                 bill.createdDate = resultSet.getDate("CREATED_DATE");
                 bill.keyBill = resultSet.getString("KEYBILL");
+                bill.total = resultSet.getInt("TOTAL");
 
                 // if not null, return current status, else return status in the table
                 if (statusBill != null) bill.status = statusBill;

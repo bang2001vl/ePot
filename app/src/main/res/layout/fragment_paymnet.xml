@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F9F9F9">
+
+        <TextView
+            android:id="@+id/detailbill_title_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin hóa đơn"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textStyle="bold"
+
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_infor_bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_title_payment">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID đơn hàng"
+                android:textColor="@color/black"
+
+                app:layout_constraintBottom_toBottomOf="@id/payment_order_code"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/payment_order_code" />
+
+            <TextView
+                android:id="@+id/payment_order_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABCDEF123456"
+                android:textColor="@color/black"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian đặt hàng"
+
+                app:layout_constraintBottom_toBottomOf="@id/payment_order_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/payment_order_time" />
+
+            <TextView
+                android:id="@+id/payment_order_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="16-6-2021 00:04"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_order_code" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian thanh toán"
+
+                app:layout_constraintBottom_toBottomOf="@id/payment_order_paytime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/payment_order_paytime" />
+
+            <TextView
+                android:id="@+id/payment_order_paytime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18-6-2021 18:04"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/payment_order_time" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/payment_recycler_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_infor_bill"
+
+            tools:itemCount="2"
+            tools:listitem="@layout/fragment_product_in_bill">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <!--        Destination-->
+        <TextView
+            android:id="@+id/address_delivery"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+
+            android:layout_marginTop="10dp"
+            android:text="@string/address_delivery"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payment_recycler_product" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/detailbill_destination_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="10dp"
+
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_blur_shadow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_delivery">
+
+            <TextView
+                android:id="@+id/detailbill_name_take"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/gilroy_medium"
+                android:text="John With"
+                android:textColor="@color/black"
+
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/detailbill_detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/gilroy_medium"
+                android:text="Khu phố 5"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="@id/detailbill_name_take"
+                app:layout_constraintTop_toBottomOf="@id/detailbill_name_take" />
+
+            <TextView
+                android:id="@+id/general_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gilroy_medium"
+                android:text="TX Kiến Tường, Long An, Việt Nam"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/detailbill_name_take"
+                app:layout_constraintTop_toBottomOf="@id/detailbill_detail_address"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!--        Method payment-->
+        <TextView
+            android:id="@+id/txt_method_payment"
+            style="@style/TittleNormalSize"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/method_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_destination_container" />
+
+        <Button
+            android:id="@+id/detailbill_btn_payment_method"
+            android:layout_width="@dimen/method_payment_size"
+            android:layout_height="80dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/method_payment_background"
+            android:fontFamily="@font/gilroy_medium"
+            android:text="Tiền mặt"
+
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/txt_method_payment"
+            app:layout_constraintTop_toBottomOf="@id/txt_method_payment" />
+
+
+        <!--        ProductBaseDB price-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginVertical="20dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/gilroy_medium"
+            android:text="@string/txt_productprice_payment"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/detailbill_productprice_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/detailbill_productprice_payment" />
+
+        <TextView
+            android:id="@+id/detailbill_productprice_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:text="300.000đ"
+
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toTopOf="@id/detailbill_transportprice_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_btn_payment_method" />
+
+        <!--        Transport-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginVertical="20dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/gilroy_medium"
+            android:text="@string/txt_transportprice_payment"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/detailbill_transportprice_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/detailbill_transportprice_payment" />
+
+        <TextView
+            android:id="@+id/detailbill_transportprice_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="10dp"
+            android:text="30.000đ"
+            android:textColor="@color/black"
+
+            android:textSize="15dp"
+            app:layout_constraintBottom_toTopOf="@id/detailbill_voucher_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_productprice_payment" />
+
+        <!--        Voucher-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginVertical="20dp"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/gilroy_medium"
+            android:text="@string/txt_voucher_payment"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/detailbill_voucher_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/detailbill_voucher_payment" />
+
+        <TextView
+            android:id="@+id/detailbill_voucher_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="0đ"
+
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toTopOf="@id/detailbill_totalprice_payment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_transportprice_payment" />
+
+        <!--        TotalPrice-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/gilroy_bold"
+            android:text="@string/txt_totalprice_payment"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/detailbill_totalprice_payment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/detailbill_totalprice_payment" />
+
+        <TextView
+            android:id="@+id/detailbill_totalprice_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="300.000đ"
+
+            android:textColor="#DB3022"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detailbill_voucher_payment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

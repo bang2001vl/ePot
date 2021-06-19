@@ -50,7 +50,7 @@ public class NewBillNotificationView extends VertifyBillNotificationView{
 
         SpannableString span2 = new SpannableString(" vừa được gửi đến bạn.");
 
-        binding.txtDetail.append(span1);
+        binding.txtDetail.setText(span1);
         binding.txtDetail.append(spannableString);
         binding.txtDetail.append(span2);
     }
