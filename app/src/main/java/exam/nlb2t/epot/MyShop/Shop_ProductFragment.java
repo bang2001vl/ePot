@@ -31,7 +31,7 @@ public class Shop_ProductFragment extends Fragment {
     MyShopProductTabBinding binding;
     Product_TabAdapter adapter;
 
-    private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 2;
+    private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 0;
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
     private final int NUMBER_ITEM_TO_LOAD = 8;
 

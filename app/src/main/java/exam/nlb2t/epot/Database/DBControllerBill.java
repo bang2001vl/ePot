@@ -227,4 +227,24 @@ public class DBControllerBill extends DatabaseController {
             throwables.printStackTrace();
         }
     }
+
+    public int getAmountProductInBill(int billID) {
+        int number = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM BILL_DETAIL WHERE BILL_ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, billID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                number = resultSet.getInt(1);
+            }
+
+            statement.close();
+        } catch (SQLException throwables) {
+            ErrorMsg = "FAILED: Cannot tranfer status of bill from server";
+            throwables.printStackTrace();
+        }
+
+        return number;
+    }
 }

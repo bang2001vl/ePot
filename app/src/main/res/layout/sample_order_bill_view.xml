@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title_ID_Order"
             android:layout_toRightOf="@id/tv_title_amount"
-            android:text="3"
+            android:text="-1"
             android:textColor="@color/black"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"

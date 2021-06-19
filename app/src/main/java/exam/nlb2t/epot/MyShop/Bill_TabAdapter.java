@@ -14,33 +14,21 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import java.util.List;
 
 import exam.nlb2t.epot.BillRecyclerViewAdapter;
+import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
-    private OnStatusTableChangedListener notifyStatusChangedListener;
 
-    public Bill_TabAdapter(BillBaseDB.BillStatus status) {
+    public Bill_TabAdapter(List<BillBaseDB> listBill, BillBaseDB.BillStatus status) {
         super();
         this.status = status;
-
-        DBControllerBill db = new DBControllerBill();
-        billList = db.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id, status);
-        db.closeConnection();
-
-        DBControllerUser db2 = new DBControllerUser();
-        for (BillBaseDB bill : billList) {
-            shops.add(db2.getUserInfo(bill.userID));
-        }
-        db.closeConnection();
-    }
-
-    public void setNotifyStatusChangedListener(OnStatusTableChangedListener notifyStatusChangedLintener) {
-        this.notifyStatusChangedListener = notifyStatusChangedLintener;
+        this.billList = listBill;
     }
 
     @NonNull
@@ -61,15 +49,10 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
 
     @Override
     public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-
-//        holder.getShopImage().setImageBitmap(Authenticator.getCurrentUser().getAvatar(Authenticator.getCurrentUser().avatarID));
-//        holder.getTv_shopName().setText(Authenticator.getCurrentUser().username);
-//        holder.getTv_IDBill().setText(billList.get(position).keyBill);
-//        holder.getTv_DateCreate().setText(billList.get(position).createdDate.toString());
-//        holder.getTv_Status().setText(billList.get(position).status.toString());
-//        holder.getTv_total().setText("");
-//        holder.getTv_Amount().setText("");
+        BillBaseDB bill = billList.get(position);
+        setBillInfor(holder, bill);
+        setShopInfor(holder, Authenticator.getCurrentUser());
+        setEventHandler(holder);
 
         if (holder instanceof EditProductViewHolder) {
             ((EditProductViewHolder) holder).getBtnConfirm().setOnClickListener(v -> onBtnConfirmClick(holder));
@@ -88,15 +71,21 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     }
 
     private void changeStatus(int position, BillBaseDB.BillStatus newstatus) {
-        billList.get(position).status = newstatus;
+        BillBaseDB bill = billList.get(position);
+        bill.status = newstatus;
 
-        DBControllerBill db = new DBControllerBill();
-        db.setStatusBill(billList.get(position).id, newstatus);
-        db.closeConnection();
+        Thread thread = new Thread(()-> {
+            DBControllerBill db = new DBControllerBill();
+            db.setStatusBill(bill.id, bill.status);
+            db.closeConnection();
+        });
 
-        notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus);
         billList.remove(position);
-        //notifyItemRemoved(position);
+
+        notifyItemRemoved(position);
+        notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus, bill);
+
+        thread.start();
     }
 
     public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder {
@@ -117,9 +106,5 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
         public TextView getBtnCancel() {
             return btnCancel;
         }
-    }
-
-    public interface OnStatusTableChangedListener {
-        void notifyChanged(BillBaseDB.BillStatus from, BillBaseDB.BillStatus to);
     }
 }

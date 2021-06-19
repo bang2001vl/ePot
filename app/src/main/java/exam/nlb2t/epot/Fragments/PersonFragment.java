@@ -42,7 +42,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.tvName.setText(currentuser.fullName);
         binding.tvUsername.setText(currentuser.username);
-        binding.avtProfile.setImageBitmap(currentuser.getAvatar(currentuser.avatarID));
+        binding.avtProfile.setImageBitmap(currentuser.getAvatar());
         getAddress();
         binding.tvCityAddress.setText(mAddress[0]);
         binding.tvStreetAddress.setText(mAddress[1]);

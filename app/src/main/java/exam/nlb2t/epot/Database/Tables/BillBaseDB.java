@@ -1,11 +1,13 @@
 package exam.nlb2t.epot.Database.Tables;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Date;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerUser;
 
 public class BillBaseDB {
     public enum BillStatus {
@@ -56,6 +58,7 @@ public class BillBaseDB {
     public long total; //[BILL].[TOTAL]
     public int salerID; //[BILL].[SALER_ID]
     public List<ProductBaseDB> productinBill;
+    private int amountProduct = 0;
 
     public BillBaseDB() {
 
@@ -67,5 +70,21 @@ public class BillBaseDB {
         db.closeConnection();
 
         return number;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof BillBaseDB)) return false;
+        BillBaseDB bill = (BillBaseDB) obj;
+        return this.id == bill.id;
+    }
+
+    public int getAmountProduct() {
+        if (amountProduct == 0) {
+            DBControllerBill db = new DBControllerBill();
+            amountProduct = db.getAmountProductInBill(this.id);
+            db.closeConnection();
+        }
+        return amountProduct;
     }
 }
