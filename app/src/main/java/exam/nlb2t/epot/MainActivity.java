@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 new CartFragment_Old(),
                 new ShopFragment(),
                 new NotificationFragment(),
-                new PersonFragment()
+                new PersonFragment(this)
         };
 
         CartFragment_Old fragmentOld = (CartFragment_Old) fragments[1];
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (id == R.id.menu_personal) {
 
-                fragment = new PersonFragment();
+                fragment = new PersonFragment(MainActivity.this);
             }
             else if(id == R.id.menu_cart)
             {

@@ -59,7 +59,7 @@
     <string name="txt_totalprice_payment">Tổng tiền</string>
 
     <string name="address_delivery">Địa chỉ giao hàng</string>
-    <string name="method_payment">Phương thức trả</string>
+    <string name="method_payment">Phương thức thanh toán</string>
 
     <string name="complete_payment">Thành công!</string>
     <string name="complete_payment2">Đơn hàng của bạn sẽ được sớm giao đến</string>
@@ -170,9 +170,13 @@
     <string name="error_wrong_username_pass">Tên đăng nhập hoặc mật khẩu sai!</string>
     <string name="error_duplicate_phone_number">Số điện thoại đã đăng kí tài khoản!</string>
     <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
+    <string name="btn_see_all">Xem tất cả</string>
+
     <string-array name="Sexarray">
         <item>Nam</item>
         <item>Nữ</item>
     </string-array>
     <string name="watch_more">Xem thêm</string>
+    <string name="ChangePassword_Successful">Đổi mật khẩu thành công!</string>
+    <string name="NotcorrectPassword">Không đúng mật khẩu!</string>
 </resources>

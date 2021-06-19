@@ -8,43 +8,76 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import java.util.List;
+
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.EmptyBillFragment;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;
 import exam.nlb2t.epot.databinding.FragmentOrderTabBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Shop_BillFragment extends Fragment {
     Bill_TabAdapter adapter;
+    List<BillBaseDB> listBill;
     BillBaseDB.BillStatus statusBill;
     ViewBinding emptybinding;
     FragmentOrderTabBinding binding;
-    int userID;
 
-    public Shop_BillFragment(int userID, BillBaseDB.BillStatus status) {
+    public Shop_BillFragment(BillBaseDB.BillStatus status) {
         this.statusBill = status;
-        this.userID = userID;
+
+        DBControllerBill db = new DBControllerBill();
+        listBill = db.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id, status);
+        db.closeConnection();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        DBControllerBill db = new DBControllerBill();
-        int countBills = db.getNumberBillbyStatus(userID, statusBill);
-        db.closeConnection();
+        binding = FragmentOrderTabBinding.inflate(inflater, container, false);
 
-        if (countBills == 0) {
-            emptybinding = FragmentEmptyBillBinding.inflate(inflater,container,false);
+        adapter = new Bill_TabAdapter(listBill, statusBill);
+        adapter.setNotifyStatusChangedListener(notifyStatusChangedListener);
 
-            return emptybinding.getRoot();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        binding.RecycelviewBill.setLayoutManager(layoutManager);
+
+        binding.RecycelviewBill.setItemViewCacheSize(10);
+        binding.RecycelviewBill.setDrawingCacheEnabled(true);
+        binding.RecycelviewBill.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        binding.RecycelviewBill.setAdapter(adapter);
+
+        return binding.getRoot();
+    }
+
+
+    Bill_TabAdapter.OnStatusTableChangedListener notifyStatusChangedListener;
+
+    public void setNotifyStatusChangedListener(Bill_TabAdapter.OnStatusTableChangedListener notifyStatusChanged) {
+        this.notifyStatusChangedListener = notifyStatusChanged;
+    }
+
+    public void TranferStatus(BillBaseDB bill, BillBaseDB.BillStatus newStatus) {
+        if (listBill.contains(bill)) {
+            int index = listBill.indexOf(bill);
+            listBill.get(index).status = newStatus;
+            adapter.notifyItemChanged(index);
         }
         else {
-            binding = FragmentOrderTabBinding.inflate(inflater, container, false);
-            adapter = new Bill_TabAdapter(userID, statusBill);
-            //TODO:Set adapter for binding
-
-            return binding.getRoot();
+            listBill.add(bill);
+            if (adapter != null) adapter.notifyItemInserted(listBill.size() - 1);
         }
     }
+
 }

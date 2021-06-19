@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.ProductDetail;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -18,12 +19,16 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.DBControllerRating;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.PlainTextDialog;
 import exam.nlb2t.epot.R;
@@ -46,6 +51,8 @@ public class ProductDetailFragment extends DialogFragment {
     ProductBaseDB product;
     UserBaseDB saler;
     Bitmap imagePrimary;
+    List<RatingInfo> ratingInfos;
+    int[] ratingOverview;
 
     @NonNull
     @Override
@@ -104,15 +111,10 @@ public class ProductDetailFragment extends DialogFragment {
 
         showLoadingScreen();
 
-        new Thread(getImagesFromDB()).start();
+        //new Thread(getImagesFromDB()).start();
         new Thread(getProductFromDB()).start();
 
         return binding.getRoot();
-    }
-
-    public void setAmountSold(int val)
-    {
-
     }
 
     public void showLoadingScreen()
@@ -136,15 +138,40 @@ public class ProductDetailFragment extends DialogFragment {
     {
         Handler mainHandler = new Handler();
         Runnable runnable = () -> {
-            // Get data in background
+
             DBControllerProduct db = new DBControllerProduct();
+            // Get product data
             ProductBaseDB data = db.getProduct(productID);
             boolean isLiked = db.checkLikeProduct(productID, Authenticator.getCurrentUser().id);
+            // Get image of product
+            List<Bitmap> images = db.getImages(productID);
+            imagePrimary = db.getAvatar_Product(product.imagePrimaryID);
+            // Close connection
             db.closeConnection();
 
+            DBControllerRating dbRating = new DBControllerRating();
+            // Get rating data
+            List<RatingBaseDB> ratings = dbRating.getRating_ByProduct(productID, 1, 3);
+            ratingOverview = dbRating.getRatingStar(productID);
+            // Close connection
+            dbRating.closeConnection();
+
+            ratingInfos = new ArrayList<>(ratings.size());
+
             DBControllerUser dbUsr = new DBControllerUser();
+            // Get saler data
             UserBaseDB saler = dbUsr.getUserOverview(data.salerID);
             Bitmap salerAvatar = dbUsr.getAvatar(saler.avatarID);
+            // Get commenter data
+            for(RatingBaseDB rating: ratings)
+            {
+                RatingInfo info = new RatingInfo();
+                info.rating = rating;
+                info.userOverview = dbUsr.getUserOverview(rating.userId);
+                info.userAvatar = dbUsr.getAvatar(info.userOverview.id);
+                ratingInfos.add(info);
+            }
+            // Close connection
             dbUsr.closeConnection();
 
             // Update UI when done
@@ -153,14 +180,19 @@ public class ProductDetailFragment extends DialogFragment {
                 public void run() {
                     setProduct(data);
                     setSaler(saler, salerAvatar);
-
+                    loadRating();
                     binding.buttonFavouriteProductDetail.setChecked(isLiked);
+                    setImages(images);
+                    closeLoadingScreen();
+                    initEvent();
                 }
             });
         };
 
         return runnable;
     }
+
+
 
     public void setProduct(ProductBaseDB product)
     {
@@ -203,13 +235,40 @@ public class ProductDetailFragment extends DialogFragment {
         binding.layoutSalerProductDetail.setSaler(saler, avatar);
     }
 
+    private void loadRating() {
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm dd/MM/yyyy");
+        for (RatingInfo info: ratingInfos)
+        {
+            binding.ratingProductView.addComment(
+                    info.userOverview.fullName,
+                    info.rating.star,
+                    info.rating.comment,
+                    info.userAvatar,
+                    dateFormat.format(info.rating.createdDate)
+            );
+        }
+
+        binding.ratingProductView.setStar(
+                ratingOverview[0],
+                ratingOverview[1],
+                ratingOverview[2],
+                ratingOverview[3],
+                ratingOverview[4]
+        );
+
+        if(ratingInfos.size() < 3)
+        {
+            binding.btnMoreCommentRating.setVisibility(View.GONE);
+        }
+    }
+
     Runnable getImagesFromDB()
     {
         Handler mainHandler = new Handler();
         Runnable runnable = () -> {
             // Get data in background
             DBControllerProduct db = new DBControllerProduct();
-            List<Bitmap> data = db.getImages(productID);
 
             do
             {
@@ -221,7 +280,6 @@ public class ProductDetailFragment extends DialogFragment {
             }
             while (product == null);
 
-            imagePrimary = db.getAvatar_Product(product.imagePrimaryID);
             db.closeConnection();
 
             if(db.hasError())
@@ -238,9 +296,7 @@ public class ProductDetailFragment extends DialogFragment {
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        setImages(data);
-                        closeLoadingScreen();
-                        initEvent();
+
 
                     }
                 });

@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.google.android.material.tabs.TabLayout;
 
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.OrderTab;
 import exam.nlb2t.epot.databinding.MyShopOrderTabBinding;
 import exam.nlb2t.epot.databinding.OrderTabBinding;
@@ -28,10 +29,12 @@ public class Shop_OrderFragment extends Fragment {
 
         adapter = new Order_TabAdapter(getChildFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         binding.myShopOrderViewpager.setAdapter(adapter);
+        binding.myShopOrderViewpager.setOffscreenPageLimit(4);
         binding.myShopOrderTab.setupWithViewPager(binding.myShopOrderViewpager);
 
         return binding.getRoot();
     }
+
 
     private void setEventHandler() {
         // TODO: Write code here

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentDefaultAddressBinding;
@@ -27,6 +28,7 @@ public class DefaultAddressFragment extends DialogFragment {
     FragmentDefaultAddressBinding binding;
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
     private String[] address=new String[4];
+    DBControllerUser dbControllerUser=new DBControllerUser();
 
     public DefaultAddressFragment() {
         // Required empty public constructor
@@ -91,7 +93,7 @@ public class DefaultAddressFragment extends DialogFragment {
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentuser.setAddress(binding.name.getText().toString(),binding.phone.getText().toString(),binding.DetailAddress.getText().toString(),"");
+                dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),binding.phone.getText().toString(),binding.DetailAddress.getText().toString(),"");
                 dismiss();
             }
         });
