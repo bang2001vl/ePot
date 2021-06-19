@@ -2,18 +2,15 @@ package exam.nlb2t.epot.Fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,32 +19,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Category.Category;
-import exam.nlb2t.epot.Category.CategoryTab;
+import exam.nlb2t.epot.Category.CategoryAdapter;
 import exam.nlb2t.epot.Category.DBControllerCategory;
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
-import exam.nlb2t.epot.PaginationScrollListener;
+import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapter;
-import exam.nlb2t.epot.ProductDetail.NewProductAdapter;
-import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 
-public class HomepageFragment extends Fragment {
+public class HomepageFragment extends Fragment implements OnItemClickListener {
     HomeShoppingBinding binding;
     private RecyclerView rcVCategory;
-    private CategoryTab categoryTab;
+    private CategoryAdapter categoryAdapter;
+    List<Category> categoryList;
 
     private RecyclerView rcVNewProduct;
     List<ProductBaseDB> productBaseDBList;
-    private int totalPage;
-    private int currentPage = 1;
-
     private ProductAdapter productAdapter;
 
+    private RecyclerView rcVMaxSold;
+    private ProductAdapter productAdapterMaxSold;
+
     int step = 10;
-    int currentLastIndex = 0;
+    int currentLastIndex = 1;
     String sql;
     @Nullable
     @Override
@@ -63,17 +57,16 @@ public class HomepageFragment extends Fragment {
 
         //category
         rcVCategory = binding.recycleViewCategory;
-        categoryTab = new CategoryTab(view.getContext());
+        categoryList = getListCategory();
+        categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
-        categoryTab.setData(getListCategory());
-        rcVCategory.setAdapter(categoryTab);
+        categoryAdapter.setData(categoryList);
+        rcVCategory.setAdapter(categoryAdapter);
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            List<ProductBaseDB> list = getMoreData();
-
-            productBaseDBList.addAll(list);
+            productBaseDBList.addAll(getMoreData());
             productAdapter.notifyDataSetChanged();
         });
 
@@ -85,6 +78,21 @@ public class HomepageFragment extends Fragment {
         rcVNewProduct.setLayoutManager(gridLayoutManager);
         rcVNewProduct.setAdapter(productAdapter);
 
+        //number sold max
+        rcVMaxSold = binding.recycleViewMaxSold;
+        productAdapterMaxSold = new ProductAdapter(view.getContext());
+        gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
+        productAdapterMaxSold.setData(getDataMaxSold());
+        rcVMaxSold.setLayoutManager(gridLayoutManager);
+        rcVMaxSold.setAdapter(productAdapterMaxSold);
+    }
+
+    private List<ProductBaseDB> getDataMaxSold() {
+        List<ProductBaseDB> list = new ArrayList<>();
+        sql = "SELECT TOP 30 * FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
+        DBControllerProduct dbControllerProduct = new DBControllerProduct();
+        list = dbControllerProduct.getNewProductList(sql);
+        return  list;
     }
 
     private List<Category> getListCategory(){
@@ -100,58 +108,14 @@ public class HomepageFragment extends Fragment {
         //TODO : Write code here <Set all listener in here>
     }
 
-    /*public List<ProductBaseDB> getListNewProduct() {
-        Toast.makeText(getContext(), "Loading accepted", Toast.LENGTH_SHORT).show();
-        List<ProductBaseDB> list = new ArrayList<>();
-        for (int it = 0; it < end; it++){
-            list.add(newProductList.get(start + it));
-        }
-        start += end;
-        return  list;
-    }
-
-    private void setFirstData(){
-        newHintProductTodayList = getListNewProduct();
-        newProductAdapter.setData(newHintProductTodayList);
-
-        if (currentPage < totalPage)
-        {
-            newProductAdapter.addFooterLoading();
-        }
-        else
-        {
-            isLastPage = true;
-        }
-    }
-
-    private void loadNextPage(){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<ProductBaseDB> list = getListNewProduct();
-
-                newProductAdapter.removeFooterLoading();
-                newHintProductTodayList.addAll(list);
-                newProductAdapter.notifyDataSetChanged();
-
-                isLoading = false;
-
-                if (currentPage<totalPage){
-                    newProductAdapter.addFooterLoading();
-                }
-                else{
-                    isLastPage = true;
-                }
-            }
-        }, 2000);
-    }*/
 
     public List<ProductBaseDB> getMoreData()
     {
         List<ProductBaseDB> list = new ArrayList<>();
 
-        sql = "SELECT TOP " + (currentLastIndex + step) + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7 " +
-                " EXCEPT SELECT TOP " + currentLastIndex  + " * FROM PRODUCT WHERE DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7";
+        sql = "SELECT * FROM " +
+                "(SELECT *, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT FROM PRODUCT WHERE  DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7) AS TAMP" +
+                " WHERE STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         list = dbControllerProduct.getNewProductList(sql);
 
@@ -185,5 +149,15 @@ public class HomepageFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(Category category) {
+        clickCategory_tab(category.getName());
+    }
+
+    private void clickCategory_tab(String name)
+    {
+        Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
     }
 }

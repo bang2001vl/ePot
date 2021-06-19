@@ -7,19 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.fragment_ProItem_Container;
 
-public class CategoryTab extends RecyclerView.Adapter<CategoryTab.CategoryViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
     private List<Category> listCategory;
-
+    private OnItemClickListener onItemClickListener;
+    private Category category;
     public Context getContext() {
         return context;
     }
@@ -36,8 +44,19 @@ public class CategoryTab extends RecyclerView.Adapter<CategoryTab.CategoryViewHo
         this.listCategory = listCategory;
     }
 
-    public CategoryTab(Context context) {
+    public CategoryAdapter(Context context) {
         this.context = context;
+    }
+
+    public CategoryAdapter(Context context, List<Category> listCategory, OnItemClickListener onItemClickListener) {
+        this.context = context;
+        this.listCategory = listCategory;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public CategoryAdapter(List<Category> listCategory, OnItemClickListener onItemClickListener) {
+        this.listCategory = listCategory;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void setData(List<Category> list)
@@ -54,15 +73,26 @@ public class CategoryTab extends RecyclerView.Adapter<CategoryTab.CategoryViewHo
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageCategory);
-            textView =itemView.findViewById(R.id.textViewNameCategory);
+            textView = itemView.findViewById(R.id.textViewNameCategory);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), textView.getText(), Toast.LENGTH_SHORT).show();
+                    //onItemClickListener.onItemClick(category);
+                }
+            });
         }
     }
+
 
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_tab, parent, false);
         return new CategoryViewHolder(view);
+
+
     }
 
     @Override
@@ -70,6 +100,7 @@ public class CategoryTab extends RecyclerView.Adapter<CategoryTab.CategoryViewHo
         Category category = listCategory.get(position);
         if (category != null)
         {
+            this.category = category;
             holder.imageView.setImageBitmap(category.getAvatar_id());
             holder.textView.setText(category.getName());
         }

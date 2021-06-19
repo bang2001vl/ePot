@@ -93,8 +93,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/fragment_product_selling"
-                android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-                />
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/recycleViewMaxSold"/>
+            </fragment>
 
             <LinearLayout
         android:layout_width="match_parent"
@@ -149,12 +154,17 @@
                 android:layout_margin="10dp"
                 android:fontFamily="@font/gilroy_bold"
                 />
-            <androidx.recyclerview.widget.RecyclerView
+            <fragment
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/recycleViewNewProduct"/>
-
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_product_new"
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/recycleViewNewProduct"/>
+            </fragment>
     <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
