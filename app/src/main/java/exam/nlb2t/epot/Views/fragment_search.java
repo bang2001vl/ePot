@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
@@ -28,6 +30,12 @@ public class fragment_search extends Fragment {
     private List<ProductBaseDB> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
+    private  final int number_pro = 30;
+    private Button btn_more;
+    private LinearLayout ln_product;
+
+    private String name = "NAME";
+    private String column;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +46,8 @@ public class fragment_search extends Fragment {
         sv_search = (androidx.appcompat.widget.SearchView) view.findViewById(R.id.sv_search);
         iv_search = (ImageView) view.findViewById(R.id.imageView);
         tv_emplty_result = (TextView) view.findViewById(R.id.emplty_result);
+        btn_more = (Button) view.findViewById(R.id.btn_more);
+        ln_product = (LinearLayout) view.findViewById(R.id.ln_product);
 
 
         sv_search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
@@ -60,19 +70,54 @@ public class fragment_search extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                column = "NAME";
                 DBControllerProduct controllerProduct = new DBControllerProduct();
-                String t = sv_search.getQuery().toString();
-                productList = controllerProduct.getProductsBaseName(sv_search.getQuery().toString());
+                name = sv_search.getQuery().toString();
+                if (name.length() > 9 && name.substring(0, 8).toString().equals("Danh mục") )
+                {
+                    column = "CATEGORY";
+                    productList = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
+
+                }
+                else
+                {
+                    if (name.length() > 10 && name.substring(0, 9).toString().equals("Người bán") )
+                    {
+                        column = "SALER";
+                        productList = controllerProduct.getProductsBaseSaler( name.substring(10).toString(), 0, number_pro);
+                    }
+                    else
+                    {
+                        productList = controllerProduct.getProductsBaseName( name, 0, number_pro);
+                    }
+                }
+
                 if (productList.size() != 0)
                 {
                     tv_emplty_result.setVisibility(View.GONE);
                     fg_ProItem_container =  fragment_ProItem_Container.newInstance(productList);
                     ReplaceFragment(fg_ProItem_container);
+                    btn_more.setVisibility(View.VISIBLE);
                 }
                 else
                 {
                     productList = null;
+                    ln_product.setVisibility(View.INVISIBLE);
                     tv_emplty_result.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        btn_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ProductBaseDB> subpro = new ArrayList<>();
+                DBControllerProduct controllerProduct = new DBControllerProduct();
+
+                subpro  = controllerProduct.getProductsBaseName(name, productList.size(), number_pro);
+                if (subpro != null)
+                {
+                    fg_ProItem_container.productAdapter.addproduct(subpro);
                 }
             }
         });
