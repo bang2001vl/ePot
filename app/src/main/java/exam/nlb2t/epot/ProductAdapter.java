@@ -110,19 +110,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 public void onClick(View v) {
                     {
                         //change status of favorites button
-                         if (btn_favorites.getBackground() == v.getContext().getResources().getDrawable(R.drawable.red_favorite_24))
+                         if (btn_favorites.getBackground() != v.getContext().getResources().getDrawable(R.drawable.red_favorite_24))
                          {
-                             btn_favorites.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+                             btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
                          }
                          else
                          {
-                             btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
+                             btn_favorites.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+
                          }
                     }
                 }
             });
             itemView.setPadding(2, 2 , 2, 2);
         }
+    }
+    public void addproduct(List<ProductBaseDB> subpro) {
+        productList.addAll(subpro);
+        this.notifyDataSetChanged();
     }
 
 }
