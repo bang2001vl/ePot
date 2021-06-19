@@ -2,16 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="59ba7131-3351-46fc-818b-ffe3ba27697e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/ClassInformation/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/ClassInformation/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/ProductViewContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/ProductViewContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/TestingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/TestingActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/Views/product_Item_Layout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/exam/nlb2t/epot/Views/product_Item_Layout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/product_item_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/product_item_layout.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_testing.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_testing.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -42,9 +53,14 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1620528938450">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="138" y="36" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1624064103707">
+      <screen x="0" y="0" width="1366" height="768" />
     </state>
+    <state x="138" y="36" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1624064103707" />
+    <state x="488" y="156" key="FileChooserDialogImpl" timestamp="1624064171790">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="488" y="156" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1624064171790" />
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1620528938450" />
   </component>
 </project>
