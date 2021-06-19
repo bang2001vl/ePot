@@ -77,9 +77,9 @@ public class OrderFragment extends DialogFragment{
 
     private void setUpViewPager(ViewPager viewPager) {
         OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.IN_SHIPPING)), "Đang giao");
-        adapter.addFragment(new OrderTab(dbControllerBill.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.DEFAULT)), "Đã hủy");
+        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
+        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.IN_SHIPPING)), "Đang giao");
+        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.DEFAULT)), "Đã hủy");
 
         viewPager.setAdapter(adapter);
     }

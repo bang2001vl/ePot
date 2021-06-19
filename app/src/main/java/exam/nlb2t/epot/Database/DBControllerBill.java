@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
+import java.security.InvalidParameterException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -132,18 +133,26 @@ public class DBControllerBill extends DatabaseController {
      *
      * @param salerID    The id of the saler want to get
      * @param statusBill The status of bills want to get, it is nullable variable. The null is determine when want get all bill of saler
+     * @param offset    The off set is offset of record, equal the start index, it must be positive number, if not, the error wil show
+     * @param number    The number record will be get, if it euqual -1, it will take all rest data in database, start from offset
      * @return List bill overview
      */
-    public List<BillBaseDB> getBillsOverviewbyStatus(int salerID, @Nullable BillBaseDB.BillStatus statusBill) {
+    public List<BillBaseDB> getBillsOverviewbyStatus(int salerID, @Nullable BillBaseDB.BillStatus statusBill, int offset, int number) {
+        if (offset < 0) {
+            throw new InvalidParameterException("Giá trị đầu vào của Offset phải lớn hơn 0, hiện tại: " + offset);
+        }
+
         List<BillBaseDB> rs = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("EXEC selectBillsByStatus ?,?");
+            PreparedStatement statement = connection.prepareStatement("EXEC selectBillByStatus ?,?,?,?");
             statement.setInt(1, salerID);
             if (statusBill != null) {
                 statement.setInt(2, statusBill.getValue());
             } else {
                 statement.setNull(2, Types.INTEGER);
             }
+            statement.setInt(3, offset);
+            statement.setInt(4, number);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -151,7 +160,6 @@ public class DBControllerBill extends DatabaseController {
                 BillBaseDB bill = new BillBaseDB();
 
                 bill.salerID = salerID;
-                bill.status = statusBill;
 
                 bill.id = resultSet.getInt("ID");
                 bill.address = resultSet.getString("ADDRESS");
@@ -174,6 +182,68 @@ public class DBControllerBill extends DatabaseController {
             return null;
         }
         return rs;
+    }
+    public List<BillBaseDB> getBillsOverviewbyStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill) {
+        return getBillsOverviewbyStatus(userID, statusBill, 0, -1);
+    }
+
+    /**
+     * Get Bills overview without detailBill by user id and status of the bill
+     *
+     * @param userID    The id of the user want to get
+     * @param statusBill    The status of bills want to get, it is nullable variable. The null is determine when want get all bill of user
+     * @param offset    The off set is offset of record, equal the start index, it must be positive number, if not, the error wil show
+     * @param number    The number record will be get, if it euqual -1, it will take all rest data in database, start from offset
+     * @return List bill overview
+     */
+    public List<BillBaseDB> getUserBillsOverviewbyStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill, int offset, int number) {
+        if (offset < 0) {
+            throw new InvalidParameterException("Giá trị đầu vào của Offset phải lớn hơn 0, hiện tại: " + offset);
+        }
+
+        List<BillBaseDB> rs = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("EXEC selectUserBillByStatus ?,?,?,?");
+            statement.setInt(1, userID);
+            if (statusBill != null) {
+                statement.setInt(2, statusBill.getValue());
+            } else {
+                statement.setNull(2, Types.INTEGER);
+            }
+            statement.setInt(3, offset);
+            statement.setInt(4, number);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                BillBaseDB bill = new BillBaseDB();
+
+                bill.userID = userID;
+
+                bill.id = resultSet.getInt("ID");
+                bill.address = resultSet.getString("ADDRESS");
+                bill.createdDate = resultSet.getDate("CREATED_DATE");
+                bill.keyBill = resultSet.getString("KEYBILL");
+                bill.total = resultSet.getInt("TOTAL");
+                bill.salerID = resultSet.getInt("SALER_ID");
+
+                // if STATUS not null, return current status, else return status in the table
+                if (statusBill != null) bill.status = statusBill;
+                else bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt("STATUS")];
+
+                rs.add(bill);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return rs;
+    }
+    public List<BillBaseDB> getUserBillsOverviewbyStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill) {
+        return getUserBillsOverviewbyStatus(userID, statusBill, 0, -1);
     }
 
     // Get from start to end. start and end is included
