@@ -41,7 +41,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
     {
         this.billList = bills;
         this.context = mcontext;
-
+        shops = new ArrayList<>();
         DBControllerUser db = new DBControllerUser();
         for (BillBaseDB bill : billList) {
             shops.add(db.getUserInfo(bill.salerID));
