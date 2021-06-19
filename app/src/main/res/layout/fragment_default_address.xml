@@ -96,6 +96,7 @@
         android:textSize="16dp"
         android:paddingVertical="10dp"
         android:layout_marginTop="5dp"
+        android:dropDownHeight="150dp"
         android:inputType="textAutoComplete"/>
     <View
         android:layout_width="match_parent"
