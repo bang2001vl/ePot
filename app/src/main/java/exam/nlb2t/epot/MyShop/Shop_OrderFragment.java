@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.google.android.material.tabs.TabLayout;
 
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.OrderTab;
 import exam.nlb2t.epot.databinding.MyShopOrderTabBinding;
 import exam.nlb2t.epot.databinding.OrderTabBinding;
@@ -33,6 +34,7 @@ public class Shop_OrderFragment extends Fragment {
 
         return binding.getRoot();
     }
+
 
     private void setEventHandler() {
         // TODO: Write code here

@@ -20,7 +20,7 @@ public class UserBaseDB {
     public Date birthday;
     public Date createdDate;
 
-    public Bitmap getAvatar(int avatarID)
+    public Bitmap getAvatar()
     {
         Bitmap rs;
         DBControllerUser db = new DBControllerUser();
