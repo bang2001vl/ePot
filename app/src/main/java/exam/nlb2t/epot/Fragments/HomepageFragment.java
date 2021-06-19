@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 
 public class HomepageFragment extends Fragment implements OnItemClickListener {
@@ -40,6 +43,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     private RecyclerView rcVMaxSold;
     private ProductAdapter productAdapterMaxSold;
 
+    private androidx.appcompat.widget.SearchView searchView;
+
     int step = 10;
     int currentLastIndex = 1;
     String sql;
@@ -54,7 +59,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        searchView = binding.searchBar;
         //category
         rcVCategory = binding.recycleViewCategory;
         categoryList = getListCategory();
@@ -71,7 +76,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         });
 
         rcVNewProduct = binding.recycleViewNewProduct;
-        productAdapter = new ProductAdapter(view.getContext());
+        productAdapter = new ProductAdapter(productBaseDBList,view.getContext(),this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
         productBaseDBList = getMoreData();
         productAdapter.setData(productBaseDBList);
@@ -80,7 +85,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
         //number sold max
         rcVMaxSold = binding.recycleViewMaxSold;
-        productAdapterMaxSold = new ProductAdapter(view.getContext());
+        productAdapterMaxSold = new ProductAdapter(productBaseDBList,view.getContext(),this);
         gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
         productAdapterMaxSold.setData(getDataMaxSold());
         rcVMaxSold.setLayoutManager(gridLayoutManager);
@@ -151,13 +156,14 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         binding = null;
     }
 
+
     @Override
-    public void onItemClick(Category category) {
-        clickCategory_tab(category.getName());
+    public void onItemClickCategory(String string) {
+        searchView.setQuery("Danh mục " + string,true);
     }
 
-    private void clickCategory_tab(String name)
-    {
-        Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
+    @Override
+    public void onItemClickProduct(int id) {
+        Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
     }
 }

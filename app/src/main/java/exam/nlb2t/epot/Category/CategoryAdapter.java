@@ -27,7 +27,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private Context context;
     private List<Category> listCategory;
     private OnItemClickListener onItemClickListener;
-    private Category category;
     public Context getContext() {
         return context;
     }
@@ -78,8 +77,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), textView.getText(), Toast.LENGTH_SHORT).show();
-                    //onItemClickListener.onItemClick(category);
+                    onItemClickListener.onItemClickCategory(textView.getText().toString());
                 }
             });
         }
@@ -100,7 +98,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = listCategory.get(position);
         if (category != null)
         {
-            this.category = category;
             holder.imageView.setImageBitmap(category.getAvatar_id());
             holder.textView.setText(category.getName());
         }

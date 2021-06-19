@@ -31,14 +31,16 @@
 
             />
     </LinearLayout>
+
     <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        app:queryHint="@string/Search"
         android:layout_marginTop="10dp"
-        android:background="@drawable/border_searchview" />
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_searchview"
+        app:queryHint="@string/Search" />
 
 
     <ScrollView
@@ -80,14 +82,14 @@
                     android:textColor="#DB3022"
                     android:gravity="bottom"
                     />
-                <TextView
+                <!--<TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="#808080"
                     android:text="@string/See_All"
                     android:textSize="15dp"
                     android:textAlignment="textEnd"
-                    />
+                    />-->
                </LinearLayout>
             <fragment
                 android:layout_width="match_parent"
@@ -116,13 +118,13 @@
             android:fontFamily="@font/gilroy_bold"
             android:textStyle="bold" />
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/See_All"
             android:textAlignment="textEnd"
             android:textColor="#808080"
-            android:textSize="15dp" />
+            android:textSize="15dp" />-->
     </LinearLayout>
 
             <LinearLayout

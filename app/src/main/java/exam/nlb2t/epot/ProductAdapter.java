@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,12 +26,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private List<ProductBaseDB> productList;
     private Context context;
+    private OnItemClickListener onItemClickListener;
+    ProductBaseDB  product;
 
-
-    public ProductAdapter (List<ProductBaseDB > products, Context mcontext)
+    public ProductAdapter (List<ProductBaseDB > products, Context mcontext, OnItemClickListener onItemClickListener)
     {
         this.productList = products;
         this.context = mcontext;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public ProductAdapter(List<ProductBaseDB> productList, Context context) {
+        this.productList = productList;
+        this.context = context;
     }
 
     public ProductAdapter(Context context) {
@@ -69,8 +77,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ProductBaseDB  product = productList.get(position);
-
+        this.product =  productList.get(position);
+        holder.id = product.id;
         String price = product.priceOrigin + " đ";
         SpannableString oldproprice = new SpannableString(price);
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -109,6 +117,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public TextView tv_Cmt;
         public Button btn_favorites;
         LinearLayout parent_layout;
+        public int id;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +148,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                              btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
                          }
                     }
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getContext(),"id: " + id,Toast.LENGTH_LONG).show();
+                    onItemClickListener.onItemClickProduct(id);
                 }
             });
             itemView.setPadding(2, 2 , 2, 2);

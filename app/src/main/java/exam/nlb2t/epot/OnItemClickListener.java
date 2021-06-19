@@ -1,7 +1,9 @@
 package exam.nlb2t.epot;
 
 import exam.nlb2t.epot.Category.Category;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 public interface OnItemClickListener {
-    void onItemClick(Category category);
+    void onItemClickCategory(String string);
+    void onItemClickProduct(int id);
 }
