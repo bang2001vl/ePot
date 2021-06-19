@@ -57,7 +57,7 @@ public class BillBaseDB {
     public BillStatus status; //[BILL].[STATUS]
     public long total; //[BILL].[TOTAL]
     public int salerID; //[BILL].[SALER_ID]
-    public List<ProductBaseDB> productinBill;
+    public List<ProductInBill> productinBill;
     private int amountProduct = 0;
 
     public BillBaseDB() {
@@ -86,5 +86,27 @@ public class BillBaseDB {
             db.closeConnection();
         }
         return amountProduct;
+    }
+
+    public String[] getAddress()
+    {
+        String separator = "|-|";
+        String[] rs = new String[4];
+        int temp = separator.length();
+        int start = temp;
+        for(int i = 0; i<rs.length; i++)
+        {
+            int end = address.indexOf(separator, start);
+            rs[i] = address.substring(start, end);
+            start = end + temp;
+        }
+        return rs;
+    }
+    public long sumProductPrice() {
+        long sum = 0;
+        for(ProductInBill product : productinBill) {
+            sum += product.getPriceSell();
+        }
+        return sum;
     }
 }

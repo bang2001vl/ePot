@@ -41,13 +41,13 @@ public class Shop_OverviewFragment extends Fragment {
     public void loadData() {
         DBControllerBill db = new DBControllerBill();
         int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
+        db.closeConnection();
         if (listNumber != null) {
             binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
             binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
             binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
             binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
         }
-        db.closeConnection();
 
         binding.itemSell.setValue(0);
         binding.itemOutofstock.setValue(0);

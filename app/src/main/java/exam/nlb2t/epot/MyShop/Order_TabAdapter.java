@@ -82,13 +82,14 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
                 toIndex = 1;
                 break;
         }
+        Shop_BillFragment fragAtfromIndex = ((Shop_BillFragment)fragments[fromIndex]);
         Shop_BillFragment fragAttoIndex = ((Shop_BillFragment)fragments[toIndex]);
         Shop_BillFragment fragAt0 = ((Shop_BillFragment)fragments[0]);
 
         fragAt0.TranferStatus(bill, toStatus);
         fragAttoIndex.TranferStatus(bill, toStatus);
 
-        if (fragAttoIndex.adapter == null) notifyDataSetChanged();
+        if (fragAttoIndex.listBill.size() == 1 || fragAtfromIndex.listBill.size() == 0) notifyDataSetChanged();
     }
 
     @NonNull
