@@ -2,6 +2,7 @@ package exam.nlb2t.epot.Fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 
@@ -164,6 +166,10 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     @Override
     public void onItemClickProduct(int id) {
-        Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
+        Log.d("MY_TAG", "Open product with id = " + id);
+        ProductDetailFragment dialog = new ProductDetailFragment();
+        dialog.productID = id;
+        dialog.show(getChildFragmentManager(), "detailProduct");
     }
 }
