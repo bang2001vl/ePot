@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.NotificationBaseDB;
 import exam.nlb2t.epot.NotificationWorkspace.NewBillNotificationView;
+import exam.nlb2t.epot.NotificationWorkspace.NotifyViewAdapter;
 import exam.nlb2t.epot.NotificationWorkspace.NotifycationInfo;
 import exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Customer;
 import exam.nlb2t.epot.NotificationWorkspace.SuccessBillNotifyView_Saler;
@@ -30,6 +33,7 @@ public class NotificationFragment extends Fragment {
     EmptyCartLayoutBinding bindingEmpty;
     int lastIndex = 1;
     int step = 2;
+    NotifyViewAdapter adapter;
 
     @Nullable
     @Override
@@ -39,6 +43,11 @@ public class NotificationFragment extends Fragment {
         binding.nextButtonLayout.setOnClickListener(v->{
             loadMore();
         });
+        adapter = new NotifyViewAdapter(getContext());
+        binding.recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
         loadMore();
         return binding.getRoot();
     }
@@ -76,7 +85,7 @@ public class NotificationFragment extends Fragment {
 
         for(int i = 0; i<list.size(); i++)
         {
-            NotifycationInfo info = list.get(i);
+            /*NotifycationInfo info = list.get(i);
             NotificationBaseDB noti = info.notification;
 
             View view = null;
@@ -101,8 +110,11 @@ public class NotificationFragment extends Fragment {
 
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            binding.linearLayoutMain.addView(view, binding.linearLayoutMain.getChildCount() - 1, params);
+            binding.linearLayoutMain.addView(view, binding.linearLayoutMain.getChildCount() - 1, params);*/
+
         }
+
+        adapter.addItem(list);
 
         if(list.size() < step)
         {
