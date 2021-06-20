@@ -9,8 +9,9 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 
-public class ProductBaseDB implements Comparable<ProductBaseDB>{
+public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public int id; //[PRODUCT].[ID]
     public int salerID; //[PRODUCT].[SALER_ID]
     public int categoryID; //[PRODUCT].[CATEGORY_ID]
@@ -91,33 +92,38 @@ public class ProductBaseDB implements Comparable<ProductBaseDB>{
         deleted = 0;
     }
 
-    public static Comparator<ProductBaseDB> sortNameAtoZ = new Comparator<ProductBaseDB>() {
+    public static Comparator<ProductAdapterItemInfo> sortNameAtoZ = new Comparator<ProductAdapterItemInfo>() {
         @Override
-        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
-            return o1.name.compareTo(o2.name);
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o1.productBaseDB.name.compareTo(o2.productBaseDB.name);
         }
     };
-
-
+    public static Comparator<ProductAdapterItemInfo> sortNameZtoA = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.name.compareTo(o1.productBaseDB.name);
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> sortPriceMin = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o1.productBaseDB.price-o2.productBaseDB.price;
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> sortPriceMax = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.price - o1.productBaseDB.price;
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> TimeNew = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.createdDate.compareTo( o1.productBaseDB.createdDate);
+        }
+    };
     @Override
-    public int compareTo(ProductBaseDB o) {
-        return this.createdDate.compareTo(o.createdDate);
+    public int compareTo(ProductAdapterItemInfo o) {
+        return 0;
     }
-
-    public static Comparator<ProductBaseDB> sortNameZtoA = new Comparator<ProductBaseDB>() {
-        @Override
-        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
-            return o2.name.compareTo(o1.name);
-        }
-    };public static Comparator<ProductBaseDB> sortPriceMin = new Comparator<ProductBaseDB>() {
-        @Override
-        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
-            return o1.name.compareTo(o2.name);
-        }
-    };public static Comparator<ProductBaseDB> sortPriceMax = new Comparator<ProductBaseDB>() {
-        @Override
-        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
-            return o2.name.compareTo(o1.name);
-        }
-    };
 }
