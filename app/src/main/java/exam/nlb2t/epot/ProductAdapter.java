@@ -96,7 +96,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         holder.tv_Pricepro.setText(product.price + " đ");
         holder.tv_Namepro.setText(" " + product.name + " ");
-        holder.imagePro.setImageBitmap(product.getImagePrimary());
+        holder.imagePro.setImageBitmap(product.imageProduct);
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
     }
 

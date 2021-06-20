@@ -378,6 +378,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.description = resultSet.getString(i);i++;
                 item.createdDate = resultSet.getDate(i);i++;
                 item.deleted = resultSet.getInt(i);i++;
+                item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
 
                 rs.add(item);
             }

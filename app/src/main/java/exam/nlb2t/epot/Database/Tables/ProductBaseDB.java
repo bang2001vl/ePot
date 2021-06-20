@@ -21,6 +21,7 @@ public class ProductBaseDB {
     public int imagePrimaryID; //[PRODUCT].[PRIMARY_IMAGE_ID]
     public Date createdDate; //[PRODUCT].[CREATED_DATE]
     public int deleted; //[PRODUCT].[DELETED]
+    public Bitmap imageProduct;
     public float starAverage; //[PRODUCT].[STAR_AVG]
 
     public UserBaseDB getSaler()

@@ -97,7 +97,9 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     private List<ProductBaseDB> getDataMaxSold() {
         List<ProductBaseDB> list = new ArrayList<>();
-        sql = "SELECT TOP 30 * FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
+        sql = "SELECT TOP 30 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
+                "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, DATA " +
+                "FROM PRODUCT join  AVATAR on PRIMARY_IMAGE_ID = AVATAR.ID ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         list = dbControllerProduct.getNewProductList(sql);
         return  list;
@@ -125,9 +127,11 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     {
         List<ProductBaseDB> list = new ArrayList<>();
 
-        sql = "SELECT * FROM " +
-                "(SELECT *, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT FROM PRODUCT WHERE  DATEDIFF(DAY,CREATED_DATE, GETDATE()) < 7) AS TAMP" +
-                " WHERE STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
+        sql = "SELECT * from " +
+                "(SELECT product.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, " +
+                "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, DATA, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
+                "FROM PRODUCT join  AVATAR on PRIMARY_IMAGE_ID = AVATAR.ID where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 7) as tamp " +
+                "where STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         list = dbControllerProduct.getNewProductList(sql);
 
