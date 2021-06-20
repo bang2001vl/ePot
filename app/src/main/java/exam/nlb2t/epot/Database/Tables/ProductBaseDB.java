@@ -4,11 +4,9 @@ import android.graphics.Bitmap;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
-import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 
 public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
@@ -25,6 +23,7 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public Date createdDate; //[PRODUCT].[CREATED_DATE]
     public int deleted; //[PRODUCT].[DELETED]
     public float starAverage; //[PRODUCT].[STAR_AVG]
+    public Bitmap imageProduct;
 
     public UserBaseDB getSaler()
     {
