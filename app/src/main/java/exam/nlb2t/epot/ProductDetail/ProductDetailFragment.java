@@ -145,7 +145,7 @@ public class ProductDetailFragment extends DialogFragment {
             boolean isLiked = db.checkLikeProduct(productID, Authenticator.getCurrentUser().id);
             // Get image of product
             List<Bitmap> images = db.getImages(productID);
-            imagePrimary = db.getAvatar_Product(product.imagePrimaryID);
+            imagePrimary = db.getAvatar_Product(data.imagePrimaryID);
             // Close connection
             db.closeConnection();
 

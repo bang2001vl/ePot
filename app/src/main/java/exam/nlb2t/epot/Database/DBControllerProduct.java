@@ -13,7 +13,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerProduct extends DatabaseController{
@@ -309,13 +311,13 @@ public class DBControllerProduct extends DatabaseController{
 
         return rs;
     }
-    public List<ProductBaseDB> getLIMITProduct(int userID, int offset, int number)
+    public List<ProductBaseDB> getLIMITProduct(int salerID, int offset, int number)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
         try
         {
             PreparedStatement statement = connection.prepareStatement("EXEC getLIMITProduct ?,?,?");
-            statement.setInt(1, userID);
+            statement.setInt(1, salerID);
             statement.setInt(2, offset);
             statement.setInt(3, number);
             ResultSet resultSet = statement.executeQuery();
@@ -422,7 +424,7 @@ public class DBControllerProduct extends DatabaseController{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userID);
             statement.setInt(2, productID);
-            rs = statement.executeUpdate() >0;
+            rs = statement.executeUpdate() > 0;
 
             commit();
             statement.close();
@@ -469,6 +471,7 @@ public class DBControllerProduct extends DatabaseController{
             if (rsSet.next()) {
                 rs = rsSet.getInt(1);
             }
+            rsSet.close();
             statement.close();
         }
         catch (SQLException e) {
@@ -624,16 +627,18 @@ public class DBControllerProduct extends DatabaseController{
         return rs;
     }
 
-  public int getNumberProductsbyUser(int userID) {
+  public int getNumberProducts(int saler) {
         int rs = 0;
         try {
             String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID]=?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1,userID);
+            statement.setInt(1,saler);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 rs = resultSet.getInt(1);
             }
+
+            resultSet.close();
             statement.close();
         }
         catch (SQLException e) {
@@ -685,6 +690,62 @@ public class DBControllerProduct extends DatabaseController{
             throwables.printStackTrace();
             ErrorMsg = "FAILED: Cannot get data from server";
         }
+        return rs;
+    }
+
+    public List<ProductInBill> getProductInBill(int billID) {
+        List<ProductInBill> rs = new ArrayList<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT [PRODUCT].[ID], [PRODUCT].[NAME], " +
+                    "[BILL_DETAIL].[PRICE], [PRODUCT].[PRIMARY_IMAGE_ID], [BILL_DETAIL].[AMOUNT] " +
+                    "FROM [PRODUCT] JOIN [BILL_DETAIL] ON [PRODUCT].ID = [BILL_DETAIL].[PRODUCT_ID] " +
+                    "WHERE [BILL_DETAIL].[BILL_ID] = ?;");
+            statement.setInt(1, billID);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("NAME");
+                int imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
+                int price = resultSet.getInt("PRICE");
+                int amount = resultSet.getInt("AMOUNT");
+
+                rs.add(new ProductInBill(id, imagePrimaryID, name, price, amount));
+            }
+
+            if(rs.size() == 0) throw new SQLException();
+
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "FAILED: Cannot find product with billID: " + billID;
+        }
+        return rs;
+    }
+
+    public int getNumberProductOutofStock(int salerID) {
+        final int LIMIT_NUMBER_OUTOFSTOCK = 5;
+        int rs = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID] = ? AND (AMOUNT - AMOUNT_SOLD) <= ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, salerID);
+            statement.setInt(2, LIMIT_NUMBER_OUTOFSTOCK);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                rs = resultSet.getInt(1);
+            }
+
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return rs;
     }
 }

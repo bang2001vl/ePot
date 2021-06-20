@@ -22,32 +22,38 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class Shop_ProductFragment extends Fragment {
     MyShopProductTabBinding binding;
     Product_TabAdapter adapter;
+    public final List<ProductBaseDB> products;
 
     private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 0;
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
     private final int NUMBER_ITEM_TO_LOAD = 8;
 
+    public Shop_ProductFragment() {
+        DBControllerProduct db = new DBControllerProduct();
+        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 10);
+        db.closeConnection();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = MyShopProductTabBinding.inflate(inflater, container, false);
-        setEventHandler();
+
+        adapter = new Product_TabAdapter(products);
 
         LinearLayoutManager layout = new LinearLayoutManager(container.getContext());
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         binding.layoutProductMyShop.setLayoutManager(layout);
-
-        //TODO: Find UserID to login app
-        adapter = new Product_TabAdapter();
-        //adapter.setHasStableIds(true);
 
         binding.layoutProductMyShop.setItemViewCacheSize(10);
         binding.layoutProductMyShop.setDrawingCacheEnabled(true);
@@ -75,6 +81,7 @@ public class Shop_ProductFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //TODO : Write code here <Get data from database and set to view>
+        setEventHandler();
     }
 
     void setEventHandler()
