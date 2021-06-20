@@ -67,7 +67,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         searchView = binding.searchBar;
         //category
         rcVCategory = binding.recycleViewCategory;
-        categoryList = new ArrayList<>();
+        categoryList = getListCategory();
         categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
