@@ -150,10 +150,11 @@ public class MainActivity extends AppCompatActivity {
             binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
             long delayInTask = System.currentTimeMillis() - start;
+            long delay = 2000 - delayInTask;
             if(delayInTask < 2000)
             {
                 try{
-                    Thread.sleep(2000 - delayInTask);
+                    Thread.currentThread().sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -184,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
                 new PersonFragment(this)
         };
 
+        /*Fragment[] fragments = new Fragment[]{
+                new HomepageFragment(),
+                new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment()
+        };*/
+
         CartFragment_Old fragmentOld = (CartFragment_Old) fragments[1];
         fragmentOld.setOnItemDeleted(view -> {
             Card_ItemView_New item = (Card_ItemView_New)view;
@@ -197,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
             if(view.getContext() == null) return;
             CartDataController.setProduct(view.getContext(), productBuyInfo.product.id, productBuyInfo.Amount);
         });
-
         Resources resources = getResources();
         String[] titles = new String[]{
                 resources.getString(R.string.menu_home_page),

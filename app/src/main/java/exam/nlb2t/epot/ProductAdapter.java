@@ -2,6 +2,8 @@ package exam.nlb2t.epot;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
@@ -24,20 +26,20 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<ProductBaseDB> productList;
+    private List<ProductAdapterItemInfo> products;
     private Context context;
     private OnItemClickListener onItemClickListener;
     ProductBaseDB  product;
 
-    public ProductAdapter (List<ProductBaseDB > products, Context mcontext, OnItemClickListener onItemClickListener)
+    public ProductAdapter (List<ProductAdapterItemInfo> products, Context mcontext, OnItemClickListener onItemClickListener)
     {
-        this.productList = products;
+        this.products = products;
         this.context = mcontext;
         this.onItemClickListener = onItemClickListener;
     }
 
-    public ProductAdapter(List<ProductBaseDB> productList, Context context) {
-        this.productList = productList;
+    public ProductAdapter(List<ProductAdapterItemInfo> productList, Context context) {
+        this.products = productList;
         this.context = context;
     }
 
@@ -45,12 +47,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.context = context;
     }
 
-    public List<ProductBaseDB> getProductList() {
-        return productList;
+    public List<ProductAdapterItemInfo> getProductList() {
+        return products;
     }
 
-    public void setProductList(List<ProductBaseDB> productList) {
-        this.productList = productList;
+    public void setProductList(List<ProductAdapterItemInfo> productList) {
+        this.products = productList;
     }
 
     public Context getContext() {
@@ -61,8 +63,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.context = context;
     }
 
-    public void setData(List<ProductBaseDB> list){
-        productList = list;
+    public void setData(List<ProductAdapterItemInfo> list){
+        products = list;
         notifyDataSetChanged();
     }
 
@@ -77,38 +79,50 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        this.product =  productList.get(position);
-        holder.id = product.id;
-        String price = product.priceOrigin + " đ";
-        SpannableString oldproprice = new SpannableString(price);
-        oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        if (product.priceOrigin == product.price)
-        {
-            holder.tag_salepro.setVisibility(View.GONE);
-            holder.tv_Oldproprice.setVisibility(View.GONE);
+        ProductAdapterItemInfo info = products.get(position);
+        // Other code
+        //
+        if(info.productAvatar != null) {
+            holder.imagePro.setImageBitmap(info.productAvatar);
         }
-        else
-        {
-            holder.tag_salepro.setText(" -" + (product.price*100 / product.priceOrigin) +"% ");
-            holder.tv_Oldproprice.setText(oldproprice);
+        else {holder.imagePro.setImageResource(R.color.white);}
+        if(info.productAvatar == null) {
+            new Thread(new LoadImageRunable(new Handler(), position), "LoadImageAt=" + position).start();
         }
+    }
 
-        holder.tv_Pricepro.setText(product.price + " đ");
-        holder.tv_Namepro.setText(" " + product.name + " ");
-        holder.imagePro.setImageBitmap(product.imageProduct);
-        holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
+    public class LoadImageRunable implements Runnable {
+        int position;
+        android.os.Handler mainHandler;
+        public LoadImageRunable(Handler mainHandler, int item_position)
+        {
+            this.mainHandler = mainHandler;
+            position = item_position;
+        }
+        @Override
+        public void run() {
+            ProductAdapterItemInfo info = products.get(position);
+            int imageID = info.productBaseDB.imagePrimaryID;
 
-        DBControllerProduct controllerProduct = new DBControllerProduct();
-        holder.rt_Rating.setRating(controllerProduct.getCountRating(product.id));
-        holder.btn_favorites.setBackgroundResource( controllerProduct.checkLikeProduct(product.id, product.salerID) ? R.drawable.red_favorite_24 :R.drawable.ic_baseline_favorite_24 );
+            DBControllerProduct db = new DBControllerProduct();
+            info.productAvatar = db.getAvatar_Product(imageID);
+            db.closeConnection();
 
+            mainHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemChanged(position);
+                }
+            }, 1000);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return products.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public ImageView imagePro;
@@ -168,9 +182,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
-    public void addproduct(List<ProductBaseDB> subpro) {
-        productList.addAll(subpro);
-        this.notifyDataSetChanged();
+    public void addproduct(List<ProductAdapterItemInfo> subpro) {
+        products.addAll(subpro);
+        this.notifyItemRangeInserted(products.size() - subpro.size(), subpro.size());
     }
 
 }

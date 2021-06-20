@@ -28,10 +28,12 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.fragment_search;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class HomepageFragment extends Fragment implements OnItemClickListener {
     HomeShoppingBinding binding;
@@ -40,7 +42,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     List<Category> categoryList;
 
     private RecyclerView rcVNewProduct;
-    List<ProductBaseDB> productBaseDBList;
+    List<ProductAdapterItemInfo> productBaseDBList;
     private ProductAdapter productAdapter;
 
     private RecyclerView rcVMaxSold;
@@ -65,7 +67,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         searchView = binding.searchBar;
         //category
         rcVCategory = binding.recycleViewCategory;
-        categoryList = getListCategory();
+        categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
@@ -95,13 +97,24 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         rcVMaxSold.setAdapter(productAdapterMaxSold);
     }
 
-    private List<ProductBaseDB> getDataMaxSold() {
-        List<ProductBaseDB> list = new ArrayList<>();
+    private List<ProductAdapterItemInfo> getDataMaxSold() {
         sql = "SELECT TOP 30 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
-                "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, DATA " +
-                "FROM PRODUCT join  AVATAR on PRIMARY_IMAGE_ID = AVATAR.ID ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
+                "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG " +
+                "FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
-        list = dbControllerProduct.getNewProductList(sql);
+        List<ProductBaseDB> subpro = dbControllerProduct.getNewProductList(sql);
+        List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
+        for(ProductBaseDB p: subpro)
+        {
+            ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+            info.productBaseDB = p;
+            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+            info.ratingCount = dbControllerProduct.getCountRating(p.id);
+
+            // Image would be get later
+            info.productAvatar = null;
+            list.add(info);
+        }
         return  list;
     }
 
@@ -123,18 +136,29 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     }
 
 
-    public List<ProductBaseDB> getMoreData()
+    public List<ProductAdapterItemInfo> getMoreData()
     {
-        List<ProductBaseDB> list = new ArrayList<>();
+        sql = "SELECT ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG from " +
 
-        sql = "SELECT * from " +
                 "(SELECT product.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, " +
-                "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, DATA, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
-                "FROM PRODUCT join  AVATAR on PRIMARY_IMAGE_ID = AVATAR.ID where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 7) as tamp " +
-                "where STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
-        DBControllerProduct dbControllerProduct = new DBControllerProduct();
-        list = dbControllerProduct.getNewProductList(sql);
+                "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
+                "FROM PRODUCT where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 7) as tamp " +
+                "where tamp.STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
 
+        DBControllerProduct dbControllerProduct = new DBControllerProduct();
+        List<ProductBaseDB> subpro = dbControllerProduct.getNewProductList(sql);
+        List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
+        for(ProductBaseDB p: subpro)
+        {
+            ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+            info.productBaseDB = p;
+            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+            info.ratingCount = dbControllerProduct.getCountRating(p.id);
+
+            // Image would be get later
+            info.productAvatar = null;
+            list.add(info);
+        }
        /* for(ProductBaseDB p : list)
         {
 

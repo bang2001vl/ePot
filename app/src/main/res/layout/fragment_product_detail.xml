@@ -144,7 +144,7 @@
                 android:id="@+id/button_favourite_product_detail"
                 android:checked="true"
                 android:button="@drawable/button_favourite"
-                android:buttonTint="@color/mainColor"
+                android:buttonTint="@color/red"
                 app:layout_constraintTop_toTopOf="@id/layout_price_product_detail"
                 app:layout_constraintEnd_toEndOf="parent"
                 />

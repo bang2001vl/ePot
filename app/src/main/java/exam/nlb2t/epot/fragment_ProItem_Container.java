@@ -21,7 +21,7 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
  */
 public class fragment_ProItem_Container extends Fragment {
 
-    public List<ProductBaseDB> productList ;
+    public List<ProductAdapterItemInfo> productList ;
     RecyclerView proGrid;
     public  ProductAdapter productAdapter;
 
@@ -30,7 +30,7 @@ public class fragment_ProItem_Container extends Fragment {
         // Required empty public constructor
     }
 
-    public static fragment_ProItem_Container newInstance(List<ProductBaseDB> productList) {
+    public static fragment_ProItem_Container newInstance(List<ProductAdapterItemInfo> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
         fragment.productList = productList;
 
