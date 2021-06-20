@@ -80,8 +80,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ProductAdapterItemInfo info = products.get(position);
-        // Other code
-        //
+        this.product =  info.productBaseDB;
+        holder.id = product.id;
+        String price = product.priceOrigin + " đ";
+        SpannableString oldproprice = new SpannableString(price);
+        oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        if (product.priceOrigin == product.price)
+        {
+            holder.tag_salepro.setVisibility(View.GONE);
+            holder.tv_Oldproprice.setVisibility(View.GONE);
+        }
+        else
+        {
+            holder.tag_salepro.setText(" -" + (product.price*100 / product.priceOrigin) +"% ");
+            holder.tv_Oldproprice.setText(oldproprice);
+        }
+
+        holder.tv_Pricepro.setText(product.price + " đ");
+        holder.tv_Namepro.setText(" " + product.name + " ");
+        holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
+
+        holder.rt_Rating.setRating(product.starAverage);
+        holder.btn_favorites.setBackgroundResource( info.isLiked ? R.drawable.red_favorite_24 :R.drawable.ic_baseline_favorite_24 );
+
         if(info.productAvatar != null) {
             holder.imagePro.setImageBitmap(info.productAvatar);
         }
