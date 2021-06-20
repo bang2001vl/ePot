@@ -62,12 +62,12 @@ public class Helper {
     {
         void OnSuccess(Object sender);
     }
-    public  static  final int QUALITY_STORAGED_IMAGE = 80;
+    public  static  final int QUALITY_STORAGED_IMAGE = 75;
     public static byte[] toByteArray(@NonNull Bitmap bitmap)
     {
         byte[] rs = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        if(bitmap.compress(Bitmap.CompressFormat.JPEG, QUALITY_STORAGED_IMAGE, outputStream)) {
+        if(bitmap.compress(Bitmap.CompressFormat.WEBP, QUALITY_STORAGED_IMAGE, outputStream)) {
             rs = outputStream.toByteArray();
         }
 
@@ -96,10 +96,9 @@ public class Helper {
         else {scaled = bitmap;}
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        if(scaled.compress(Bitmap.CompressFormat.JPEG, QUALITY_STORAGED_IMAGE, outputStream)) {
+        if(scaled.compress(Bitmap.CompressFormat.WEBP, QUALITY_STORAGED_IMAGE, outputStream)) {
             rs = outputStream.toByteArray();
         }
-
         try {
             outputStream.close();
         } catch (IOException e) {
@@ -107,6 +106,7 @@ public class Helper {
             return null;
         }
 
+        scaled.recycle();
         return rs;
     }
 

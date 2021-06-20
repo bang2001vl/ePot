@@ -74,14 +74,12 @@ public class DBControllerCategory extends DatabaseController {
         try{
             PreparedStatement statement = connection.prepareStatement("UPDATE [AVATAR] SET [DATA]=? WHERE [ID]=?;");
             byte[] arr = Helper.toByteArray(bitmap, MEDIUM_SIZE_IMAGES_IN_PIXEL,MEDIUM_SIZE_IMAGES_IN_PIXEL);
-            Log.d("MY_TAG", "IMAGE size = " + arr.length);
+            Log.d("MY_TAG", "Avatar size = " + arr.length);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(arr);
             statement.setBinaryStream(1, inputStream, arr.length);
             statement.setInt(2, avatarID);
-            statement.addBatch();
 
-            int[] rs = statement.executeBatch();
-            Log.d("MY_TAG", ""+ Arrays.toString(rs));
+            int rs = statement.executeUpdate();
             statement.close();
             inputStream.close();
             commit();

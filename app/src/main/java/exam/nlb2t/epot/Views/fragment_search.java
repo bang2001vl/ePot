@@ -24,14 +24,16 @@ import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class fragment_search extends DialogFragment {
     private Button btn_search;
     private androidx.appcompat.widget.SearchView sv_search;
     private ImageView iv_search;
-    private List<ProductBaseDB> productList ;
+    private List<ProductAdapterItemInfo> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
     private  final int number_pro = 30;
@@ -80,24 +82,60 @@ public class fragment_search extends DialogFragment {
                 if (name.length() > 9 && name.substring(0, 8).toString().equals("Danh mục") )
                 {
                     column = "CATEGORY";
-                    productList = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
+                    List<ProductBaseDB> subpro = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
+                    productList = new ArrayList<>(subpro.size());
+                    for(ProductBaseDB p: subpro)
+                    {
+                        ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+                        info.productBaseDB = p;
+                        info.isLiked = controllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+                        info.ratingCount = controllerProduct.getCountRating(p.id);
 
+                        // Image would be get later
+                        info.productAvatar = null;
+                        productList.add(info);
+                    }
                 }
                 else
                 {
                     if (name.length() > 10 && name.substring(0, 9).toString().equals("Người bán") )
                     {
                         column = "SALER";
-                        productList = controllerProduct.getProductsBaseSaler( name.substring(10).toString(), 0, number_pro);
+                        List<ProductBaseDB> subpro = controllerProduct.getProductsBaseSaler( name.substring(10).toString(), 0, number_pro);
+                        productList = new ArrayList<>(subpro.size());
+                        for(ProductBaseDB p: subpro)
+                        {
+                            ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+                            info.productBaseDB = p;
+                            info.isLiked = controllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+                            info.ratingCount = controllerProduct.getCountRating(p.id);
+
+                            // Image would be get later
+                            info.productAvatar = null;
+                            productList.add(info);
+                        }
                     }
                     else
                     {
-                        productList = controllerProduct.getProductsBaseName( name, 0, number_pro);
+                        List<ProductBaseDB> subpro = controllerProduct.getProductsBaseName( name, 0, number_pro);
+                        productList = new ArrayList<>(subpro.size());
+                        for(ProductBaseDB p: subpro)
+                        {
+                            ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+                            info.productBaseDB = p;
+                            info.isLiked = controllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+                            info.ratingCount = controllerProduct.getCountRating(p.id);
+
+                            // Image would be get later
+                            info.productAvatar = null;
+                            productList.add(info);
+                        }
                     }
                 }
 
                 if (productList.size() != 0)
                 {
+                    ln_product.setVisibility(View.VISIBLE);
                     tv_emplty_result.setVisibility(View.GONE);
                     fg_ProItem_container =  fragment_ProItem_Container.newInstance(productList);
                     ReplaceFragment(fg_ProItem_container);
@@ -121,8 +159,22 @@ public class fragment_search extends DialogFragment {
                 subpro  = controllerProduct.getProductsBaseName(name, productList.size(), number_pro);
                 if (subpro != null)
                 {
-                    fg_ProItem_container.productAdapter.addproduct(subpro);
+                    List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
+                    for(ProductBaseDB p: subpro)
+                    {
+                        ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+                        info.productBaseDB = p;
+                        info.isLiked = controllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+                        info.ratingCount = controllerProduct.getCountRating(p.id);
+
+                        // Image would be get later
+                        info.productAvatar = null;
+                        list.add(info);
+                    }
+                    fg_ProItem_container.productAdapter.addproduct(list);
                 }
+
+                controllerProduct.closeConnection();
             }
         });
         return view;
