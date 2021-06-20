@@ -164,12 +164,15 @@
     <string name="error_incorrect_info">Có thông tin điền lỗi, vui lòng kiểm tra lại!</string>
     <string name="error_existing_username">Tên đăng nhập đã tồn tại!</string>
     <string name="error_not_50_char">Độ dài không quá 50 kí tự!</string>
-    <string name="error_not_special_char">Chỉ chứa kí tự a–z, A-Z, 0-9!</string>
+    <string name="error_not_special_char">Chỉ chứa kí tự a–z, A–Z, 0-9!</string>
     <string name="error_define_pass">Xác nhận mật khẩu sai!</string>
     <string name="error_length_6_to_50">Độ dài mật khẩu tối thiểu 6, tối đa 50 kí tự!</string>
     <string name="error_wrong_username_pass">Tên đăng nhập hoặc mật khẩu sai!</string>
     <string name="error_duplicate_phone_number">Số điện thoại đã đăng kí tài khoản!</string>
     <string name="annouce_creat_acc_succsess">Tạo tài khoản thành công!</string>
+    <string name="error_wrong_OTP">Nhập mã OTP sai.Vui lòng nhập lại hoặc nhấn vào nút "Gửi lại mã" để nhận mã mới khi hết thời gian chờ!</string>
+    <string name="error_connect_firebar">Có lỗi xáy ra khi kết nối với hệ thống, vui lòng thử lại sau!</string>
+    <string name="error_5_otp">Nhập sãi mã OTP 5 lần, vui lòng đăng kí lại!</string>
     <string name="btn_see_all">Xem tất cả</string>
 
     <string-array name="Sexarray">

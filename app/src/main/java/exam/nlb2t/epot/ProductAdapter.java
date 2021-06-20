@@ -102,7 +102,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         DBControllerProduct controllerProduct = new DBControllerProduct();
         holder.rt_Rating.setRating(controllerProduct.getCountRating(product.id));
         holder.btn_favorites.setBackgroundResource( controllerProduct.checkLikeProduct(product.id, product.salerID) ? R.drawable.red_favorite_24 :R.drawable.ic_baseline_favorite_24 );
-
     }
 
     @Override
