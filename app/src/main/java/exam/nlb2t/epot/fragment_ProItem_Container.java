@@ -77,7 +77,6 @@ public class fragment_ProItem_Container extends Fragment {
          {
             proGrid =  view.findViewById(R.id.Gridpro);
             productAdapter = new ProductAdapter(productList, this.getContext());
-
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
             setupSort();
@@ -85,6 +84,7 @@ public class fragment_ProItem_Container extends Fragment {
         return view;
     }
 
+<<<<<<< Updated upstream
     private void setupSort() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -139,4 +139,6 @@ public class fragment_ProItem_Container extends Fragment {
     private void sortByNameA_Z() {
         Collections.sort(productList, ProductBaseDB.sortNameAtoZ);
     }
+=======
+>>>>>>> Stashed changes
 }

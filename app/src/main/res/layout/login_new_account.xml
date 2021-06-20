@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_usename" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/til_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,10 +74,10 @@
 
         android:textSize="@dimen/small1_title_size_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/til_pass" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/Confirm_pass"
+        android:id="@+id/tit_Confirm_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
         android:textColor="@color/Title"
         android:textSize="@dimen/small1_title_size_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Confirm_pass" />
+        app:layout_constraintTop_toBottomOf="@+id/tit_Confirm_pass" />
 
     <EditText
         android:id="@+id/et_name"

@@ -294,7 +294,7 @@ public class signup extends AppCompatActivity {
         {
             if (count == 5)
             {
-                Toast.makeText(this, "Nhập sãi mã OTP 5 lần, vui lòng đăng kí lại!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.error_5_otp), Toast.LENGTH_LONG).show();
                 count = 0;
                 finish();
             }
@@ -304,7 +304,7 @@ public class signup extends AppCompatActivity {
             if ( Issend && code != credential.getSmsCode())
             {
                 ++count;
-                Toast.makeText(this, "Nhập mã OTP sai.Vui lòng nhập lại hoặc nhấn vào nút Gửi lại mãđể nhận mã mới khi hết thời gian chờ!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
                 return false;
             }
             signInWithCredential(credential);
@@ -318,7 +318,7 @@ public class signup extends AppCompatActivity {
         {
             return -1;
         }
-        if (fg_signup_new_account.edt_usename.getError() != null || fg_signup_new_account.edt_birth.getError() != null || fg_signup_new_account.tit_pass.getError() != null || fg_signup_new_account.tit_define_pass.getError() != null || fg_signup_new_account.edt_name.getError() != null)
+        if (fg_signup_new_account.edt_usename.getError() != null || fg_signup_new_account.edt_birth.getError() != null || fg_signup_new_account.til_pass.getError() != null || fg_signup_new_account.til_confirm_pass.getError() != null || fg_signup_new_account.edt_name.getError() != null)
         {
             return 0;
         }
