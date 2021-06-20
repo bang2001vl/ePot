@@ -176,6 +176,16 @@
         <item>Nam</item>
         <item>Nữ</item>
     </string-array>
+
+    <string-array name="OptionSortProduct">
+        <item>Mới nhất</item>
+        <item>A -> Z</item>
+        <item>Z -> A</item>
+        <item>Thấp -> Cao</item>
+        <item>Cao -> Thấo</item>
+        <item>None</item>
+    </string-array>
+
     <string name="watch_more">Xem thêm</string>
     <string name="ChangePassword_Successful">Đổi mật khẩu thành công!</string>
     <string name="NotcorrectPassword">Không đúng mật khẩu!</string>

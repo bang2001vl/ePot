@@ -2,13 +2,15 @@ package exam.nlb2t.epot.Database.Tables;
 
 import android.graphics.Bitmap;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Database.DatabaseController;
 
-public class ProductBaseDB {
+public class ProductBaseDB implements Comparable<ProductBaseDB>{
     public int id; //[PRODUCT].[ID]
     public int salerID; //[PRODUCT].[SALER_ID]
     public int categoryID; //[PRODUCT].[CATEGORY_ID]
@@ -89,4 +91,34 @@ public class ProductBaseDB {
         createdDate = new Date(System.currentTimeMillis());
         deleted = 0;
     }
+
+    public static Comparator<ProductBaseDB> sortNameAtoZ = new Comparator<ProductBaseDB>() {
+        @Override
+        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
+            return o1.name.compareTo(o2.name);
+        }
+    };
+
+
+    @Override
+    public int compareTo(ProductBaseDB o) {
+        return this.createdDate.compareTo(o.createdDate);
+    }
+
+    public static Comparator<ProductBaseDB> sortNameZtoA = new Comparator<ProductBaseDB>() {
+        @Override
+        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
+            return o2.name.compareTo(o1.name);
+        }
+    };public static Comparator<ProductBaseDB> sortPriceMin = new Comparator<ProductBaseDB>() {
+        @Override
+        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
+            return o1.name.compareTo(o2.name);
+        }
+    };public static Comparator<ProductBaseDB> sortPriceMax = new Comparator<ProductBaseDB>() {
+        @Override
+        public int compare(ProductBaseDB o1, ProductBaseDB o2) {
+            return o2.name.compareTo(o1.name);
+        }
+    };
 }
