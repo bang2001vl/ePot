@@ -508,7 +508,7 @@ public class DBControllerProduct extends DatabaseController{
             String sql ="select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, " +
                     " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                     " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
-                    " where UPPER(P.NAME) LIKE '%" + name + "%'" +
+                    " where UPPER(P.NAME) LIKE N'%" + name + "%'" +
                     " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
@@ -556,7 +556,7 @@ public class DBControllerProduct extends DatabaseController{
                     " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                     " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                     "  INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID  "+
-                    " where UPPER(C.NAME) LIKE '%" + name + "%'" +
+                    " where UPPER(C.NAME) LIKE N'%" + name + "%'" +
                     " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; ; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
@@ -605,7 +605,7 @@ public class DBControllerProduct extends DatabaseController{
                 " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                 " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                 " INNER JOIN [USER]  AS U on P.SALER_ID = U.ID "+
-                " where UPPER(U.USERNAME) LIKE '%" + name + "%'" +
+                " where UPPER(U.USERNAME) LIKE N'%" + name + "%'" +
                 " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);

@@ -24,11 +24,8 @@ import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
-<<<<<<< Updated upstream
-import exam.nlb2t.epot.ProductAdapterItemInfo;
-=======
 import exam.nlb2t.epot.ProductAdapter;
->>>>>>> Stashed changes
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -89,13 +86,13 @@ public class fragment_search extends DialogFragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (productList != null && productList.size() != 0) productAdapter.Removeproducts(productList);
                 column = "NAME";
                 DBControllerProduct controllerProduct = new DBControllerProduct();
                 name = sv_search.getQuery().toString();
                 if (name.length() > 9 && name.substring(0, 8).toString().equals("Danh mục") )
                 {
                     column = "CATEGORY";
-<<<<<<< Updated upstream
                     List<ProductBaseDB> subpro = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
                     productList = new ArrayList<>(subpro.size());
                     for(ProductBaseDB p: subpro)
@@ -109,11 +106,6 @@ public class fragment_search extends DialogFragment {
                         info.productAvatar = null;
                         productList.add(info);
                     }
-=======
-                    String t = name.substring(9).toString();
-                    productList = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
-
->>>>>>> Stashed changes
                 }
                 else
                 {
@@ -165,6 +157,7 @@ public class fragment_search extends DialogFragment {
                     productList = null;
                     ln_product.setVisibility(View.INVISIBLE);
                     tv_emplty_result.setVisibility(View.VISIBLE);
+                    btn_more.setVisibility(View.GONE);
                 }
             }
         });
@@ -177,18 +170,17 @@ public class fragment_search extends DialogFragment {
                 switch (column)
                 {
                     case "NAME":
-                        subpro  = controllerProduct.getProductsBaseName(name,productAdapter.getProductList().size(), number_pro);
+                        subpro  =controllerProduct.getProductsBaseName(name,productAdapter.getProductList().size(), number_pro);
                         break;
                     case"CATEGORY":
-                        subpro  = controllerProduct.getProductsBaseCategory(name, productAdapter.getProductList().size(), number_pro);
+                        subpro  =controllerProduct.getProductsBaseCategory(name, productAdapter.getProductList().size(), number_pro);
                         break;
                     case"SALER":
                         subpro  = controllerProduct.getProductsBaseSaler(name,productAdapter.getProductList().size(), number_pro);
                         break;
                 }
-                if (subpro != null)
+                if (subpro.size() != 0)
                 {
-<<<<<<< Updated upstream
                     List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
                     for(ProductBaseDB p: subpro)
                     {
@@ -202,11 +194,12 @@ public class fragment_search extends DialogFragment {
                         list.add(info);
                     }
                     fg_ProItem_container.productAdapter.addproduct(list);
-=======
-                    productAdapter.addproduct(subpro);
->>>>>>> Stashed changes
+                    productAdapter.addproduct(list);
                 }
-
+                else
+                {
+                    btn_more.setVisibility(View.GONE);
+                }
                 controllerProduct.closeConnection();
             }
         });
@@ -240,5 +233,23 @@ public class fragment_search extends DialogFragment {
         if (imm != null) {
             imm.showSoftInput(view, 0);
         }
+    }
+
+    private  List<ProductAdapterItemInfo>  ConvertToListProAdapterItemIfor(List<ProductBaseDB> l)
+    {
+        DBControllerProduct controllerProduct = new DBControllerProduct();
+        List<ProductAdapterItemInfo> list = new ArrayList<>(l.size());
+        for(ProductBaseDB p: l)
+        {
+            ProductAdapterItemInfo info = new ProductAdapterItemInfo();
+            info.productBaseDB = p;
+            info.isLiked = controllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+            info.ratingCount = controllerProduct.getCountRating(p.id);
+
+            // Image would be get later
+            info.productAvatar = null;
+            list.add(info);
+        }
+        return list;
     }
 }

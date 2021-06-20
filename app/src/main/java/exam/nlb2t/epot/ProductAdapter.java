@@ -2,7 +2,6 @@ package exam.nlb2t.epot;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -207,6 +206,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void addproduct(List<ProductAdapterItemInfo> subpro) {
         products.addAll(subpro);
         this.notifyItemRangeInserted(products.size() - subpro.size(), subpro.size());
+    }
+    public void Removeproducts(List<ProductAdapterItemInfo> l)
+    {
+        this.notifyItemRangeRemoved(products.size() - l.size(), l.size());
+        products.removeAll(l);
     }
 
 }
