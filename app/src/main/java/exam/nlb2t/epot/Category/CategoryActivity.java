@@ -20,11 +20,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.databinding.ActivityCategoryBinding;
 
@@ -39,19 +43,38 @@ public class CategoryActivity extends AppCompatActivity {
 
         binding.btnSubmitAvatar.setOnClickListener(v->{
             String txt = binding.txtName.getText().toString();
+            int id = Integer.parseInt(txt);
             DBControllerCategory db = new DBControllerCategory();
             if(txt.length() == 0)
             {
                 db.addAvatar(selectedImage);
             }
-            else {db.updateAvatar(Integer.parseInt(txt), selectedImage);}
+            else {db.updateAvatar(id, selectedImage);}
             db.closeConnection();
-            /*DBControllerCategory dbControllerCategory = new DBControllerCategory();
-            if(dbControllerCategory.createCategory(binding.txtName.getText().toString(), selectedImage))
+
+            if(db.hasError())
             {
-                Toast.makeText(this, "Thanh cong", Toast.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), "FAILED", BaseTransientBottomBar.LENGTH_LONG).show();
             }
-            dbControllerCategory.closeConnection();*/
+            else {
+                Snackbar.make(binding.getRoot(), "SUCCESS", BaseTransientBottomBar.LENGTH_LONG).show();
+            }
+        });
+
+        binding.btnSubmitImage.setOnClickListener(v->{
+            String txt = binding.txtName.getText().toString();
+            int id = Integer.parseInt(txt);
+            DBControllerProduct db = new DBControllerProduct();
+            binding.imageView.setImageBitmap(db.getAvatar_Product(id));
+            db.closeConnection();
+
+            if(db.hasError())
+            {
+                Snackbar.make(binding.getRoot(), "FAILED", BaseTransientBottomBar.LENGTH_LONG).show();
+            }
+            else {
+                Snackbar.make(binding.getRoot(), "SUCCESS", BaseTransientBottomBar.LENGTH_LONG).show();
+            }
         });
 
         binding.imageView.setOnClickListener(v->{

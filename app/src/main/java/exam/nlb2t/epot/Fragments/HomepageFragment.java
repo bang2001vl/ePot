@@ -67,7 +67,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         searchView = binding.searchBar;
         //category
         rcVCategory = binding.recycleViewCategory;
-        categoryList = getListCategory();
+        categoryList = list_Categoty;
         categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
@@ -76,25 +76,35 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            productBaseDBList.addAll(getMoreData());
-            productAdapter.notifyDataSetChanged();
+            productAdapter.addproduct(getMoreData());
         });
 
         rcVNewProduct = binding.recycleViewNewProduct;
-        productAdapter = new ProductAdapter(productBaseDBList,view.getContext(),this);
+        productAdapter = new ProductAdapter(list_New,view.getContext(),this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
-        productBaseDBList = getMoreData();
-        productAdapter.setData(productBaseDBList);
         rcVNewProduct.setLayoutManager(gridLayoutManager);
         rcVNewProduct.setAdapter(productAdapter);
 
         //number sold max
         rcVMaxSold = binding.recycleViewMaxSold;
-        productAdapterMaxSold = new ProductAdapter(productBaseDBList,view.getContext(),this);
+        productAdapterMaxSold = new ProductAdapter(list_TopSold,view.getContext(),this);
         gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
-        productAdapterMaxSold.setData(getDataMaxSold());
         rcVMaxSold.setLayoutManager(gridLayoutManager);
         rcVMaxSold.setAdapter(productAdapterMaxSold);
+
+        list_Categoty = null;
+        list_TopSold = null;
+        list_New = null;
+    }
+
+    List<ProductAdapterItemInfo> list_New;
+    List<ProductAdapterItemInfo> list_TopSold;
+    List<Category> list_Categoty;
+    public void LoadFirstData()
+    {
+        list_New = getMoreData();
+        list_TopSold = getDataMaxSold();
+        list_Categoty = getListCategory();
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {
@@ -204,5 +214,10 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         ProductDetailFragment dialog = new ProductDetailFragment();
         dialog.productID = id;
         dialog.show(getChildFragmentManager(), "detailProduct");
+    }
+
+    public HomepageFragment()
+    {
+        LoadFirstData();
     }
 }

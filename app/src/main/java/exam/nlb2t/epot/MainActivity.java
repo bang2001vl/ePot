@@ -177,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
     public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();
     public MainFragmentAdapter createAdapter()
     {
+        /*Fragment[] fragments = new Fragment[]{
+            new HomepageFragment(),
+            new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment()
+        };*/
+
         Fragment[] fragments = new Fragment[]{
                 new HomepageFragment(),
                 new CartFragment_Old(),
@@ -185,10 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 new PersonFragment(this)
         };
 
-        /*Fragment[] fragments = new Fragment[]{
-                new HomepageFragment(),
-                new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment(), new EmptyBagFragment()
-        };*/
+
 
         CartFragment_Old fragmentOld = (CartFragment_Old) fragments[1];
         fragmentOld.setOnItemDeleted(view -> {

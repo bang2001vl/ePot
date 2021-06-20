@@ -135,7 +135,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 public void run() {
                     notifyItemChanged(position);
                 }
-            }, 1000);
+            }, 100);
         }
     }
 
