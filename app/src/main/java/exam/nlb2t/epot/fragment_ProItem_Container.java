@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 /**
@@ -84,7 +83,6 @@ public class fragment_ProItem_Container extends Fragment {
         return view;
     }
 
-<<<<<<< Updated upstream
     private void setupSort() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -139,6 +137,4 @@ public class fragment_ProItem_Container extends Fragment {
     private void sortByNameA_Z() {
         Collections.sort(productList, ProductBaseDB.sortNameAtoZ);
     }
-=======
->>>>>>> Stashed changes
 }
