@@ -2,13 +2,16 @@ package exam.nlb2t.epot.Database.Tables;
 
 import android.graphics.Bitmap;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 
-public class ProductBaseDB {
+public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public int id; //[PRODUCT].[ID]
     public int salerID; //[PRODUCT].[SALER_ID]
     public int categoryID; //[PRODUCT].[CATEGORY_ID]
@@ -87,5 +90,40 @@ public class ProductBaseDB {
         imagePrimaryID = 3;
         createdDate = new Date(System.currentTimeMillis());
         deleted = 0;
+    }
+
+    public static Comparator<ProductAdapterItemInfo> sortNameAtoZ = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o1.productBaseDB.name.compareTo(o2.productBaseDB.name);
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> sortNameZtoA = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.name.compareTo(o1.productBaseDB.name);
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> sortPriceMin = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o1.productBaseDB.price-o2.productBaseDB.price;
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> sortPriceMax = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.price - o1.productBaseDB.price;
+        }
+    };
+    public static Comparator<ProductAdapterItemInfo> TimeNew = new Comparator<ProductAdapterItemInfo>() {
+        @Override
+        public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
+            return o2.productBaseDB.createdDate.compareTo( o1.productBaseDB.createdDate);
+        }
+    };
+    @Override
+    public int compareTo(ProductAdapterItemInfo o) {
+        return 0;
     }
 }
