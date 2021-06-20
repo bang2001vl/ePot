@@ -125,8 +125,8 @@ public class forgotpassword extends AppCompatActivity {
                     }
                     else
                     {
-                        ReplaceFragment(fg_forgotpass_otp);
-                        btn_next.setText(R.string.Continue);
+                        ReplaceFragment(fg_forgot_phone);
+                        btn_next.setText(R.string.Sent_OTP);
                     }
                 }
             }
@@ -155,7 +155,7 @@ public class forgotpassword extends AppCompatActivity {
                             btn_next.setText(R.string.Confirm);
 
                         } else {
-                            Toast.makeText(forgotpassword.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(forgotpassword.this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -217,7 +217,7 @@ public class forgotpassword extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
-            Toast.makeText(forgotpassword.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(forgotpassword.this, getResources().getString(R.string.error_connect_firebar), Toast.LENGTH_LONG).show();
         }
     };
 
@@ -244,7 +244,7 @@ public class forgotpassword extends AppCompatActivity {
             if ( Issend && code != credential.getSmsCode())
             {
                 ++count;
-                Toast.makeText(this, "Nhập sai mã OTP!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
                 return false;
             }
             signInWithCredential(credential);

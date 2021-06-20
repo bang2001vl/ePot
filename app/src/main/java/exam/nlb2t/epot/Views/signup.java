@@ -213,7 +213,7 @@ public class signup extends AppCompatActivity {
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
-                            Toast.makeText(signup.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(signup.this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -276,7 +276,8 @@ public class signup extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
-            Toast.makeText(signup.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(signup.this,getResources().getString(R.string.error_connect_firebar), Toast.LENGTH_LONG).show();
+            finish();
         }
     };
 
@@ -303,7 +304,7 @@ public class signup extends AppCompatActivity {
             if ( Issend && code != credential.getSmsCode())
             {
                 ++count;
-                Toast.makeText(this, "Nhập sai mã OTP!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Nhập mã OTP sai.Vui lòng nhập lại hoặc nhấn vào nút Gửi lại mãđể nhận mã mới khi hết thời gian chờ!", Toast.LENGTH_LONG).show();
                 return false;
             }
             signInWithCredential(credential);
