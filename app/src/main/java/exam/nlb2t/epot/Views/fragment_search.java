@@ -11,20 +11,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+<<<<<<< Updated upstream
 import exam.nlb2t.epot.ProductAdapterItemInfo;
+=======
+import exam.nlb2t.epot.ProductAdapter;
+>>>>>>> Stashed changes
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -36,9 +40,12 @@ public class fragment_search extends DialogFragment {
     private List<ProductAdapterItemInfo> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
-    private  final int number_pro = 30;
+    private  final int number_pro = 20;
     private Button btn_more;
     private LinearLayout ln_product;
+
+    private RecyclerView rcVNewProduct;
+    private ProductAdapter productAdapter;
 
     private String name = "NAME";
     private String column;
@@ -54,7 +61,14 @@ public class fragment_search extends DialogFragment {
         tv_emplty_result = (TextView) view.findViewById(R.id.emplty_result);
         btn_more = (Button) view.findViewById(R.id.btn_more);
         ln_product = (LinearLayout) view.findViewById(R.id.ln_product);
+        rcVNewProduct = (RecyclerView) view.findViewById(R.id.recycleView_product);
 
+        productList = new ArrayList<>();
+
+        productAdapter = new ProductAdapter(productList,view.getContext());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
+        rcVNewProduct.setLayoutManager(gridLayoutManager);
+        rcVNewProduct.setAdapter(productAdapter);
 
         sv_search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -67,7 +81,6 @@ public class fragment_search extends DialogFragment {
         sv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "CLiked!", Toast.LENGTH_SHORT).show();
                 showInputMethod(view.findFocus());
             }
         });
@@ -82,6 +95,7 @@ public class fragment_search extends DialogFragment {
                 if (name.length() > 9 && name.substring(0, 8).toString().equals("Danh mục") )
                 {
                     column = "CATEGORY";
+<<<<<<< Updated upstream
                     List<ProductBaseDB> subpro = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
                     productList = new ArrayList<>(subpro.size());
                     for(ProductBaseDB p: subpro)
@@ -95,6 +109,11 @@ public class fragment_search extends DialogFragment {
                         info.productAvatar = null;
                         productList.add(info);
                     }
+=======
+                    String t = name.substring(9).toString();
+                    productList = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
+
+>>>>>>> Stashed changes
                 }
                 else
                 {
@@ -137,8 +156,8 @@ public class fragment_search extends DialogFragment {
                 {
                     ln_product.setVisibility(View.VISIBLE);
                     tv_emplty_result.setVisibility(View.GONE);
-                    fg_ProItem_container =  fragment_ProItem_Container.newInstance(productList);
-                    ReplaceFragment(fg_ProItem_container);
+
+                    productAdapter.addproduct(productList);
                     btn_more.setVisibility(View.VISIBLE);
                 }
                 else
@@ -155,10 +174,21 @@ public class fragment_search extends DialogFragment {
             public void onClick(View v) {
                 List<ProductBaseDB> subpro = new ArrayList<>();
                 DBControllerProduct controllerProduct = new DBControllerProduct();
-
-                subpro  = controllerProduct.getProductsBaseName(name, productList.size(), number_pro);
+                switch (column)
+                {
+                    case "NAME":
+                        subpro  = controllerProduct.getProductsBaseName(name,productAdapter.getProductList().size(), number_pro);
+                        break;
+                    case"CATEGORY":
+                        subpro  = controllerProduct.getProductsBaseCategory(name, productAdapter.getProductList().size(), number_pro);
+                        break;
+                    case"SALER":
+                        subpro  = controllerProduct.getProductsBaseSaler(name,productAdapter.getProductList().size(), number_pro);
+                        break;
+                }
                 if (subpro != null)
                 {
+<<<<<<< Updated upstream
                     List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
                     for(ProductBaseDB p: subpro)
                     {
@@ -172,6 +202,9 @@ public class fragment_search extends DialogFragment {
                         list.add(info);
                     }
                     fg_ProItem_container.productAdapter.addproduct(list);
+=======
+                    productAdapter.addproduct(subpro);
+>>>>>>> Stashed changes
                 }
 
                 controllerProduct.closeConnection();
@@ -197,9 +230,9 @@ public class fragment_search extends DialogFragment {
     {
         if (fragment != null)
         {
-            FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            /*FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
             fg_transaction.replace(R.id.body_container, fragment);
-            fg_transaction.commit();
+            fg_transaction.commit();*/
         }
     }
     private void showInputMethod(View view) {

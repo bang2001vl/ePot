@@ -13,7 +13,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.singleton.Helper;
@@ -506,7 +505,11 @@ public class DBControllerProduct extends DatabaseController{
         name = name.toUpperCase();
         try
         {
-            String sql = "select * from [PRODUCT] where UPPER(NAME) LIKE '%" + name + "%' ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/
+            String sql ="select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, " +
+                    " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
+                    " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
+                    " where UPPER(P.NAME) LIKE '%" + name + "%'" +
+                    " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);
@@ -528,8 +531,9 @@ public class DBControllerProduct extends DatabaseController{
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
                 item.createdDate = resultSet.getDate(i);i++;
-                item.deleted = resultSet.getInt(i);
-                i++;
+                item.deleted = resultSet.getInt(i);i++;
+                item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
+
                 rs.add(item);
             }
             resultSet.close();
@@ -548,7 +552,12 @@ public class DBControllerProduct extends DatabaseController{
         name = name.toUpperCase();
         try
         {
-            String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, P.DETAIL, P.CREATED_DATE, P.DELETED from [PRODUCT] AS P INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID AND UPPER(C.NAME) LIKE'%" + name + "%' ORDER BY P.CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"  ; /*LIMIT 2 OFFSET 0";*/
+            String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID," +
+                    " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
+                    " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
+                    "  INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID  "+
+                    " where UPPER(C.NAME) LIKE '%" + name + "%'" +
+                    " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; ; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);
@@ -570,7 +579,8 @@ public class DBControllerProduct extends DatabaseController{
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
                 item.createdDate = resultSet.getDate(i);i++;
-                item.deleted = resultSet.getInt(i);
+                item.deleted = resultSet.getInt(i);i++;
+                item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
                 i++;
                 rs.add(item);
             }
@@ -591,7 +601,12 @@ public class DBControllerProduct extends DatabaseController{
         name = name.toUpperCase();
         try
         {
-            String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, P.DETAIL, P.CREATED_DATE, P.DELETED from [PRODUCT] AS P INNER JOIN [USER]  AS U on P.SALER_ID = U.ID AND UPPER(U.USERNAME) LIKE'%" + name + "%' ORDER BY P.CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"  ; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
+            String sql =  "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID," +
+                " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
+                " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
+                " INNER JOIN [USER]  AS U on P.SALER_ID = U.ID "+
+                " where UPPER(U.USERNAME) LIKE '%" + name + "%'" +
+                " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);
             ResultSet resultSet = statement.executeQuery();
@@ -612,7 +627,8 @@ public class DBControllerProduct extends DatabaseController{
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
                 item.createdDate = resultSet.getDate(i);i++;
-                item.deleted = resultSet.getInt(i);
+                item.deleted = resultSet.getInt(i);++i;
+                item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
                 i++;
                 rs.add(item);
             }

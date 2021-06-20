@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +34,8 @@ public class fragment_login_new_account extends Fragment {
     public EditText edt_name;
     public EditText edt_birth;
     public AppCompatSpinner acs_sex;
+    public TextInputLayout til_pass;
+    public TextInputLayout til_confirm_pass;
 
     Calendar myCalendar;
     @Override
@@ -47,6 +50,8 @@ public class fragment_login_new_account extends Fragment {
         tit_pass = (TextInputEditText) view.findViewById(R.id.tit_pass);
         tit_define_pass = (TextInputEditText) view.findViewById(R.id.tit_define_pass);
         acs_sex = (AppCompatSpinner) view.findViewById(R.id.acs_sex);
+        til_pass = (TextInputLayout) view.findViewById(R.id.til_pass);
+        til_confirm_pass = (TextInputLayout) view.findViewById(R.id.til_define_pass);
 
         String[] items = new String[]{"Nữ", "Nam"};
         ArrayAdapter<String> adapter = new  ArrayAdapter<String>(container.getContext(), android.R.layout.simple_spinner_item ,items);
@@ -123,7 +128,12 @@ public class fragment_login_new_account extends Fragment {
             public void afterTextChanged(Editable s) {
                 if ( tit_pass.length() < 6 ||  tit_pass.length() > 50)
                 {
-                    tit_pass.setError(getResources().getString(R.string.error_length_6_to_50));
+                    /*tit_pass.setError(getResources().getString(R.string.error_length_6_to_50));*/
+                    til_pass.setError(getResources().getString(R.string.error_length_6_to_50));
+                }
+                else
+                {
+                    til_pass.setError(null);
                 }
             }
         });
@@ -167,11 +177,11 @@ public class fragment_login_new_account extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!Objects.requireNonNull(tit_pass.getText()).toString().equals(s.toString()))
                 {
-                    tit_define_pass.setError(getResources().getString(R.string.error_define_pass));
+                    til_confirm_pass.setError(getResources().getString(R.string.error_define_pass));
                 }
                 else
                 {
-                    tit_define_pass.setError(null);
+                    til_confirm_pass.setError(null);
                 }
             }
         });
