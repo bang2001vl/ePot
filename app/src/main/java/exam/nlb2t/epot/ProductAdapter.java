@@ -13,13 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
@@ -98,6 +98,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.tv_Namepro.setText(" " + product.name + " ");
         holder.imagePro.setImageBitmap(product.getImagePrimary());
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
+
+        DBControllerProduct controllerProduct = new DBControllerProduct();
+        holder.rt_Rating.setRating(controllerProduct.getCountRating(product.id));
+        holder.btn_favorites.setBackgroundResource( controllerProduct.checkLikeProduct(product.id, product.salerID) ? R.drawable.red_favorite_24 :R.drawable.ic_baseline_favorite_24 );
+
     }
 
     @Override
