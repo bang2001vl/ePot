@@ -310,6 +310,14 @@ public class ProductDetailFragment extends DialogFragment {
         ImageViewAdapter adapter = (ImageViewAdapter) binding.viewpaperProductDetail.getAdapter();
 
         if(adapter== null) return;
+        if(bitmaps==null || bitmaps.size() == 0)
+        {
+            binding.txtNumberViewpaperProductDetail.setText(
+                    "0"
+            );
+            return;
+        }
+
         adapter.setBitmaps(bitmaps);
         binding.txtNumberViewpaperProductDetail.setText(
                 String.format(Locale.getDefault(),"%d/%d",1, adapter.getCount())

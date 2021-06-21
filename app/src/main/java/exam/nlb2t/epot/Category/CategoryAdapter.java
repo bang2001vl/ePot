@@ -2,6 +2,7 @@ package exam.nlb2t.epot.Category;
 
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
 
@@ -98,8 +100,41 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = listCategory.get(position);
         if (category != null)
         {
-            holder.imageView.setImageBitmap(category.getAvatar_id());
             holder.textView.setText(category.getName());
+            if(category.getAvatar_id() != null) {
+                holder.imageView.setImageBitmap(category.getAvatar_id());
+            }
+            else {
+                holder.imageView.setBackgroundResource(R.color.white);
+
+                new Thread(new LoadImageRunable(new Handler(), position), "loadImageAt="+position).start();
+            }
+        }
+    }
+
+    public class LoadImageRunable implements Runnable {
+        int position;
+        android.os.Handler mainHandler;
+        public LoadImageRunable(Handler mainHandler, int item_position)
+        {
+            this.mainHandler = mainHandler;
+            position = item_position;
+        }
+        @Override
+        public void run() {
+            Category category = listCategory.get(position);
+            int imageID = category.avatarID;
+
+            DBControllerProduct db = new DBControllerProduct();
+            category.setAvatar_id(db.getAvatar_Product(imageID));
+            db.closeConnection();
+
+            mainHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    notifyItemChanged(position);
+                }
+            }, 100);
         }
     }
 

@@ -38,7 +38,6 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     List<Category> categoryList;
 
     private RecyclerView rcVNewProduct;
-    List<ProductAdapterItemInfo> productBaseDBList;
     private ProductAdapter productAdapter;
 
     private RecyclerView rcVMaxSold;
@@ -104,7 +103,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {
-        sql = "SELECT TOP 30 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
+        sql = "SELECT TOP 10 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
                 "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG " +
                 "FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
@@ -125,11 +124,13 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     }
 
     private List<Category> getListCategory(){
-        List<Category> list = new ArrayList<>();
-        List<Pair<String, Bitmap>> categoryList = DBControllerCategory.getCategories();
+        DBControllerCategory db = new DBControllerCategory();
+        List<Category> list = db.getCategoriesList_withoutImage();
+        db.closeConnection();
+        /*List<Pair<String, Bitmap>> categoryList = DBControllerCategory.getCategories();
         for (Pair<String, Bitmap> i:categoryList) {
             list.add(new Category(i.first, i.second));
-        }
+        }*/
         return  list;
     }
 

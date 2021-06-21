@@ -153,4 +153,27 @@ public class DBControllerCategory extends DatabaseController {
         db.closeConnection();
         return rs;
     }
+
+    public List<Category> getCategoriesList_withoutImage()
+    {
+        List<Category> rs = null;
+        try{
+            String sql = "SELECT [NAME], [AVATAR_ID] FROM [CATEGORY];";
+            PreparedStatement statement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = statement.executeQuery();
+            rs = new ArrayList<>();
+            while (resultSet.next())
+            {
+                rs.add(new Category(resultSet.getString(1), resultSet.getInt(2)));
+            }
+            Log.d("MY_TAG", String.format("SUCCESS: Retrive %d category", rs.size()));
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            ErrorMsg = "Thất bại: Không thể lấy dữ liệu từ database";
+        }
+        return rs;
+    }
 }
