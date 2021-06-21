@@ -13,11 +13,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.R;
 
@@ -129,5 +131,16 @@ public class Helper {
     public static String getMoneyString(long val)
     {
         return String.format(Locale.getDefault(), "%,dđ", val);
+    }
+
+    public static String covertToEngString(String value) {
+        try {
+            String temp = Normalizer.normalize(value, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

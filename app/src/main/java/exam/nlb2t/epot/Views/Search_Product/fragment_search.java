@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,8 +45,18 @@ public class fragment_search extends DialogFragment {
     private RecyclerView rcVNewProduct;
     private ProductAdapter productAdapter;
 
-    private String name = "NAME";
+    private String name = null;
     private String column;
+
+    public fragment_search(){
+
+    }
+
+    public fragment_search(String query)
+    {
+        name = query;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +94,18 @@ public class fragment_search extends DialogFragment {
             }
         });
 
+        sv_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                btn_search.callOnClick();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,15 +253,25 @@ public class fragment_search extends DialogFragment {
         return dialog;
     }
 
-   /* private  void ReplaceFragment(Fragment fragment)
-    {
-        if (fragment != null)
-        {
-            FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fg_transaction.replace(R.id.body_container, fragment);
-            fg_transaction.commit();
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(name != null) {
+            sv_search.requestFocus();
+            sv_search.setQuery(name, true);
         }
-    }*/
+    }
+
+    /* private  void ReplaceFragment(Fragment fragment)
+        {
+            if (fragment != null)
+            {
+                FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fg_transaction.replace(R.id.body_container, fragment);
+                fg_transaction.commit();
+            }
+        }*/
     private void showInputMethod(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -263,4 +296,5 @@ public class fragment_search extends DialogFragment {
         }
         return list;
     }
+
 }

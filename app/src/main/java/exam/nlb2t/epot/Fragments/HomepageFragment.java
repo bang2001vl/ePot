@@ -2,13 +2,16 @@ package exam.nlb2t.epot.Fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import exam.nlb2t.epot.Category.Category;
 import exam.nlb2t.epot.Category.CategoryAdapter;
@@ -35,17 +39,13 @@ import exam.nlb2t.epot.singleton.Authenticator;
 
 public class HomepageFragment extends Fragment implements OnItemClickListener {
     HomeShoppingBinding binding;
+
     private RecyclerView rcVCategory;
     private CategoryAdapter categoryAdapter;
     List<Category> categoryList;
 
     private fragment_ProItem_Container fragment_new;
-    private RecyclerView rcVNewProduct;
-    private ProductAdapter productAdapter;
-
     private fragment_ProItem_Container fragment_topSold;
-    private RecyclerView rcVMaxSold;
-    private ProductAdapter productAdapterMaxSold;
 
     private androidx.appcompat.widget.SearchView searchView;
 
@@ -56,44 +56,51 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = HomeShoppingBinding.inflate(inflater, container, false);
-        setEventHandler();
+
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         searchView = binding.searchBar;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                submitQuery(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        binding.buttonRefeshNew.setOnClickListener(v->onClickRefresh_New());
+        binding.buttonRefeshTopSold.setOnClickListener(v->onClickRefresh_TopSold());
+
         //category
         rcVCategory = binding.recycleViewCategory;
         categoryList = list_Categoty;
         categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
-        categoryAdapter.setData(categoryList);
         rcVCategory.setAdapter(categoryAdapter);
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            fragment_new.productAdapter.addproduct(getMoreData());
+            fragment_new.spinner.setSelection(0, true);
+            fragment_new.addProduct(getMoreData());
         });
 
         fragment_new = fragment_ProItem_Container.newInstance(list_New);
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
-        /*rcVNewProduct = fragment_new.findViewById(R.id.Gridpro);
-        productAdapter = new ProductAdapter(list_New,view.getContext(),this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
-        rcVNewProduct.setLayoutManager(gridLayoutManager);
-        rcVNewProduct.setAdapter(productAdapter);*/
 
         //number sold max
         fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
-        /*rcVMaxSold = binding.getRoot().findViewById(R.id.fragment_product_top_sold).findViewById(R.id.Gridpro);
-        productAdapterMaxSold = new ProductAdapter(list_TopSold,view.getContext(),this);
-        gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
-        rcVMaxSold.setLayoutManager(gridLayoutManager);
-        rcVMaxSold.setAdapter(productAdapterMaxSold);*/
+
     }
 
     List<ProductAdapterItemInfo> list_New;
@@ -101,17 +108,15 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     List<Category> list_Categoty;
     public void LoadFirstData()
     {
-        step = 9;
-        list_New = getMoreData();
-        step = 10;
-        if(productAdapter != null) {productAdapter.notifyDataSetChanged();}
+        list_New = new ArrayList<>();
 
-        list_TopSold = getDataMaxSold();
-        if(productAdapterMaxSold != null){productAdapterMaxSold.notifyDataSetChanged();}
+        list_TopSold = new ArrayList<>();
 
         list_Categoty = getListCategory();
         if(categoryAdapter != null){categoryAdapter.notifyDataSetChanged();}
 
+        onClickRefresh_New();
+        onClickRefresh_TopSold();
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {
@@ -146,14 +151,53 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         return  list;
     }
 
-    void setEventHandler(){
-        //TODO : Write code here <Set all listener in here>
-        binding.searchBar.setOnClickListener(v->{
-            fragment_search dialog = new fragment_search();
-            dialog.show(getChildFragmentManager(), "search");
-        });
+    void submitQuery(String query) {
+        fragment_search dialog = new fragment_search(query);
+        dialog.show(getChildFragmentManager(), "search");
     }
 
+    public void onClickRefresh_New() {
+        if (fragment_new != null) {
+            int oldLength = fragment_new.productAdapter.getProductList().size();
+            fragment_new.productAdapter.getProductList().clear();
+            fragment_new.productAdapter.notifyItemRangeRemoved(0, oldLength);
+        }
+
+        new Thread(() -> {
+            currentLastIndex = 1;
+            step = 9;
+            list_New = getMoreData();
+            step = 10;
+
+            if (fragment_new != null && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    fragment_new.addProduct(list_New);
+                });
+            }
+
+        }).start();
+    }
+
+    public void onClickRefresh_TopSold() {
+        if (fragment_topSold != null) {
+            int oldLength = fragment_topSold.productAdapter.getProductList().size();
+            fragment_topSold.productAdapter.getProductList().clear();
+            fragment_topSold.productAdapter.notifyItemRangeRemoved(0, oldLength);
+        }
+
+        new Thread(() -> {
+            currentLastIndex = 1;
+            step = 9;
+            list_TopSold = getDataMaxSold();
+            step = 10;
+            if (fragment_topSold != null && getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    fragment_topSold.addProduct(list_TopSold);
+                });
+            }
+
+        }).start();
+    }
 
     public List<ProductAdapterItemInfo> getMoreData()
     {
@@ -196,7 +240,9 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         if(list.size() < step)
         {
             // no more data to get
-            binding.buttonMoreProductNew.setVisibility(View.GONE);
+            if(binding != null) {
+                binding.buttonMoreProductNew.setVisibility(View.GONE);
+            }
         }
 
         currentLastIndex += list.size();
@@ -213,7 +259,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     @Override
     public void onItemClickCategory(String string) {
-        searchView.setQuery("Danh mục " + string,true);
+        searchView.setQuery(String.format(Locale.getDefault(), "Danh mục: %s;", string), true);
     }
 
     @Override

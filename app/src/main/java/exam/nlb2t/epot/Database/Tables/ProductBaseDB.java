@@ -8,6 +8,7 @@ import java.util.Date;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public int id; //[PRODUCT].[ID]
@@ -94,25 +95,29 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public static Comparator<ProductAdapterItemInfo> sortNameAtoZ = new Comparator<ProductAdapterItemInfo>() {
         @Override
         public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
-            return o1.productBaseDB.name.compareTo(o2.productBaseDB.name);
+            String name1 = Helper.covertToEngString(o1.productBaseDB.name);
+            String name2 = Helper.covertToEngString(o2.productBaseDB.name);
+            return name1.compareTo(name2);
         }
     };
     public static Comparator<ProductAdapterItemInfo> sortNameZtoA = new Comparator<ProductAdapterItemInfo>() {
         @Override
         public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
-            return o2.productBaseDB.name.compareTo(o1.productBaseDB.name);
+            String name1 = Helper.covertToEngString(o1.productBaseDB.name);
+            String name2 = Helper.covertToEngString(o2.productBaseDB.name);
+            return name2.compareTo(name1);
         }
     };
     public static Comparator<ProductAdapterItemInfo> sortPriceMin = new Comparator<ProductAdapterItemInfo>() {
         @Override
         public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
-            return o1.productBaseDB.price-o2.productBaseDB.price;
+            return Integer.compare(o1.productBaseDB.price, o2.productBaseDB.price);
         }
     };
     public static Comparator<ProductAdapterItemInfo> sortPriceMax = new Comparator<ProductAdapterItemInfo>() {
         @Override
         public int compare(ProductAdapterItemInfo o1, ProductAdapterItemInfo o2) {
-            return o2.productBaseDB.price - o1.productBaseDB.price;
+            return Integer.compare(o2.productBaseDB.price, o1.productBaseDB.price);
         }
     };
     public static Comparator<ProductAdapterItemInfo> TimeNew = new Comparator<ProductAdapterItemInfo>() {
