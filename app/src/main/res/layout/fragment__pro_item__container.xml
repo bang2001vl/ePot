@@ -18,14 +18,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_600"
                 android:textSize="18dp"
-                android:text="Sắp xếp theo: "/>
+                android:text="Sắp xếp theo: "
+                android:layout_marginLeft="10dp"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinnerProduct"
-                >
+                android:id="@+id/spinnerProduct">
 
             </Spinner>
         </LinearLayout>

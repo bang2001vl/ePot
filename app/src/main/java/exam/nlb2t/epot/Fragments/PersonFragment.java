@@ -14,6 +14,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
 import exam.nlb2t.epot.HelpFragment;
@@ -25,9 +28,12 @@ import exam.nlb2t.epot.databinding.FragmentProfileBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
+import exam.nlb2t.epot.Database.Tables.BillBaseDB.BillStatus;
+
 public class PersonFragment<DialogLayoutBinding> extends Fragment {
     FragmentProfileBinding binding;
     private UserBaseDB currentuser=Authenticator.getCurrentUser();
+    DBControllerBill db=new DBControllerBill();
     private String[] mAddress=new String[2];
     MainActivity mainActivity;
     public PersonFragment(MainActivity ma)
@@ -60,7 +66,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ShowDialog(new OrderFragment(currentuser.id));
+               ShowDialog(new OrderFragment(2));
             }
         });
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +99,31 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 ShowDialog(new HelpFragment());
             }
         });
+        binding.tvNumberRequest.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.WAIT_CONFIRM)));
+        binding.tvNumberDelivery.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.IN_SHIPPING)));
+        binding.tvNumberRate.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.SUCCESS)));
+        binding.btnOrdersRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new OrderFragment(0));
+
+            }
+        });
+        binding.btnOrdersDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new OrderFragment(1));
+            }
+
+        });
+        binding.btnOrdersRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new OrderFragment(2));
+            }
+
+        });
+
     }
     private void ShowDialog(DialogFragment dialogFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();

@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:background="@color/white">
 
             <androidx.viewpager.widget.ViewPager
                 android:layout_width="match_parent"
@@ -46,6 +46,7 @@
                 app:layout_constraintTop_toBottomOf="@id/viewpaper_product_detail"
                 android:layout_marginStart="10dp"
                 android:rating="4.5"
+                android:layout_marginTop="10dp"
                 android:progressTint="#FFC107"
                 />
             <TextView
@@ -69,6 +70,7 @@
                 android:fontFamily="@font/gilroy_medium"
                 android:text="Product's Dummy name"
                 android:textSize="22sp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintStart_toStartOf="@+id/viewpaper_product_detail"
                 app:layout_constraintTop_toBottomOf="@id/ratingbar_overview_product_detail" />
 
@@ -86,7 +88,7 @@
                     android:id="@+id/txt_price_normal_product_detail"
                     android:text="@string/default_price"
                     android:textSize="16sp"
-                    android:textColor="@color/drark_gray"
+                    android:textColor="@color/mainColor"
                     style="@style/ContentTextNormal"
                     android:fontFamily="@font/gilroy_bold"
                     android:layout_marginEnd="5dp"
@@ -99,8 +101,7 @@
                     style="@style/TittleSmallSize"
                     android:fontFamily="@font/gilroy_light"
                     android:textColor="@color/gray_600"
-                    android:textSize="14dp"
-                    android:layout_marginEnd="5dp"
+                    android:textSize="16dp"
                     android:layout_gravity="center_vertical"
                     />
                 <TextView
@@ -153,44 +154,48 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_saler_product_detail"
                 app:layout_constraintTop_toBottomOf="@id/button_favourite_product_detail"
-                android:padding="5dp"
-                />
+                android:layout_marginTop="30dp"
+                android:background="@drawable/border"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_description_product_detail"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/layout_saler_product_detail"
-                android:paddingHorizontal="5dp"
-                >
+                android:layout_marginTop="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/title_description_product_detail"
                     android:text="Chi tiết sản phẩm"
                     style="@style/TittleNormalSize"
-                    />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_description_product_detail"
                     android:textColor="@color/black"
+                    android:layout_marginTop="20dp"
                     android:text="Kho: 45\nThương hiệu:  no brand\nChất liệu:  cotton\nXuất xứ: Việt Nam
 \nGửi từ: quận tân bình, tp.Hồ Chí Minh\n--------------------------------------------------------------------------------
 \nGel lột hút mụn than tre hoạt tính IRC dạng mặt nạ hủ nắp bạc 50g
 \n\nSẢN PHẨM ĐƯỢC SẢN XUẤT TỪ CÔNG TY DƯỢC ĐÔNG MINH\nChúng tôi cam kết:"
                     android:maxLines="10"
-                    android:padding="5dp"
+                    android:layout_marginLeft="10dp"
                     android:textSize="17sp"
                     android:fontFamily="@font/gilroy_light"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_more_description_product_detail"
-                    android:textColor="@color/red"
+                    android:textColor="@color/mainColor"
                     android:text="Xem thêm"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/border"
                     android:fontFamily="@font/gilroy_bold"
+                    android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     />
             </LinearLayout>
@@ -206,7 +211,9 @@
                     style="@style/TittleNormalSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đánh giá" />
+                    android:text="Đánh giá"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginLeft="10dp"/>
 
                 <exam.nlb2t.epot.ProductDetail.ProductRatingView
                     android:layout_width="match_parent"
@@ -214,13 +221,14 @@
                     android:id="@+id/ratingProductView"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_more_comment_rating"
-                    android:textColor="@color/red"
+                    android:textColor="@color/mainColor"
                     android:text="Xem thêm"
-                    android:layout_gravity="center_horizontal"
-                    />
+                    android:background="@drawable/border"
+                    android:gravity="center_horizontal"
+                    android:paddingVertical="5dp"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -240,7 +248,7 @@
         app:layout_constraintTop_toTopOf="@id/vertical_scrollview_product_detail"
         app:layout_constraintStart_toStartOf="@id/vertical_scrollview_product_detail"
         />
-    <LinearLayout
+    <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/layout_buttons_product_detail"
@@ -248,21 +256,17 @@
         android:orientation="horizontal"
         android:paddingBottom="7dp"
         android:paddingTop="7dp"
-        android:background="#E8E8E8"
-        >
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+        android:background="@drawable/border">
         <Button
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:id="@+id/btnAddToCart"
             android:text="Thêm Vào Giỏ Hàng"
             style="@style/CommonButton"
-            android:backgroundTint="@color/red"
-            />
+            android:stateListAnimator="@null"
+            android:background="@drawable/epot_btn_bg"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"/>
         <!--<Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -275,10 +279,5 @@
             style="@style/CommonButton"
             android:backgroundTint="@color/red"
             />-->
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -76,6 +76,7 @@
             android:textColor="@color/black"
             android:background="@color/transparent"
             android:textAllCaps="false"
+            android:textSize="16dp"
             android:stateListAnimator="@null">
         </Button>
         <GridLayout
@@ -84,25 +85,48 @@
             android:layout_marginHorizontal="30dp"
             android:columnCount="3"
             android:background="@drawable/border_layout">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_column="0"
+                android:layout_columnWeight="1">
             <Button
                 android:id="@+id/btn_orders_request"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/ic_wallet"
                 android:text="Chờ xác nhận"
                 android:fontFamily="@font/gilroy_medium"
                 android:textAllCaps="false"
                 android:textSize="12dp"
-                android:textColor="#524F4F"
-                android:layout_column="0"
-                android:layout_columnWeight="1">
+                android:textColor="#524F4F">
             </Button>
+                <TextView
+                    android:id="@+id/tv_number_request"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:text="0"
+                    android:textSize="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/textview_circle"></TextView>
+            </FrameLayout>
 
-            <Button
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_column="1"
+                android:layout_columnWeight="1">
+                 <Button
                 android:id="@+id/btn_orders_delivery"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:drawableTop="@drawable/ic_box"
@@ -110,25 +134,56 @@
                 android:text="Đang giao"
                 android:textAllCaps="false"
                 android:textColor="#524F4F"
-                android:textSize="12dp"
-                android:layout_column="1"
-                android:layout_columnWeight="1"></Button>
-
-            <Button
-                android:id="@+id/btn_orders_rate"
-                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:textSize="12dp"></Button>
+                <TextView
+                    android:id="@+id/tv_number_delivery"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:textSize="12dp"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/textview_circle"></TextView>
+            </FrameLayout>
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_favorites"
-                android:text="Đánh giá"
-                android:fontFamily="@font/gilroy_medium"
-                android:textAllCaps="false"
-                android:textSize="12dp"
-                android:textColor="#524F4F"
-                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
                 android:layout_column="2"
                 android:layout_columnWeight="1">
-            </Button>
+                <Button
+                    android:id="@+id/btn_orders_rate"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_favorites"
+                    android:text="Đánh giá"
+                    android:fontFamily="@font/gilroy_medium"
+                    android:textAllCaps="false"
+                    android:textSize="12dp"
+                    android:textColor="#524F4F"
+                    android:layout_marginLeft="10dp"
+                    android:layout_column="2"
+                    android:layout_columnWeight="1">
+                </Button>
+                <TextView
+                    android:id="@+id/tv_number_rate"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:textSize="12dp"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/textview_circle"></TextView>
+            </FrameLayout>
+
+
         </GridLayout>
         <Button
             android:id="@+id/btn_default_address"
@@ -148,6 +203,7 @@
             android:textColor="@color/black"
             android:background="@color/transparent"
             android:textAllCaps="false"
+            android:textSize="16dp"
             android:stateListAnimator="@null">
         </Button>
         <LinearLayout
@@ -169,6 +225,7 @@
                 android:text="Chino Hills, CA 91709, United States"
                 android:fontFamily="@font/gilroy_light"
                 android:layout_marginLeft="40dp" />
+
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -194,7 +251,8 @@
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            app:iconPadding="20dp"></Button>
+            app:iconPadding="20dp"
+            android:textSize="16dp"></Button>
 
         <View
             android:layout_width="match_parent"
@@ -219,6 +277,7 @@
             android:textColor="@color/black"
             android:background="@color/transparent"
             android:textAllCaps="false"
+            android:textSize="16dp"
             android:stateListAnimator="@null">
         </Button>
         <View
@@ -245,6 +304,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:iconPadding="20dp"
+            android:textSize="16dp"
             android:stateListAnimator="@null"></Button>
 
         <View
