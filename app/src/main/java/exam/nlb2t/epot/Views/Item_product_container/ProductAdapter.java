@@ -18,29 +18,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import exam.nlb2t.epot.Category.CategoryAdapter;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.fragment_ProItem_Container;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<ProductAdapterItemInfo> products;
     private Context context;
-    private OnItemClickListener onItemClickListener;
+    private fragment_ProItem_Container.OnClickItemListener onClickItemListener;
+    public void setOnItemClickListener(fragment_ProItem_Container.OnClickItemListener listener)
+    {
+        onClickItemListener = listener;
+    }
     ProductBaseDB  product;
 
-    public ProductAdapter (List<ProductAdapterItemInfo> products, Context mcontext, OnItemClickListener onItemClickListener)
+    public ProductAdapter (List<ProductAdapterItemInfo> products, Context mcontext)
     {
         this.products = products;
         this.context = mcontext;
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public ProductAdapter(List<ProductAdapterItemInfo> productList, Context context) {
-        this.products = productList;
-        this.context = context;
     }
 
     public ProductAdapter(Context context) {
@@ -102,6 +102,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
 
         holder.rt_Rating.setRating(product.starAverage);
+
+        holder.parent_layout.setOnClickListener(v->{
+            if(onClickItemListener != null)onClickItemListener.onClick(position, info.productBaseDB.id);
+        });
 
         if(info.productAvatar != null) {
             holder.imagePro.setImageBitmap(info.productAvatar);
@@ -171,13 +175,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             tag_salepro = itemView.findViewById(R.id.tv_tag_salepro);
             parent_layout = itemView.findViewById(R.id.product_item);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(getContext(),"id: " + id,Toast.LENGTH_LONG).show();
-                    onItemClickListener.onItemClickProduct(id);
-                }
-            });
             itemView.setPadding(2, 2 , 2, 2);
         }
     }

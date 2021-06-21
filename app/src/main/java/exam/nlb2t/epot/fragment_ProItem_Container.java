@@ -33,7 +33,11 @@ public class fragment_ProItem_Container extends Fragment {
     RecyclerView proGrid;
     public ProductAdapter productAdapter;
     public Spinner spinner;
-
+    private OnClickItemListener onClickItemListener;
+    public void setOnClickItemListener(OnClickItemListener listener)
+    {
+        this.onClickItemListener = listener;
+    }
 
     public fragment_ProItem_Container() {
         // Required empty public constructor
@@ -78,6 +82,7 @@ public class fragment_ProItem_Container extends Fragment {
          {
             proGrid =  view.findViewById(R.id.Gridpro);
             productAdapter = new ProductAdapter(productList, this.getContext());
+            productAdapter.setOnItemClickListener(onClickItemListener);
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
             setupSort();
@@ -152,5 +157,9 @@ public class fragment_ProItem_Container extends Fragment {
 
     private void sortByNameA_Z() {
         Collections.sort(productList, ProductBaseDB.sortNameAtoZ);
+    }
+
+    public interface OnClickItemListener{
+        void onClick(int position, int productID);
     }
 }

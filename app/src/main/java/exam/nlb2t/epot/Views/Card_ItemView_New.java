@@ -102,18 +102,23 @@ public class Card_ItemView_New extends BaseCustomViewGroup{
         }
     }
 
-    public void setData(String name, int price_current, int amount_max, int amount_picked, Bitmap image)
-    {
+    public void setData(String name, int price_current, int amount_max, int amount_picked, Bitmap image) {
         setAmount(amount_picked);
         this.amount_max = amount_max;
-        if(name != null){
+        if (name != null) {
             binding.titlenameProduct.setText(name);
         }
 
         binding.priceProduct.setText(Helper.getMoneyString(price_current));
-        if(image != null){
-            binding.imgProduct.setImageBitmap(image);
-        }
+
+        if(image != null)
+        binding.imgProduct.setImageBitmap(image);
+    }
+
+    public void setAvatar(Bitmap bitmap)
+    {
+        if(bitmap != null)
+        binding.imgProduct.setImageBitmap(bitmap);
     }
 
     public void setAmount(int val)

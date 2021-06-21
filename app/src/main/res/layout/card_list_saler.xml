@@ -10,21 +10,43 @@
         android:id="@+id/tool_bar_saler"
         android:orientation="horizontal"
         android:background="@color/light_gray">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/icon_shop"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/image_saler_avatar"
+            android:src="@drawable/profile_user"
             android:layout_gravity="center"
             android:layout_margin="@dimen/normal_padding"
             />
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/saler_name"
-            android:text="@string/default_product_name"
-            android:layout_gravity="center"
-            style="@style/TittleNormalSize"
-            />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_saler"
+                android:text="@string/provide_by"
+                android:textSize="15dp"
+                style="@style/ContentTextNormal"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/saler_name"
+                android:text="@string/default_product_name"
+                style="@style/TittleNormalSize"
+                />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"/>
+        </LinearLayout>
+
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

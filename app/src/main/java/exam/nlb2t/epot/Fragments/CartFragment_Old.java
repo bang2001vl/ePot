@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.Fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -25,6 +27,8 @@ import java.util.Map;
 
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.DialogFragment.PaymentDialogFragment;
 import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
@@ -237,6 +241,25 @@ public class CartFragment_Old extends Fragment {
             Card_ItemView_New item = new Card_ItemView_New(saler_container.getContext());
             item.setData(buyInfo.product.name, buyInfo.product.price,
                     buyInfo.product.amount - buyInfo.product.amountSold, buyInfo.Amount, buyInfo.imagePrimary);
+            if(buyInfo.imagePrimary == null)
+            {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getActivity() == null) return;
+                        DBControllerProduct db = new DBControllerProduct();
+                        Bitmap image = db.getAvatar_Product(buyInfo.product.imagePrimaryID);
+                        db.closeConnection();
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                item.setAvatar(image);
+                            }
+                        });
+                    }
+                }).start();
+            }
             item.setOnLongClickListener(onItemLongClick);
             item.setOnListItemChangedListener(onListItemChangedListener);
             item.Tag = buyInfo;
@@ -275,6 +298,16 @@ public class CartFragment_Old extends Fragment {
             popupMenu.show();
         });
 
+        ImageView salerAvatarView = saler_container.findViewById(R.id.image_saler_avatar);
+        new Thread(() -> {
+            if(getActivity() == null)return;
+            int id = data.get(salerName).get(0).salerOverview.avatarID;
+            DBControllerUser db = new DBControllerUser();
+            Bitmap avatar = db.getAvatar(id);
+            db.closeConnection();
+
+            getActivity().runOnUiThread(() -> salerAvatarView.setImageBitmap(avatar));
+        }).start();
 
         data_ContainerViews.put(salerName, items_container);
     }

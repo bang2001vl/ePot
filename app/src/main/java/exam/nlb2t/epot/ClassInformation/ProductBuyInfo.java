@@ -24,7 +24,6 @@ public class ProductBuyInfo{
         this.Amount = amount;
         DBControllerProduct db1 = new DBControllerProduct();
         product = db1.getProduct(productID);
-        imagePrimary = db1.getAvatar_Product(product.imagePrimaryID);
         db1.closeConnection();
 
         salerOverview = product.getSalerOverview();

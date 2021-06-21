@@ -57,6 +57,20 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = HomeShoppingBinding.inflate(inflater, container, false);
 
+        //category
+        rcVCategory = binding.recycleViewCategory;
+        categoryList = list_Categoty;
+        categoryAdapter = new CategoryAdapter(getContext(),categoryList,this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL, false);
+        rcVCategory.setLayoutManager(linearLayoutManager);
+        rcVCategory.setAdapter(categoryAdapter);
+
+        fragment_new = fragment_ProItem_Container.newInstance(list_New);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
+
+        fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
+
         return binding.getRoot();
     }
 
@@ -80,26 +94,15 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         binding.buttonRefeshNew.setOnClickListener(v->onClickRefresh_New());
         binding.buttonRefeshTopSold.setOnClickListener(v->onClickRefresh_TopSold());
 
-        //category
-        rcVCategory = binding.recycleViewCategory;
-        categoryList = list_Categoty;
-        categoryAdapter = new CategoryAdapter(view.getContext(),categoryList,this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),RecyclerView.HORIZONTAL, false);
-        rcVCategory.setLayoutManager(linearLayoutManager);
-        rcVCategory.setAdapter(categoryAdapter);
-
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
             fragment_new.spinner.setSelection(0, true);
             fragment_new.addProduct(getMoreData());
         });
 
-        fragment_new = fragment_ProItem_Container.newInstance(list_New);
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
+        fragment_new.setOnClickItemListener(onClickItemListener);
 
-        //number sold max
-        fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
+        fragment_topSold.setOnClickItemListener(onClickItemListener);
 
     }
 
@@ -265,11 +268,18 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onItemClickProduct(int id) {
         //Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
-        Log.d("MY_TAG", "Open product with id = " + id);
-        ProductDetailFragment dialog = new ProductDetailFragment();
-        dialog.productID = id;
-        dialog.show(getChildFragmentManager(), "detailProduct");
     }
+
+    fragment_ProItem_Container.OnClickItemListener onClickItemListener = new fragment_ProItem_Container.OnClickItemListener() {
+        @Override
+        public void onClick(int position, int productID) {
+
+            Log.d("MY_TAG", "Open product with id = " + productID);
+            ProductDetailFragment dialog = new ProductDetailFragment();
+            dialog.productID = productID;
+            dialog.show(getChildFragmentManager(), "detailProduct");
+        }
+    };
 
     public HomepageFragment()
     {
