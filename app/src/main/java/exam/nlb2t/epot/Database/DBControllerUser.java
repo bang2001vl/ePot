@@ -29,8 +29,10 @@ public class DBControllerUser extends DatabaseController{
             if(resultSet.next())
             {
                 InputStream inputStream = resultSet.getBinaryStream(1);
-                rs = BitmapFactory.decodeStream(inputStream);
-                inputStream.close();
+                if(inputStream != null) {
+                    rs = BitmapFactory.decodeStream(inputStream);
+                    inputStream.close();
+                }
             }
             resultSet.close();
             statement.close();
@@ -120,7 +122,7 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    public int insertUser(String username, String password,String phone, String fullname,
+    public int insertUser(String username, String password,String phone, String email, String fullname,
                           int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
     {
         int newUserID = -1;
@@ -132,13 +134,14 @@ public class DBControllerUser extends DatabaseController{
 
             Date birthday = Helper.getDateFromLocalToUTC(birthdayYear, birthdayMonth, birthdayDay, 6,0);
 
-            PreparedStatement statement = connection.prepareStatement("EXEC createUser ?,?,?,?,?,?;");
+            PreparedStatement statement = connection.prepareStatement("EXEC createUser ?,?,?,?,?,?,?;");
             statement.setString(1, username);
             statement.setBinaryStream(2, inputStream, passEncypted.length);
             statement.setString(3, phone);
-            statement.setString(4, fullname);
-            statement.setInt(5, gender);
-            statement.setDate(6, birthday);
+            statement.setString(4, email);
+            statement.setString(5, fullname);
+            statement.setInt(6, gender);
+            statement.setDate(7, birthday);
 
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next())
@@ -307,6 +310,28 @@ public class DBControllerUser extends DatabaseController{
             statement.close();
             commit();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
+
+    public int findUserID_ByEmail(String email)
+    {
+        int rs = -1;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [EMAIL]= ?;");
+            statement.setString(1, email);
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
             ErrorMsg = "FAILED: Cannot execute statement";

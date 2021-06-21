@@ -24,11 +24,13 @@ import exam.nlb2t.epot.Category.DBControllerCategory;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.Views.Search_Product.fragment_search;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
+import exam.nlb2t.epot.fragment_ProItem_Container;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 public class HomepageFragment extends Fragment implements OnItemClickListener {
@@ -37,9 +39,11 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     private CategoryAdapter categoryAdapter;
     List<Category> categoryList;
 
+    private fragment_ProItem_Container fragment_new;
     private RecyclerView rcVNewProduct;
     private ProductAdapter productAdapter;
 
+    private fragment_ProItem_Container fragment_topSold;
     private RecyclerView rcVMaxSold;
     private ProductAdapter productAdapterMaxSold;
 
@@ -71,25 +75,25 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
         // new product
         binding.buttonMoreProductNew.setOnClickListener(v->{
-            productAdapter.addproduct(getMoreData());
+            fragment_new.productAdapter.addproduct(getMoreData());
         });
 
-        rcVNewProduct = binding.recycleViewNewProduct;
+        fragment_new = fragment_ProItem_Container.newInstance(list_New);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
+        /*rcVNewProduct = fragment_new.findViewById(R.id.Gridpro);
         productAdapter = new ProductAdapter(list_New,view.getContext(),this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
         rcVNewProduct.setLayoutManager(gridLayoutManager);
-        rcVNewProduct.setAdapter(productAdapter);
+        rcVNewProduct.setAdapter(productAdapter);*/
 
         //number sold max
-        rcVMaxSold = binding.recycleViewMaxSold;
+        fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
+        /*rcVMaxSold = binding.getRoot().findViewById(R.id.fragment_product_top_sold).findViewById(R.id.Gridpro);
         productAdapterMaxSold = new ProductAdapter(list_TopSold,view.getContext(),this);
         gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
         rcVMaxSold.setLayoutManager(gridLayoutManager);
-        rcVMaxSold.setAdapter(productAdapterMaxSold);
-
-        list_Categoty = null;
-        list_TopSold = null;
-        list_New = null;
+        rcVMaxSold.setAdapter(productAdapterMaxSold);*/
     }
 
     List<ProductAdapterItemInfo> list_New;
@@ -97,9 +101,17 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     List<Category> list_Categoty;
     public void LoadFirstData()
     {
+        step = 9;
         list_New = getMoreData();
+        step = 10;
+        if(productAdapter != null) {productAdapter.notifyDataSetChanged();}
+
         list_TopSold = getDataMaxSold();
+        if(productAdapterMaxSold != null){productAdapterMaxSold.notifyDataSetChanged();}
+
         list_Categoty = getListCategory();
+        if(categoryAdapter != null){categoryAdapter.notifyDataSetChanged();}
+
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {

@@ -73,6 +73,7 @@ public class fragment_ProItem_Container extends Fragment {
         ArrayAdapter arrayAdapter = new ArrayAdapter( getContext(), android.R.layout.simple_spinner_item, optionProduct );
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
+
         if(productList != null)
          {
             proGrid =  view.findViewById(R.id.Gridpro);
@@ -82,6 +83,11 @@ public class fragment_ProItem_Container extends Fragment {
             setupSort();
         }
         return view;
+    }
+
+    public void addProduct(List<ProductAdapterItemInfo> list)
+    {
+        productAdapter.addproduct(list);
     }
 
     private void setupSort() {
