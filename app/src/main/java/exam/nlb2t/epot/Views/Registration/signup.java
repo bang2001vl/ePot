@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Registration;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.signup_enterphone;
 
 public class signup extends AppCompatActivity {
 

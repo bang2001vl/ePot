@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Registration;
 
 import android.os.Bundle;
 import android.text.Editable;
