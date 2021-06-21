@@ -17,7 +17,7 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
-import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentFavoriteProdBinding;

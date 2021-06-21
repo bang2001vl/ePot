@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -30,7 +31,7 @@
 
 
             />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchBar"
@@ -68,7 +69,38 @@
                 android:background="@drawable/border_textview"
                 />
             </androidx.cardview.widget.CardView>
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="@string/Category"
+                    android:textColor="#DB3022"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/gilroy_bold"
+                    android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:id="@+id/recycleViewCategory"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="1"
+                    tools:listitem="@layout/category_tab">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
@@ -80,93 +112,71 @@
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="#DB3022"
-                    android:gravity="bottom"
+                    android:layout_gravity="start"
                     />
-                <!--<TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="#808080"
-                    android:text="@string/See_All"
-                    android:textSize="15dp"
-                    android:textAlignment="textEnd"
-                    />-->
-               </LinearLayout>
-            <fragment
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/fragment_product_selling"
-                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/recycleViewMaxSold"/>
-            </fragment>
-
-            <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:text="@string/Category"
-            android:textColor="#DB3022"
-            android:textSize="20dp"
-            android:fontFamily="@font/gilroy_bold"
-            android:textStyle="bold" />
-
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/See_All"
-            android:textAlignment="textEnd"
-            android:textColor="#808080"
-            android:textSize="15dp" />-->
-    </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:gravity="center"
-                >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/recycleViewCategory"
-                    android:layout_marginStart="10dp"
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/buttonRefesh_topSold"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/button_circle_background"
+                    android:backgroundTint="#00000000"
+                    android:src="@drawable/ic_baseline_refresh_24"
+                    android:backgroundTintMode="add"
+                    android:layout_alignParentRight="true"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:layout_centerVertical="true"
+                    />
+               </RelativeLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:id="@+id/fragment_product_top_sold"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container"
+                tools:layout="@layout/fragment__pro_item__container">
+            </FrameLayout>
 
 
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Suggestion"
-                android:textSize="22dp"
-                android:textStyle="bold"
-                android:textColor="#DB3022"
-                android:gravity="bottom"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/gilroy_bold"
-                />
-            <fragment
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Suggestion"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
+                    android:textColor="#DB3022"
+                    android:fontFamily="@font/gilroy_bold"
+                    />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonRefesh_new"
+                    android:background="@drawable/button_circle_background"
+                    android:backgroundTint="#00000000"
+                    android:src="@drawable/ic_baseline_refresh_24"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTintMode="add"
+                    />
+            </RelativeLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
                 android:id="@+id/fragment_product_new"
-                android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/recycleViewNewProduct"/>
-            </fragment>
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:name="exam.nlb2t.epot.fragment_ProItem_Container"
+                tools:layout="@layout/fragment__pro_item__container">
+            </FrameLayout>
+
     <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

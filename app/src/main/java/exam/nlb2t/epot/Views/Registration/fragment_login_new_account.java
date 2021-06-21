@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Registration;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package exam.nlb2t.epot;
+package exam.nlb2t.epot.Views.Item_product_container;
 
 import android.content.Context;
 import android.os.Handler;
@@ -20,6 +20,9 @@ import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.OnItemClickListener;
+import exam.nlb2t.epot.ProductAdapterItemInfo;
+import exam.nlb2t.epot.R;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 

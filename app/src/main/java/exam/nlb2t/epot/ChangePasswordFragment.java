@@ -3,11 +3,6 @@ package exam.nlb2t.epot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,17 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
-import exam.nlb2t.epot.Views.forgotpassword;
+import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.databinding.FragmentChangePasswordBinding;
-import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 

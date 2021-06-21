@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +31,7 @@ public class fragment_ProItem_Container extends Fragment {
     private Context context;
     public List<ProductAdapterItemInfo> productList ;
     RecyclerView proGrid;
-    public  ProductAdapter productAdapter;
+    public ProductAdapter productAdapter;
     public Spinner spinner;
 
 
@@ -63,15 +64,16 @@ public class fragment_ProItem_Container extends Fragment {
         View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
         spinner = view.findViewById(R.id.spinnerProduct);
         ArrayList<String> optionProduct = new ArrayList<String>();
-        optionProduct.add("(Tên) A -> Z");
-        optionProduct.add("(Tên) Z -> A");
-        optionProduct.add("(Giá) Thấp -> Cao");
-        optionProduct.add("(Giá) Cao -> Thấp");
-        optionProduct.add("None");
+        optionProduct.add("Thời gian (giảm dần)");
+        optionProduct.add("Tên (A->Z)");
+        optionProduct.add("Tên (Z->A)");
+        optionProduct.add("Giá (tăng dần)");
+        optionProduct.add("Giá (giảm dần)");
 
         ArrayAdapter arrayAdapter = new ArrayAdapter( getContext(), android.R.layout.simple_spinner_item, optionProduct );
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
+
         if(productList != null)
          {
             proGrid =  view.findViewById(R.id.Gridpro);
@@ -83,32 +85,19 @@ public class fragment_ProItem_Container extends Fragment {
         return view;
     }
 
+    public void addProduct(List<ProductAdapterItemInfo> list)
+    {
+        productList.addAll(list);
+        lastSort = 0;
+        sort();
+        productAdapter.notifyItemRangeInserted(productList.size() - list.size() -1, list.size());
+    }
+
     private void setupSort() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position)
-                {
-                    case 0:
-                        sortByTime();
-                        break;
-                    case 1:
-                        sortByNameA_Z();
-                        break;
-                    case 2:
-                        sortByNameZ_A();
-                        break;
-                    case 3:
-                        sortByPriceLess();
-                        break;
-                    case 4:
-                        sortByPriceMore();
-                        break;
-                    case 5:
-                        sortByTime();
-                        break;
-                }
-                productAdapter.notifyDataSetChanged();
+                sort();
             }
 
             @Override
@@ -116,6 +105,33 @@ public class fragment_ProItem_Container extends Fragment {
 
             }
         });
+    }
+
+    int lastSort = 0;
+    public void sort()
+    {
+        int currentSort  = spinner.getSelectedItemPosition();
+        if(currentSort == lastSort) return;
+        switch (spinner.getSelectedItemPosition())
+        {
+            case 0:
+                sortByTime();
+                break;
+            case 1:
+                sortByNameA_Z();
+                break;
+            case 2:
+                sortByNameZ_A();
+                break;
+            case 3:
+                sortByPriceLess();
+                break;
+            case 4:
+                sortByPriceMore();
+                break;
+        }
+        productAdapter.notifyDataSetChanged();
+        lastSort = currentSort;
     }
 
     private void sortByPriceMore() {
@@ -127,7 +143,7 @@ public class fragment_ProItem_Container extends Fragment {
     }
 
     private void sortByNameZ_A() {
-        Collections.sort(productList, ProductBaseDB.sortNameAtoZ);
+        Collections.sort(productList, ProductBaseDB.sortNameZtoA);
     }
 
     private void sortByTime() {
