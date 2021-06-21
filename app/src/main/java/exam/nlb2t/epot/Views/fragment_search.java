@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +38,7 @@ public class fragment_search extends DialogFragment {
     private fragment_ProItem_Container fg_ProItem_container;
     private  final int number_pro = 20;
     private Button btn_more;
+    private Button btn_back;
     private LinearLayout ln_product;
 
     private RecyclerView rcVNewProduct;
@@ -59,6 +59,7 @@ public class fragment_search extends DialogFragment {
         btn_more = (Button) view.findViewById(R.id.btn_more);
         ln_product = (LinearLayout) view.findViewById(R.id.ln_product);
         rcVNewProduct = (RecyclerView) view.findViewById(R.id.recycleView_product);
+        btn_back = (Button) view.findViewById(R.id.btn_back);
 
         productList = new ArrayList<>();
 
@@ -203,7 +204,15 @@ public class fragment_search extends DialogFragment {
                 controllerProduct.closeConnection();
             }
         });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment_search.this.dismiss();
+            }
+        });
         return view;
+
     }
 
     @NonNull
@@ -219,15 +228,15 @@ public class fragment_search extends DialogFragment {
         return dialog;
     }
 
-    private  void ReplaceFragment(Fragment fragment)
+   /* private  void ReplaceFragment(Fragment fragment)
     {
         if (fragment != null)
         {
-            /*FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
             fg_transaction.replace(R.id.body_container, fragment);
-            fg_transaction.commit();*/
+            fg_transaction.commit();
         }
-    }
+    }*/
     private void showInputMethod(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
