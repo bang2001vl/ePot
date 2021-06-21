@@ -1,6 +1,5 @@
 package exam.nlb2t.epot;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -9,7 +8,6 @@ import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -101,7 +99,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
 
         holder.rt_Rating.setRating(product.starAverage);
-        holder.btn_favorites.setBackgroundResource( info.isLiked ? R.drawable.red_favorite_24 :R.drawable.ic_baseline_favorite_24 );
 
         if(info.productAvatar != null) {
             holder.imagePro.setImageBitmap(info.productAvatar);
@@ -155,7 +152,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         public TextView tv_ShopName;
         public RatingBar rt_Rating;
         public TextView tv_Cmt;
-        public Button btn_favorites;
         LinearLayout parent_layout;
         public int id;
 
@@ -171,26 +167,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             rt_Rating = itemView.findViewById(R.id.ratingbar);
             tag_salepro = itemView.findViewById(R.id.tv_tag_salepro);
             parent_layout = itemView.findViewById(R.id.product_item);
-            btn_favorites = itemView.findViewById(R.id.Favorite);
-
-            btn_favorites.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("UseCompatLoadingForDrawables")
-                @Override
-                public void onClick(View v) {
-                    {
-                        //change status of favorites button
-                         if (btn_favorites.getBackground() != v.getContext().getResources().getDrawable(R.drawable.red_favorite_24))
-                         {
-                             btn_favorites.setBackgroundResource(R.drawable.red_favorite_24);
-                         }
-                         else
-                         {
-                             btn_favorites.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
-
-                         }
-                    }
-                }
-            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
