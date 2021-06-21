@@ -49,7 +49,7 @@ public class PaymentDialogFragment extends DialogFragment {
         String[] address = user.getAddress();
         receiverName = address[0];
         receiverPhone = address[1];
-        receiverAddress = String.format(Locale.getDefault(), "%s, %s, %s", address[2], address[3], address[4]);
+        receiverAddress = String.format(Locale.getDefault(), "%s, %s", address[2], address[3]);
     }
 
     public PaymentDialogFragment(String receiverName, String receiverPhone, String receiverAddress, int productMoney, int shipMoney) {

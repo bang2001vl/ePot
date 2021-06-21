@@ -76,22 +76,15 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         });
 
         rcVNewProduct = binding.recycleViewNewProduct;
-/*<<<<<<< Updated upstream
         productAdapter = new ProductAdapter(list_New,view.getContext(),this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
-=======*/
-        productAdapter = new ProductAdapter(productBaseDBList,view.getContext(),this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
-        productBaseDBList = getMoreData();
-        productAdapter.setData(productBaseDBList);
-/*>>>>>>> Stashed changes*/
         rcVNewProduct.setLayoutManager(gridLayoutManager);
         rcVNewProduct.setAdapter(productAdapter);
 
         //number sold max
         rcVMaxSold = binding.recycleViewMaxSold;
         productAdapterMaxSold = new ProductAdapter(list_TopSold,view.getContext(),this);
-        gridLayoutManager = new GridLayoutManager(view.getContext(), 3);
+        gridLayoutManager = new GridLayoutManager(view.getContext(), 2);
         rcVMaxSold.setLayoutManager(gridLayoutManager);
         rcVMaxSold.setAdapter(productAdapterMaxSold);
 

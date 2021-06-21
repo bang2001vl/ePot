@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="match_parent"
     android:background="@color/empty_screen_background"
     >
     <TextView
@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="@string/watch_more"
         style="@style/ContentTextNormal"
+        android:textSize="18dp"
         android:layout_centerInParent="true"
         />
 </RelativeLayout>
