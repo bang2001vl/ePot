@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +30,11 @@ public class OrderFragment extends DialogFragment{
     ViewPager viewPager;
     ImageButton back;
     DBControllerBill dbControllerBill=new DBControllerBill();
+    int position;
 
 
-    public OrderFragment(int ID) {
+    public OrderFragment(int pos) {
+        position=pos;
     }
 
     @Override
@@ -55,6 +58,7 @@ public class OrderFragment extends DialogFragment{
         super.onActivityCreated(savedInstanceState);
         setEventHandler();
         setUpViewPager(viewPager);
+        selectPage(position);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
            @Override
@@ -77,10 +81,10 @@ public class OrderFragment extends DialogFragment{
 
     private void setUpViewPager(ViewPager viewPager) {
         OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
+        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.WAIT_CONFIRM)), "Chờ xác nhận");
         adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.IN_SHIPPING)), "Đang giao");
+        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
         adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.DEFAULT)), "Đã hủy");
-
         viewPager.setAdapter(adapter);
     }
     private void setEventHandler() {
@@ -90,6 +94,10 @@ public class OrderFragment extends DialogFragment{
                 dismiss();
             }
         });
+    }
+    void selectPage(int pageIndex){
+        tabLayout.setScrollPosition(pageIndex,0f,true);
+        viewPager.setCurrentItem(pageIndex);
     }
 
 }
