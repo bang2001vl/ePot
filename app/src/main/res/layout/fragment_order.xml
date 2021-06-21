@@ -33,7 +33,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:tabSelectedTextColor="@color/mainColor"
-        app:tabIndicatorColor="@color/mainColor"/>
+        app:tabMode="scrollable"
+        app:tabGravity="center"
+        app:tabMinWidth="120dp"
+        app:tabIndicatorColor="@color/mainColor" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/order_viewpager"

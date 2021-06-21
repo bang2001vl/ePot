@@ -2,65 +2,54 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:layout_margin="2dp"
+    android:background="@drawable/outline_layout">
 
     <LinearLayout
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/product_item"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                app:cardCornerRadius="10dp"
-                >
-
+                android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/Image_Product"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:background="@drawable/bg_rounded"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sowmi_nam" />
-
+                    android:src="@drawable/sowmi_nam"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_tag_salepro"
                     android:background="@drawable/bg_tag_sale"
                     android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/Sale"
                     android:textSize="13sp"
                     android:padding="4dp"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
-                    >
+                    android:textColor="@color/white">
                 </TextView>
-            </androidx.cardview.widget.CardView>
         </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp">
-
             <RatingBar
                 android:id="@+id/ratingbar"
                 style="@style/Widget.AppCompat.RatingBar.Small"
@@ -69,10 +58,11 @@
                 android:numStars="5"
                 android:rating="3"
                 android:progressTint="#FFC107"
-                android:stepSize="1" />
+                android:stepSize="1"
+                android:layout_marginLeft="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/TotalCmt"
                 android:text="@string/Cmt"
                 android:textSize="8sp"
@@ -81,10 +71,8 @@
                 android:layout_marginStart="2dp"
                 android:visibility="gone"
                 />
-        </LinearLayout>
 
-        </LinearLayout>
-        </FrameLayout>
+
         <TextView
 
             android:layout_width="match_parent"
@@ -96,8 +84,7 @@
             android:textColor="#9B9B9B"
             android:textAlignment="viewStart"
             android:layout_marginStart="3dp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,12 +94,13 @@
             android:textColor="#222222"
             android:textAlignment="viewStart"
             android:fontFamily="@font/gilroy_bold"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="5dp"
             />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,20 +109,17 @@
                 android:textSize="12sp"
                 android:fontFamily="@font/gilroy_medium"
                 android:textColor="#DB3022"
-                android:textAlignment="viewStart"
-                android:layout_marginTop="2dp"
-                android:layout_marginStart="3dp"
-                />
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="7dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textview_proSold"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
+                android:layout_marginHorizontal="5dp"
                 android:text="@string/Sold"
                 android:fontFamily="@font/gilroy_medium"
-                android:textAlignment="viewEnd"
+                android:textAlignment="textEnd"
                 android:textColor="#9B9B9B"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -143,12 +128,13 @@
             android:id="@+id/textview_OldproPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="7dp"
             android:text="@string/old_price"
             android:fontFamily="@font/gilroy_medium"
             android:textAlignment="viewStart"
             android:textColor="#9B9B9B"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

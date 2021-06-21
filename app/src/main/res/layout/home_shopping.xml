@@ -224,8 +224,12 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
+            android:padding="0dp"
+            android:background="@color/transparent"
+            android:stateListAnimator="@null"
+            android:textAllCaps="false"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:text="More" />
+            android:text="Xem thêm" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

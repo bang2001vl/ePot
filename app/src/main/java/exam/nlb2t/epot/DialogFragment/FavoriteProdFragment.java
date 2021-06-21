@@ -52,9 +52,12 @@ public class FavoriteProdFragment extends DialogFragment {
 
     void setupRecylerView()
     {
+        if (list.size()!=0)
+        {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         binding.mainRecyclerView.setLayoutManager(gridLayoutManager);
-        binding.mainRecyclerView.setAdapter(new ProductAdapter(list, getContext()));
+        binding.mainRecyclerView.setAdapter(new ProductAdapter(list, getContext()));}
+
     }
 
     List<ProductAdapterItemInfo> getMoreData()
