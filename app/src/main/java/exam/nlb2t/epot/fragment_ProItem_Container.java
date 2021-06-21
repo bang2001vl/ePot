@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +31,7 @@ public class fragment_ProItem_Container extends Fragment {
     private Context context;
     public List<ProductAdapterItemInfo> productList ;
     RecyclerView proGrid;
-    public  ProductAdapter productAdapter;
+    public ProductAdapter productAdapter;
     public Spinner spinner;
 
 

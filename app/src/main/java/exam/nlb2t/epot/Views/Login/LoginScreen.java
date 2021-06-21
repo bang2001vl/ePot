@@ -1,4 +1,4 @@
-package exam.nlb2t.epot;
+package exam.nlb2t.epot.Views.Login;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -41,9 +41,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
-import exam.nlb2t.epot.Views.forgotpassword;
+import exam.nlb2t.epot.MainActivity;
+import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.Views.home_shopping;
-import exam.nlb2t.epot.Views.signup;
+import exam.nlb2t.epot.Views.Registration.signup;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 

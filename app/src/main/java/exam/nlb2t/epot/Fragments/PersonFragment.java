@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
 import exam.nlb2t.epot.HelpFragment;
-import exam.nlb2t.epot.LoginScreen;
+import exam.nlb2t.epot.Views.Login.LoginScreen;
 import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.OrderFragment;
 import exam.nlb2t.epot.DialogFragment.SettingAccountFragment;

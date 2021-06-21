@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Search_Product;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
-import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -38,7 +38,7 @@ public class fragment_search extends DialogFragment {
     private fragment_ProItem_Container fg_ProItem_container;
     private  final int number_pro = 20;
     private Button btn_more;
-    private Button btn_back;
+    private ImageView btn_back;
     private LinearLayout ln_product;
 
     private RecyclerView rcVNewProduct;
@@ -59,7 +59,7 @@ public class fragment_search extends DialogFragment {
         btn_more = (Button) view.findViewById(R.id.btn_more);
         ln_product = (LinearLayout) view.findViewById(R.id.ln_product);
         rcVNewProduct = (RecyclerView) view.findViewById(R.id.recycleView_product);
-        btn_back = (Button) view.findViewById(R.id.btn_back);
+        btn_back = (ImageView) view.findViewById(R.id.Button_Back);
 
         productList = new ArrayList<>();
 
@@ -208,7 +208,8 @@ public class fragment_search extends DialogFragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment_search.this.dismiss();
+                fragment_search.this.onStop();
+                /*getActivity().getFragmentManager().beginTransaction().remove(fg_ProItem_container).commit();*/
             }
         });
         return view;
@@ -221,7 +222,8 @@ public class fragment_search extends DialogFragment {
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen){
             @Override
             public void onBackPressed() {
-                fragment_search.this.dismiss();
+                fragment_search.this.onStop();
+                /*getActivity().getFragmentManager().beginTransaction().remove(fragment_search.this).commit();*/
             }
         };
 
