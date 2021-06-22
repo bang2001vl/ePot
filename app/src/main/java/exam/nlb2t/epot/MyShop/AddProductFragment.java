@@ -158,7 +158,12 @@ public class AddProductFragment extends DialogFragment {
     }
 
     void setEventHandler() {
-        binding.buttonSave.setOnClickListener(v-> this.saveToDB());
+        binding.buttonSave.setOnClickListener(v-> {
+            if (productBefore != null) {
+                this.updatetoDB();
+            }
+            else this.saveToDB();
+        });
         binding.buttonAddImage.setOnClickListener(v-> this.chooseImage());
         binding.btnClose.setOnClickListener(v-> this.dismiss());
         binding.imagePrimary.setOnClickListener(v-> this.choosePrimaryImage());
@@ -191,53 +196,92 @@ public class AddProductFragment extends DialogFragment {
                 }
                 databaseController.closeConnection();
             }
-            else {
-                //TODO: Change current product in DB
-
-                DBControllerProduct db = new DBControllerProduct();
-                List<ImageProductBaseDB> deletedImages = new ArrayList<>(db.getOverviewImages(productBefore.id));
-
-                for(ImageProductBaseDB mImage : deletedImages) {
-                    if (images.removeIf(i -> mImage.value == i)) {
-                        Log.i("Deleted duplicate image", "The ID of image is deleted is: " + mImage.id);
-                        ImageProductBaseDB i = mImage;
-                        images.remove(mImage);
-
-                        i.recycle();
-                    }
-                }
-
-                //MEANS: update UI
-                updateProductUI(categoryID, description, amount + productBefore.amountSold);
-
-                int[] deletedImagesID = new int[deletedImages.size()];
-                for (int i = 0; i < deletedImages.size(); i++) {
-                    deletedImagesID[i] = deletedImages.get(i).id;
-                }
-
-                //MEANS: update DB
-                if (db.updateProduct(productBefore, images, deletedImagesID)) {
-                    this.dismiss();
-                    if(onSubmitOKListener != null)
-                    {
-                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
-                    }
-                }
-                else {
-                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
-                }
-                db.closeConnection();
-            }
+//            else {
+//                //TODO: Change current product in DB
+//                DBControllerProduct db = new DBControllerProduct();
+//                List<ImageProductBaseDB> deletedImages = new ArrayList<>(db.getOverviewImages(productBefore.id));
+//
+//                for(ImageProductBaseDB mImage : deletedImages) {
+//                    if (images.removeIf(i -> mImage.value == i)) {
+//                        Log.i("Deleted duplicate image", "The ID of image is deleted is: " + mImage.id);
+//                        ImageProductBaseDB i = mImage;
+//                        images.remove(mImage);
+//
+//                        i.recycle();
+//                    }
+//                }
+//
+//                //MEANS: update UI
+//                updateProductUI(categoryID, description, amount + productBefore.amountSold);
+//
+//                int[] deletedImagesID = new int[deletedImages.size()];
+//                for (int i = 0; i < deletedImages.size(); i++) {
+//                    deletedImagesID[i] = deletedImages.get(i).id;
+//                }
+//
+//                //MEANS: update DB
+//                if (db.updateProduct(productBefore, images, deletedImagesID)) {
+//                    this.dismiss();
+//                    if(onSubmitOKListener != null)
+//                    {
+//                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
+//                    }
+//                }
+//                else {
+//                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+//                }
+//                db.closeConnection();
+//            }
         }
         else {
             Snackbar.make(binding.getRoot(), "Có thông tin chưa hợp lệ", BaseTransientBottomBar.LENGTH_LONG).show();
         }
     }
 
-    private void updateProductUI(int categoryID, String description, int newTotalamount) {
-        productBefore.categoryID = categoryID;
-        productBefore.description = description;
-        productBefore.amount = newTotalamount;
+    void updatetoDB() {
+        int amount = getAmount();
+        String description = getDescription();
+        //int salerID = Authenticator.getCurrentUser().id;
+        int categoryID = binding.spinnerCategory.getSelectedItemPosition();
+
+        if(description != null && amount != -1) {
+            //TODO: Change current product in DB
+            DBControllerProduct db = new DBControllerProduct();
+            List<ImageProductBaseDB> deletedImages = new ArrayList<>(db.getOverviewImages(productBefore.id));
+
+            for(ImageProductBaseDB mImage : deletedImages) {
+                if (images.removeIf(i -> mImage.value == i)) {
+                    Log.i("Deleted duplicate image", "The ID of image is deleted is: " + mImage.id);
+                    ImageProductBaseDB i = mImage;
+                    images.remove(mImage);
+
+                    i.recycle();
+                }
+            }
+
+            //MEANS: update UI
+            productBefore.categoryID = categoryID;
+            productBefore.description = description;
+            productBefore.amount = amount + productBefore.amountSold;
+
+            int[] deletedImagesID = new int[deletedImages.size()];
+            for (int i = 0; i < deletedImages.size(); i++) {
+                deletedImagesID[i] = deletedImages.get(i).id;
+            }
+
+            //MEANS: update DB
+            if (db.updateProduct(productBefore, images, deletedImagesID)) {
+                this.dismiss();
+                if(onSubmitOKListener != null)
+                {
+                    onSubmitOKListener.OnSuccess(AddProductFragment.this);
+                }
+            }
+            else {
+                Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+            }
+            db.closeConnection();
+        }
     }
 
     void chooseImage() {
