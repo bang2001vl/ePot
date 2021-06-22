@@ -1,8 +1,11 @@
 package exam.nlb2t.epot;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -13,15 +16,27 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import exam.nlb2t.epot.Database.DBControllerNotification;
+import exam.nlb2t.epot.DialogFragment.RatingProductDialogFragment;
+import exam.nlb2t.epot.PersonBill.BillAdapterItemInfo;
+import exam.nlb2t.epot.PersonBill.OrderTab_Default;
+import exam.nlb2t.epot.PersonBill.OrderTab_InShipping;
+import exam.nlb2t.epot.PersonBill.OrderTab_Success;
+import exam.nlb2t.epot.PersonBill.OrderTab_WaitForComfirm;
 import exam.nlb2t.epot.databinding.FragmentOrderBinding;
 import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class OrderFragment extends DialogFragment{
 
@@ -29,12 +44,22 @@ public class OrderFragment extends DialogFragment{
     TabLayout tabLayout;
     ViewPager viewPager;
     ImageButton back;
-    DBControllerBill dbControllerBill=new DBControllerBill();
     int position;
 
+    List<List<BillAdapterItemInfo>> data;
+    List<OrderTab> tabs;
+
+    protected int lastIndex = 1;
+    protected int step = 20;
 
     public OrderFragment(int pos) {
         position=pos;
+        data = new ArrayList<>();
+        for(int i = 0; i< 4; i++)
+        {
+            data.add(new ArrayList<>());
+        }
+
     }
 
     @Override
@@ -51,7 +76,6 @@ public class OrderFragment extends DialogFragment{
         back=myFragment.findViewById(R.id.btn_back1);
 
         return myFragment;
-
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -81,12 +105,30 @@ public class OrderFragment extends DialogFragment{
 
     private void setUpViewPager(ViewPager viewPager) {
         OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.WAIT_CONFIRM)), "Chờ xác nhận");
-        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.IN_SHIPPING)), "Đang giao");
-        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.SUCCESS)), "Đã mua");
-        adapter.addFragment(new OrderTab(dbControllerBill.getUserBillsOverviewbyStatus(Authenticator.getCurrentUser().id,BillBaseDB.BillStatus.DEFAULT)), "Đã hủy");
+
+        OrderTab_InShipping tab_inShipping = new OrderTab_InShipping();
+        tab_inShipping.setOnSubmitVertifyBillListener(new Helper.OnSuccessListener() {
+            @Override
+            public void OnSuccess(Object sender) {
+                tabs.get(2).reLoad();
+                tabs.get(3).reLoad();
+            }
+        });
+
+        tabs = new ArrayList<>(4);
+        tabs.add(new OrderTab_Default());
+        tabs.add(new OrderTab_WaitForComfirm());
+        tabs.add(tab_inShipping);
+        tabs.add(new OrderTab_Success());
+
+        adapter.addFragment(tabs.get(1), "Chờ xác nhận");
+        adapter.addFragment(tabs.get(2), "Đang giao");
+        adapter.addFragment(tabs.get(3), "Đã mua");
+        adapter.addFragment(tabs.get(0), "Đã hủy");
+
         viewPager.setAdapter(adapter);
     }
+
     private void setEventHandler() {
         back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
 import java.security.InvalidParameterException;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,8 @@ import java.util.Map;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.PersonBill.BillAdapterItemInfo;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerBill extends DatabaseController {
@@ -352,5 +355,39 @@ public class DBControllerBill extends DatabaseController {
             return null;
         }
         return bill;
+    }
+
+    public boolean vertifyReceived(int billID)
+    {
+        boolean rs = false;
+        try{
+            CallableStatement statement = connection.prepareCall("{call vertifySuccessBill(?)}");
+            statement.setInt(1, billID);
+
+            rs = statement.executeUpdate() > 0;
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ máy chủ";
+        }
+        return rs;
+    }
+
+    public List<BillAdapterItemInfo> getBillCustomer_ByStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill, int offset, int number)
+    {
+        List<BillBaseDB> list = getUserBillsOverviewbyStatus(userID, statusBill, offset, number);
+        if(list == null){return null;}
+
+        DBControllerUser db = new DBControllerUser();
+        List<BillAdapterItemInfo> rs = new ArrayList<>(list.size());
+        for(BillBaseDB b: list)
+        {
+            int amountPD = getAmountProductInBill(b.id);
+            UserBaseDB saler = db.getUserOverview(b.salerID);
+            rs.add(new BillAdapterItemInfo(b,amountPD, saler));
+        }
+        db.closeConnection();
+
+        return rs;
     }
 }
