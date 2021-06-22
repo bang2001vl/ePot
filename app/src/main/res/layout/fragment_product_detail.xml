@@ -183,7 +183,7 @@
 \n\nSẢN PHẨM ĐƯỢC SẢN XUẤT TỪ CÔNG TY DƯỢC ĐÔNG MINH\nChúng tôi cam kết:"
                     android:maxLines="10"
                     android:layout_marginLeft="10dp"
-                    android:textSize="17sp"
+                    android:textSize="16sp"
                     android:fontFamily="@font/gilroy_light"
                     />
                 <TextView
@@ -192,8 +192,9 @@
                     android:id="@+id/btn_more_description_product_detail"
                     android:textColor="@color/mainColor"
                     android:text="Xem thêm"
-                    android:paddingVertical="5dp"
-                    android:background="@drawable/border"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:background="@drawable/cart_border"
                     android:fontFamily="@font/gilroy_bold"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
@@ -254,9 +255,7 @@
         android:id="@+id/layout_buttons_product_detail"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal"
-        android:paddingBottom="7dp"
-        android:paddingTop="7dp"
-        android:background="@drawable/border">
+        android:background="@drawable/see_more_border">
         <Button
             android:layout_width="250dp"
             android:layout_height="40dp"
@@ -266,7 +265,8 @@
             android:stateListAnimator="@null"
             android:background="@drawable/epot_btn_bg"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp" />
         <!--<Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

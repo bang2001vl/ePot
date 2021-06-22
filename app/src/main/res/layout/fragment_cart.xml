@@ -67,19 +67,23 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bottom_layout"
                 android:paddingTop="10dp"
+                android:background="@drawable/cart_border"
                 app:layout_constraintBottom_toBottomOf="parent"
                 >
+
                 <TextView
                     android:id="@+id/title_totalprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="10dp"
                     android:text="Tổng tiền"
                     android:textSize="25sp"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginStart="10dp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_payment"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/btn_payment"/>
+                    app:layout_constraintTop_toTopOf="parent" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,7 +92,7 @@
                     android:text="300,000đ"
                     android:textSize="25sp"
                     android:textColor="@color/black"
-
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/title_totalprice"
@@ -103,7 +107,7 @@
                     android:textSize="25sp"
                     android:background="@drawable/epot_btn_bg"
                     android:stateListAnimator="@null"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

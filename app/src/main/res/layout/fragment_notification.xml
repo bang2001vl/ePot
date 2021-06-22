@@ -63,17 +63,17 @@
                     android:layout_height="wrap_content"/>-->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:id="@+id/next_button_layout"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/border">
+                    android:background="@drawable/see_more_border">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/watch_more"
                         style="@style/ContentTextNormal"
                         android:layout_centerInParent="true"
-                        />
+                        android:paddingVertical="10dp"/>
                 </RelativeLayout>
 
             </LinearLayout>
