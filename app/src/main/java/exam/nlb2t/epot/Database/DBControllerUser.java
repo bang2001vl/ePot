@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -267,7 +268,7 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
         }
         return rs;
     }
@@ -290,7 +291,7 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
         }
         return rs;
     }
@@ -312,7 +313,30 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi vào máy chủ";
+        }
+        return rs;
+    }
+
+    public boolean updateUser_Avatar(int userID, int avatarID, Bitmap avatar)
+    {
+        boolean rs = false;
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Helper.toByteArray(avatar, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL));
+
+            CallableStatement statement = connection.prepareCall("{call updateUserAvatar(?,?,?)}");
+            statement.setInt(1, userID);
+            statement.setInt(2, avatarID);
+            statement.setBinaryStream(3, inputStream);
+
+            rs = statement.executeUpdate() > 0;
+            if(rs) {
+                commit();
+            }
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
         }
         return rs;
     }
@@ -334,7 +358,7 @@ public class DBControllerUser extends DatabaseController{
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể đọc thông tin từ máy chủ";
         }
         return rs;
     }

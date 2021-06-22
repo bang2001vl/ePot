@@ -41,7 +41,7 @@
             android:layout_height="@dimen/ProductImgSize"
             android:foreground="@drawable/border_layout"
             android:foregroundTint="@color/ashgray"
-            android:src="@drawable/vans" />
+            android:src="@drawable/default_prod" />
         </androidx.cardview.widget.CardView>
 
         <TextView

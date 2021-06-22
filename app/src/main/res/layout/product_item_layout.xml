@@ -10,6 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/button_round_background"
+        android:backgroundTint="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +31,7 @@
                     android:layout_height="0dp"
                     android:background="@drawable/bg_rounded"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sowmi_nam"
+                    android:src="@drawable/default_prod"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintLeft_toLeftOf="parent"
