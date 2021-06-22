@@ -131,7 +131,7 @@
                </RelativeLayout>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/fragment_product_top_sold"
                 android:name="exam.nlb2t.epot.fragment_ProItem_Container"
                 tools:layout="@layout/fragment__pro_item__container">
@@ -169,7 +169,7 @@
             </RelativeLayout>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="500dp"
                 android:id="@+id/fragment_product_new"
                 android:name="exam.nlb2t.epot.fragment_ProItem_Container"
                 tools:layout="@layout/fragment__pro_item__container">

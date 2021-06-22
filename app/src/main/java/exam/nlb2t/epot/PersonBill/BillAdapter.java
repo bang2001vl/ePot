@@ -26,13 +26,22 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
     public void setBtnDetailText(String text) {
         btnDetailtext = text;
     }
-    protected BillRecyclerViewAdapter.OnClickBtnDetailListener onBtnDetailClickListener;
 
+    protected BillRecyclerViewAdapter.OnClickBtnDetailListener onBtnDetailClickListener;
     public interface OnClickBtnDetailListener {
         void onClick(BillBaseDB bill, int position);
     }
     public void setOnBtnDetailClickListener(BillRecyclerViewAdapter.OnClickBtnDetailListener onBtnDetailClickListener) {
         this.onBtnDetailClickListener = onBtnDetailClickListener;
+    }
+
+    public interface OnBindingLastPositionListener{
+        void onBindingLastPostion(int postion);
+    }
+    protected OnBindingLastPositionListener onBindingLastPositionListener;
+    public  void setOnBindingLastPositionListener(OnBindingLastPositionListener listener)
+    {
+        this.onBindingLastPositionListener = listener;
     }
 
     public BillAdapter(List<BillAdapterItemInfo> list) {
@@ -80,6 +89,12 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
             holder.binding.btnDetailBill.setOnClickListener(v -> {
                 onBtnDetailClickListener.onClick(list.get(position).billOverview, position);
             });
+        }
+
+        if(position == list.size() - 1) {
+            if (onBindingLastPositionListener != null) {
+                onBindingLastPositionListener.onBindingLastPostion(position);
+            }
         }
     }
 

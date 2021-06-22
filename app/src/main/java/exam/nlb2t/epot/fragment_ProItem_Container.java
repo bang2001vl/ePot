@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 
 /**
@@ -32,11 +33,18 @@ public class fragment_ProItem_Container extends Fragment {
     public List<ProductAdapterItemInfo> productList ;
     RecyclerView proGrid;
     public ProductAdapter productAdapter;
+    public boolean hideSpinner = false;
+    public boolean canScroll = true;
     public Spinner spinner;
     private OnClickItemListener onClickItemListener;
     public void setOnClickItemListener(OnClickItemListener listener)
     {
         this.onClickItemListener = listener;
+    }
+    protected BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener;
+    public  void setOnBindingLastPositionListener(BillAdapter.OnBindingLastPositionListener listener)
+    {
+        this.onBindingLastPositionListener = listener;
     }
 
     public fragment_ProItem_Container() {
@@ -67,25 +75,34 @@ public class fragment_ProItem_Container extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment__pro_item__container, container, false);
         spinner = view.findViewById(R.id.spinnerProduct);
-        ArrayList<String> optionProduct = new ArrayList<String>();
-        optionProduct.add("Thời gian (giảm dần)");
-        optionProduct.add("Tên (A->Z)");
-        optionProduct.add("Tên (Z->A)");
-        optionProduct.add("Giá (tăng dần)");
-        optionProduct.add("Giá (giảm dần)");
+        if(hideSpinner){
+            ((View)spinner.getParent()).setVisibility(View.GONE);
+        }
+        else {
+            ArrayList<String> optionProduct = new ArrayList<String>();
+            optionProduct.add("Thời gian (giảm dần)");
+            optionProduct.add("Tên (A->Z)");
+            optionProduct.add("Tên (Z->A)");
+            optionProduct.add("Giá (tăng dần)");
+            optionProduct.add("Giá (giảm dần)");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter( getContext(), android.R.layout.simple_spinner_item, optionProduct );
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, optionProduct);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(arrayAdapter);
+        }
 
         if(productList != null)
          {
             proGrid =  view.findViewById(R.id.Gridpro);
+            if(!canScroll) proGrid.setNestedScrollingEnabled(false);
             productAdapter = new ProductAdapter(productList, this.getContext());
             productAdapter.setOnItemClickListener(onClickItemListener);
+            productAdapter.setOnBindingLastPositionListener(onBindingLastPositionListener);
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-            setupSort();
+            if(!hideSpinner){
+                setupSort();
+            }
         }
         return view;
     }
@@ -93,9 +110,9 @@ public class fragment_ProItem_Container extends Fragment {
     public void addProduct(List<ProductAdapterItemInfo> list)
     {
         productList.addAll(list);
+        productAdapter.notifyItemRangeInserted(productList.size() - list.size() -1, list.size());
         lastSort = 0;
         sort();
-        productAdapter.notifyItemRangeInserted(productList.size() - list.size() -1, list.size());
     }
 
     private void setupSort() {
@@ -135,8 +152,8 @@ public class fragment_ProItem_Container extends Fragment {
                 sortByPriceMore();
                 break;
         }
-        productAdapter.notifyDataSetChanged();
         lastSort = currentSort;
+        productAdapter.notifyDataSetChanged();
     }
 
     private void sortByPriceMore() {

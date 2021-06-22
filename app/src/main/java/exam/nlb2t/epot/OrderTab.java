@@ -118,8 +118,12 @@ public class OrderTab extends Fragment {
         //TODO: Find UserID to login app
 
         v=inflater.inflate(R.layout.fragment_order_tab,container,false);
+
         recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);
+
         recyclerViewAdapter = new BillAdapter(bills);
+        recyclerViewAdapter.setOnBindingLastPositionListener(postion -> loadMore());
+
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
