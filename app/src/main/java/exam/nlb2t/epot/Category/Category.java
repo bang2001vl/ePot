@@ -5,12 +5,20 @@ import android.graphics.Bitmap;
 public class Category {
     //private String id;
     private String name;
+    public int avatarID;
     private Bitmap avatar_id;
 
     public Category(String name, Bitmap avatar_id) {
         //this.id = id;
         this.name = name;
         this.avatar_id = avatar_id;
+    }
+
+    public Category(String name, int avatar_id) {
+        //this.id = id;
+        this.name = name;
+        this.avatarID = avatar_id;
+        this.avatar_id = null;
     }
 
     /*public String getId() {

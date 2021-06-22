@@ -246,6 +246,11 @@ public class DBControllerBill extends DatabaseController {
     public List<BillBaseDB> getUserBillsOverviewbyStatus(int userID, @Nullable BillBaseDB.BillStatus statusBill) {
         return getUserBillsOverviewbyStatus(userID, statusBill, 0, -1);
     }
+    public int getNumberofUserBill(int UserID, BillBaseDB.BillStatus status)
+    {
+        List<BillBaseDB> bills=getUserBillsOverviewbyStatus(UserID,status);
+        return bills.size();
+    }
 
     // Get from start to end. start and end is included
     public List<BillBaseDB> getBillbySaler_Overview(int salerID, int startIndex, int endIndex) {

@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Forgotpass;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -28,13 +28,14 @@ import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.signup_enterphone;
+import exam.nlb2t.epot.Views.Registration.fragment_signup_enterotp;
+import exam.nlb2t.epot.Views.Registration.signup_enterphone;
 
 public class forgotpassword extends AppCompatActivity {
 
     private fragment_signup_enterotp fg_forgotpass_otp;
     private signup_enterphone  fg_forgot_phone;
-    private  forgotpass_create_newpass fg_fogotpass_create_newpass;
+    private forgotpass_create_newpass fg_fogotpass_create_newpass;
     private EditText edt_otp;
 
     String phone;

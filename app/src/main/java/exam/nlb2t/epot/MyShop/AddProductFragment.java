@@ -22,6 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -44,16 +47,15 @@ public class AddProductFragment extends DialogFragment {
     ProductBaseDB productBefore;
     public static final String NAMEDIALOG = "AddProductFragment";
 
-
-//    Bitmap imagePrimary;
-//    Bitmap getImagePrimary()
-//    {
-//        if(imagePrimary == null)
-//        {
-//            return BitmapFactory.decodeResource(getResources(), R.drawable.vans);
-//        }
-//        return imagePrimary;
-//    }
+    Bitmap imagePrimary;
+    Bitmap getImagePrimary()
+    {
+        if(imagePrimary == null)
+        {
+            Snackbar.make(binding.getRoot(), "Ảnh chính không thể trống", BaseTransientBottomBar.LENGTH_LONG).show();
+        }
+        return imagePrimary;
+    }
 
     public boolean isOK = false;
     Helper.OnSuccessListener onSubmitOKListener;
@@ -167,22 +169,21 @@ public class AddProductFragment extends DialogFragment {
         String description = getDescription();
         int amount = getAmount();
         int price = getPrice();
-        Bitmap image = getImagePrimary2();
-        int salerID = Authenticator.getCurrentUser().id;
-        int categoryID = binding.spinnerCategory.getSelectedItemPosition();
-
-        if(name != null && description != null && amount != -1 && price != -1)
+        Bitmap image = getImagePrimary();
+        if(name != null && description != null && amount != -1 && price != -1 && image != null)
         {
-            if (productBefore == null) {
-                //TODO: Create new product in DB
-                DBControllerProduct databaseController = new DBControllerProduct();
-                if(databaseController.insertProduct(salerID,categoryID,name, price,
-                        amount, image, description, images)) {
-                    this.dismiss();
-                    if(onSubmitOKListener != null)
-                    {
-                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
-                    }
+            DBControllerProduct databaseController = new DBControllerProduct();
+            int salerID = Authenticator.getCurrentUser().id;
+            int catagoryID = binding.spinnerCategory.getSelectedItemPosition();
+            databaseController.insertProduct(salerID,catagoryID,name, price,
+                amount, image, description, images);
+            databaseController.closeConnection();
+
+            if(databaseController.hasError()) {
+                this.dismiss();
+                if(onSubmitOKListener != null)
+                {
+                    onSubmitOKListener.OnSuccess(AddProductFragment.this);
                 }
                 else {
                     Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
@@ -226,6 +227,9 @@ public class AddProductFragment extends DialogFragment {
                 }
                 db.closeConnection();
             }
+        }
+        else {
+            Snackbar.make(binding.getRoot(), "Có thông tin chưa hợp lệ", BaseTransientBottomBar.LENGTH_LONG).show();
         }
     }
 
@@ -323,10 +327,10 @@ public class AddProductFragment extends DialogFragment {
         }
     }
 
-    Bitmap getImagePrimary2() {
+    /*Bitmap getImagePrimary2() {
         Bitmap image = ((BitmapDrawable)binding.imagePrimary.getDrawable()).getBitmap();
         return image;
-    }
+    }*/
 
     final int REQUEST_CHOOSE_IMAGE = 0x102;
     final int REQUEST_PERMISSION = 0x101;
@@ -351,6 +355,7 @@ public class AddProductFragment extends DialogFragment {
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
+                binding.imagePrimary.setEnabled(true);
                 binding.buttonAddImage.setEnabled(true);
             }
         }
@@ -383,9 +388,9 @@ public class AddProductFragment extends DialogFragment {
                 e.printStackTrace();
                 return;
             }
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            if(bitmap != null) {
-                binding.imagePrimary.setImageBitmap(bitmap);
+            imagePrimary = BitmapFactory.decodeStream(inputStream);
+            if(imagePrimary != null) {
+                binding.imagePrimary.setImageBitmap(imagePrimary);
             }
         }
     }

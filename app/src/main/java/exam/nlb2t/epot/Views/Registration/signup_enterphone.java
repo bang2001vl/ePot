@@ -1,4 +1,4 @@
-package exam.nlb2t.epot;
+package exam.nlb2t.epot.Views.Registration;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.R;
 
 /**
  * A simple {@link Fragment} subclass.

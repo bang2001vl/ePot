@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPot">
-        <activity android:name=".Views.forgotpassword"></activity>
+        <activity android:name=".Views.Forgotpass.forgotpassword"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -36,12 +36,12 @@
             </intent-filter>
         </activity>
         -->
-        <activity android:name=".LoginScreen">
-            <!--<intent-filter>
+        <activity android:name=".Views.Login.LoginScreen">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name=".Views.home_shopping">
            <intent-filter>
@@ -50,7 +50,7 @@
                 <category android:name="android.intent.category" />
             </intent-filter>
         </activity>
-        <activity android:name=".Views.signup">
+        <activity android:name=".Views.Registration.signup">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,10 +64,11 @@
 <!--            </intent-filter>-->
         </activity>
         <activity android:name=".TestingActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".MainActivity">

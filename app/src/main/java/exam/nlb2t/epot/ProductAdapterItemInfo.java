@@ -9,4 +9,13 @@ public class ProductAdapterItemInfo {
     public Bitmap productAvatar;
     public boolean isLiked;
     public int ratingCount;
+
+    public ProductAdapterItemInfo(){
+
+    }
+
+    public ProductAdapterItemInfo(ProductBaseDB productBaseDB, Bitmap productAvatar) {
+        this.productBaseDB = productBaseDB;
+        this.productAvatar = productAvatar;
+    }
 }

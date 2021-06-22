@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.Views;
+package exam.nlb2t.epot.Views.Search_Product;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
-import exam.nlb2t.epot.ProductAdapter;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -39,13 +39,24 @@ public class fragment_search extends DialogFragment {
     private fragment_ProItem_Container fg_ProItem_container;
     private  final int number_pro = 20;
     private Button btn_more;
+    private ImageView btn_back;
     private LinearLayout ln_product;
 
     private RecyclerView rcVNewProduct;
     private ProductAdapter productAdapter;
 
-    private String name = "NAME";
+    private String name = null;
     private String column;
+
+    public fragment_search(){
+
+    }
+
+    public fragment_search(String query)
+    {
+        name = query;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +70,7 @@ public class fragment_search extends DialogFragment {
         btn_more = (Button) view.findViewById(R.id.btn_more);
         ln_product = (LinearLayout) view.findViewById(R.id.ln_product);
         rcVNewProduct = (RecyclerView) view.findViewById(R.id.recycleView_product);
+        btn_back = (ImageView) view.findViewById(R.id.Button_Back);
 
         productList = new ArrayList<>();
 
@@ -82,6 +94,18 @@ public class fragment_search extends DialogFragment {
             }
         });
 
+        sv_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                btn_search.callOnClick();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +227,16 @@ public class fragment_search extends DialogFragment {
                 controllerProduct.closeConnection();
             }
         });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment_search.this.onStop();
+                /*getActivity().getFragmentManager().beginTransaction().remove(fg_ProItem_container).commit();*/
+            }
+        });
         return view;
+
     }
 
     @NonNull
@@ -212,22 +245,33 @@ public class fragment_search extends DialogFragment {
         Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen){
             @Override
             public void onBackPressed() {
-                fragment_search.this.dismiss();
+                fragment_search.this.onStop();
+                /*getActivity().getFragmentManager().beginTransaction().remove(fragment_search.this).commit();*/
             }
         };
 
         return dialog;
     }
 
-    private  void ReplaceFragment(Fragment fragment)
-    {
-        if (fragment != null)
-        {
-            /*FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fg_transaction.replace(R.id.body_container, fragment);
-            fg_transaction.commit();*/
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(name != null) {
+            sv_search.requestFocus();
+            sv_search.setQuery(name, true);
         }
     }
+
+    /* private  void ReplaceFragment(Fragment fragment)
+        {
+            if (fragment != null)
+            {
+                FragmentTransaction fg_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fg_transaction.replace(R.id.body_container, fragment);
+                fg_transaction.commit();
+            }
+        }*/
     private void showInputMethod(View view) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -252,4 +296,5 @@ public class fragment_search extends DialogFragment {
         }
         return list;
     }
+
 }

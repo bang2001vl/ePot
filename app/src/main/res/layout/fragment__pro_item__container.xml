@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_container"
     android:orientation="vertical"
     tools:context=".fragment_ProItem_Container">
-
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,30 +18,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_600"
                 android:textSize="18dp"
-                android:text="Sắp xếp theo: "/>
+                android:text="Sắp xếp theo: "
+                android:layout_marginLeft="10dp"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinnerProduct"
-                >
+                android:id="@+id/spinnerProduct">
 
             </Spinner>
         </LinearLayout>
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Gridpro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/product_item_layout"
             >
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/Gridpro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                >
-            </androidx.recyclerview.widget.RecyclerView>
-        </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 

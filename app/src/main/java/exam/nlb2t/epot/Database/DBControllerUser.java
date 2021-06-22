@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,8 +30,10 @@ public class DBControllerUser extends DatabaseController{
             if(resultSet.next())
             {
                 InputStream inputStream = resultSet.getBinaryStream(1);
-                rs = BitmapFactory.decodeStream(inputStream);
-                inputStream.close();
+                if(inputStream != null) {
+                    rs = BitmapFactory.decodeStream(inputStream);
+                    inputStream.close();
+                }
             }
             resultSet.close();
             statement.close();
@@ -120,7 +123,7 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-    public int insertUser(String username, String password,String phone, String fullname,
+    public int insertUser(String username, String password,String phone, String email, String fullname,
                           int gender, int birthdayYear, int birthdayMonth, int birthdayDay)
     {
         int newUserID = -1;
@@ -132,13 +135,14 @@ public class DBControllerUser extends DatabaseController{
 
             Date birthday = Helper.getDateFromLocalToUTC(birthdayYear, birthdayMonth, birthdayDay, 6,0);
 
-            PreparedStatement statement = connection.prepareStatement("EXEC createUser ?,?,?,?,?,?;");
+            PreparedStatement statement = connection.prepareStatement("EXEC createUser ?,?,?,?,?,?,?;");
             statement.setString(1, username);
             statement.setBinaryStream(2, inputStream, passEncypted.length);
             statement.setString(3, phone);
-            statement.setString(4, fullname);
-            statement.setInt(5, gender);
-            statement.setDate(6, birthday);
+            statement.setString(4, email);
+            statement.setString(5, fullname);
+            statement.setInt(6, gender);
+            statement.setDate(7, birthday);
 
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next())
@@ -264,7 +268,7 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
         }
         return rs;
     }
@@ -287,7 +291,7 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
         }
         return rs;
     }
@@ -309,7 +313,52 @@ public class DBControllerUser extends DatabaseController{
 
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot execute statement";
+            ErrorMsg = "THẤT BẠI: Không thể ghi vào máy chủ";
+        }
+        return rs;
+    }
+
+    public boolean updateUser_Avatar(int userID, int avatarID, Bitmap avatar)
+    {
+        boolean rs = false;
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Helper.toByteArray(avatar, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL));
+
+            CallableStatement statement = connection.prepareCall("{call updateUserAvatar(?,?,?)}");
+            statement.setInt(1, userID);
+            statement.setInt(2, avatarID);
+            statement.setBinaryStream(3, inputStream);
+
+            rs = statement.executeUpdate() > 0;
+            if(rs) {
+                commit();
+            }
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể ghi thông tin vào máy chủ";
+        }
+        return rs;
+    }
+
+    public int findUserID_ByEmail(String email)
+    {
+        int rs = -1;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [EMAIL]= ?;");
+            statement.setString(1, email);
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể đọc thông tin từ máy chủ";
         }
         return rs;
     }

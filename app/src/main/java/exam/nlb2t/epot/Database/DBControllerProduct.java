@@ -725,27 +725,38 @@ public class DBControllerProduct extends DatabaseController{
         }
     }
 
-    public List<ProductBaseDB> getLikedProduct(int userID)
+    public List<ProductBaseDB> getLikedProduct(int userID, int start, int end)
     {
         List<ProductBaseDB> rs = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT [PRODUCT_ID] FROM [LIKE] WHERE [USER_ID]=?;");
+            PreparedStatement statement = connection.prepareStatement("EXEC getProductLiked ?,?,?;");
             statement.setInt(1, userID);
+            statement.setInt(2, start);
+            statement.setInt(3, end);
 
+            rs = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
-            List<Integer> productIDs = new ArrayList<>();
             while (resultSet.next())
             {
-                productIDs.add(resultSet.getInt(1));
+                int i = 1;
+                ProductBaseDB item = new ProductBaseDB();
+
+                item.id = resultSet.getInt(i);i++;
+                item.salerID = resultSet.getInt(i);i++;
+                item.categoryID = resultSet.getInt(i);i++;
+                item.name = resultSet.getString(i);i++;
+                item.price = resultSet.getInt(i);i++;
+                item.priceOrigin = resultSet.getInt(i);i++;
+                item.amount = resultSet.getInt(i);i++;
+                item.amountSold = resultSet.getInt(i);i++;
+                item.imagePrimaryID = resultSet.getInt(i);i++;
+                item.createdDate = resultSet.getDate(i);i++;
+                item.deleted = resultSet.getInt(i);i++;
+                item.starAverage = resultSet.getFloat(i);i++;
+                rs.add(item);
             }
             resultSet.close();
             statement.close();
-
-            rs = new ArrayList<>();
-            for(Integer id: productIDs)
-            {
-                rs.add(getProduct(id));
-            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             ErrorMsg = "FAILED: Cannot get data from server";

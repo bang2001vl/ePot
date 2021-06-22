@@ -3,33 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".DialogFragment.FavoriteProdFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_blur_shadow">
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:background="@color/transparent"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yêu thích"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginVertical="30dp"
-            android:fontFamily="@font/gilroy_bold"
-            android:textColor="@color/black"
-            android:textSize="30dp"/>
+            android:background="@drawable/layout_blur_shadow">
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back"
+                android:background="@color/transparent"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yêu thích"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="30dp"
+                android:fontFamily="@font/gilroy_bold"
+                android:textColor="@color/black"
+                android:textSize="30dp"/>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFEFEF"/>
+    </LinearLayout>
+
 
 </RelativeLayout>
