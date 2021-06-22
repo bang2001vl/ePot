@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
 
-        <ImageView
-            android:id="@+id/icon_complete_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:src="@drawable/ic_complete_payment"
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gif_complete_payment"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/gif_payment_success"
             app:layout_constraintBottom_toTopOf="@+id/complete_payment_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:fontFamily="@font/gilroy_bold"
             android:text="@string/complete_payment"
             android:textColor="@color/black"
@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toTopOf="@+id/complete_payment_txt2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/icon_complete_payment"
+            app:layout_constraintTop_toBottomOf="@+id/gif_complete_payment"
             app:layout_constraintVertical_chainStyle="packed"/>
 
         <TextView
@@ -47,7 +47,7 @@
             android:text="@string/complete_payment2"
             android:textColor="@color/black"
             android:textSize="16dp"
-
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/complete_payment_txt3"
             app:layout_constraintEnd_toEndOf="@id/complete_payment_txt"
             app:layout_constraintStart_toStartOf="@id/complete_payment_txt"
@@ -63,6 +63,7 @@
             android:textColor="@color/black"
             android:textSize="16dp"
             android:fontFamily="@font/gilroy_medium"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/btn_completete_payment"
             app:layout_constraintEnd_toEndOf="@id/complete_payment_txt2"
             app:layout_constraintStart_toStartOf="@id/complete_payment_txt2"
@@ -71,14 +72,14 @@
 
         <Button
             android:id="@+id/btn_completete_payment"
-            style="@style/cartButton"
-            android:layout_width="match_parent"
+            style="@style/CommonButton"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:stateListAnimator="@null"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/gilroy_bold"
-            android:layout_marginHorizontal="@dimen/large_btn_marhor"
             android:text="@string/btn_complete_payment"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

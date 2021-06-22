@@ -86,10 +86,17 @@ public class PaymentDialogFragment extends DialogFragment {
         binding.totalpricePayment.setText(Helper.getMoneyString(productMoney+shipMoney));
 
         binding.btnPayment.setOnClickListener(v->{
-            if(this.onSubmitOKListener != null)
-            {
-                onSubmitOKListener.OnSuccess(PaymentDialogFragment.this);
-            }
+            PaymentSucessDialog dialog = new PaymentSucessDialog();
+            dialog.setOnClickSubmitListener(new Helper.OnSuccessListener() {
+                @Override
+                public void OnSuccess(Object sender) {
+                    if(onSubmitOKListener != null)
+                    {
+                        onSubmitOKListener.OnSuccess(PaymentDialogFragment.this);
+                    }
+                }
+            });
+            dialog.show(getChildFragmentManager(), "tag");
         });
 
         return  binding.getRoot();

@@ -170,20 +170,21 @@ public class AddProductFragment extends DialogFragment {
         int amount = getAmount();
         int price = getPrice();
         Bitmap image = getImagePrimary();
+        int salerID = Authenticator.getCurrentUser().id;
+        int categoryID = binding.spinnerCategory.getSelectedItemPosition();
+
         if(name != null && description != null && amount != -1 && price != -1 && image != null)
         {
-            DBControllerProduct databaseController = new DBControllerProduct();
-            int salerID = Authenticator.getCurrentUser().id;
-            int catagoryID = binding.spinnerCategory.getSelectedItemPosition();
-            databaseController.insertProduct(salerID,catagoryID,name, price,
-                amount, image, description, images);
-            databaseController.closeConnection();
-
-            if(databaseController.hasError()) {
-                this.dismiss();
-                if(onSubmitOKListener != null)
-                {
-                    onSubmitOKListener.OnSuccess(AddProductFragment.this);
+            if (productBefore == null) {
+                //TODO: Create new product in DB
+                DBControllerProduct databaseController = new DBControllerProduct();
+                if(databaseController.insertProduct(salerID,categoryID,name, price,
+                        amount, image, description, images)) {
+                    this.dismiss();
+                    if(onSubmitOKListener != null)
+                    {
+                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
+                    }
                 }
                 else {
                     Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();

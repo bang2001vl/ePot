@@ -1,6 +1,7 @@
 package exam.nlb2t.epot;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.DialogFragment.PaymentSucessDialog;
 import exam.nlb2t.epot.Fragments.CartFragment_Old;
 import exam.nlb2t.epot.Views.Search_Product.fragment_search;
 import exam.nlb2t.epot.databinding.ActivityTestingBinding;
@@ -23,13 +25,13 @@ public class TestingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
 
-        fragment_search fg_search = new fragment_search();
-        FragmentTransaction fg_transaction = getSupportFragmentManager().beginTransaction();
-        fg_transaction.replace(R.id.fg_search, fg_search);
-        fg_transaction.commit();
-
-     /*   testProductDetail();*/
-        //testCart();
+        findViewById(R.id.fg_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentSucessDialog dialog = new PaymentSucessDialog();
+                dialog.show(getSupportFragmentManager(), "tag");
+            }
+        });
     }
 
    /* public void testProductDetail()

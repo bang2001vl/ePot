@@ -72,7 +72,7 @@
     <style name="Dropdown_Country">
     </style>
 
-    <style name="CommonButton">
+    <style name="CommonButton" parent="ClickableRoundCorner">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:textSize">@dimen/normal_title_size_text</item>
