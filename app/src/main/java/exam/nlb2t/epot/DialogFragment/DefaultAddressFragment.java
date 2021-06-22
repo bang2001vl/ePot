@@ -97,7 +97,6 @@ public class DefaultAddressFragment extends DialogFragment {
                         Toast.makeText(getContext(), getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show(); }
                     else {
                         dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
-                        onResume();
                         dismiss();
                     }
                 }
