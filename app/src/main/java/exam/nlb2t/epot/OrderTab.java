@@ -46,6 +46,7 @@ public class OrderTab extends Fragment {
 
     protected int lastIndex = 0;
     protected int step = 20;
+    boolean hasMoreData = true;
 
     public OrderTab()
     {
@@ -57,7 +58,7 @@ public class OrderTab extends Fragment {
                 dialog.show(getChildFragmentManager(), DetailBillFragment.NAMEDIALOG);
             }
         };
-        loadMore();
+        reLoad();
     }
 
     public void reLoad(){
@@ -68,38 +69,32 @@ public class OrderTab extends Fragment {
                 recyclerViewAdapter.notifyItemRangeRemoved(0, oldCount);
             }
         }
+        hasMoreData = true;
         lastIndex = 0;
         layoutData();
         loadMore();
     }
 
-    public void loadMore()
-    {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<BillAdapterItemInfo> list = loadDataFromDB();
-                bills.addAll(bills.size(), list);
-                if(list.size() > 0)
-                {
-                    if(getActivity() == null){return;}
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (recyclerViewAdapter != null) {
-                                recyclerViewAdapter.notifyItemRangeInserted(bills.size() - list.size() -1, bills.size());
-                            }
-                            layoutData();
-
-                            lastIndex += list.size();
+    public void loadMore() {
+        if (!hasMoreData) return;
+        hasMoreData = false;
+        new Thread(() -> {
+            List<BillAdapterItemInfo> list = loadDataFromDB();
+            bills.addAll(bills.size(), list);
+            if (getActivity() != null && list.size() > 0) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (recyclerViewAdapter != null) {
+                            recyclerViewAdapter.notifyItemRangeInserted(bills.size() - list.size() - 1, bills.size());
                         }
-                    });
-                }
-
-                if(list.size() < step) {
-                    // No more data
-                }
+                        layoutData();
+                    }
+                });
             }
+
+            hasMoreData = list.size() == step;
+            lastIndex += list.size();
         }).start();
     }
 
