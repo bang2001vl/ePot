@@ -2,6 +2,8 @@ package exam.nlb2t.epot.MyShop;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,13 +36,15 @@ public class Shop_ProductFragment extends Fragment {
     Product_TabAdapter adapter;
     public final List<ProductBaseDB> products;
 
-    private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 0;
+    Handler mhandler = new Handler(Looper.getMainLooper());
+
+    private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 2;
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
-    private final int NUMBER_ITEM_TO_LOAD = 8;
+    private final int NUMBER_ITEM_TO_LOAD = 5;
 
     public Shop_ProductFragment() {
         DBControllerProduct db = new DBControllerProduct();
-        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 10);
+        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 8);
         db.closeConnection();
     }
 
@@ -50,12 +54,13 @@ public class Shop_ProductFragment extends Fragment {
         binding = MyShopProductTabBinding.inflate(inflater, container, false);
 
         adapter = new Product_TabAdapter(products);
+        adapter.setHasStableIds(true);
 
         LinearLayoutManager layout = new LinearLayoutManager(container.getContext());
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         binding.layoutProductMyShop.setLayoutManager(layout);
 
-        binding.layoutProductMyShop.setItemViewCacheSize(10);
+        binding.layoutProductMyShop.setItemViewCacheSize(8);
         binding.layoutProductMyShop.setDrawingCacheEnabled(true);
         binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
@@ -69,7 +74,11 @@ public class Shop_ProductFragment extends Fragment {
                 int totalItemCount = layout.getItemCount();
 
                 if (passVisibleItems + visibleItemsCount >= totalItemCount - NUMBER_BEHIND_ITEM_IN_SCROLL) {
-                    adapter.addItemToList(NUMBER_ITEM_TO_LOAD);
+                    if (passVisibleItems + visibleItemsCount == totalItemCount)
+                        while (mhandler.hasMessages(1)) ;
+                    if (!mhandler.hasMessages(1)) {
+                        adapter.addItemToList(totalItemCount, NUMBER_ITEM_TO_LOAD, mhandler);
+                    }
                 }
             }
         });
@@ -80,43 +89,25 @@ public class Shop_ProductFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TODO : Write code here <Get data from database and set to view>
         setEventHandler();
     }
 
-    void setEventHandler()
-    {
+    void setEventHandler() {
         binding.buttonAddProduct.setOnClickListener(v -> {
+            //TODO: Add product to My Shop
             AddProductFragment addProductFragment = new AddProductFragment();
 
-            if(getFragmentManager() == null){return;}
+            if (getFragmentManager() == null) {
+                return;
+            }
 
             addProductFragment.show(getFragmentManager().beginTransaction(), "createProduct");
             addProductFragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
                 @Override
                 public void OnSuccess(Object sender) {
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Tạo mới thành công", Toast.LENGTH_LONG).show();
                 }
             });
         });
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        int position = -1;
-        try {
-            position = adapter.getPosition();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return super.onContextItemSelected(item);
-        }
-        switch (item.getItemId()) {
-            case R.id.my_shop_context_menu_item:
-                SaleDialog dialog = new SaleDialog(adapter.products.get(position));
-                dialog.show(getChildFragmentManager(), "SaleDialog");
-                break;
-        }
-        return super.onContextItemSelected(item);
     }
 }

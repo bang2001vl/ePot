@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.google.zxing.BinaryBitmap;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.Tables.ImageProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.singleton.Helper;
@@ -79,46 +82,38 @@ public class DBControllerProduct extends DatabaseController{
         return isOK;
     }
 
-    public boolean updateProduct(int productID, int categoryID, String name, int price, int newExsistAmount, Bitmap imagePrimary, String description, List<Bitmap> images) {
-        if(productID < 0 || images == null || name == null || description == null){
+    public boolean updateProduct(ProductBaseDB product, List<Bitmap> newimages, int[] deletedImagesID) {
+        if(newimages == null || deletedImagesID == null){
             Log.e("MY_TAG", "ERROR: update product with null data");
             return false;
         }
         boolean isOK = false;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("EXEC updateProduct ?,?,?,?,?,?,?");
-            preparedStatement.setInt(1, productID);
-            preparedStatement.setInt(2, categoryID);
-            preparedStatement.setString(3, name);
-            preparedStatement.setInt(4, price);
-            preparedStatement.setInt(5, newExsistAmount);
+            PreparedStatement preparedStatement = connection.prepareStatement("EXEC updateProduct ?,?,?,?,?,?,?,?");
+            preparedStatement.setInt(1, product.id);
+            preparedStatement.setInt(2, product.categoryID);
+            preparedStatement.setString(3, product.name);
+            preparedStatement.setInt(4, product.price);
+            preparedStatement.setInt(5, product.priceOrigin);
+            preparedStatement.setInt(6, product.amount);
+            //Set null for primary image, it cannot change
+            preparedStatement.setNull(7, Types.VARBINARY);
+            preparedStatement.setString(8, product.description);
 
-            // Set image primary
-            if(imagePrimary != null)
-            {
-                byte[] mainImage = Helper.toByteArray(imagePrimary, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL);
-                if(mainImage != null && mainImage.length < MAX_BYTE_IMAGE)
-                {
-                    ByteArrayInputStream inputStream = new ByteArrayInputStream(mainImage);
-                    preparedStatement.setBinaryStream(6, inputStream, mainImage.length);
-                    inputStream.close();
-                }
-                else {preparedStatement.setNull(6, Types.VARBINARY);}
-            }
-            else {preparedStatement.setNull(6, Types.VARBINARY);}
-
-            preparedStatement.setString(7, description);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
+            int result = preparedStatement.executeUpdate();
 
             // TODO: Add Images to db
             // TODO: Something wrongs here
-            if(resultSet.next()) {
-                for (Bitmap bitmap : images) {
-                    if (!insertProduct_Image(productID, bitmap)) {
-                        break;
+            if(result != 0) {
+                for (Bitmap bitmap : newimages) {
+                    if (!insertProduct_Image(product.id, bitmap)) {
+                        throw new SQLException("Không thể thêm ảnh mới vào DB");
                     }
                 }
+                for (int i = 0; i< deletedImagesID.length; i++)
+                if (!removeImageProductbyID(deletedImagesID[i]))
+                        throw new SQLException("Không thể xóa ảnh có sẵn trong DB, ID: " + deletedImagesID[i]);
+
                 isOK = true;
             }
 
@@ -128,15 +123,38 @@ public class DBControllerProduct extends DatabaseController{
             else {rollback();}
 
             preparedStatement.close();
-            resultSet.close();
         }
-        catch (SQLException | IOException e)
+        catch (SQLException e)
+        {
+            ErrorMsg = "Lỗi khi cập nhật món hàng vào DB";
+            e.printStackTrace();
+            rollback();
+        }
+        return isOK;
+    }
+
+    private boolean removeImageProductbyID(int id) {
+        boolean isOk = false;
+        try {
+            String sql = "DELETE FROM PRODUCT_IMAGE WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+
+            if (statement.executeUpdate() == 1) isOk = true;
+
+            if (isOk) {
+                commit();
+            }
+            else rollback();
+
+            statement.close();
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
             rollback();
-            ErrorMsg = e.getMessage();
         }
-        return isOK;
+        return isOk;
     }
 
     public boolean insertProduct_Image(int productID, Bitmap bitmap)
@@ -204,6 +222,32 @@ public class DBControllerProduct extends DatabaseController{
             while (resultSet.next())
             {
                 rs.add(BitmapFactory.decodeStream(resultSet.getBinaryStream(1)));
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+    public List<ImageProductBaseDB> getOverviewImages(int productID)
+    {
+        List<ImageProductBaseDB> rs = new ArrayList<>();
+        try
+        {
+            String sql = "select [ID], [DATA] from [PRODUCT_IMAGE] where [PRODUCT_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+            {
+                ImageProductBaseDB image = new ImageProductBaseDB();
+                image.id = resultSet.getInt("ID");
+                image.value = BitmapFactory.decodeStream(resultSet.getBinaryStream("DATA"));
+                rs.add(image);
             }
             resultSet.close();
             statement.close();
@@ -323,21 +367,21 @@ public class DBControllerProduct extends DatabaseController{
 
             while (resultSet.next())
             {
-                int i = 1;
                 ProductBaseDB item = new ProductBaseDB();
+                item.salerID = salerID;
 
-                item.id = resultSet.getInt(i);i++;
-                item.salerID = resultSet.getInt(i);i++;
-                item.categoryID = resultSet.getInt(i);i++;
-                item.name = resultSet.getString(i);i++;
-                item.price = resultSet.getInt(i);i++;
-                item.priceOrigin = resultSet.getInt(i);i++;
-                item.amount = resultSet.getInt(i);i++;
-                item.amountSold = resultSet.getInt(i);i++;
-                item.imagePrimaryID = resultSet.getInt(i);i++;
-                item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
-                item.deleted = resultSet.getInt(i);i++;
+                item.id = resultSet.getInt("ID");
+                item.categoryID = resultSet.getInt("CATEGORY_ID");
+                item.name = resultSet.getString("NAME");
+                item.price = resultSet.getInt("PRICE");
+                item.priceOrigin = resultSet.getInt("PRICE_ORIGIN");
+                item.amount = resultSet.getInt("AMOUNT");
+                item.amountSold = resultSet.getInt("AMOUNT_SOLD");
+                item.imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
+                item.description = resultSet.getString("DETAIL");
+                item.createdDate = resultSet.getDate("CREATED_DATE");
+
+                item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream("PRIMARY_IMAGE"));
 
                 rs.add(item);
             }
@@ -763,5 +807,46 @@ public class DBControllerProduct extends DatabaseController{
         }
 
         return rs;
+    }
+
+    public boolean checkProductIsSold(int productID) {
+        boolean isExists = false;
+        try {
+            String sql = "SELECT TOP(1) * FROM [BILL_DETAIL] where [PRODUCT_ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                isExists = true;
+            }
+
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e) {
+            ErrorMsg = "Error when check Product is sold";
+            e.printStackTrace();
+        }
+        return isExists;
+    }
+
+    public void StopProvide(int productID) {
+        try {
+            String sql = "UPDATE PRODUCT SET DELETED = 1 where ID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, productID);
+
+            if(statement.executeUpdate() == 0) {
+                throw new SQLException("Không thể tìm thấy món ăn để dừng cung cấp");
+            }
+
+            commit();
+            statement.close();
+        }
+        catch (SQLException e) {
+            ErrorMsg = "Error when update Product deleted";
+            e.printStackTrace();
+        }
     }
 }

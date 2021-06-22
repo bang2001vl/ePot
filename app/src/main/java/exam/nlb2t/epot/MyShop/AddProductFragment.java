@@ -30,12 +30,12 @@ import java.util.List;
 import exam.nlb2t.epot.Category.DBControllerCategory;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DatabaseController;
+import exam.nlb2t.epot.Database.Tables.ImageProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.UpdateProductBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
-
 public class AddProductFragment extends DialogFragment {
     UpdateProductBinding binding;
     List<Bitmap> images;
@@ -43,6 +43,7 @@ public class AddProductFragment extends DialogFragment {
     ArrayAdapter<String> adapterCategory;
     ProductBaseDB productBefore;
     public static final String NAMEDIALOG = "AddProductFragment";
+
 
 //    Bitmap imagePrimary;
 //    Bitmap getImagePrimary()
@@ -61,6 +62,7 @@ public class AddProductFragment extends DialogFragment {
 
     public AddProductFragment()
     {
+        //MEANS: create new product
         images = new ArrayList<>();
 
         imagesDialog = new ImagesDialog(images);
@@ -69,7 +71,8 @@ public class AddProductFragment extends DialogFragment {
         });
     }
 
-    public AddProductFragment(ProductBaseDB product) {
+    public AddProductFragment(@NonNull ProductBaseDB product) {
+        //MEANS: Change current product
         this.productBefore = product;
 
         DBControllerProduct db = new DBControllerProduct();
@@ -86,10 +89,19 @@ public class AddProductFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = UpdateProductBinding.inflate(inflater, container, false);
-        setEventHandler();
+
         List<String> categories = DBControllerCategory.getCategoryNames();
         adapterCategory = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, categories);
         binding.spinnerCategory.setAdapter(adapterCategory);
+
+        setEventHandler();
+        //MEANS: this method must be after method setEventHanlder()
+        loadCurrentProduct();
+
+        return binding.getRoot();
+    }
+
+    private void loadCurrentProduct() {
         if (productBefore != null) {
             binding.buttonAddImage.setText(String.format("Ảnh\n(%d)", images.size()));
             binding.textView2.setText("Sửa sản phẩm");
@@ -99,9 +111,25 @@ public class AddProductFragment extends DialogFragment {
             binding.editTextNumberDecimal.setText(Helper.getMoneyString(productBefore.price));
             binding.editTextAmount.setText(String.valueOf(productBefore.amount - productBefore.amountSold));
             binding.editTextTextProductInfo.setText(productBefore.description);
+            binding.spinnerCategory.setSelection(productBefore.categoryID);
+
+            binding.imagePrimary.setOnClickListener(v->{
+                //TODO: Show message "Not change image" when click
+                Toast.makeText(getContext(),"Không thể chỉnh sửa ảnh đại diện",Toast.LENGTH_SHORT).show();
+            });
+            binding.editTextTextProductName.setOnClickListener(v->{
+                //TODO: Show message "Not change name" when click
+                Toast.makeText(getContext(),"Không thể chỉnh sửa tên mặt hàng",Toast.LENGTH_SHORT).show();
+            });
+            binding.editTextNumberDecimal.setOnClickListener(v->{
+                //TODO: Show message "Not change price" when click
+                Toast.makeText(getContext(),"Không thể chỉnh sửa giá gốc của mặt hàng",Toast.LENGTH_SHORT).show();
+            });
+
+            binding.imagePrimary.setFocusable(false);
+            binding.editTextTextProductName.setFocusable(false);
+            binding.editTextNumberDecimal.setFocusable(false);
         }
-        //binding.textView2.setText("Thêm sản phẩm");
-        return binding.getRoot();
     }
 
     @Override
@@ -140,23 +168,71 @@ public class AddProductFragment extends DialogFragment {
         int amount = getAmount();
         int price = getPrice();
         Bitmap image = getImagePrimary2();
+        int salerID = Authenticator.getCurrentUser().id;
+        int categoryID = binding.spinnerCategory.getSelectedItemPosition();
+
         if(name != null && description != null && amount != -1 && price != -1)
         {
-            DBControllerProduct databaseController = new DBControllerProduct();
-            int salerID = Authenticator.getCurrentUser().id;
-            int catagoryID = binding.spinnerCategory.getSelectedItemPosition();
-            if(databaseController.insertProduct(salerID,catagoryID,name, price,
-                    amount, image, description, images)) {
-                this.dismiss();
-                if(onSubmitOKListener != null)
-                {
-                    onSubmitOKListener.OnSuccess(AddProductFragment.this);
+            if (productBefore == null) {
+                //TODO: Create new product in DB
+                DBControllerProduct databaseController = new DBControllerProduct();
+                if(databaseController.insertProduct(salerID,categoryID,name, price,
+                        amount, image, description, images)) {
+                    this.dismiss();
+                    if(onSubmitOKListener != null)
+                    {
+                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
+                    }
                 }
+                else {
+                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+                }
+                databaseController.closeConnection();
             }
             else {
-                Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+                //TODO: Change current product in DB
+
+                DBControllerProduct db = new DBControllerProduct();
+                List<ImageProductBaseDB> deletedImages = new ArrayList<>(db.getOverviewImages(productBefore.id));
+
+                for(ImageProductBaseDB mImage : deletedImages) {
+                    if (images.removeIf(i -> mImage.value == i)) {
+                        Log.i("Deleted duplicate image", "The ID of image is deleted is: " + mImage.id);
+                        ImageProductBaseDB i = mImage;
+                        images.remove(mImage);
+
+                        i.recycle();
+                    }
+                }
+
+                //MEANS: update UI
+                updateProductUI(categoryID, description, amount + productBefore.amountSold);
+
+                int[] deletedImagesID = new int[deletedImages.size()];
+                for (int i = 0; i < deletedImages.size(); i++) {
+                    deletedImagesID[i] = deletedImages.get(i).id;
+                }
+
+                //MEANS: update DB
+                if (db.updateProduct(productBefore, images, deletedImagesID)) {
+                    this.dismiss();
+                    if(onSubmitOKListener != null)
+                    {
+                        onSubmitOKListener.OnSuccess(AddProductFragment.this);
+                    }
+                }
+                else {
+                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+                }
+                db.closeConnection();
             }
         }
+    }
+
+    private void updateProductUI(int categoryID, String description, int newTotalamount) {
+        productBefore.categoryID = categoryID;
+        productBefore.description = description;
+        productBefore.amount = newTotalamount;
     }
 
     void chooseImage() {
@@ -168,6 +244,7 @@ public class AddProductFragment extends DialogFragment {
     {
         EditText editText = binding.editTextNumberDecimal;
         int rs = -1;
+        if (productBefore != null) return productBefore.priceOrigin;
         try {
             rs = Integer.parseInt(editText.getText().toString());
             if(rs < 0 || ((rs%1000) != 0)){

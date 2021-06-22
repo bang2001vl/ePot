@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_product_sale"
+        android:title="Giảm giá"/>
+    <item android:id="@+id/menu_product_stopProvide"
+        android:title="Ngừng cung cấp"/>
+</menu>
