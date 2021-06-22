@@ -16,8 +16,10 @@ import androidx.viewbinding.ViewBinding;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.EmptyBillFragment;
 import exam.nlb2t.epot.R;
@@ -29,8 +31,9 @@ public class Shop_BillFragment extends Fragment {
     Bill_TabAdapter adapter;
     List<BillBaseDB> listBill;
     BillBaseDB.BillStatus statusBill;
-    ViewBinding emptybinding;
     FragmentOrderTabBinding binding;
+
+    public static final String NOTIFY_STATUS_CHANGED_MESSAGE = "NotifyStatusBillChange";
 
     public Shop_BillFragment(BillBaseDB.BillStatus status) {
         this.statusBill = status;
@@ -44,9 +47,7 @@ public class Shop_BillFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentOrderTabBinding.inflate(inflater, container, false);
-
         adapter = new Bill_TabAdapter(listBill, statusBill);
-        adapter.setNotifyStatusChangedListener(notifyStatusChangedListener);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -57,6 +58,8 @@ public class Shop_BillFragment extends Fragment {
         binding.RecycelviewBill.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         binding.RecycelviewBill.setAdapter(adapter);
+
+        setEventHandler();
 
         return binding.getRoot();
     }
@@ -78,6 +81,27 @@ public class Shop_BillFragment extends Fragment {
             listBill.add(bill);
             if (adapter != null) adapter.notifyItemInserted(listBill.size() - 1);
         }
+    }
+
+    void setEventHandler() {
+        adapter.setNotifyStatusChangedListener((f,t,b)-> {
+            //TODO: Notify Status Bill Change to another fragment and it's adapter
+            Bundle message = new Bundle();
+            DBControllerProduct db = new DBControllerProduct();
+            List<ProductInBill> productInBill = db.getProductInBill(b.id);
+            int[] productIDs = new int[productInBill.size()];
+            for (int i=0; i<productInBill.size(); i++) {
+                productIDs[i] = productInBill.get(i).getId();
+            }
+
+            message.putInt("FromStatus", f.getValue());
+            message.putInt("ToStatus",t.getValue());
+            message.putIntArray("ProductIDs", productIDs);
+
+            //This ParentFragmentManger must be called before notifyStatusChangeListener because it may be null
+            getParentFragmentManager().setFragmentResult(NOTIFY_STATUS_CHANGED_MESSAGE, message);
+            notifyStatusChangedListener.notifyChanged(f,t,b);
+        });
     }
 
 }

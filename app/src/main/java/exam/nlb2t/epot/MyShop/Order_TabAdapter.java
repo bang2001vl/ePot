@@ -53,7 +53,7 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
         }
     }
     int fromIndex,toIndex;
-    private void receiveNotifyChanged(BillBaseDB.BillStatus fromStatus, BillBaseDB.BillStatus toStatus, BillBaseDB bill) {
+    private void receiveNotifyChanged(@NonNull BillBaseDB.BillStatus fromStatus, BillBaseDB.BillStatus toStatus, BillBaseDB bill) {
         switch (fromStatus) {
             case DEFAULT:
                 fromIndex = 3;
@@ -82,6 +82,7 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
                 toIndex = 1;
                 break;
         }
+
         Shop_BillFragment fragAtfromIndex = ((Shop_BillFragment)fragments[fromIndex]);
         Shop_BillFragment fragAttoIndex = ((Shop_BillFragment)fragments[toIndex]);
         Shop_BillFragment fragAt0 = ((Shop_BillFragment)fragments[0]);

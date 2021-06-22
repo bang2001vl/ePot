@@ -93,4 +93,7 @@ dependencies {
     implementation "com.zing.zalo.zalosdk:core:2.4.1030"
     implementation "com.zing.zalo.zalosdk:auth:2.4.1030"
     implementation "com.zing.zalo.zalosdk:openapi:2.4.1030"
+
+    // fragment version
+    implementation 'androidx.fragment:fragment:1.3.4'
 }

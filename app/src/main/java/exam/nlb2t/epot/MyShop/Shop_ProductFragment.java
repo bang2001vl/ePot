@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -108,6 +111,15 @@ public class Shop_ProductFragment extends Fragment {
                     Toast.makeText(getContext(), "Tạo mới thành công", Toast.LENGTH_LONG).show();
                 }
             });
+        });
+
+        getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_MESSAGE,Shop_ProductFragment.this, (requestKey, result) -> {
+            int[] productIDs = result.getIntArray("ProductIDs");
+            Log.i("Tets","test ne");
+            if (productIDs!=null)
+            for (int i = 0; i<productIDs.length; i++) {
+
+            }
         });
     }
 }

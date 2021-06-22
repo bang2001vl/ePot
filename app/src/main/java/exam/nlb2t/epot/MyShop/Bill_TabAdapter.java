@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -24,6 +25,7 @@ import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
+    public static final String NOTIFY_STATUS_CHANGED_MESSAGE = "NotifyStatusBillChange";
 
     public Bill_TabAdapter(List<BillBaseDB> listBill, BillBaseDB.BillStatus status) {
         super();
@@ -62,30 +64,29 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
 
     private void onBtnCancelClick(RecyclerView.ViewHolder holder) {
         //TODO: Cancel the bill
-        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.DEFAULT);
+        changeStatus(holder.getAbsoluteAdapterPosition(), BillBaseDB.BillStatus.DEFAULT);
     }
 
     private void onBtnConfirmClick(RecyclerView.ViewHolder holder) {
         //TODO: Confirm the bill
-        changeStatus(holder.getAdapterPosition(), BillBaseDB.BillStatus.IN_SHIPPING);
+        changeStatus(holder.getAbsoluteAdapterPosition(), BillBaseDB.BillStatus.IN_SHIPPING);
     }
 
     private void changeStatus(int position, BillBaseDB.BillStatus newstatus) {
         BillBaseDB bill = billList.get(position);
         bill.status = newstatus;
 
-        Thread thread = new Thread(()-> {
+        new Thread(()-> {
             DBControllerBill db = new DBControllerBill();
-            db.setStatusBill(bill.id, bill.status);
+            db.setStatusBill(bill.id, newstatus);
             db.closeConnection();
-        });
+        }).start();
 
         billList.remove(position);
 
         notifyItemRemoved(position);
         notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus, bill);
 
-        thread.start();
     }
 
     public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder {

@@ -1,13 +1,16 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerProduct;
@@ -36,6 +39,10 @@ public class Shop_OverviewFragment extends Fragment {
 
     void setEventHandler() {
         //TODO : Write code here <Set all listener in here>
+        getParentFragmentManager().setFragmentResultListener(Bill_TabAdapter.NOTIFY_STATUS_CHANGED_MESSAGE, Shop_OverviewFragment.this, (resquestKey,result) -> {
+            Log.i("Test", "test ne 2");
+            loadData();
+        });
     }
 
     public void loadData() {
