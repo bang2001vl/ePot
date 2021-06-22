@@ -25,6 +25,22 @@ public class Authenticator {
             return false;
         }
     }
+    public static boolean LoginGG(int id)
+    {
+        DBControllerUser db = new DBControllerUser();
+
+        if(id > 0)
+        {
+            currentUser = db.getUserInfo(id);
+           /* currentUser.password = password;*/
+            db.closeConnection();
+            return true;
+        }
+        else {
+            db.closeConnection();
+            return false;
+        }
+    }
     private static UserBaseDB currentUser;
     public static UserBaseDB getCurrentUser()
     {

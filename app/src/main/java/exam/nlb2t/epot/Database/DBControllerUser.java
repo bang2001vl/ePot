@@ -362,4 +362,23 @@ public class DBControllerUser extends DatabaseController{
         }
         return rs;
     }
+    public int CheckExitsemail(String email)
+    {
+        int rs = -1;
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [EMAIL]=?");
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "FAILED: Cannot execute statement";
+        }
+        return rs;
+    }
 }
