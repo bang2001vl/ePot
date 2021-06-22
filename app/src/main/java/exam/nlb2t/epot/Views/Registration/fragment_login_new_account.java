@@ -20,7 +20,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +36,11 @@ public class fragment_login_new_account extends Fragment {
     public TextInputLayout til_pass;
     public TextInputLayout til_confirm_pass;
 
+    public String name;
+    public String username;
+    public String birthday;
+    public int gender;
+
     Calendar myCalendar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +55,12 @@ public class fragment_login_new_account extends Fragment {
         tit_define_pass = (TextInputEditText) view.findViewById(R.id.tit_define_pass);
         acs_sex = (AppCompatSpinner) view.findViewById(R.id.acs_sex);
         til_pass = (TextInputLayout) view.findViewById(R.id.til_pass);
-        til_confirm_pass = (TextInputLayout) view.findViewById(R.id.til_define_pass);
+        til_confirm_pass = (TextInputLayout) view.findViewById(R.id.til_Confirm_pass);
+
+        if(name != null) {  edt_name.setText(name); }
+        if(username!= null) { edt_usename.setText(username); }
+        if(birthday!= null) { edt_birth.setText(username); }
+        if(gender!= -1) {acs_sex.setSelection(gender);}
 
         String[] items = new String[]{"Nữ", "Nam"};
         ArrayAdapter<String> adapter = new  ArrayAdapter<String>(container.getContext(), android.R.layout.simple_spinner_item ,items);
@@ -175,7 +184,8 @@ public class fragment_login_new_account extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!Objects.requireNonNull(tit_pass.getText()).toString().equals(s.toString()))
+                String pass = tit_pass.getText().toString();
+                if (!(pass.equals(tit_define_pass.getText().toString())))
                 {
                     til_confirm_pass.setError(getResources().getString(R.string.error_define_pass));
                 }

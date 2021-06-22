@@ -56,24 +56,43 @@ public class signup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.signup);
 
         fg_signup_enterotp = new fragment_signup_enterotp();
         fg_signup_enterphone = new signup_enterphone();
         fg_signup_new_account = new fragment_login_new_account();
 
-       /* check create new acc
-       ReplaceFragment(fg_signup_new_account);*/
-
-        ReplaceFragment(fg_signup_enterphone);
         mAuth = FirebaseAuth.getInstance();
+
+
 
         btn_back = (Button) findViewById(R.id.btn_back);
         btn_next = (Button) findViewById(R.id.btn_next);
         ln_logo = (LinearLayout) findViewById(R.id.ln_logo);
         context = this;
 
-         params = ( ConstraintLayout.LayoutParams) ln_logo.getLayoutParams();
+        params = ( ConstraintLayout.LayoutParams) ln_logo.getLayoutParams();
+
+       /* check create new acc
+       ReplaceFragment(fg_signup_new_account);*/
+        if (getIntent().getIntExtra("Google", 0) == 1)
+        {
+            ReplaceFragment(fg_signup_new_account);
+            btn_next.setText(R.string.Sign_Up);
+            phone = getIntent().getStringExtra("phone");
+            params.setMargins(0, 30, 0, 0);
+            fg_signup_new_account.name = getIntent().getStringExtra("Personname");
+            fg_signup_new_account.username = getIntent().getStringExtra("Personemail");
+            ln_logo.setLayoutParams(params);
+        }
+        else
+        {
+            ReplaceFragment(fg_signup_enterphone);
+        }
+
+
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,29 +133,41 @@ public class signup extends AppCompatActivity {
                         }
                         else
                         {
-                            if (CheckErrorUserInfo() == 0)
+                            int t = getIntent().getIntExtra("Google", 0);
+                            boolean d = mAuth.getCurrentUser().isEmailVerified();
+                            String t2 = mAuth.getCurrentUser().getDisplayName();
+                            if (getIntent().getIntExtra("Google", 0) == 1 && !mAuth.getCurrentUser().isEmailVerified())
                             {
-                                Toast.makeText(context , getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context , "Có vẻ bạn chưa xác nhận mail, vui lòng xác nhận và quay lại!", Toast.LENGTH_SHORT).show();
+
                             }
                             else
                             {
-                                DBControllerUser controllerUser = new DBControllerUser();
-
-                                if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
+                                if (CheckErrorUserInfo() == 0)
                                 {
-                                    fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
+                                    Toast.makeText(context , getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
                                 }
                                 else
                                 {
-                                    int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
-                                    int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
-                                    int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
+                 DBControllerUser controllerUser = new DBControllerUser();
 
-                                    controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone, null, fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
-                                    Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
-                                    finish();
+                                    if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
+                                    {
+                                        fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
+                                    }
+                                    else
+                                    {
+                                        int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
+                                        int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
+                                        int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
+
+                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,null,  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                        Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
                                 }
                             }
+
 
                         }
 
@@ -162,6 +193,8 @@ public class signup extends AppCompatActivity {
                     }
                     else
                     {
+                        if (getIntent().getIntExtra("Google", 0) == 1)
+                            finish();
                         ReplaceFragment(fg_signup_enterotp);
                         btn_next.setText(R.string.Continue);
                     }
@@ -207,6 +240,13 @@ public class signup extends AppCompatActivity {
                             ln_logo.setLayoutParams(params);
 
                             ReplaceFragment(fg_signup_new_account);
+                            if(getIntent() != null)
+                            {
+                                fg_signup_new_account.name = getIntent().getStringExtra("Personname");
+                                fg_signup_new_account.username = getIntent().getStringExtra("Personemail");
+                                fg_signup_new_account.birthday = getIntent().getStringExtra("birthday");
+                                fg_signup_new_account.gender = getIntent().getStringExtra("gender") == "male"? 1: 0;
+                            }
                             btn_next.setText(R.string.Sign_Up);
 
                         } else {

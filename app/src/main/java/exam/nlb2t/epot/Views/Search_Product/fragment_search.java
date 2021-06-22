@@ -37,7 +37,7 @@ public class fragment_search extends DialogFragment {
     private List<ProductAdapterItemInfo> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
-    private  final int number_pro = 20;
+    private  final int number_pro = 3;
     private Button btn_more;
     private ImageView btn_back;
     private LinearLayout ln_product;
@@ -197,10 +197,10 @@ public class fragment_search extends DialogFragment {
                         subpro  =controllerProduct.getProductsBaseName(name,productAdapter.getProductList().size(), number_pro);
                         break;
                     case"CATEGORY":
-                        subpro  =controllerProduct.getProductsBaseCategory(name, productAdapter.getProductList().size(), number_pro);
+                        subpro  =controllerProduct.getProductsBaseCategory(name.substring(9), productAdapter.getProductList().size(), number_pro);
                         break;
                     case"SALER":
-                        subpro  = controllerProduct.getProductsBaseSaler(name,productAdapter.getProductList().size(), number_pro);
+                        subpro  = controllerProduct.getProductsBaseSaler(name.substring(10),productAdapter.getProductList().size(), number_pro);
                         break;
                 }
                 if (subpro.size() != 0)
@@ -217,7 +217,6 @@ public class fragment_search extends DialogFragment {
                         info.productAvatar = null;
                         list.add(info);
                     }
-                    fg_ProItem_container.productAdapter.addproduct(list);
                     productAdapter.addproduct(list);
                 }
                 else

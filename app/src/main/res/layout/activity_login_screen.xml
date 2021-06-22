@@ -169,29 +169,33 @@
         android:fontFamily="@font/gilroy_medium"/>
 
 
-    <com.facebook.login.widget.LoginButton
-        xmlns:facebook="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="15dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
+    <ImageButton
+        android:id="@+id/btn_login_zalo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@mipmap/logo_zalo"
+        android:text="@string/Login_with_zalo"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.605"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.083" />
 
-    <com.google.android.gms.common.SignInButton
+    <ImageButton
         android:id="@+id/sign_in_button"
-        android:layout_width="182dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="#F9F9F9"
+        android:foreground="@mipmap/logo_gg_foreground"
+        android:text="@string/Login_with_zalo"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.387"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.083" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

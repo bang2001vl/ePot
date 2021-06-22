@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.Views.Login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,23 +19,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.zing.zalo.zalosdk.oauth.LoginVia;
+import com.zing.zalo.zalosdk.oauth.OAuthCompleteListener;
+import com.zing.zalo.zalosdk.oauth.OauthResponse;
+import com.zing.zalo.zalosdk.oauth.ZaloOpenAPICallback;
+import com.zing.zalo.zalosdk.oauth.ZaloSDK;
 
 import org.json.JSONObject;
 
@@ -44,8 +51,8 @@ import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
-import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.Views.Registration.signup;
+import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 
@@ -58,9 +65,15 @@ public class LoginScreen extends AppCompatActivity {
     private TextView tv_forgotpass;
     private Button btn_login;
     private TextView tv_signup;
-    private LoginButton lgb_login;
     private TextView tv_resent_otp;
-    private SignInButton btn_signin_gg;
+    private ImageButton btn_signin_gg;
+    private ImageButton btn_login_zalo;
+
+    private FirebaseAuth mAuth;
+
+    Context context;
+
+    public
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -68,7 +81,7 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        context = this;
         setContentView(R.layout.activity_login_screen);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -76,20 +89,21 @@ public class LoginScreen extends AppCompatActivity {
 
         // require infor from user
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth = FirebaseAuth.getInstance();
 
         et_username = (EditText) findViewById(R.id.et_usename);
         tet_password = (TextInputEditText) findViewById(R.id.tip_pass);
         tv_forgotpass = (TextView) findViewById(R.id.tv_forgotpass);
         tv_signup = (TextView) findViewById(R.id.tv_signup);
         btn_login = (Button) findViewById(R.id.btn_login);
-        lgb_login = (LoginButton) findViewById(R.id.login_button);
-        btn_signin_gg = (SignInButton) findViewById(R.id.sign_in_button);
+        btn_signin_gg = (ImageButton) findViewById(R.id.sign_in_button);
+        btn_login_zalo = (ImageButton) findViewById(R.id.btn_login_zalo);
 
-        btn_signin_gg.setSize(SignInButton.SIZE_STANDARD);
-        setGooglePlusButtonText(btn_signin_gg, "Tiếp tục với Google");
 
 
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
@@ -196,9 +210,19 @@ public class LoginScreen extends AppCompatActivity {
                 signIn();
             }
         });
+        btn_login_zalo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginZalo();
+            }
+        });
+        if(ZaloSDK.Instance.isAuthenticate(null)) {
+            Onsusscess();
+        }
+
 
         callbackManager = CallbackManager.Factory.create();
-        lgb_login.setReadPermissions("email");
+     /*   lgb_login.setReadPermissions("email");
         lgb_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -219,7 +243,7 @@ public class LoginScreen extends AppCompatActivity {
                 Log.e("Error", "Error: " + error.toString());
                 Toast.makeText(LoginScreen.this, "Login Facebook error.", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -227,6 +251,7 @@ public class LoginScreen extends AppCompatActivity {
 
         super.onStart();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        /*updateUI(currentUser);*/
         if (acct != null) {
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
@@ -235,6 +260,7 @@ public class LoginScreen extends AppCompatActivity {
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
         }
+        signOut();
         /*updateUI(account);*/
     }
 
@@ -242,30 +268,97 @@ public class LoginScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        ZaloSDK.Instance.onActivityResult(this, requestCode, resultCode, data);
+
         if (requestCode == 9) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("Thành công", "firebaseAuthWithGoogle:" + account.getId());
+                firebaseAuthWithGoogle(account.getIdToken());
+
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("Lỗi đăng nhập gg", "Google sign in failed", e);
+            }
         }
     }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("Thành công", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                FirebaseUser currentusser = mAuth.getCurrentUser();
+                                                currentusser.reload();
+                                                boolean b =currentusser.isEmailVerified();
+                                                Toast.makeText(context , "Đăng nhập thành công vui lòng kiểm tra email và xác nhận!", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(LoginScreen.this, signup.class);
+                                                intent.putExtra("Google", 1);
+                                                intent.putExtra("Personname",user.getDisplayName());
+                                                intent.putExtra("Personemail", user.getEmail());
+                                                intent.putExtra("phone", user.getPhoneNumber());
+                                                intent.putExtra("photp",user.getPhotoUrl());
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    });
+                           /* updateUI(user);*/
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("Lỗi", "signInWithCredential:failure", task.getException());
+                           /* updateUI(null);*/
+                        }
+                    }
+           });
+    }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-            if (acct != null) {
+            /*if (acct != null) {
                 String personName = acct.getDisplayName();
                 String personGivenName = acct.getGivenName();
                 String personFamilyName = acct.getFamilyName();
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-            }
-            Intent intent = new Intent(LoginScreen.this, home_shopping.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
-            startActivity(intent);
-            signOut();
-            finish();
+
+                DBControllerUser controllerUser = new DBControllerUser();
+                int check = controllerUser.CheckExitsemail(personEmail);
+                if ( check > 0)
+                {
+                    Authenticator.LoginGG(check);
+                    Intent intent = new Intent(LoginScreen.this, home_shopping.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
+                    signOut();
+                    finish();
+                }
+                else
+                {
+                    Intent intent = new Intent(LoginScreen.this, signup.class);
+                    intent.putExtra("Personname",personFamilyName + " " + personGivenName);
+                    intent.putExtra("Personemail", personEmail);
+                    intent.putExtra("pertionphoto", personPhoto);
+                    startActivity(intent);
+                }
+            }*/
+
 
             // Signed in successfully, show authenticated UI.
           /*  updateUI(account);*/
@@ -331,16 +424,51 @@ public class LoginScreen extends AppCompatActivity {
         }
     }
 
-    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
-        // Find the TextView that is inside of the SignInButton and set its text
-        for (int i = 0; i < signInButton.getChildCount(); i++) {
-            View v = signInButton.getChildAt(i);
 
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setText(buttonText);
-                return;
-            }
-        }
+//login zalo
+    private void loginZalo() {
+        ZaloSDK.Instance.authenticate(this, LoginVia.APP_OR_WEB, listener);
     }
+
+    OAuthCompleteListener listener = new OAuthCompleteListener() {
+
+        @Override
+        public void onAuthenError(int errorCode, String message) {
+            //Đăng nhập thất bại..
+            Toast.makeText(context , "Đăng nhập thất bại, vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+            Onsusscess();
+        }
+
+        @Override
+        public void onGetOAuthComplete(OauthResponse response) {
+            Onsusscess();
+        }
+    };
+
+    void Onsusscess()
+    {
+        String id ;
+        String name ;
+        String birthday;
+        int gender;
+
+        Intent intent = new Intent(LoginScreen.this, signup.class);
+        //Get Profile
+        ZaloSDK.Instance.getProfile(getBaseContext(), new ZaloOpenAPICallback()
+                {
+                    @Override
+                    public void onResult(JSONObject data) {
+
+                        intent.putExtra("id", data.optString("id"));
+                        intent.putExtra( "Personname", data.optString("name"));
+                        intent.putExtra( "birthday", data.optString("birthday"));
+                        intent.putExtra("gender", data.optString("gender"));
+
+                    }
+                }
+                ,new String[]{"id", "name", "birthdayr", "gender"});
+
+        startActivity(intent);
+    }
+
 }

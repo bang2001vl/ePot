@@ -177,6 +177,11 @@
     <string name="error_5_otp">Nhập sãi mã OTP 5 lần, vui lòng đăng kí lại!</string>
     <string name="see_more">Xem thêm</string>
 
+    //Login with zalo
+
+    <string name="appID"> 4219504627897331336 </string>
+    <string name="Login_with_zalo"> Đăng kí với zalo</string>
+
     <string-array name="Sexarray">
         <item>Nam</item>
         <item>Nữ</item>

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="com.zing.zalo.zalosdk.oauth.ZaloSDKApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,11 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPot">
-        <activity android:name=".Views.Forgotpass.forgotpassword"></activity>
+        <activity android:name=".Views.Let_start"></activity>
+        <activity android:name=".Views.Forgotpass.forgotpassword" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id" /> <!-- Required zalo app id -->
+        <meta-data
+            android:name="com.zing.zalo.zalosdk.appID"
+            android:value="@string/appID" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -44,18 +49,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".Views.home_shopping">
-           <intent-filter>
+<!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category" />
             </intent-filter>
+-->
         </activity>
         <activity android:name=".Views.Registration.signup">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity android:name=".Category.CategoryActivity">
 <!--            <intent-filter>-->
@@ -63,30 +73,41 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
+
         <activity android:name=".TestingActivity">
 
-            <!--<intent-filter>
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
         <activity android:name=".MainActivity">
-           <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
-
         <activity android:name=".Activities.CartActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
-        </activity>
 
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
     </application>
 
 </manifest>
