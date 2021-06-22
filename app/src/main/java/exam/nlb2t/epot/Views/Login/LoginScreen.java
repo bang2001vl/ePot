@@ -69,6 +69,9 @@ public class LoginScreen extends AppCompatActivity {
     private ImageButton btn_signin_gg;
     private ImageButton btn_login_zalo;
 
+    FirebaseUser currentusser;
+    private String mail;
+
     private FirebaseAuth mAuth;
 
     Context context;
@@ -251,7 +254,6 @@ public class LoginScreen extends AppCompatActivity {
 
         super.onStart();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        /*updateUI(currentUser);*/
         if (acct != null) {
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
@@ -270,6 +272,7 @@ public class LoginScreen extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         ZaloSDK.Instance.onActivityResult(this, requestCode, resultCode, data);
 
+        boolean b = currentusser.isEmailVerified();
         if (requestCode == 9) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -277,12 +280,17 @@ public class LoginScreen extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("Thành công", "firebaseAuthWithGoogle:" + account.getId());
+
                 firebaseAuthWithGoogle(account.getIdToken());
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Lỗi đăng nhập gg", "Google sign in failed", e);
             }
+        }
+        else
+        {
+            Onsusscess();
         }
     }
 
@@ -295,29 +303,9 @@ public class LoginScreen extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Thành công", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            user.sendEmailVerification()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                FirebaseUser currentusser = mAuth.getCurrentUser();
-                                                currentusser.reload();
-                                                boolean b =currentusser.isEmailVerified();
-                                                Toast.makeText(context , "Đăng nhập thành công vui lòng kiểm tra email và xác nhận!", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(LoginScreen.this, signup.class);
-                                                intent.putExtra("Google", 1);
-                                                intent.putExtra("Personname",user.getDisplayName());
-                                                intent.putExtra("Personemail", user.getEmail());
-                                                intent.putExtra("phone", user.getPhoneNumber());
-                                                intent.putExtra("photp",user.getPhotoUrl());
-                                                startActivity(intent);
-                                            }
-                                        }
-                                    });
+                            }
                            /* updateUI(user);*/
-                        } else {
+                         else {
                             // If sign in fails, display a message to the user.
                             Log.w("Lỗi", "signInWithCredential:failure", task.getException());
                            /* updateUI(null);*/
@@ -329,7 +317,7 @@ public class LoginScreen extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
-            /*if (acct != null) {
+            if (acct != null) {
                 String personName = acct.getDisplayName();
                 String personGivenName = acct.getGivenName();
                 String personFamilyName = acct.getFamilyName();
@@ -338,26 +326,26 @@ public class LoginScreen extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
 
                 DBControllerUser controllerUser = new DBControllerUser();
-                int check = controllerUser.CheckExitsemail(personEmail);
-                if ( check > 0)
+                int id = controllerUser.findUserID_ByEmail(personEmail);
+                if (id > 0)
                 {
-                    Authenticator.LoginGG(check);
-                    Intent intent = new Intent(LoginScreen.this, home_shopping.class);
+                    Authenticator.LoginGG(id);
+                    finish();
+                    Intent intent = new Intent(LoginScreen.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("EXIT", true);
                     startActivity(intent);
-                    signOut();
-                    finish();
                 }
                 else
                 {
                     Intent intent = new Intent(LoginScreen.this, signup.class);
+                    intent.putExtra("Google", 1);
                     intent.putExtra("Personname",personFamilyName + " " + personGivenName);
                     intent.putExtra("Personemail", personEmail);
                     intent.putExtra("pertionphoto", personPhoto);
                     startActivity(intent);
                 }
-            }*/
+            }
 
 
             // Signed in successfully, show authenticated UI.
@@ -369,11 +357,20 @@ public class LoginScreen extends AppCompatActivity {
             /*updateUI(null);*/
         }
     }
-
     // signin acct gg
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 9);
+        currentusser = mAuth.getCurrentUser();
+        currentusser.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Thông báo", "User account deleted.");
+                        }
+                    }
+                });
     }
     // signOut acct gg
     public void signOut() {
@@ -427,7 +424,19 @@ public class LoginScreen extends AppCompatActivity {
 
 //login zalo
     private void loginZalo() {
-        ZaloSDK.Instance.authenticate(this, LoginVia.APP_OR_WEB, listener);
+        ZaloSDK.Instance.authenticate(this, LoginVia.APP_OR_WEB, new OAuthCompleteListener() {
+
+            @Override
+            public void onAuthenError(int errorCode, String message) {
+                //Đăng nhập thất bại..
+                Toast.makeText(context , "Đăng nhập thất bại, vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+                Onsusscess();
+            }
+            @Override
+            public void onGetOAuthComplete(OauthResponse response) {
+                Onsusscess();
+            }
+        });
     }
 
     OAuthCompleteListener listener = new OAuthCompleteListener() {
@@ -438,7 +447,6 @@ public class LoginScreen extends AppCompatActivity {
             Toast.makeText(context , "Đăng nhập thất bại, vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
             Onsusscess();
         }
-
         @Override
         public void onGetOAuthComplete(OauthResponse response) {
             Onsusscess();
@@ -470,5 +478,7 @@ public class LoginScreen extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+
 
 }

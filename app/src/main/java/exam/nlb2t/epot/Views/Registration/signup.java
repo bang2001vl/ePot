@@ -133,15 +133,6 @@ public class signup extends AppCompatActivity {
                         }
                         else
                         {
-                            int t = getIntent().getIntExtra("Google", 0);
-                            boolean d = mAuth.getCurrentUser().isEmailVerified();
-                            String t2 = mAuth.getCurrentUser().getDisplayName();
-                            if (getIntent().getIntExtra("Google", 0) == 1 && !mAuth.getCurrentUser().isEmailVerified())
-                            {
-                                Toast.makeText(context , "Có vẻ bạn chưa xác nhận mail, vui lòng xác nhận và quay lại!", Toast.LENGTH_SHORT).show();
-
-                            }
-                            else
                             {
                                 if (CheckErrorUserInfo() == 0)
                                 {
@@ -149,7 +140,7 @@ public class signup extends AppCompatActivity {
                                 }
                                 else
                                 {
-                 DBControllerUser controllerUser = new DBControllerUser();
+                                    DBControllerUser controllerUser = new DBControllerUser();
 
                                     if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
                                     {
@@ -161,7 +152,7 @@ public class signup extends AppCompatActivity {
                                         int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
                                         int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
-                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,null,  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
                                         Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
