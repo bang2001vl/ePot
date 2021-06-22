@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.DialogFragment.ChangeAvtFragment;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
 import exam.nlb2t.epot.HelpFragment;
@@ -122,6 +123,12 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 ShowDialog(new OrderFragment(2));
             }
 
+        });
+        binding.avtProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new ChangeAvtFragment());
+            }
         });
 
     }
