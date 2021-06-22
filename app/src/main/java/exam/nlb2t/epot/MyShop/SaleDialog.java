@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.SaleDialogBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -91,4 +92,11 @@ public class SaleDialog extends DialogFragment {
         onDismissListener.onDismiss(dialog);
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = new Dialog(getContext(), R.style.Theme_Dialog_Full_Width);
+        dialog.setContentView(R.layout.sale_dialog);
+        return dialog;
+    }
 }

@@ -15,7 +15,7 @@
             android:id="@+id/my_shop_imageProduct"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/vans" />
+            android:background="@color/gray_400"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme_Dialog_Full_Width" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
+</resources>
