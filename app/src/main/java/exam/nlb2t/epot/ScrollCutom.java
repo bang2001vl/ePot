@@ -68,7 +68,7 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
         int visibleItemsCount = mLinearLayoutManager.getChildCount();
         int passVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
         int totalItemCount = mLinearLayoutManager.getItemCount();
-        int numberPageBeforeLoad = totalItemCount / MAX_NUMBER_ITEM_IN_PAGE + 1;
+        int numberPageBeforeLoad = totalItemCount / MAX_NUMBER_ITEM_IN_PAGE + (totalItemCount % MAX_NUMBER_ITEM_IN_PAGE == 0? 0:1);
 
         if (dy>0) {
             if (passVisibleItems + visibleItemsCount >= totalItemCount - REMAIN_NUMBER_ITEM_BEFORE_LOAD) {
