@@ -323,6 +323,7 @@ public class CartFragment_Old extends Fragment {
                     {
                         onClickDeleteItem.onClick(v);
                     }
+                    dialog.dismiss();
                 }
             });
             dialog.show(getChildFragmentManager(), null);
@@ -447,7 +448,9 @@ public class CartFragment_Old extends Fragment {
                             CartDataController.removeProduct(getContext(), p.first);
                         }
                     }
-                    Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+
+                    requestLoadData(CartDataController.getAllData(getContext()));
+                    //Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
                 }
                 else {Toast.makeText(getContext(), "Failed: Error while sending data to server", Toast.LENGTH_LONG).show();}
             }
