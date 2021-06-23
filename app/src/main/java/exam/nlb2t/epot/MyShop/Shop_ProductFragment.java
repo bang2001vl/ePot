@@ -29,7 +29,9 @@ import java.util.concurrent.Future;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.ScrollCutom;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
@@ -37,17 +39,16 @@ import exam.nlb2t.epot.singleton.Helper;
 public class Shop_ProductFragment extends Fragment {
     MyShopProductTabBinding binding;
     Product_TabAdapter adapter;
-    public final List<ProductBaseDB> products;
+    public final List<ProductMyShop> products;
 
     Handler mhandler = new Handler(Looper.getMainLooper());
 
     private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 2;
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
-    private final int NUMBER_ITEM_TO_LOAD = 5;
 
     public Shop_ProductFragment() {
         DBControllerProduct db = new DBControllerProduct();
-        products = db.getLIMITProduct(Authenticator.getCurrentUser().id, 0, 8);
+        products = db.getProductMyShop(0, 8);
         db.closeConnection();
     }
 
@@ -63,28 +64,55 @@ public class Shop_ProductFragment extends Fragment {
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         binding.layoutProductMyShop.setLayoutManager(layout);
 
-        binding.layoutProductMyShop.setItemViewCacheSize(8);
+        binding.layoutProductMyShop.setHasFixedSize(true);
+        binding.layoutProductMyShop.setItemViewCacheSize(10);
         binding.layoutProductMyShop.setDrawingCacheEnabled(true);
         binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        binding.layoutProductMyShop.setAdapter(adapter);
-        binding.layoutProductMyShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleItemsCount = layout.getChildCount();
-                int passVisibleItems = layout.findFirstVisibleItemPosition();
-                int totalItemCount = layout.getItemCount();
-
-                if (passVisibleItems + visibleItemsCount >= totalItemCount - NUMBER_BEHIND_ITEM_IN_SCROLL) {
-                    if (passVisibleItems + visibleItemsCount == totalItemCount)
-                        while (mhandler.hasMessages(1)) ;
-                    if (!mhandler.hasMessages(1)) {
-                        adapter.addItemToList(totalItemCount, NUMBER_ITEM_TO_LOAD, mhandler);
-                    }
-                }
+            public void loadNextPage(int index_item_end_list) {
+                adapter.addItemToList(index_item_end_list+1, 5, mhandler);
             }
-        });
+
+            @Override
+            public void loadPreviousPage(int index_item_start_list) {
+
+            }
+
+            @Override
+            public void loadNextPageUI(int index_item_end_list) {
+                int offset = index_item_end_list + 1;
+                adapter.notifyItemRangeInserted(offset, products.size() - offset);
+            }
+        };
+
+        binding.layoutProductMyShop.setAdapter(adapter);
+        binding.layoutProductMyShop.addOnScrollListener(mScroll);
+//        binding.layoutProductMyShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                //super.onScrolled(recyclerView, dx, dy);
+//                if (dy>0) {
+//                    //scroll down
+//                    int visibleItemsCount = layout.getChildCount();
+//                    int passVisibleItems = layout.findFirstVisibleItemPosition();
+//                    int totalItemCount = layout.getItemCount();
+//
+//                    if ( passVisibleItems + visibleItemsCount >= totalItemCount - NUMBER_BEHIND_ITEM_IN_SCROLL) {
+//                        if (passVisibleItems + visibleItemsCount == totalItemCount)
+//                            //wait for load data finished
+//                            while (isLoadMoreData());
+//                        if (!isLoadMoreData()) {
+//                            adapter.addItemToList(totalItemCount, NUMBER_ITEM_TO_LOAD, mhandler);
+//                        }
+//                    }
+//                }
+//                if (dy<0) {
+//                    //scroll up
+//                }
+//            }
+//        });
 
         return binding.getRoot();
     }
@@ -104,7 +132,7 @@ public class Shop_ProductFragment extends Fragment {
                 return;
             }
 
-            addProductFragment.show(getFragmentManager().beginTransaction(), "createProduct");
+            addProductFragment.show(getParentFragmentManager().beginTransaction(), "createProduct");
             addProductFragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
                 @Override
                 public void OnSuccess(Object sender) {
@@ -113,13 +141,52 @@ public class Shop_ProductFragment extends Fragment {
             });
         });
 
-        getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_MESSAGE,Shop_ProductFragment.this, (requestKey, result) -> {
+        getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_PRODUCT_FRAGMENT, Shop_ProductFragment.this, (requestKey, result) -> {
             int[] productIDs = result.getIntArray("ProductIDs");
-            Log.i("Tets","test ne");
-            if (productIDs!=null)
-            for (int i = 0; i<productIDs.length; i++) {
-
-            }
+            int[] quantities = result.getIntArray("Quantities");
+            if (productIDs != null)
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO: reload numbersold
+                        synchronized (products) {
+                            DBControllerProduct db = new DBControllerProduct();
+                            for (int i = 0; i < productIDs.length; i++) {
+                                for (int j = 0; j < products.size(); j++) {
+                                    if (productIDs[i] == products.get(j).id) {
+                                        //products.get(j).amount += quantities[i];
+                                        products.get(j).amountSold -= quantities[i];
+                                        break;
+                                    }
+                                }
+                                db.updateQuantityProduct(productIDs[i], quantities[i]);
+                            }
+                            db.closeConnection();
+                        }
+                    }
+                }).start();
         });
     }
+
+//    private boolean isLoadMoreData() {
+//        return mhandler.hasMessages(1);
+//    }
+//
+//    private final int NUMBER_ITEM_TO_LOAD = 5;
+//    private int totalNumberPage;
+//    /**
+//     * Load new product when scroll recycler view
+//     * @param pageNumber the page number wants to load, pagenumber start at 0
+//     * @param state state scroll, 1 when down, 0 when up
+//     */
+//    synchronized private void loadPage(int pageNumber, int state) {
+//        if (state == 1 && pageNumber > 2) {
+//            //remove page at position pageNumber - 2
+//        }
+//        else if (state == 0 && pageNumber < totalNumberPage - 1) {
+//            //remove page at position totalNumberPage - 1
+//        }
+//    }
+
+    public ScrollCutom mScroll;
 }

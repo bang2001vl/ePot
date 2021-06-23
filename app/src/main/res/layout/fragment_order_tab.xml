@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.recyclerview.widget.RecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Recycelview_bill"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:context=".OrderTab">
 
-        <!-- TODO: Update blank fragment layout -->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/Recycelview_bill"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            tools:listitem="@layout/sample_order_bill_view"/>
-
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:listitem="@layout/sample_order_bill_view" />
