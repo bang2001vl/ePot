@@ -4,35 +4,28 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
-import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
-import exam.nlb2t.epot.MyShop.AddProductFragment;
-import exam.nlb2t.epot.MyShop.Product_TabAdapter;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.PersonBill.BillAdapterItemInfo;
-import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;
-import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
-import exam.nlb2t.epot.singleton.Helper;
 
 public class OrderTab extends Fragment {
 
@@ -43,6 +36,7 @@ public class OrderTab extends Fragment {
     public BillAdapter recyclerViewAdapter;
     public String buttonText;
     public BillRecyclerViewAdapter.OnClickBtnDetailListener buttonClickListner;
+    View gifLoadingCircle;
 
     protected int lastIndex = 0;
     protected int step = 20;
@@ -71,7 +65,6 @@ public class OrderTab extends Fragment {
         }
         hasMoreData = true;
         lastIndex = 0;
-        layoutData();
         loadMore();
     }
 
@@ -81,15 +74,13 @@ public class OrderTab extends Fragment {
         new Thread(() -> {
             List<BillAdapterItemInfo> list = loadDataFromDB();
             bills.addAll(bills.size(), list);
-            if (getActivity() != null && list.size() > 0) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (recyclerViewAdapter != null) {
-                            recyclerViewAdapter.notifyItemRangeInserted(bills.size() - 1, bills.size());
-                        }
-                        layoutData();
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (recyclerViewAdapter != null && list.size() > 0) {
+                        recyclerViewAdapter.notifyItemRangeInserted(bills.size() - 1, bills.size());
                     }
+                    layoutData();
+                    hideLoading();
                 });
             }
 
@@ -113,17 +104,37 @@ public class OrderTab extends Fragment {
         //TODO: Find UserID to login app
 
         v=inflater.inflate(R.layout.fragment_order_tab,container,false);
+        gifLoadingCircle = v.findViewById(R.id.gif_loading_circle);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);
 
         recyclerViewAdapter = new BillAdapter(bills);
-        recyclerViewAdapter.setOnBindingLastPositionListener(postion -> loadMore());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
 
         if(buttonText != null){recyclerViewAdapter.setBtnDetailText(buttonText);}
         if(buttonClickListner != null){recyclerViewAdapter.setOnBtnDetailClickListener(buttonClickListner);}
+
+        ScrollView scrollView = (ScrollView) v.findViewById(R.id.scroll_view_main);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+
+            @Override
+            public void onScrollChanged() {
+                if(bills.size() == 0) return;
+                ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+                View view = viewG.getChildAt(viewG.getChildCount() - 1);
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+
+                // if diff is zero, then the bottom has been reached
+                if (diff <= 00 && hasMoreData) {
+                    showLoading();
+                    loadMore();
+                }
+            }
+        });
+        hideLoading();
+        layoutData();
         return v;
     }
 
@@ -134,28 +145,22 @@ public class OrderTab extends Fragment {
         layoutData();
     }
 
-    boolean isLoading = false;
-    public void showLoadingScreen()
+    public void showLoading()
     {
-        if(v==null || isLoading) return;
-        ConstraintLayout constraintLayout = (ConstraintLayout)v;
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        constraintLayout.addView(new LoadingView(getContext()), constraintLayout.getChildCount(), params);
-        isLoading = true;
+        gifLoadingCircle.setEnabled(false);
+        gifLoadingCircle.setVisibility(View.VISIBLE);
     }
 
-    public void hideLoadingScreen()
+    public void hideLoading()
     {
-        if(v==null || !isLoading) return;
-        ConstraintLayout constraintLayout = (ConstraintLayout)v;
-        constraintLayout.removeViewAt(constraintLayout.getChildCount() - 1);
-        isLoading = false;
+        gifLoadingCircle.setEnabled(true);
+        gifLoadingCircle.setVisibility(View.GONE);
     }
 
     void layoutData()
     {
         if(v==null) return;
-        ConstraintLayout constraintLayout = (ConstraintLayout)v;
+        ViewGroup constraintLayout = (ViewGroup) v;
         if (bills.size() == 0) {
             if(emptybinding == null) {
                 emptybinding = FragmentEmptyBillBinding.inflate(getLayoutInflater(), constraintLayout, false);
@@ -167,8 +172,8 @@ public class OrderTab extends Fragment {
 
         if(emptybinding != null)
         {
-            constraintLayout.removeView(emptybinding.getRoot());
             emptybinding = null;
+            constraintLayout.removeViewAt(constraintLayout.getChildCount() - 1);
         }
     }
 }

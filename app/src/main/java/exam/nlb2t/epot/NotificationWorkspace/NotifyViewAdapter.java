@@ -161,10 +161,10 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
         return list.size();
     }
 
-    public NotifyViewAdapter(Context context)
+    public NotifyViewAdapter(Context context, List<NotifycationInfo> list)
     {
         mContext = context;
-        list = new ArrayList<>();
+        this.list = list;
     }
 
     public class NotifyViewHolder extends RecyclerView.ViewHolder{
