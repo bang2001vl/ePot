@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,27 +83,23 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         fragment_topSold.canScroll = false;
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
 
-        binding.nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        binding.stickyScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
             @Override
             public void onScrollChanged() {
+                ScrollView scrollView = binding.stickyScrollView;
+                ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+                View view = viewG.getChildAt(viewG.getChildCount() - 1);
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
-                Rect scrollBounds = new Rect();
-                binding.nestedScrollView.getHitRect(scrollBounds);
-                if (binding.fragmentProductTopSold.getLocalVisibleRect(scrollBounds)) {
-                    if(fragment_new != null && fragment_new.proGrid != null && fragment_new.proGrid.isNestedScrollingEnabled())
-                    {
-                        fragment_new.proGrid.setNestedScrollingEnabled(false);
-                    }
-                } else {
-                    fragment_new.proGrid.setNestedScrollingEnabled(true);
-                    binding.nestedScrollView.requestDisallowInterceptTouchEvent(true);
-                    binding.nestedScrollView.smoothScrollTo(0, binding.titleBarNewProduct.getTop());
-                    Log.d("MY_TAG", "IT OKAY");
+                // if diff is zero, then the bottom has been reached
+                if (diff <= 00 && hasMoreData) {
+                    showLoading();
+                    loadMoreData_New();
                 }
-
             }
         });
+        hideLoading();
         return binding.getRoot();
     }
 
@@ -126,19 +129,20 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             fragment_new.spinner.setSelection(0, true);
             fragment_new.addProduct(getMoreData());
         });*/
-        binding.buttonMoreProductNew.setVisibility(View.GONE);
+        //binding.buttonMoreProductNew.setVisibility(View.GONE);
 
         fragment_new.setOnClickItemListener(onClickItemListener);
-        fragment_new.setOnBindingLastPositionListener(new BillAdapter.OnBindingLastPositionListener() {
-            @Override
-            public void onBindingLastPostion(int postion) {
-                if(getActivity() != null && hasMoreData && fragment_new.productList.size() >= step) {
-                    getActivity().runOnUiThread(() -> loadMoreData_New());
-                }
-            }
-        });
 
         fragment_topSold.setOnClickItemListener(onClickItemListener);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        /*if(binding.layoutNewProduct.getLayoutParams().height != binding.nestedScrollView.getHeight()) {
+            binding.layoutNewProduct.getLayoutParams().height = binding.nestedScrollView.getHeight();
+            binding.layoutNewProduct.requestLayout();
+        }*/
     }
 
     List<ProductAdapterItemInfo> list_New;
@@ -204,9 +208,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         }
         currentLastIndex = 1;
         hasMoreData = true;
-        step = 9;
         loadMoreData_New();
-        step = 10;
     }
 
     public void loadMoreData_New()
@@ -221,12 +223,24 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             if (fragment_new != null && getActivity() != null && data.size() > 0) {
                 getActivity().runOnUiThread(() -> {
                     fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - 1, data.size());
+                    hideLoading();
                 });
             }
-
             hasMoreData = data.size() == step;
             currentLastIndex += data.size();
         }).start();
+    }
+
+    protected void showLoading()
+    {
+        binding.gifLoadingCircle.setEnabled(true);
+        binding.gifLoadingCircle.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideLoading()
+    {
+        binding.gifLoadingCircle.setEnabled(false);
+        binding.gifLoadingCircle.setVisibility(View.GONE);
     }
 
     public void onClickRefresh_TopSold() {
