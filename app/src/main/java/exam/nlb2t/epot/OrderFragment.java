@@ -94,7 +94,6 @@ public class OrderFragment extends DialogFragment{
         tab_inShipping.setOnSubmitVertifyBillListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {
-                tabs.get(2).reLoad();
                 tabs.get(3).reLoad();
             }
         });
