@@ -86,7 +86,7 @@ public class OrderTab extends Fragment {
                     @Override
                     public void run() {
                         if (recyclerViewAdapter != null) {
-                            recyclerViewAdapter.notifyItemRangeInserted(bills.size() - list.size() - 1, bills.size());
+                            recyclerViewAdapter.notifyItemRangeInserted(bills.size() - 1, bills.size());
                         }
                         layoutData();
                     }

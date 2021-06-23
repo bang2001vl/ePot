@@ -67,7 +67,7 @@ public class RatingDialogTab_New extends Fragment {
             if (getActivity() != null && adapter != null && data.size() > 0) {
                 list.addAll(data);
                 getActivity().runOnUiThread(() -> {
-                    adapter.notifyItemRangeInserted(list.size() - data.size() - 1, data.size());
+                    adapter.notifyItemRangeInserted(list.size() - 1, data.size());
                 });
                 hasMoreData = data.size() == step;
             }

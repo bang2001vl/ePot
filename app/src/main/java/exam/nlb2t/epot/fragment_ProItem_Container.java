@@ -31,7 +31,7 @@ public class fragment_ProItem_Container extends Fragment {
 
     private Context context;
     public List<ProductAdapterItemInfo> productList ;
-    RecyclerView proGrid;
+    public RecyclerView proGrid;
     public ProductAdapter productAdapter;
     public boolean hideSpinner = false;
     public boolean canScroll = true;

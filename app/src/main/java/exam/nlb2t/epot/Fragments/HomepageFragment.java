@@ -1,10 +1,13 @@
 package exam.nlb2t.epot.Fragments;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +67,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
         fragment_new = fragment_ProItem_Container.newInstance(list_New);
         fragment_new.hideSpinner = true;
+        fragment_new.canScroll = false;
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
 
 
@@ -72,6 +76,27 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         fragment_topSold.canScroll = false;
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
 
+        binding.nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+
+            @Override
+            public void onScrollChanged() {
+
+                Rect scrollBounds = new Rect();
+                binding.nestedScrollView.getHitRect(scrollBounds);
+                if (binding.fragmentProductTopSold.getLocalVisibleRect(scrollBounds)) {
+                    if(fragment_new != null && fragment_new.proGrid != null && fragment_new.proGrid.isNestedScrollingEnabled())
+                    {
+                        fragment_new.proGrid.setNestedScrollingEnabled(false);
+                    }
+                } else {
+                    fragment_new.proGrid.setNestedScrollingEnabled(true);
+                    binding.nestedScrollView.requestDisallowInterceptTouchEvent(true);
+                    binding.nestedScrollView.smoothScrollTo(0, binding.titleBarNewProduct.getTop());
+                    Log.d("MY_TAG", "IT OKAY");
+                }
+
+            }
+        });
         return binding.getRoot();
     }
 
