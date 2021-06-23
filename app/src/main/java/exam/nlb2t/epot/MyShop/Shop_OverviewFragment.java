@@ -1,6 +1,8 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,26 +41,28 @@ public class Shop_OverviewFragment extends Fragment {
 
     void setEventHandler() {
         //TODO : Write code here <Set all listener in here>
-        getParentFragmentManager().setFragmentResultListener(Bill_TabAdapter.NOTIFY_STATUS_CHANGED_MESSAGE, Shop_OverviewFragment.this, (resquestKey,result) -> {
-            Log.i("Test", "test ne 2");
-            loadData();
+        getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT,
+                Shop_OverviewFragment.this, (resquestKey, result) -> {
+            new Handler(Looper.getMainLooper()).post(() -> loadData());
         });
     }
 
     public void loadData() {
-        DBControllerBill db = new DBControllerBill();
-        int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
-        db.closeConnection();
-        if (listNumber != null) {
-            binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
-            binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
-            binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
-            binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
-        }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            DBControllerBill db = new DBControllerBill();
+            int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
+            db.closeConnection();
+            if (listNumber != null) {
+                binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
+                binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
+                binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
+                binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
+            }
 
-        DBControllerProduct db2 = new DBControllerProduct();
-        binding.itemSell.setValue(db2.getNumberProducts(Authenticator.getCurrentUser().id));
-        binding.itemOutofstock.setValue(db2.getNumberProductOutofStock(Authenticator.getCurrentUser().id));
-        db2.closeConnection();
+            DBControllerProduct db2 = new DBControllerProduct();
+            binding.itemSell.setValue(db2.getNumberProducts(Authenticator.getCurrentUser().id));
+            binding.itemOutofstock.setValue(db2.getNumberProductOutofStock(Authenticator.getCurrentUser().id));
+            db2.closeConnection();
+        });
     }
 }

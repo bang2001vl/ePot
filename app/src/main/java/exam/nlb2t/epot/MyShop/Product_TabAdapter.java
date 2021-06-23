@@ -2,6 +2,7 @@ package exam.nlb2t.epot.MyShop;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -40,6 +41,7 @@ import java.util.Locale;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.DialogFragment.YesNoDialog;
 import exam.nlb2t.epot.R;
@@ -49,10 +51,11 @@ import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder> {
-    public final List<ProductBaseDB> products;
+    public final List<ProductMyShop> products;
     Context context;
     boolean isfullProducts;
     int position;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public int getPosition() {
         return position;
@@ -62,7 +65,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         this.position = position;
     }
 
-    public Product_TabAdapter(List<ProductBaseDB> products) {
+    public Product_TabAdapter(List<ProductMyShop> products) {
         this.products = products;
     }
 
@@ -82,15 +85,28 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //new Handler(Looper.getMainLooper()).postDelayed((()->{
-        holder.getNameView().setText(products.get(position).name);
-        holder.getPriceView().setText(Helper.getMoneyString(products.get(position).priceOrigin));
-        holder.getImageView().setImageBitmap(products.get(position).imageProduct);
-        holder.getLikeView().setText("Yêu thích: " + products.get(position).getNumberLike());
-        holder.getWarehouseView().setText("Kho hàng: " + (products.get(position).amount - products.get(position).amountSold));
-        holder.getSellView().setText("Đã bán: " + products.get(position).amountSold);
-        //}), 100);
-        setEventHandler(holder);
+        ProductMyShop product = products.get(position);
+
+        holder.getNameView().setText(product.name);
+        holder.getPriceView().setText(Helper.getMoneyString(product.priceOrigin));
+
+        if (product.imageProduct != null) {
+            holder.getImageView().setImageBitmap(product.imageProduct);
+        } else {
+            holder.getImageView().setBackgroundResource(R.color.gray);
+            new Thread(() -> {
+                int size = (int)context.getResources().getDimension(R.dimen.image_card_size);
+                Bitmap image = product.loadImagePrimary(size,size);
+                mHandler.postDelayed(() -> {
+                    product.imageProduct = image;
+                    notifyItemChanged(position);
+                },100);
+            }).start();
+        }
+
+        holder.getLikeView().setText("Yêu thích: " + product.numberLike);
+        holder.getWarehouseView().setText("Kho hàng: " + (product.amount - product.amountSold));
+        holder.getSellView().setText("Đã bán: " + product.amountSold);
     }
 
 
@@ -130,6 +146,8 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
             btnChange = (Button) itemView.findViewById(R.id.my_shop_btn_change);
             btnDelete = (Button) itemView.findViewById(R.id.my_shop_btn_delete);
+
+            setEventHandler(ViewHolder.this);
         }
 
         public ImageView getImageView() {
@@ -253,37 +271,44 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
     public void addItemToList(int startindex, int number, Handler mhandler) {
         if (isfullProducts) return;
-        mhandler.sendEmptyMessage(1);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (Product_TabAdapter.this) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                synchronized (mHandler) {
+                    int offset = products.size();
+
+                    if (startindex < offset) return;
+
+                    mhandler.sendEmptyMessage(1);
+
                     DBControllerProduct db = new DBControllerProduct();
                     int maxsize = db.getNumberProducts(Authenticator.getCurrentUser().id);
-                    int offset = products.size();
-                    if (startindex < offset) return;
 
                     if (offset + number >= maxsize) {
                         isfullProducts = true;
                     }
-                    List<ProductBaseDB> newlist;
+                    List<ProductMyShop> newlist;
                     if (offset + number >= maxsize) {
-                        newlist = db.getLIMITProduct(Authenticator.getCurrentUser().id, offset, maxsize - offset);
+                        newlist = db.getProductMyShop(offset, maxsize - offset);
                     } else
-                        newlist = db.getLIMITProduct(Authenticator.getCurrentUser().id, offset, number);
+                        newlist = db.getProductMyShop(offset, number);
 
-                    products.addAll(newlist);
+                    for (int i=0;i<newlist.size();i++) {
+                        ProductMyShop product = newlist.get(i);
+                        product.imageProduct = db.getAvatar_Product(product.imagePrimaryID  );
+                    }
                     db.closeConnection();
+                    products.addAll(newlist);
 
-                    mhandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyItemRangeInserted(offset, products.size() - offset);
-                            mhandler.removeMessages(1);
-                        }
-                    });
+//                    mhandler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            notifyItemRangeInserted(offset, products.size() - offset);
+//                            mhandler.removeMessages(1);
+//                        }
+//                    }, 100);
                 }
-            }
-        }).start();
-    }
+//            }
+//        }).start();
+//    }
 }

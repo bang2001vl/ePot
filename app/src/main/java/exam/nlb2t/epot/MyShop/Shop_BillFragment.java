@@ -33,7 +33,9 @@ public class Shop_BillFragment extends Fragment {
     BillBaseDB.BillStatus statusBill;
     FragmentOrderTabBinding binding;
 
-    public static final String NOTIFY_STATUS_CHANGED_MESSAGE = "NotifyStatusBillChange";
+    public static final String NOTIFY_STATUS_CHANGED = "NotifyStatusChange";
+    public static final String NOTIFY_STATUS_CHANGED_TO_PRODUCT_FRAGMENT = "NotifyStatusChange_Product";
+    public static final String NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT = "NotifyStatusChange_Overview";
 
     public Shop_BillFragment(BillBaseDB.BillStatus status) {
         this.statusBill = status;
@@ -90,16 +92,19 @@ public class Shop_BillFragment extends Fragment {
             DBControllerProduct db = new DBControllerProduct();
             List<ProductInBill> productInBill = db.getProductInBill(b.id);
             int[] productIDs = new int[productInBill.size()];
+            int[] quantities = new int[productInBill.size()];
             for (int i=0; i<productInBill.size(); i++) {
                 productIDs[i] = productInBill.get(i).getId();
+                quantities[i] = productInBill.get(i).getQuantity();
             }
 
             message.putInt("FromStatus", f.getValue());
             message.putInt("ToStatus",t.getValue());
             message.putIntArray("ProductIDs", productIDs);
+            message.putIntArray("Quantities", quantities);
 
             //This ParentFragmentManger must be called before notifyStatusChangeListener because it may be null
-            getParentFragmentManager().setFragmentResult(NOTIFY_STATUS_CHANGED_MESSAGE, message);
+            getParentFragmentManager().setFragmentResult(NOTIFY_STATUS_CHANGED, message);
             notifyStatusChangedListener.notifyChanged(f,t,b);
         });
     }

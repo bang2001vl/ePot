@@ -38,10 +38,11 @@ public class Shop_OrderFragment extends Fragment {
     }
 
     private void setEventHandler() {
-        getChildFragmentManager().setFragmentResultListener(Bill_TabAdapter.NOTIFY_STATUS_CHANGED_MESSAGE, this, new FragmentResultListener() {
+        getChildFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED, this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                getParentFragmentManager().setFragmentResult(Bill_TabAdapter.NOTIFY_STATUS_CHANGED_MESSAGE, result);
+                getParentFragmentManager().setFragmentResult(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT, result);
+                getParentFragmentManager().setFragmentResult(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_PRODUCT_FRAGMENT, result);
             }
         });
     }

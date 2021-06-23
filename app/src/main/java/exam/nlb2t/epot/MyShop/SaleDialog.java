@@ -20,14 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.SaleDialogBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class SaleDialog extends DialogFragment {
     SaleDialogBinding binding;
-    ProductBaseDB product;
-    public SaleDialog(ProductBaseDB product) {
+    ProductMyShop product;
+    public SaleDialog(ProductMyShop product) {
         super();
         this.product = product;
     }

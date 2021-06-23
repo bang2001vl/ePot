@@ -49,6 +49,15 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
         return rs;
     }
 
+    public Bitmap getImagePrimary(int targetWidth, int targetHeight)
+    {
+        Bitmap rs;
+        DBControllerProduct db = new DBControllerProduct();
+        rs = db.getAvatar_Product(imagePrimaryID, targetWidth, targetHeight);
+        db.closeConnection();
+        return rs;
+    }
+
     public ProductBaseDB()
     {
 
@@ -59,12 +68,6 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
         return (price*100/priceOrigin);
     }
 
-    public int getNumberLike() {
-        int rs;
-        DBControllerProduct db = new DBControllerProduct();
-        rs = db.getNumberLikeProduct(this.id);
-        return rs;
-    }
     public void setData(ProductBaseDB product) {
     }
 

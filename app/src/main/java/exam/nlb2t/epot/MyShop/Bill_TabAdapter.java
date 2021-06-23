@@ -25,7 +25,6 @@ import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
-    public static final String NOTIFY_STATUS_CHANGED_MESSAGE = "NotifyStatusBillChange";
 
     public Bill_TabAdapter(List<BillBaseDB> listBill, BillBaseDB.BillStatus status) {
         super();
