@@ -104,13 +104,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/ripple"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_forgotpass"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/Big_btn_size"
+        app:mrl_rippleRoundedCorners="30dp"
+        android:layout_marginStart="32dp"
+        app:mrl_rippleColor="#808080"
+        app:mrl_rippleBackground="#FFFFFF"
+        app:mrl_rippleOverlay="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="35dp">
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="@dimen/Big_btn_size"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="35dp"
         android:background="@drawable/btn_red_background"
         android:fontFamily="@font/gilroy_bold"
         android:stateListAnimator="@null"
@@ -121,6 +132,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_forgotpass" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -128,7 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/ripple"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
@@ -168,21 +180,37 @@
         tools:layout_editor_absoluteX="0dp"
         android:fontFamily="@font/gilroy_medium"/>
 
-
-    <ImageButton
-        android:id="@+id/btn_login_zalo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@mipmap/logo_zalo"
-        android:text="@string/Login_with_zalo"
-        android:textColor="@color/white"
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:mrl_rippleOverlay="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.605"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.083" />
+        app:layout_constraintVertical_bias="0.083">
 
+        <ImageButton
+            android:id="@+id/btn_login_zalo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@mipmap/logo_zalo"
+            android:text="@string/Login_with_zalo"
+            android:textColor="@color/white" />
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:mrl_rippleOverlay="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.083"
+        >
     <ImageButton
         android:id="@+id/sign_in_button"
         android:layout_width="60dp"
@@ -191,11 +219,6 @@
         android:foreground="@mipmap/logo_gg_foreground"
         android:text="@string/Login_with_zalo"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.387"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.083" />
-
+         />
+    </com.balysv.materialripple.MaterialRippleLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

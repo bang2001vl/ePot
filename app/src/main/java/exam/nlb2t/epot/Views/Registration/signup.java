@@ -99,7 +99,7 @@ public class signup extends AppCompatActivity {
             public void onClick(View v) {
                 if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP)))
                 {
-                    if (fg_signup_enterphone.edt_phone.getError() == null)
+                    if (fg_signup_enterphone.edt_phone.getText().toString()!= "" && fg_signup_enterphone.edt_phone.getError() == null)
                     {
                             DBControllerUser controllerUser = new DBControllerUser();
                         if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
@@ -108,6 +108,7 @@ public class signup extends AppCompatActivity {
                             ReplaceFragment(fg_signup_enterotp);
                             btn_next.setText(R.string.Continue);
                             sendVerificationCode(phone);
+                            controllerUser.closeConnection();
                         }
                         else
                         {
@@ -133,15 +134,6 @@ public class signup extends AppCompatActivity {
                         }
                         else
                         {
-                            int t = getIntent().getIntExtra("Google", 0);
-                            boolean d = mAuth.getCurrentUser().isEmailVerified();
-                            String t2 = mAuth.getCurrentUser().getDisplayName();
-                            if (getIntent().getIntExtra("Google", 0) == 1 && !mAuth.getCurrentUser().isEmailVerified())
-                            {
-                                Toast.makeText(context , "Có vẻ bạn chưa xác nhận mail, vui lòng xác nhận và quay lại!", Toast.LENGTH_SHORT).show();
-
-                            }
-                            else
                             {
                                 if (CheckErrorUserInfo() == 0)
                                 {
@@ -149,7 +141,7 @@ public class signup extends AppCompatActivity {
                                 }
                                 else
                                 {
-                 DBControllerUser controllerUser = new DBControllerUser();
+                                    DBControllerUser controllerUser = new DBControllerUser();
 
                                     if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
                                     {
@@ -161,8 +153,9 @@ public class signup extends AppCompatActivity {
                                         int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
                                         int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
-                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,null,  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
                                         Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
+                                        controllerUser.closeConnection();
                                         finish();
                                     }
                                 }
@@ -207,7 +200,7 @@ public class signup extends AppCompatActivity {
             fg_signup_enterotp.tv_sent_otp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendVerificationCode(phone);
+                    if (  fg_signup_enterphone.edt_phone.getError() == null ) sendVerificationCode(phone);
                     fg_signup_enterotp.tv_sent_otp.setVisibility(View.INVISIBLE);
                 }
             });

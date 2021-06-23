@@ -17,9 +17,11 @@ import androidx.fragment.app.FragmentTransaction;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.DialogFragment.ChangeAvtFragment;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
 import exam.nlb2t.epot.HelpFragment;
+import exam.nlb2t.epot.RatingProduct.RatingProductDialog;
 import exam.nlb2t.epot.Views.Login.LoginScreen;
 import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.OrderFragment;
@@ -66,7 +68,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ShowDialog(new OrderFragment(2));
+               ShowDialog(new OrderFragment(0));
             }
         });
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrdersRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new OrderFragment(0));
+                ShowDialog(new OrderFragment(2));
 
             }
         });
@@ -119,9 +121,16 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrdersRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new OrderFragment(2));
+                RatingProductDialog dialog = new RatingProductDialog();
+                dialog.show(getChildFragmentManager(), "ratingDialog");
             }
 
+        });
+        binding.avtProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowDialog(new ChangeAvtFragment());
+            }
         });
 
     }

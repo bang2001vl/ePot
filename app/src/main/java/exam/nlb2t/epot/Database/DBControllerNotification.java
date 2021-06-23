@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.Database;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +49,25 @@ public class DBControllerNotification extends DatabaseController{
         } catch (SQLException e) {
             e.printStackTrace();
             ErrorMsg = "FAILED: Cannot read from server";
+        }
+        return rs;
+    }
+
+    public boolean insertNotify_Bill(int receiverID, int billID, int oldStatus, int newStatus)
+    {
+        boolean rs = false;
+        try{
+            CallableStatement statement = connection.prepareCall("{call insertNotifyBill(?,?,?,?)}");
+            statement.setInt(1, receiverID);
+            statement.setInt(2, billID);
+            statement.setInt(3, oldStatus);
+            statement.setInt(4, newStatus);
+
+            rs = statement.executeUpdate() > 0;
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ máy chủ";
         }
         return rs;
     }

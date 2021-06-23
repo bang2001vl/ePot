@@ -22,6 +22,7 @@ import exam.nlb2t.epot.Category.CategoryAdapter;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
+import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -34,6 +35,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void setOnItemClickListener(fragment_ProItem_Container.OnClickItemListener listener)
     {
         onClickItemListener = listener;
+    }
+    protected BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener;
+    public  void setOnBindingLastPositionListener(BillAdapter.OnBindingLastPositionListener listener)
+    {
+        this.onBindingLastPositionListener = listener;
     }
     ProductBaseDB  product;
 
@@ -113,6 +119,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         else {holder.imagePro.setImageResource(R.color.white);}
         if(info.productAvatar == null) {
             new Thread(new LoadImageRunable(new Handler(), position), "LoadImageAt=" + position).start();
+        }
+
+        if(position == products.size() - 1) {
+            if (onBindingLastPositionListener != null) {
+                onBindingLastPositionListener.onBindingLastPostion(position);
+            }
         }
     }
 

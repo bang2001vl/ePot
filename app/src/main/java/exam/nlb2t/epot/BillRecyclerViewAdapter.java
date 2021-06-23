@@ -43,7 +43,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
     protected OnClickBtnDetailListener onBtnDetailClickListener;
 
     public interface OnClickBtnDetailListener {
-        void onClick(View v);
+        void onClick(BillBaseDB bill, int position);
     }
     public void setOnBtnDetailClickListener(OnClickBtnDetailListener onBtnDetailClickListener) {
         this.onBtnDetailClickListener = onBtnDetailClickListener;
@@ -107,7 +107,10 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
 
     protected void setEventHandler(ViewHolder holder) {
         if (onBtnDetailClickListener != null) {
-            holder.getBtn_Detail().setOnClickListener(v -> onBtnDetailClickListener.onClick(v));
+            holder.getBtn_Detail().setOnClickListener(v -> {
+                int position = holder.getLayoutPosition();
+                onBtnDetailClickListener.onClick(billList.get(position), position);
+            });
         } else {
             holder.getBtn_Detail().setOnClickListener(v -> {
                 //TODO: open detail Bill

@@ -7,18 +7,25 @@
     android:id="@+id/ct_all"
     android:background="@color/BG_login_logout">
 
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/btn_rip_back"
+        android:layout_margin="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
     <Button
         android:id="@+id/btn_back"
         android:layout_width="45dp"
         android:layout_height="40dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+
         android:background="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+
 
         android:stateListAnimator="@null"/>
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <LinearLayout
         android:id="@+id/ln_logo"
@@ -29,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        app:layout_constraintTop_toBottomOf="@+id/btn_rip_back"
         app:layout_constraintVertical_bias="0.41">
 
         <ImageView
@@ -57,24 +64,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_next"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/Big_btn_size"
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_body"
+        app:layout_constraintVertical_bias="0.156"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        app:layout_constraintCircleRadius="30dp"
+        app:mrl_rippleRoundedCorners="30dp"
+        app:mrl_rippleColor="#808080"
+        app:mrl_rippleBackground="#FFFFFF"
+        app:mrl_rippleOverlay="true"
+        >
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/Big_btn_size"
+
         android:background="@drawable/btn_red_background"
         android:fontFamily="@font/gilroy_bold"
         android:text="@string/Sent_OTP"
         android:textColor="@color/white"
         android:textSize="@dimen/normal_content_size_text"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_body"
-        app:layout_constraintVertical_bias="0.156" />
+        />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
