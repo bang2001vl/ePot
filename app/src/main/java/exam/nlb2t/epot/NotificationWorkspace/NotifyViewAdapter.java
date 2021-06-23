@@ -31,7 +31,7 @@ import exam.nlb2t.epot.databinding.SampleNotificationBinding;
 
 public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.NotifyViewHolder> {
 
-    List<NotifycationInfo> list;
+    public List<NotifycationInfo> list;
     public void addItem(List<NotifycationInfo> l)
     {
         this.list.addAll(l);
