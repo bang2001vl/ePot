@@ -105,6 +105,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         searchView = binding.searchBar;
+        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
