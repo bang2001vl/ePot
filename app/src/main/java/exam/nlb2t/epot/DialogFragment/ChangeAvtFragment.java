@@ -1,7 +1,8 @@
 package exam.nlb2t.epot.DialogFragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.DialogFragment;
@@ -33,6 +35,7 @@ import java.util.regex.Pattern;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.RatingProduct.RatingProductDialog;
 import exam.nlb2t.epot.databinding.FragmentChangeAvtBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
@@ -48,11 +51,14 @@ public class ChangeAvtFragment extends DialogFragment {
     private static final int PERMISSION_CODE=1001;
 
     Bitmap bitmap = currentuser.getAvatar();
-    public ChangeAvtFragment() {
-    }
-    @Override
-    public int getTheme() {
-        return R.style.FullScreenDialog;
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen){
+            @Override
+            public void onBackPressed() {
+                openAlertDialog();
+            }
+        };
+        return dialog;
     }
 
 
@@ -77,7 +83,7 @@ public class ChangeAvtFragment extends DialogFragment {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                openAlertDialog();
             }
         });
         binding.btnChooseImage.setOnClickListener(new View.OnClickListener() {
@@ -158,5 +164,24 @@ public class ChangeAvtFragment extends DialogFragment {
                 }
             }
         }
+    }
+    private void openAlertDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+        builder.setMessage("Hủy bỏ thay đổi")
+                .setTitle("Thoát");
+
+
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dismiss();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert =builder.create();
+        alert.show();
     }
 }

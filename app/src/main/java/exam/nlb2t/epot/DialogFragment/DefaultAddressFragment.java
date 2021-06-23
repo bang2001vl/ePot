@@ -1,9 +1,11 @@
 package exam.nlb2t.epot.DialogFragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +26,8 @@ import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentDefaultAddressBinding;
 import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+
+import androidx.fragment.app.FragmentActivity;
 
 public class DefaultAddressFragment extends DialogFragment {
 
@@ -84,7 +88,7 @@ public class DefaultAddressFragment extends DialogFragment {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                openAlertDialog();
             }
         });
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
@@ -181,4 +185,24 @@ public class DefaultAddressFragment extends DialogFragment {
         }
         return s;
     }
+    private void openAlertDialog() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+        builder.setMessage("Hủy bỏ thay đổi")
+                .setTitle("Thoát");
+
+
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dismiss();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert =builder.create();
+        alert.show();
+    }
+
 }

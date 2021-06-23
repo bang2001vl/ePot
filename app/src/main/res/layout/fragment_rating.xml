@@ -8,9 +8,7 @@
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mainColor"
-        android:orientation="horizontal"
-        >
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/btnClose"
@@ -21,20 +19,20 @@
             android:background="@drawable/button_circle_background"
             android:backgroundTint="@color/transparent"
             android:backgroundTintMode="add"
-            android:tint="@color/white"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+            android:tint="@color/black"
+            android:src="@drawable/ic_back"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textAlignment="center"
-            android:text="Đánh giá sản phẩm"
+            android:text="Đánh giá"
             android:fontFamily="@font/gilroy_bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center_vertical"
-            style="@style/CommonTitle"
-            android:layout_marginStart="10dp"
+            android:textColor="@color/black"
+            android:textSize="36dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
             />
     </LinearLayout>
 
@@ -44,15 +42,16 @@
         android:id="@+id/tabLayoutMain"
         app:tabMode="fixed"
         app:tabTextAppearance="@style/MyCustomTabText"
-        >
+        app:tabIndicatorColor="@color/mainColor"
+        app:tabTextColor="@color/mainColor">
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cho danh gia"/>
+            android:text="Cho danh gia" />
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Da danh gia"/>
+            android:text="Da danh gia" />
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
