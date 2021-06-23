@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
 
 public class ScrollCutom extends RecyclerView.OnScrollListener{
     public int MAX_NUMBER_ITEM_IN_PAGE = 5;
-    private int MAX_NUMBER_PAGE_IN_CACHE = 10;
+    private int MAX_NUMBER_PAGE_IN_CACHE = 3;
     public final int REMAIN_NUMBER_ITEM_BEFORE_LOAD = 2;
     private int mNumberPage = 1;
     private List<Object> mList;
@@ -99,7 +99,7 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
             isLoad = true;
             if (isloadNextPage) {
                 new Thread(()-> {
-                    int index = PageNumber * MAX_NUMBER_PAGE_IN_CACHE - 1;
+                    int index = PageNumber * MAX_NUMBER_ITEM_IN_PAGE - 1;
                     loadNextPage(index);
                     mHandler.postDelayed(()->{
                         loadNextPageUI(index);
@@ -114,11 +114,11 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
     }
 
     private void removePage(int PageNumber) {
-        int indexPage_to_remove = PageNumber - (mNumberPage - MAX_NUMBER_PAGE_IN_CACHE);
-
-        int endposition;
-        if ((indexPage_to_remove + 1) * MAX_NUMBER_PAGE_IN_CACHE < mList.size()) {
-
-        }
+//        int indexPage_to_remove = PageNumber - (mNumberPage - MAX_NUMBER_PAGE_IN_CACHE);
+//
+//        int endposition;
+//        if ((indexPage_to_remove + 1) * MAX_NUMBER_PAGE_IN_CACHE < mList.size()) {
+//
+//        }
     }
 }

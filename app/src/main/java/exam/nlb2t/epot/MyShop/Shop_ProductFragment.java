@@ -48,7 +48,7 @@ public class Shop_ProductFragment extends Fragment {
 
     public Shop_ProductFragment() {
         DBControllerProduct db = new DBControllerProduct();
-        products = db.getProductMyShop(0, 8);
+        products = db.getProductMyShop(0, 5);
         db.closeConnection();
     }
 
