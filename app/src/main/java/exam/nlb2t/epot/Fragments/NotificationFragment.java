@@ -17,15 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerNotification;
+import exam.nlb2t.epot.EmptyNotiFragment;
 import exam.nlb2t.epot.NotificationWorkspace.NotifyViewAdapter;
 import exam.nlb2t.epot.NotificationWorkspace.NotifycationInfo;
 import exam.nlb2t.epot.databinding.EmptyCartLayoutBinding;
+import exam.nlb2t.epot.databinding.FragmentEmptyNotiBinding;
 import exam.nlb2t.epot.databinding.FragmentNotificationBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 public class NotificationFragment extends Fragment {
     FragmentNotificationBinding binding;
-    EmptyCartLayoutBinding bindingEmpty;
+    FragmentEmptyNotiBinding bindingEmpty;
 
     protected NotifyViewAdapter adapter;
     protected List<NotifycationInfo> list;
@@ -141,7 +143,7 @@ public class NotificationFragment extends Fragment {
         {
             if(bindingEmpty == null)
             {
-                bindingEmpty = EmptyCartLayoutBinding.inflate(getLayoutInflater(), binding.contentLayout, false);
+                bindingEmpty = FragmentEmptyNotiBinding.inflate(getLayoutInflater(), binding.contentLayout, false);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 binding.contentLayout.addView(bindingEmpty.getRoot(), binding.contentLayout.getChildCount(), params);
             }
