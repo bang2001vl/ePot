@@ -23,7 +23,9 @@ public class DBControllerRating extends DatabaseController{
             statement.setString(4, comment);
 
             rs = statement.executeUpdate() > 0;
+            if(rs)
             commit();
+            else rollback();
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -145,7 +147,7 @@ public class DBControllerRating extends DatabaseController{
         RatingBaseDB rs = null;
         try
         {
-            PreparedStatement statement = connection.prepareStatement("SELECT [ID],[STAR],[COMMENT],[CREATED_TIME] WHERE [USER_ID]=? AND [PRODUCT_ID]=?;");
+            PreparedStatement statement = connection.prepareStatement("SELECT [ID],[STAR],[COMMENT],[CREATED_TIME] FROM [RATING] WHERE [USER_ID]=? AND [PRODUCT_ID]=?;");
             statement.setInt(1, userID);
             statement.setInt(2, productID);
 

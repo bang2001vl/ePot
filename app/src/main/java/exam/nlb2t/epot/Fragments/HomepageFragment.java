@@ -69,12 +69,14 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         rcVCategory.setAdapter(categoryAdapter);
 
         fragment_new = fragment_ProItem_Container.newInstance(list_New);
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
         fragment_new.hideSpinner = true;
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
+
 
         fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
         fragment_topSold.hideSpinner = true;
+        fragment_topSold.canScroll = false;
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
 
         return binding.getRoot();
     }
@@ -110,14 +112,13 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         fragment_new.setOnBindingLastPositionListener(new BillAdapter.OnBindingLastPositionListener() {
             @Override
             public void onBindingLastPostion(int postion) {
-                if(getActivity() != null) {
+                if(getActivity() != null && hasMoreData && fragment_new.productList.size() >= step) {
                     getActivity().runOnUiThread(() -> loadMoreData_New());
                 }
             }
         });
 
         fragment_topSold.setOnClickItemListener(onClickItemListener);
-        fragment_topSold.canScroll = false;
     }
 
     List<ProductAdapterItemInfo> list_New;
@@ -199,7 +200,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
             if (fragment_new != null && getActivity() != null && data.size() > 0) {
                 getActivity().runOnUiThread(() -> {
-                    fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - data.size() - 1, data.size());
+                    fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - 1, data.size());
                 });
             }
 
@@ -211,8 +212,10 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     public void onClickRefresh_TopSold() {
         if (fragment_topSold != null) {
             int oldLength = fragment_topSold.productAdapter.getProductList().size();
-            fragment_topSold.productAdapter.getProductList().clear();
-            fragment_topSold.productAdapter.notifyItemRangeRemoved(0, oldLength);
+            if(oldLength > 0) {
+                fragment_topSold.productAdapter.getProductList().clear();
+                fragment_topSold.productAdapter.notifyItemRangeRemoved(0, oldLength);
+            }
         }
 
         new Thread(() -> {

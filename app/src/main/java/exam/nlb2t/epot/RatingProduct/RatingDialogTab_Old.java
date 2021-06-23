@@ -24,8 +24,8 @@ public class RatingDialogTab_Old extends RatingDialogTab_New{
             public void onBindingLastPostion(int postion) {
                 ProductOverviewAdpterItem info = list.get(postion);
                 int userID = Authenticator.getCurrentUser().id;
-                RatingProductDialogFragment_Edit dialog = new RatingProductDialogFragment_Edit(userID, info.productID);
-                dialog.show(getChildFragmentManager(), "rating");
+                RatingProductDialogFragment_Edit dialog = new RatingProductDialogFragment_Edit(info.productID, userID);
+                dialog.show(getChildFragmentManager(), "editrating");
             }
         });
     }

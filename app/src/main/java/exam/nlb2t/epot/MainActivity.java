@@ -148,15 +148,17 @@ public class MainActivity extends AppCompatActivity {
             binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
             long delayInTask = System.currentTimeMillis() - start;
-            long delay = 2000 - delayInTask;
+            long delay = 100;
             if(delayInTask < 2000)
             {
-                try{
+                delay = 2000 - delayInTask;
+                /*try{
                     Thread.currentThread().sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
+
             handler.post(() -> setContentView(binding.getRoot()));
         };
 

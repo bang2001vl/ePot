@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import exam.nlb2t.epot.databinding.FragmentRatingBinding;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class RatingProductDialog extends DialogFragment {
     FragmentRatingBinding binding;
@@ -32,15 +33,17 @@ public class RatingProductDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRatingBinding.inflate(inflater, container, false);
+
+        RatingDialogTab_New fragment1 = new RatingDialogTab_New();
+        RatingDialogTab_Old fragment2 = new RatingDialogTab_Old();
+        fragment1.setOnRatingSuccessListener(sender -> fragment2.reloadData());
+
         RatingDialogTabAdapter adapter = new RatingDialogTabAdapter(
                 getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-                new Fragment[]{
-                        new RatingDialogTab_New(),
-                        new RatingDialogTab_New()
-                },
+                new Fragment[]{fragment1, fragment2},
                 new String[]{
-                        "Chưa đánh giá",
+                        "Chờ đánh giá",
                         "Đã đánh giá"
                 }
         );
