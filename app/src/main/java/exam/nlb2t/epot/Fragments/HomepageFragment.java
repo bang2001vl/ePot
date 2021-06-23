@@ -1,20 +1,15 @@
 package exam.nlb2t.epot.Fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,10 +24,9 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
-import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Search_Product.fragment_search;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -279,7 +273,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     @Override
     public void onItemClickCategory(String string) {
-        searchView.setQuery(String.format(Locale.getDefault(), "Danh mục: %s;", string), true);
+        searchView.setQuery(String.format(Locale.getDefault(), "Danh mục: %s", string), true);
     }
 
     @Override
