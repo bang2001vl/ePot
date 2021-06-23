@@ -40,7 +40,7 @@ public class forgotpassword extends AppCompatActivity {
 
     String phone;
     int count = 0;
-    boolean Issend = true;
+    int Issend = 1;
     String verificationId;
     String Code;
 
@@ -121,6 +121,9 @@ public class forgotpassword extends AppCompatActivity {
                     if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
                     {
                         /* fg_signup_enterotp.btn_next = btn_next;*/
+                        fg_forgotpass_otp.tv_coundown.setText(0);
+                        fg_forgotpass_otp.tv_sent_otp.setVisibility(View.INVISIBLE);
+                        fg_forgotpass_otp.edt_otp.setText("");
                         ReplaceFragment(fg_forgot_phone);
                         btn_next.setText(R.string.Sent_OTP);
                     }
@@ -194,10 +197,10 @@ public class forgotpassword extends AppCompatActivity {
                 public void onFinish() {
                     fg_forgotpass_otp.tv_coundown.setText( "(0)");
                     fg_forgotpass_otp.tv_sent_otp.setVisibility(View.VISIBLE);
-                    Issend = false;
+                    Issend = 0;
 
                     fg_forgotpass_otp.tv_sent_otp.setOnClickListener(v -> {
-                        Issend = true;
+                        Issend = 0;
                         sendVerificationCode(phone);
                         fg_forgotpass_otp.tv_sent_otp.setVisibility(View.INVISIBLE);
                     });
@@ -219,6 +222,7 @@ public class forgotpassword extends AppCompatActivity {
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
             Toast.makeText(forgotpassword.this, getResources().getString(R.string.error_connect_firebar), Toast.LENGTH_LONG).show();
+            finish();
         }
     };
 
@@ -227,24 +231,25 @@ public class forgotpassword extends AppCompatActivity {
         // below line is used for getting getting credentials from our verification id and code.
         Pattern pattern = Pattern.compile(".*\\D.*");
         Matcher matcher = pattern.matcher(code);
+        ++count;
         if ( code.length() != 6 || matcher.find() )
         {
             return false;
         }
         else
         {
-            if (count == 5)
+            if (count >= 5)
             {
-                Toast.makeText(this, "Nhập sãi mã OTP 5 lần, vui lòng đăng kí lại!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.error_5_otp), Toast.LENGTH_LONG).show();
                 count = 0;
                 finish();
             }
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             // after getting credential we are calling sign in method.
 
-            if ( Issend && code != credential.getSmsCode())
+            if ( Issend==1 && code != credential.getSmsCode())
             {
-                ++count;
+
                 Toast.makeText(this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
                 return false;
             }
