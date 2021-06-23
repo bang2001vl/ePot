@@ -273,7 +273,6 @@ public class LoginScreen extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         ZaloSDK.Instance.onActivityResult(this, requestCode, resultCode, data);
 
-        boolean b = currentusser.isEmailVerified();
         if (requestCode == 9) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -364,15 +363,6 @@ public class LoginScreen extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 9);
         currentusser = mAuth.getCurrentUser();
-        currentusser.delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("Thông báo", "User account deleted.");
-                        }
-                    }
-                });
     }
     // signOut acct gg
     public void signOut() {

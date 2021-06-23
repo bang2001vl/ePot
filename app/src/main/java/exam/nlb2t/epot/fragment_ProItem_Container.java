@@ -58,7 +58,6 @@ public class fragment_ProItem_Container extends Fragment {
     public static fragment_ProItem_Container newInstance(List<ProductAdapterItemInfo> productList) {
         fragment_ProItem_Container fragment = new fragment_ProItem_Container();
         fragment.productList = productList;
-
         return fragment;
     }
 

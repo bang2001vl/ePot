@@ -66,15 +66,11 @@
         >
 
         <fragment
+            android:id="@+id/fg_pro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:name="exam.nlb2t.epot.fragment_ProItem_Container" >
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/recycleView_product"/>
         </fragment>
 
     </LinearLayout>
