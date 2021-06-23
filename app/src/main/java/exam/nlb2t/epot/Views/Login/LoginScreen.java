@@ -192,6 +192,7 @@ public class LoginScreen extends AppCompatActivity {
                     intent.putExtra("EXIT", true);
                     startActivity(intent);
                     finish();
+                    controllerUser.closeConnection();
                 }
                 else
                 {
@@ -327,6 +328,7 @@ public class LoginScreen extends AppCompatActivity {
 
                 DBControllerUser controllerUser = new DBControllerUser();
                 int id = controllerUser.findUserID_ByEmail(personEmail);
+                controllerUser.closeConnection();
                 if (id > 0)
                 {
                     Authenticator.LoginGG(id);
@@ -424,7 +426,7 @@ public class LoginScreen extends AppCompatActivity {
 
 //login zalo
     private void loginZalo() {
-        ZaloSDK.Instance.authenticate(this, LoginVia.APP_OR_WEB, new OAuthCompleteListener() {
+        ZaloSDK.Instance.authenticate(this, LoginVia.APP, new OAuthCompleteListener() {
 
             @Override
             public void onAuthenError(int errorCode, String message) {
