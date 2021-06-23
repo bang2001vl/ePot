@@ -3,6 +3,7 @@ package exam.nlb2t.epot.MyShop;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,6 +36,7 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.Database.Tables.ImageProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.UpdateProductBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -44,7 +46,7 @@ public class AddProductFragment extends DialogFragment {
     List<Bitmap> images;
     ImagesDialog imagesDialog;
     ArrayAdapter<String> adapterCategory;
-    ProductBaseDB productBefore;
+    ProductMyShop productBefore;
     public static final String NAMEDIALOG = "AddProductFragment";
 
     Bitmap imagePrimary;
@@ -73,7 +75,7 @@ public class AddProductFragment extends DialogFragment {
         });
     }
 
-    public AddProductFragment(@NonNull ProductBaseDB product) {
+    public AddProductFragment(@NonNull ProductMyShop product) {
         //MEANS: Change current product
         this.productBefore = product;
 
@@ -108,7 +110,7 @@ public class AddProductFragment extends DialogFragment {
             binding.buttonAddImage.setText(String.format("Ảnh\n(%d)", images.size()));
             binding.textView2.setText("Sửa sản phẩm");
             binding.txtInfoAmount.setText("Số lượng hàng trong kho");
-            binding.imagePrimary.setImageBitmap(productBefore.getImagePrimary());
+            binding.imagePrimary.setImageBitmap(productBefore.imageProduct);
             binding.editTextTextProductName.setText(productBefore.name);
             binding.editTextNumberDecimal.setText(Helper.getMoneyString(productBefore.price));
             binding.editTextAmount.setText(String.valueOf(productBefore.amount - productBefore.amountSold));
@@ -445,9 +447,15 @@ public class AddProductFragment extends DialogFragment {
         for(int i = images.size() - 1; i > -1 ; i--)
         {
             images.get(i).recycle();
-            images.remove(i);
+            //images.remove(i);
         }
+        images = null;
+        imagesDialog = null;
+    }
 
-        binding = null;
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        this.recycle();
+        super.onDismiss(dialog);
     }
 }

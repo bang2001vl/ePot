@@ -10,6 +10,7 @@ public class ProductInBill {
     private int price; //[DETAIL_BILL].[PRICE]
     private int quantity; //[DETAIL_BILL].[QUANTITY]
     private Bitmap image; //[PRODUCT].[PRIMARY_IMAGE_ID]
+    private int imageID;
 
     public ProductInBill() {
 
@@ -20,15 +21,19 @@ public class ProductInBill {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.imageID = imageid;
 
-        DBControllerProduct db = new DBControllerProduct();
-        image = db.getAvatar_Product(imageid);
-        db.closeConnection();
+//        DBControllerProduct db = new DBControllerProduct();
+//        image = db.getAvatar_Product(imageid);
+//        db.closeConnection();
     }
 
     public Bitmap getImagePrimary()
     {
         return image;
+    }
+    public void setImagePrimary(Bitmap image) {
+        this.image = image;
     }
     public int getId() {
         return id;
@@ -41,6 +46,9 @@ public class ProductInBill {
     }
     public String getName() {
         return name;
+    }
+    public int getImageID() {
+        return imageID;
     }
 
     @Override
