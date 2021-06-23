@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.Views;
 
 import android.content.Context;
+import android.nfc.FormatException;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -59,7 +60,7 @@ public class NumberPickerView extends ChooseAmountLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                checkEditText();
             }
 
             @Override
@@ -84,11 +85,20 @@ public class NumberPickerView extends ChooseAmountLayout {
 
     public void checkEditText()
     {
-        int val = Integer.parseInt(editText.getText().toString());
+        int val = (int)controller.getNumber();
+        try {
+            val = Integer.parseInt(editText.getText().toString());
+        }
+        catch (NumberFormatException e){
+            editText.setText(String.valueOf(val));
+            editText.setSelection(editText.getText().length());
+        }
+
         if(val != controller.getNumber())
         {
             controller.setNumber(val);
             editText.setText(String.format(Locale.getDefault(),"%d",(int)controller.getNumber()));
+            editText.setSelection(editText.getText().length());
         }
     }
 }
