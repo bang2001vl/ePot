@@ -108,6 +108,7 @@ public class signup extends AppCompatActivity {
                             ReplaceFragment(fg_signup_enterotp);
                             btn_next.setText(R.string.Continue);
                             sendVerificationCode(phone);
+                            controllerUser.closeConnection();
                         }
                         else
                         {
@@ -154,6 +155,7 @@ public class signup extends AppCompatActivity {
 
                                         controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
                                         Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
+                                        controllerUser.closeConnection();
                                         finish();
                                     }
                                 }
