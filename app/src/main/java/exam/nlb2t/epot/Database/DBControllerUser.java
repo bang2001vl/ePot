@@ -322,12 +322,13 @@ public class DBControllerUser extends DatabaseController{
     {
         boolean rs = false;
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Helper.toByteArray(avatar, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL));
+            byte[] bytes = Helper.toByteArray(avatar, MEDIUM_SIZE_IMAGES_IN_PIXEL, MEDIUM_SIZE_IMAGES_IN_PIXEL);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
 
             CallableStatement statement = connection.prepareCall("{call updateUserAvatar(?,?,?)}");
             statement.setInt(1, userID);
             statement.setInt(2, avatarID);
-            statement.setBinaryStream(3, inputStream);
+            statement.setBinaryStream(3, inputStream, bytes.length);
 
             rs = statement.executeUpdate() > 0;
             if(rs) {

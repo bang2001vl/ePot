@@ -408,9 +408,16 @@ public class AddProductFragment extends DialogFragment {
 
     void choosePrimaryImage()
     {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_CHOOSE_IMAGE);
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK);
+        pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Chọn ảnh");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_CHOOSE_IMAGE);
     }
 
     @Override

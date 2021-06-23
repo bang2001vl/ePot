@@ -24,6 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -40,12 +43,11 @@ public class ChangeAvtFragment extends DialogFragment {
     FragmentChangeAvtBinding binding;
 
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
-    DBControllerUser dbControllerUser=new DBControllerUser();
 
     private static final int IMAGE_PICK_CODE=1000;
     private static final int PERMISSION_CODE=1001;
 
-    Bitmap bitmap=currentuser.getAvatar();
+    Bitmap bitmap = currentuser.getAvatar();
     public ChangeAvtFragment() {
     }
     @Override
@@ -99,8 +101,15 @@ public class ChangeAvtFragment extends DialogFragment {
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbControllerUser.updateUser_Avatar(currentuser.id,currentuser.avatarID,bitmap);
-                dismiss();
+                if(hasPicked) {
+                    DBControllerUser db = new DBControllerUser();
+                    db.updateUser_Avatar(currentuser.id, currentuser.avatarID, bitmap);
+                    db.closeConnection();
+                    dismiss();
+                }
+                else {
+                    Snackbar.make(binding.getRoot(), "Vui lòng chọn ảnh", BaseTransientBottomBar.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -108,11 +117,19 @@ public class ChangeAvtFragment extends DialogFragment {
 
     private void pickImage(){
 
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,IMAGE_PICK_CODE);
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK);
+        pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Chọn ảnh");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, IMAGE_PICK_CODE);
     }
 
+    boolean hasPicked;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -120,6 +137,7 @@ public class ChangeAvtFragment extends DialogFragment {
             Uri imageUri = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                hasPicked = true;
                 binding.imageAvt.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
