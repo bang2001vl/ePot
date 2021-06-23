@@ -1,41 +1,25 @@
 package exam.nlb2t.epot;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import exam.nlb2t.epot.Database.DBControllerNotification;
-import exam.nlb2t.epot.DialogFragment.RatingProductDialogFragment;
 import exam.nlb2t.epot.PersonBill.BillAdapterItemInfo;
 import exam.nlb2t.epot.PersonBill.OrderTab_Default;
 import exam.nlb2t.epot.PersonBill.OrderTab_InShipping;
 import exam.nlb2t.epot.PersonBill.OrderTab_Success;
 import exam.nlb2t.epot.PersonBill.OrderTab_WaitForComfirm;
-import exam.nlb2t.epot.databinding.FragmentOrderBinding;
-import exam.nlb2t.epot.ClassInformation.User;
-import exam.nlb2t.epot.Database.DBControllerBill;
-import exam.nlb2t.epot.Database.Tables.BillBaseDB;
-import exam.nlb2t.epot.Database.Tables.UserBaseDB;
-import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class OrderFragment extends DialogFragment{
@@ -121,9 +105,9 @@ public class OrderFragment extends DialogFragment{
         tabs.add(tab_inShipping);
         tabs.add(new OrderTab_Success());
 
-        adapter.addFragment(tabs.get(1), "Chờ xác nhận");
-        adapter.addFragment(tabs.get(2), "Đang giao");
         adapter.addFragment(tabs.get(3), "Đã mua");
+        adapter.addFragment(tabs.get(2), "Đang giao");
+        adapter.addFragment(tabs.get(1), "Chờ xác nhận");
         adapter.addFragment(tabs.get(0), "Đã hủy");
 
         viewPager.setAdapter(adapter);

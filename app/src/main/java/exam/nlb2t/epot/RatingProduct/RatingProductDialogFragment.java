@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.DialogFragment;
+package exam.nlb2t.epot.RatingProduct;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import exam.nlb2t.epot.Database.DBControllerRating;
-import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.databinding.FragmentReviewBinding;
 
 public class RatingProductDialogFragment extends BottomSheetDialogFragment {

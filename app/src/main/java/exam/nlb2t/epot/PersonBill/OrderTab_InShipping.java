@@ -47,8 +47,13 @@ public class OrderTab_InShipping extends OrderTab {
                         {
                             Snackbar.make(getView(), db.getErrorMsg(), BaseTransientBottomBar.LENGTH_LONG).show();;
                         }
+                        else {
+                            bills.remove(posi);
+                            recyclerViewAdapter.notifyItemRemoved(posi);
+                            if(onSubmitVertifyBillListener != null){onSubmitVertifyBillListener.OnSuccess(null);
+                        }
                         dialog.dismiss();
-                        if(onSubmitVertifyBillListener != null){onSubmitVertifyBillListener.OnSuccess(null);}
+                        }
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

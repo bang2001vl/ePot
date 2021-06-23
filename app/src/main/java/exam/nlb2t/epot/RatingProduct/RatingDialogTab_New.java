@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerRating;
-import exam.nlb2t.epot.DialogFragment.RatingProductDialogFragment;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.databinding.FragmentRatingTabNewBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -82,16 +81,19 @@ public class RatingDialogTab_New extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRatingTabNewBinding.inflate(inflater, container, false);
-        adapter = new ProductOverviewAdapter(list);
-        binding.recyclerViewMain.setAdapter(adapter);
+
+        setupAdapter();
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         binding.recyclerViewMain.setLayoutManager(layoutManager);
-        setEventHandler();
         return binding.getRoot();
     }
 
-    protected void setEventHandler()
+    protected void setupAdapter()
     {
+        adapter = new ProductOverviewAdapter(list);
+        binding.recyclerViewMain.setAdapter(adapter);
+
         adapter.setOnBindingLastPositionListener(new BillAdapter.OnBindingLastPositionListener() {
             @Override
             public void onBindingLastPostion(int postion) {

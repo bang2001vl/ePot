@@ -37,7 +37,7 @@ import exam.nlb2t.epot.singleton.Helper;
 public class OrderTab extends Fragment {
 
     View v;
-    List<BillAdapterItemInfo> bills;
+    protected List<BillAdapterItemInfo> bills;
     RecyclerView recyclerView;
     ViewBinding emptybinding = null;
     public BillAdapter recyclerViewAdapter;

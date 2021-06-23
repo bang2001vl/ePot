@@ -365,6 +365,9 @@ public class DBControllerBill extends DatabaseController {
             statement.setInt(1, billID);
 
             rs = statement.executeUpdate() > 0;
+            if(rs){
+                commit();
+            }
             statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

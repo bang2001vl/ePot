@@ -68,7 +68,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ShowDialog(new OrderFragment(2));
+               ShowDialog(new OrderFragment(0));
             }
         });
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +107,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrdersRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new OrderFragment(0));
+                ShowDialog(new OrderFragment(2));
 
             }
         });

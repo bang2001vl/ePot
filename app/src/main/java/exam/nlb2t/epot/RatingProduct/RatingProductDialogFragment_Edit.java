@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.DialogFragment;
+package exam.nlb2t.epot.RatingProduct;
 
 import android.os.Bundle;
 import android.view.View;

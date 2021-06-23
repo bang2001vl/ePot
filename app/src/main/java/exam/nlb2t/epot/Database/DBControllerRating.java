@@ -228,4 +228,35 @@ public class DBControllerRating extends DatabaseController{
         }
         return rs;
     }
+
+    public List<ProductOverviewAdpterItem> getUserAlreadyRatingPD(int userID, int star, int end)
+    {
+        List<ProductOverviewAdpterItem> rs = null;
+        try
+        {
+            CallableStatement statement = connection.prepareCall("{call getProductAlreadyRating(?,?,?)}");
+            statement.setInt(1, userID);
+            statement.setInt(2, star);
+            statement.setInt(3, end);
+
+            ResultSet resultSet = statement.executeQuery();
+            rs = new ArrayList<>();
+            while (resultSet.next())
+            {
+                rs.add(new ProductOverviewAdpterItem(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getInt(3),
+                        resultSet.getInt(4),
+                        resultSet.getString(5)
+                ));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ server";
+        }
+        return rs;
+    }
 }
