@@ -37,7 +37,7 @@ public class fragment_search extends DialogFragment {
     private List<ProductAdapterItemInfo> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
-    private  final int number_pro = 3;
+    private  final int number_pro = 10;
     private Button btn_more;
     private ImageView btn_back;
     private LinearLayout ln_product;
@@ -117,7 +117,7 @@ public class fragment_search extends DialogFragment {
                 if (name.length() > 9 && name.substring(0, 8).toString().equals("Danh mục") )
                 {
                     column = "CATEGORY";
-                    List<ProductBaseDB> subpro = controllerProduct.getProductsBaseCategory( name.substring(9).toString(), 0, number_pro);
+                    List<ProductBaseDB> subpro = controllerProduct.getProductsBaseCategory( name.substring(10).toString(), 0, number_pro);
                     productList = new ArrayList<>(subpro.size());
                     for(ProductBaseDB p: subpro)
                     {
@@ -136,7 +136,7 @@ public class fragment_search extends DialogFragment {
                     if (name.length() > 10 && name.substring(0, 9).toString().equals("Người bán") )
                     {
                         column = "SALER";
-                        List<ProductBaseDB> subpro = controllerProduct.getProductsBaseSaler( name.substring(10).toString(), 0, number_pro);
+                        List<ProductBaseDB> subpro = controllerProduct.getProductsBaseSaler( name.substring(11).toString(), 0, number_pro);
                         productList = new ArrayList<>(subpro.size());
                         for(ProductBaseDB p: subpro)
                         {

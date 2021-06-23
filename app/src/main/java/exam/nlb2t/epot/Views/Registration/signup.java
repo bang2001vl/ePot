@@ -99,7 +99,7 @@ public class signup extends AppCompatActivity {
             public void onClick(View v) {
                 if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP)))
                 {
-                    if (fg_signup_enterphone.edt_phone.getError() == null)
+                    if (fg_signup_enterphone.edt_phone.getText().toString()!= "" && fg_signup_enterphone.edt_phone.getError() == null)
                     {
                             DBControllerUser controllerUser = new DBControllerUser();
                         if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
@@ -200,7 +200,7 @@ public class signup extends AppCompatActivity {
             fg_signup_enterotp.tv_sent_otp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendVerificationCode(phone);
+                    if (  fg_signup_enterphone.edt_phone.getError() == null ) sendVerificationCode(phone);
                     fg_signup_enterotp.tv_sent_otp.setVisibility(View.INVISIBLE);
                 }
             });
