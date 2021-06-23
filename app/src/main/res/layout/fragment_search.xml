@@ -15,6 +15,10 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-16dp">
 
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:mrl_rippleOverlay="true">
         <ImageView
             android:id="@+id/Button_Back"
             android:layout_width="wrap_content"
@@ -23,21 +27,27 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_back_title"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
+        </com.balysv.materialripple.MaterialRippleLayout>
         <androidx.appcompat.widget.SearchView
             android:id="@+id/sv_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
+            app:queryHint="@string/find"
             android:focusableInTouchMode="true"
             android:iconifiedByDefault="true"
             app:showAsAction="always"
             android:background="@drawable/border_searchview"
             app:searchIcon="@drawable/ic_baseline_search_24" />
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:mrl_rippleOverlay="true"
+            >
 
         <Button
             android:id="@+id/btn_search"
@@ -49,9 +59,9 @@
             android:textColor="@color/mainColor"
             android:textAlignment="center"
             android:layout_gravity="center"
-
             android:textSize="19dp"
             android:textStyle="bold" />
+        </com.balysv.materialripple.MaterialRippleLayout>
     </LinearLayout>
 
     <LinearLayout
