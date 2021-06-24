@@ -1,5 +1,7 @@
 package exam.nlb2t.epot.RatingProduct;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerRating;
@@ -17,8 +19,8 @@ public class RatingDialogTab_Old extends RatingDialogTab_New{
     }
 
     @Override
-    protected void setupAdapter() {
-        super.setupAdapter();
+    protected void setupAdapter(RecyclerView recyclerView) {
+        super.setupAdapter(recyclerView);
         adapter.setOnCLickItemListener(new BillAdapter.OnBindingLastPositionListener() {
             @Override
             public void onBindingLastPostion(int postion) {

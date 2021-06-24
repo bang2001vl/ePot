@@ -1,17 +1,11 @@
 package exam.nlb2t.epot.Fragments;
 
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +13,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +24,6 @@ import exam.nlb2t.epot.Category.DBControllerCategory;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
-import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.R;
@@ -47,18 +37,20 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     private RecyclerView rcVCategory;
     private CategoryAdapter categoryAdapter;
-    List<Category> categoryList;
 
     private fragment_ProItem_Container fragment_new;
     private fragment_ProItem_Container fragment_topSold;
 
     private androidx.appcompat.widget.SearchView searchView;
 
+    List<Category> list_Categoty;
+    List<ProductAdapterItemInfo> list_TopSold;
+    List<ProductAdapterItemInfo> list_New;
+
     int step = 10;
     int currentLastIndex = 1;
     boolean hasMoreData = true;
 
-    String sql;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,8 +58,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
         //category
         rcVCategory = binding.recycleViewCategory;
-        categoryList = list_Categoty;
-        categoryAdapter = new CategoryAdapter(getContext(),categoryList,this);
+        categoryAdapter = new CategoryAdapter(getContext(),list_Categoty,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL, false);
         rcVCategory.setLayoutManager(linearLayoutManager);
         rcVCategory.setAdapter(categoryAdapter);
@@ -83,23 +74,22 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         fragment_topSold.canScroll = false;
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
 
-        binding.stickyScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        binding.stickyScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if(list_New.size() < 1){return;}
+            ScrollView scrollView = binding.stickyScrollView;
+            ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+            if(viewG == null) return;
+            View view = viewG.getChildAt(viewG.getChildCount() - 1);
+            if(view == null) return;
+            int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
-            @Override
-            public void onScrollChanged() {
-                ScrollView scrollView = binding.stickyScrollView;
-                ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
-                View view = viewG.getChildAt(viewG.getChildCount() - 1);
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-
-                // if diff is zero, then the bottom has been reached
-                if (diff <= 00 && hasMoreData) {
-                    showLoading();
-                    loadMoreData_New();
-                }
+            // if diff is zero, then the bottom has been reached
+            if (diff <= 00 && hasMoreData) {
+                showLoading();
+                Log.d("My_TAG", "Call load more from Scroll");
+                loadMoreData_New();
             }
         });
-        hideLoading();
         return binding.getRoot();
     }
 
@@ -124,13 +114,6 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         binding.buttonRefeshNew.setOnClickListener(v->onClickRefresh_New());
         binding.buttonRefeshTopSold.setOnClickListener(v->onClickRefresh_TopSold());
 
-        // new product
-        /*binding.buttonMoreProductNew.setOnClickListener(v->{
-            fragment_new.spinner.setSelection(0, true);
-            fragment_new.addProduct(getMoreData());
-        });*/
-        //binding.buttonMoreProductNew.setVisibility(View.GONE);
-
         fragment_new.setOnClickItemListener(onClickItemListener);
 
         fragment_topSold.setOnClickItemListener(onClickItemListener);
@@ -139,30 +122,24 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        /*if(binding.layoutNewProduct.getLayoutParams().height != binding.nestedScrollView.getHeight()) {
-            binding.layoutNewProduct.getLayoutParams().height = binding.nestedScrollView.getHeight();
-            binding.layoutNewProduct.requestLayout();
-        }*/
+        hideLoading();
+        LoadFirstData();
     }
 
-    List<ProductAdapterItemInfo> list_New;
-    List<ProductAdapterItemInfo> list_TopSold;
-    List<Category> list_Categoty;
     public void LoadFirstData()
     {
-        list_New = new ArrayList<>();
-
-        list_TopSold = new ArrayList<>();
-
-        list_Categoty = getListCategory();
-        if(categoryAdapter != null){categoryAdapter.notifyDataSetChanged();}
+        Log.d("My_TAG", "First load");
+        list_Categoty.addAll(getListCategory());
+        if(categoryAdapter != null){
+            categoryAdapter.notifyItemRangeInserted(list_Categoty.size() -1, list_Categoty.size());
+        }
 
         onClickRefresh_New();
         onClickRefresh_TopSold();
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {
-        sql = "SELECT TOP 10 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
+        String sql = "SELECT TOP 8 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
                 "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG " +
                 "FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
@@ -179,6 +156,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             info.productAvatar = null;
             list.add(info);
         }
+        dbControllerProduct.closeConnection();
         return  list;
     }
 
@@ -186,10 +164,6 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         DBControllerCategory db = new DBControllerCategory();
         List<Category> list = db.getCategoriesList_withoutImage();
         db.closeConnection();
-        /*List<Pair<String, Bitmap>> categoryList = DBControllerCategory.getCategories();
-        for (Pair<String, Bitmap> i:categoryList) {
-            list.add(new Category(i.first, i.second));
-        }*/
         return  list;
     }
 
@@ -199,36 +173,39 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     }
 
     public void onClickRefresh_New() {
-        if (fragment_new != null) {
-            int oldLength = fragment_new.productAdapter.getProductList().size();
-            if(oldLength > 0) {
-                fragment_new.productAdapter.getProductList().clear();
+        int oldLength = list_New.size();
+        if(oldLength > 0) {
+            list_New.clear();
+            if(fragment_new != null && fragment_new.productAdapter != null) {
                 fragment_new.productAdapter.notifyItemRangeRemoved(0, oldLength);
             }
         }
         currentLastIndex = 1;
         hasMoreData = true;
+        Log.d("My_TAG", "CAll load more from click refresh");
         loadMoreData_New();
     }
 
     public void loadMoreData_New()
     {
         if(!hasMoreData) return;
-        // To avoid multiple call
+        Log.d("My_TAG", "On load more");
         hasMoreData = false;
         new Thread(() -> {
             List<ProductAdapterItemInfo> data = getMoreData();
-            list_New.addAll(data);
-
-            if (fragment_new != null && getActivity() != null && data.size() > 0) {
+            Log.d("MY_TAG", "i before = " + data.size());
+            if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - 1, data.size());
+                    list_New.addAll(data);
+                    if(fragment_new != null && data.size() > 0) {
+                        fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - data.size(), data.size());
+                    }
                     hideLoading();
                 });
             }
             hasMoreData = data.size() == step;
             currentLastIndex += data.size();
-        }).start();
+        }, "LoadNewProduct").start();
     }
 
     protected void showLoading()
@@ -244,28 +221,33 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     }
 
     public void onClickRefresh_TopSold() {
-        if (fragment_topSold != null) {
-            int oldLength = fragment_topSold.productAdapter.getProductList().size();
-            if(oldLength > 0) {
-                fragment_topSold.productAdapter.getProductList().clear();
+        Log.d("MY_TAG", "Call refresh list_TopSold");
+        int oldLength = list_TopSold.size();
+        if(oldLength > 0) {
+            list_TopSold.clear();
+
+            if (fragment_topSold != null && fragment_topSold.productAdapter != null) {
                 fragment_topSold.productAdapter.notifyItemRangeRemoved(0, oldLength);
             }
         }
 
         new Thread(() -> {
-            list_TopSold = getDataMaxSold();
-            if (fragment_topSold != null && getActivity() != null) {
+            List<ProductAdapterItemInfo> data = getDataMaxSold();
+            if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    fragment_topSold.addProduct(list_TopSold);
+                    // list_TopSold already clear
+                    list_TopSold.addAll(data);
+                    if (fragment_topSold != null && fragment_topSold.productAdapter != null && list_TopSold.size() > 0) {
+                        fragment_topSold.productAdapter.notifyItemRangeInserted(0, data.size());
+                    }
                 });
             }
-
-        }).start();
+        }, "LoadProductTopSold").start();
     }
 
     public List<ProductAdapterItemInfo> getMoreData()
     {
-        sql = "SELECT ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG from " +
+        String sql = "SELECT ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG from " +
 
                 "(SELECT product.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, " +
                 "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
@@ -286,20 +268,6 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             info.productAvatar = null;
             list.add(info);
         }
-       /* for(ProductBaseDB p : list)
-        {
-
-
-            // Create new custom view to display product
-            //View view = getLayoutInflater().inflate(R.layout.product_item_layout, binding.gridNewProduct,false);
-            // Set data from p to new view
-
-
-            // Add new view to grid
-            *//*GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            binding.gridNewProduct.addView(view, binding.gridNewProduct.getChildCount() - 1, params);*//*
-        }*/
 
         return list;
     }
@@ -334,6 +302,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
     public HomepageFragment()
     {
-        LoadFirstData();
+        list_New = new ArrayList<>();
+        list_TopSold = new ArrayList<>();
+        list_Categoty = new ArrayList<>();
     }
 }

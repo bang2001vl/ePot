@@ -22,6 +22,7 @@ public class OrderTab_InShipping extends OrderTab {
     {
         this.onSubmitVertifyBillListener = listener;
     }
+
     @Override
     public List<BillAdapterItemInfo> loadDataFromDB() {
         List<BillAdapterItemInfo> rs = null;

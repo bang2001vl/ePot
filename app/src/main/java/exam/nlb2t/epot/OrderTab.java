@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,6 @@ import androidx.viewbinding.ViewBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
@@ -52,6 +50,49 @@ public class OrderTab extends Fragment {
                 dialog.show(getChildFragmentManager(), DetailBillFragment.NAMEDIALOG);
             }
         };
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //TODO: Find UserID to login app
+
+        v=inflater.inflate(R.layout.fragment_order_tab,container,false);
+        gifLoadingCircle = v.findViewById(R.id.gif_loading_circle);
+
+        recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);
+
+        recyclerViewAdapter = new BillAdapter(bills);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        if(buttonText != null){recyclerViewAdapter.setBtnDetailText(buttonText);}
+        if(buttonClickListner != null){recyclerViewAdapter.setOnBtnDetailClickListener(buttonClickListner);}
+
+        ScrollView scrollView = (ScrollView) v.findViewById(R.id.scroll_view_main);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if(bills.size() == 0) return;
+            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+            if(view == null) return;
+            int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+
+            // if diff is zero, then the bottom has been reached
+            if (diff <= 0 && hasMoreData) {
+                showLoading();
+                loadMore();
+            }
+        });
+
+        emptybinding = null;
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        showLoading();
         reLoad();
     }
 
@@ -73,9 +114,9 @@ public class OrderTab extends Fragment {
         hasMoreData = false;
         new Thread(() -> {
             List<BillAdapterItemInfo> list = loadDataFromDB();
-            bills.addAll(bills.size(), list);
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
+                    bills.addAll(bills.size(), list);
                     if (recyclerViewAdapter != null && list.size() > 0) {
                         recyclerViewAdapter.notifyItemRangeInserted(bills.size() - 1, bills.size());
                     }
@@ -98,53 +139,6 @@ public class OrderTab extends Fragment {
         return rs;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //TODO: Find UserID to login app
-
-        v=inflater.inflate(R.layout.fragment_order_tab,container,false);
-        gifLoadingCircle = v.findViewById(R.id.gif_loading_circle);
-
-        recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);
-
-        recyclerViewAdapter = new BillAdapter(bills);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
-        recyclerView.setAdapter(recyclerViewAdapter);
-
-        if(buttonText != null){recyclerViewAdapter.setBtnDetailText(buttonText);}
-        if(buttonClickListner != null){recyclerViewAdapter.setOnBtnDetailClickListener(buttonClickListner);}
-
-        ScrollView scrollView = (ScrollView) v.findViewById(R.id.scroll_view_main);
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-
-            @Override
-            public void onScrollChanged() {
-                if(bills.size() == 0) return;
-                ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
-                View view = viewG.getChildAt(viewG.getChildCount() - 1);
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-
-                // if diff is zero, then the bottom has been reached
-                if (diff <= 00 && hasMoreData) {
-                    showLoading();
-                    loadMore();
-                }
-            }
-        });
-        hideLoading();
-        layoutData();
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //TODO : Write code here <Get data from database and set to view>
-        layoutData();
-    }
-
     public void showLoading()
     {
         gifLoadingCircle.setEnabled(false);
@@ -160,20 +154,26 @@ public class OrderTab extends Fragment {
     void layoutData()
     {
         if(v==null) return;
-        ViewGroup constraintLayout = (ViewGroup) v;
+        ViewGroup contentLayout = (ViewGroup) v;
         if (bills.size() == 0) {
             if(emptybinding == null) {
-                emptybinding = FragmentEmptyBillBinding.inflate(getLayoutInflater(), constraintLayout, false);
+                emptybinding = FragmentEmptyBillBinding.inflate(getLayoutInflater(), contentLayout, false);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                constraintLayout.addView(emptybinding.getRoot(), constraintLayout.getChildCount(), params);
+                contentLayout.addView(emptybinding.getRoot(), contentLayout.getChildCount(), params);
             }
             return;
         }
 
         if(emptybinding != null)
         {
+            contentLayout.removeView(emptybinding.getRoot());
             emptybinding = null;
-            constraintLayout.removeViewAt(constraintLayout.getChildCount() - 1);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        emptybinding = null;
     }
 }

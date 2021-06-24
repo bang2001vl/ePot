@@ -96,25 +96,16 @@ public class fragment_ProItem_Container extends Fragment {
             if(!canScroll) proGrid.setNestedScrollingEnabled(false);
             productAdapter = new ProductAdapter(productList, this.getContext());
             productAdapter.setOnItemClickListener(onClickItemListener);
-            productAdapter.setOnBindingLastPositionListener(onBindingLastPositionListener);
             proGrid.setAdapter(productAdapter);
             proGrid.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
             if(!hideSpinner){
-                setupSort();
+                //setupSort();
             }
         }
         return view;
     }
 
-    public void addProduct(List<ProductAdapterItemInfo> list)
-    {
-        productList.addAll(list);
-        productAdapter.notifyItemRangeInserted(productList.size() - list.size() -1, list.size());
-        lastSort = 0;
-        sort();
-    }
-
-    private void setupSort() {
+    /*private void setupSort() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -152,7 +143,6 @@ public class fragment_ProItem_Container extends Fragment {
                 break;
         }
         lastSort = currentSort;
-        productAdapter.notifyDataSetChanged();
     }
 
     private void sortByPriceMore() {
@@ -173,7 +163,7 @@ public class fragment_ProItem_Container extends Fragment {
 
     private void sortByNameA_Z() {
         Collections.sort(productList, ProductBaseDB.sortNameAtoZ);
-    }
+    }*/
 
     public interface OnClickItemListener{
         void onClick(int position, int productID);

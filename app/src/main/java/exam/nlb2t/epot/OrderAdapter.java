@@ -15,8 +15,8 @@ public class OrderAdapter extends FragmentPagerAdapter{
     private  List<Fragment> fragmentList=new ArrayList<>();
     private List<String> titleList=new ArrayList<>();
 
-    public OrderAdapter(FragmentManager fm){
-        super(fm);
+    public OrderAdapter(FragmentManager fm, int behaviour){
+        super(fm, behaviour);
     }
 
     @Override

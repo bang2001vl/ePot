@@ -36,11 +36,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     {
         onClickItemListener = listener;
     }
-    protected BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener;
-    public  void setOnBindingLastPositionListener(BillAdapter.OnBindingLastPositionListener listener)
-    {
-        this.onBindingLastPositionListener = listener;
-    }
     ProductBaseDB  product;
 
     public ProductAdapter (List<ProductAdapterItemInfo> products, Context mcontext)
@@ -67,11 +62,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-    public void setData(List<ProductAdapterItemInfo> list){
-        products = list;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -119,12 +109,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         else {holder.imagePro.setImageResource(R.color.white);}
         if(info.productAvatar == null) {
             new Thread(new LoadImageRunable(new Handler(), position), "LoadImageAt=" + position).start();
-        }
-
-        if(position == products.size() - 1) {
-            if (onBindingLastPositionListener != null) {
-                onBindingLastPositionListener.onBindingLastPostion(position);
-            }
         }
     }
 

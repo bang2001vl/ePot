@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,36 +60,31 @@ public class OrderFragment extends DialogFragment{
         tabLayout=myFragment.findViewById(R.id.order_tablayout);
         back=myFragment.findViewById(R.id.btn_back1);
 
-        return myFragment;
-    }
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         setEventHandler();
         setUpViewPager(viewPager);
         selectPage(position);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-           @Override
-           public void onTabSelected(TabLayout.Tab tab) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
 
-           }
+            }
 
-           @Override
-           public void onTabUnselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-           }
+            }
 
-           @Override
-           public void onTabReselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-           }
-       });
-
+            }
+        });
+        return myFragment;
     }
 
     private void setUpViewPager(ViewPager viewPager) {
-        OrderAdapter adapter=new OrderAdapter(getChildFragmentManager());
+        OrderAdapter adapter=new OrderAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         OrderTab_InShipping tab_inShipping = new OrderTab_InShipping();
         tab_inShipping.setOnSubmitVertifyBillListener(new Helper.OnSuccessListener() {

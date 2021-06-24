@@ -145,6 +145,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="300dp"
                     android:id="@+id/fragment_product_top_sold"
                     android:name="exam.nlb2t.epot.fragment_ProItem_Container"
                     tools:layout="@layout/fragment__pro_item__container">
@@ -191,6 +192,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="300dp"
                     android:id="@+id/fragment_product_new"
                     android:name="exam.nlb2t.epot.fragment_ProItem_Container"
                     tools:layout="@layout/fragment__pro_item__container">

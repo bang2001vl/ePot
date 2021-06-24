@@ -39,7 +39,6 @@ public class NotificationFragment extends Fragment {
     public NotificationFragment()
     {
         list = new ArrayList<>();
-        reload();
     }
 
     @Nullable
@@ -53,24 +52,22 @@ public class NotificationFragment extends Fragment {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
 
-        binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if(list.size() == 0) return;
+            ScrollView scrollView = binding.scrollViewMain;
+            ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+            if(viewG == null) return;
+            View view = viewG.getChildAt(viewG.getChildCount() - 1);
+            if(view == null) return;
+            int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
-            @Override
-            public void onScrollChanged() {
-                if(list.size() == 0) return;
-                ScrollView scrollView = binding.scrollViewMain;
-                ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
-                View view = viewG.getChildAt(viewG.getChildCount() - 1);
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-
-                // if diff is zero, then the bottom has been reached
-                if (diff <= 00 && hasMoreData) {
-                    showLoading();
-                    loadMoreData();
-                }
+            // if diff is zero, then the bottom has been reached
+            if (diff <= 00 && hasMoreData) {
+                showLoading();
+                loadMoreData();
             }
         });
-        hideLoading();
+        bindingEmpty = null;
         return binding.getRoot();
     }
 
@@ -78,7 +75,9 @@ public class NotificationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        layoutData();
+
+        hideLoading();
+        reload();
     }
 
     public void reload()
@@ -106,13 +105,13 @@ public class NotificationFragment extends Fragment {
                 DBControllerNotification db = new DBControllerNotification();
                 List<NotifycationInfo> data = db.getNotidication(Authenticator.getCurrentUser().id, lastIndex, lastIndex+step-1);
                 db.closeConnection();
-                list.addAll(data);
 
                 if(getActivity() != null)
                 {
                     getActivity().runOnUiThread(() -> {
+                        list.addAll(data);
                         if(adapter != null && data.size() > 0) {
-                            adapter.notifyItemRangeInserted(list.size() - 1, data.size());
+                            adapter.notifyItemRangeInserted(list.size() - data.size(), data.size());
                         }
                         layoutData();
                         hideLoading();
