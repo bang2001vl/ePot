@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CartDataController {
-    public static String preferences_file_name = "card_runtime_data";
+    private final static String preferences_file_name = "card_runtime_data";
 
     public static List<Pair<Integer, Integer>> getAllData(Context context)
     {

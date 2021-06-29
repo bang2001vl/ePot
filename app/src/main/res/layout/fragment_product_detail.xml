@@ -216,7 +216,7 @@
                     android:layout_marginVertical="20dp"
                     android:layout_marginLeft="10dp"/>
 
-                <exam.nlb2t.epot.ProductDetail.ProductRatingView
+                <exam.nlb2t.epot.ProductDetail.Rating.ProductRatingView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ratingProductView"

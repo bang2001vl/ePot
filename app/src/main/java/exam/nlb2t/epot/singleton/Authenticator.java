@@ -1,30 +1,63 @@
 package exam.nlb2t.epot.singleton;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Xml;
+
+import androidx.browser.trusted.sharing.ShareTarget;
+
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.prefs.Preferences;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
 public class Authenticator {
+    private final static String preferences_file_name = "user_login_data_ak47";
+
     public static boolean Login(String username, String password)
     {
-        DBControllerUser db = new DBControllerUser();
-        int id = db.findUserID(username, password);
+        boolean rs = false;
+        Authenticator authenticator = new Authenticator();
+        byte[] passEncypted = authenticator.encyptPassword(username, password);
 
-        if(id > 0)
-        {
+        DBControllerUser db = new DBControllerUser();
+        int id = db.findUserID(username, passEncypted);
+
+        if(id > 0) {
             currentUser = db.getUserInfo(id);
             currentUser.password = password;
-            db.closeConnection();
-            return true;
+            rs = true;
         }
-        else {
-            db.closeConnection();
-            return false;
-        }
+        return rs;
     }
+
+    public static void saveLoginData(Context context, String username, String password)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("username", username);
+        editor.putString("pass", password);
+
+        editor.apply();
+    }
+
+    public static boolean LoginWithSavedData(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        if(username == null) return false;
+        String pass = sharedPreferences.getString("pass", null);
+        if(pass == null) return false;
+
+        return Login(username, pass);
+    }
+
     public static boolean LoginGG(int id)
     {
         DBControllerUser db = new DBControllerUser();

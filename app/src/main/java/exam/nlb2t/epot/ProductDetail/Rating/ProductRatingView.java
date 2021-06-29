@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.ProductDetail;
+package exam.nlb2t.epot.ProductDetail.Rating;
 
 import android.content.Context;
 import android.graphics.Bitmap;

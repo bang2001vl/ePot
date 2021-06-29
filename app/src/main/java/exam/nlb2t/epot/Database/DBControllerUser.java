@@ -227,14 +227,17 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
-
     public int findUserID(String username, String pass)
+    {
+        Authenticator authenticator = new Authenticator();
+        return findUserID(username, authenticator.encyptPassword(username, pass));
+    }
+
+    public int findUserID(String username, byte[] passEncypted)
     {
         int rs = -1;
         try
         {
-            Authenticator authenticator = new Authenticator();
-            byte[] passEncypted = authenticator.encyptPassword(username, pass);
             ByteArrayInputStream inputStream = new ByteArrayInputStream(passEncypted);
             PreparedStatement statement = connection.prepareStatement("SELECT [ID] FROM [USER] WHERE [USERNAME]= ? AND [PASSWORD] = ?");
             statement.setString(1, username);

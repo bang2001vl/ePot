@@ -129,10 +129,17 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     public void LoadFirstData()
     {
         Log.d("My_TAG", "First load");
-        list_Categoty.addAll(getListCategory());
-        if(categoryAdapter != null){
-            categoryAdapter.notifyItemRangeInserted(list_Categoty.size() -1, list_Categoty.size());
-        }
+        new Thread(() -> {
+            List<Category> data = getListCategory();
+            if(getActivity() != null)
+            {
+                getActivity().runOnUiThread(() -> {
+                    list_Categoty.addAll(data);
+                    if(categoryAdapter != null)
+                    categoryAdapter.notifyItemRangeInserted(0, data.size());
+                });
+            }
+        }).start();
 
         onClickRefresh_New();
         onClickRefresh_TopSold();
@@ -180,6 +187,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                 fragment_new.productAdapter.notifyItemRangeRemoved(0, oldLength);
             }
         }
+
         currentLastIndex = 1;
         hasMoreData = true;
         Log.d("My_TAG", "CAll load more from click refresh");
@@ -200,11 +208,11 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                     if(fragment_new != null && data.size() > 0) {
                         fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - data.size(), data.size());
                     }
+                    hasMoreData = data.size() == step;
+                    currentLastIndex += data.size();
                     hideLoading();
                 });
             }
-            hasMoreData = data.size() == step;
-            currentLastIndex += data.size();
         }, "LoadNewProduct").start();
     }
 
@@ -235,9 +243,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             List<ProductAdapterItemInfo> data = getDataMaxSold();
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    // list_TopSold already clear
                     list_TopSold.addAll(data);
-                    if (fragment_topSold != null && fragment_topSold.productAdapter != null && list_TopSold.size() > 0) {
+                    if (fragment_topSold != null && fragment_topSold.productAdapter != null) {
                         fragment_topSold.productAdapter.notifyItemRangeInserted(0, data.size());
                     }
                 });
@@ -251,7 +258,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
                 "(SELECT product.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, " +
                 "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
-                "FROM PRODUCT where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 7) as tamp " +
+                "FROM PRODUCT where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 70) as tamp " +
                 "where tamp.STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
 
         DBControllerProduct dbControllerProduct = new DBControllerProduct();

@@ -84,6 +84,11 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(Authenticator.LoginWithSavedData(this))
+        {
+            loadMainActivity();
+        }
+
         context = this;
         setContentView(R.layout.activity_login_screen);
 
@@ -187,12 +192,9 @@ public class LoginScreen extends AppCompatActivity {
                 {
                     Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
 
-                    Intent intent = new Intent(LoginScreen.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("EXIT", true);
-                    startActivity(intent);
-                    finish();
                     controllerUser.closeConnection();
+                    Authenticator.saveLoginData(LoginScreen.this, et_username.getText().toString(), tet_password.getText().toString());
+                    loadMainActivity();
                 }
                 else
                 {
@@ -248,6 +250,14 @@ public class LoginScreen extends AppCompatActivity {
                 Toast.makeText(LoginScreen.this, "Login Facebook error.", Toast.LENGTH_SHORT).show();
             }
         });*/
+    }
+
+    private void loadMainActivity() {
+        Intent intent = new Intent(LoginScreen.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
+        finish();
     }
 
     @Override

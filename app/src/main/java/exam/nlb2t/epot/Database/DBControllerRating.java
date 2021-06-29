@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
+import exam.nlb2t.epot.ProductDetail.Rating.RatingInfo;
 import exam.nlb2t.epot.RatingProduct.ProductOverviewAdpterItem;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -107,6 +108,22 @@ public class DBControllerRating extends DatabaseController{
         }
         return rs;
     }
+
+    public List<RatingInfo> getRatingInfo_ByProduct(int productID, int startIndex, int endIndex) {
+        List<RatingInfo> rs = null;
+
+        List<RatingBaseDB> ratings = getRating_ByProduct(productID, startIndex, endIndex);
+        if(ratings != null) {
+            rs = new ArrayList<>(ratings.size());
+            DBControllerUser db = new DBControllerUser();
+            for (RatingBaseDB rating : ratings) {
+                rs.add(new RatingInfo(rating, db.getUserOverview(rating.userId)));
+            }
+            db.closeConnection();
+        }
+        return rs;
+    }
+
 
     public List<RatingBaseDB> getRating_ByUser(int userID, int startIndex, int endIndex)
     {

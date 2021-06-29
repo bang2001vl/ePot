@@ -31,6 +31,8 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.PlainTextDialog;
+import exam.nlb2t.epot.ProductDetail.Rating.ProductRatingDialog;
+import exam.nlb2t.epot.ProductDetail.Rating.RatingInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.FragmentProductDetailBinding;
@@ -261,48 +263,12 @@ public class ProductDetailFragment extends DialogFragment {
         {
             binding.btnMoreCommentRating.setVisibility(View.GONE);
         }
-    }
-
-    Runnable getImagesFromDB()
-    {
-        Handler mainHandler = new Handler();
-        Runnable runnable = () -> {
-            // Get data in background
-            DBControllerProduct db = new DBControllerProduct();
-
-            do
-            {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            while (product == null);
-
-            db.closeConnection();
-
-            if(db.hasError())
-            {
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), db.getErrorMsg(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            else {
-                // Update UI when done
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-
-                    }
-                });
-            }
-        };
-        return runnable;
+        else {
+            binding.btnMoreCommentRating.setOnClickListener(v->{
+                ProductRatingDialog dialog = new ProductRatingDialog(productID);
+                dialog.show(getChildFragmentManager(), "ratingOfProduct");
+            });
+        }
     }
 
     public void setImages(List<Bitmap> bitmaps)

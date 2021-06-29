@@ -85,7 +85,7 @@ public class ShopFragment extends Fragment {
 
     public void releaseAdapter()
     {
-        if(reloadThread.isAlive())
+        if(reloadThread != null && reloadThread.isAlive())
         {
             try {
                 reloadThread.join();
