@@ -475,6 +475,44 @@ public class DBControllerProduct extends DatabaseController{
 
         return rs;
     }
+    public List<ProductMyShop> getProductMyShop2(int userID, int offset, int number) {
+        List<ProductMyShop> rs = new ArrayList<>();
+        try
+        {
+            PreparedStatement statement = connection.prepareStatement("EXEC getLIMITProduct2 ?,?,?");
+            statement.setInt(1, userID);
+            statement.setInt(2, offset);
+            statement.setInt(3, number);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                ProductMyShop item = new ProductMyShop();
+
+                item.id = resultSet.getInt("ID");
+                item.categoryID = resultSet.getInt("CATEGORY_ID");
+                item.name = resultSet.getString("NAME");
+                item.price = resultSet.getInt("PRICE");
+                item.priceOrigin = resultSet.getInt("PRICE_ORIGIN");
+                item.amount = resultSet.getInt("AMOUNT");
+                item.amountSold = resultSet.getInt("AMOUNT_SOLD");
+                item.imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
+                item.description = resultSet.getString("DETAIL");
+                item.createdDate = resultSet.getDate("CREATED_DATE");
+
+                item.numberLike =  getNumberLikeProduct(item.id);
+                rs.add(item);
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return rs;
+    }
 
     public List<ProductBaseDB> getNewProductList(String sql)
     {

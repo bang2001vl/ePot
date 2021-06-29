@@ -8,28 +8,25 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductInBill;
-import exam.nlb2t.epot.Database.Tables.UserBaseDB;
-import exam.nlb2t.epot.EmptyBillFragment;
-import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;
 import exam.nlb2t.epot.databinding.FragmentOrderTabBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 public class Shop_BillFragment extends Fragment {
     Bill_TabAdapter adapter;
     List<BillBaseDB> listBill;
+    int lastIndex;
+    int step;
+    boolean hasMoreData;
+
     BillBaseDB.BillStatus statusBill;
     FragmentOrderTabBinding binding;
 
@@ -40,9 +37,7 @@ public class Shop_BillFragment extends Fragment {
     public Shop_BillFragment(BillBaseDB.BillStatus status) {
         this.statusBill = status;
 
-        DBControllerBill db = new DBControllerBill();
-        listBill = db.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id, status);
-        db.closeConnection();
+        listBill = new ArrayList<>();
     }
 
     @Nullable
@@ -63,9 +58,35 @@ public class Shop_BillFragment extends Fragment {
 
         setEventHandler();
 
+        loadData();
+
         return binding.getRoot();
     }
 
+    public void loadData()
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBControllerBill db = new DBControllerBill();
+                List<BillBaseDB> data = db.getBillsOverviewbyStatus(Authenticator.getCurrentUser().id, statusBill);
+                db.closeConnection();
+
+                if(getActivity() != null)
+                {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listBill.addAll(data);
+                            if(adapter != null){
+                                adapter.notifyItemRangeInserted(0, data.size());
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
 
     Bill_TabAdapter.OnStatusTableChangedListener notifyStatusChangedListener;
 

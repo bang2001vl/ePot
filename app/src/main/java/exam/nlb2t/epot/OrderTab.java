@@ -78,7 +78,7 @@ public class OrderTab extends Fragment {
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
             // if diff is zero, then the bottom has been reached
-            if (diff <= 0 && hasMoreData) {
+            if (diff == 0 && hasMoreData) {
                 showLoading();
                 loadMore();
             }

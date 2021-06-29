@@ -1,25 +1,12 @@
 package exam.nlb2t.epot.MyShop;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.text.Layout;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowInsets;
-import android.view.WindowInsetsController;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -28,25 +15,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.ViewGroupUtils;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
-import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.DialogFragment.YesNoDialog;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
-import exam.nlb2t.epot.databinding.MyShopProductViewBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -55,7 +31,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     Context context;
     boolean isfullProducts;
     int position;
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    public Handler mHandler;
 
     public int getPosition() {
         return position;
@@ -67,6 +43,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
     public Product_TabAdapter(List<ProductMyShop> products) {
         this.products = products;
+        lastIndex = products.size();
     }
 
     @Override
@@ -120,17 +97,17 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-        private final ImageView btnShowContextMenu;
+        private ImageView imageView;
+        private ImageView btnShowContextMenu;
 
-        private final TextView nameView;
-        private final TextView priceView;
-        private final TextView warehouseView;
-        private final TextView sellView;
-        private final TextView likeView;
+        private TextView nameView;
+        private TextView priceView;
+        private TextView warehouseView;
+        private TextView sellView;
+        private TextView likeView;
 
-        private final Button btnChange;
-        private final Button btnDelete;
+        private Button btnChange;
+        private Button btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -268,47 +245,31 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         Toast.makeText(context, "Đã ngừng cung cấp", Toast.LENGTH_SHORT);
     }
 
-
-    public void addItemToList(int startindex, int number, Handler mhandler) {
+    int step = 10;
+    int lastIndex = 0;
+    public void addItemToList(Handler mainHandler) {
         if (isfullProducts) return;
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                synchronized (mHandler) {
-                    int offset = products.size();
 
-                    if (startindex < offset) return;
+        // Avoid multiple thread
+        isfullProducts = true;
+        new Thread(() -> {
+            Log.d("MY_TAG", "Load at index" + lastIndex);
+            List<ProductMyShop> newlist;
+            DBControllerProduct db = new DBControllerProduct();
+            newlist = db.getProductMyShop2(Authenticator.getCurrentUser().id, lastIndex, step);
 
-                    mhandler.sendEmptyMessage(1);
+            db.closeConnection();
 
-                    DBControllerProduct db = new DBControllerProduct();
-                    int maxsize = db.getNumberProducts(Authenticator.getCurrentUser().id);
+            isfullProducts = newlist.size() < step;
+            lastIndex += newlist.size();
 
-                    if (offset + number >= maxsize) {
-                        isfullProducts = true;
-                    }
-                    List<ProductMyShop> newlist;
-                    if (offset + number >= maxsize) {
-                        newlist = db.getProductMyShop(offset, maxsize - offset);
-                    } else
-                        newlist = db.getProductMyShop(offset, number);
-
-                    for (int i=0;i<newlist.size();i++) {
-                        ProductMyShop product = newlist.get(i);
-                        product.imageProduct = db.getAvatar_Product(product.imagePrimaryID  );
-                    }
-                    db.closeConnection();
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
                     products.addAll(newlist);
-
-//                    mhandler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            notifyItemRangeInserted(offset, products.size() - offset);
-//                            mhandler.removeMessages(1);
-//                        }
-//                    }, 100);
+                    notifyItemRangeInserted(products.size() - newlist.size(), newlist.size());
                 }
-//            }
-//        }).start();
-//    }
+            });
+        }).start();
+    }
 }
