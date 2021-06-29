@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     void onOpenTabMyShop(ShopFragment fragment)
     {
-        fragment.reload();
+        //fragment.reload();
     }
 
     public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();

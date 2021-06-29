@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ import exam.nlb2t.epot.singleton.Helper;
 public class Shop_ProductFragment extends Fragment {
     MyShopProductTabBinding binding;
     Product_TabAdapter adapter;
-    public final List<ProductMyShop> products;
+    public List<ProductMyShop> products;
 
     Handler mhandler = new Handler(Looper.getMainLooper());
 
@@ -47,9 +48,7 @@ public class Shop_ProductFragment extends Fragment {
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
 
     public Shop_ProductFragment() {
-        DBControllerProduct db = new DBControllerProduct();
-        products = db.getProductMyShop(0, 5);
-        db.closeConnection();
+        products = new ArrayList<>();
     }
 
     @Nullable
@@ -57,22 +56,41 @@ public class Shop_ProductFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = MyShopProductTabBinding.inflate(inflater, container, false);
 
-        adapter = new Product_TabAdapter(products);
-        adapter.setHasStableIds(true);
-
         LinearLayoutManager layout = new LinearLayoutManager(container.getContext());
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         binding.layoutProductMyShop.setLayoutManager(layout);
 
-        binding.layoutProductMyShop.setHasFixedSize(true);
+        /*binding.layoutProductMyShop.setHasFixedSize(true);
         binding.layoutProductMyShop.setItemViewCacheSize(10);
         binding.layoutProductMyShop.setDrawingCacheEnabled(true);
-        binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
 
-        mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
+        adapter = new Product_TabAdapter(products);
+        adapter.setHasStableIds(true);
+        adapter.mHandler = new Handler();
+        binding.layoutProductMyShop.setAdapter(adapter);
+
+        binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if(adapter == null || adapter.getItemCount() == 0) return;
+            ScrollView scrollView = binding.scrollViewMain;
+            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+            if(view == null) return;
+            int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+
+            // if diff is zero, then the bottom has been reached
+            if (diff == 0) {
+                adapter.addItemToList(adapter.mHandler);
+            }
+        });
+
+        // First load
+        adapter.addItemToList(adapter.mHandler);
+
+        /*mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
             @Override
             public void loadNextPage(int index_item_end_list) {
-                adapter.addItemToList(index_item_end_list+1, 5, mhandler);
+                Log.d("MY_TAG", "Load at index" + index_item_end_list);
+                adapter.addItemToList(index_item_end_list+1, 5, adapter.mHandler);
             }
 
             @Override
@@ -88,7 +106,7 @@ public class Shop_ProductFragment extends Fragment {
         };
 
         binding.layoutProductMyShop.setAdapter(adapter);
-        binding.layoutProductMyShop.addOnScrollListener(mScroll);
+        binding.layoutProductMyShop.addOnScrollListener(mScroll);*/
 //        binding.layoutProductMyShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
