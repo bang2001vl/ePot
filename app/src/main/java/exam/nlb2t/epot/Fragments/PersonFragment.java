@@ -157,6 +157,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                Authenticator.DiscardSavedData(mainActivity);
                 Intent newIntent = new Intent(mainActivity, LoginScreen.class);
                 startActivity(newIntent);
                 mainActivity.finish();

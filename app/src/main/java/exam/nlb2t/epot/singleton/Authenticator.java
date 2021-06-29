@@ -58,6 +58,14 @@ public class Authenticator {
         return Login(username, pass);
     }
 
+    public static void DiscardSavedData(Context context)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("username");
+        editor.remove("pass");
+    }
+
     public static boolean LoginGG(int id)
     {
         DBControllerUser db = new DBControllerUser();
