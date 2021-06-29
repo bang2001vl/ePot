@@ -130,9 +130,8 @@ public class CartFragment_Old extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(binding == null) {
-            binding = FragmentCartBinding.inflate(inflater, container, false);
-        }
+        binding = FragmentCartBinding.inflate(inflater, container, false);
+        bindingEmpty = null;
 
         layoutData();
 
@@ -145,7 +144,6 @@ public class CartFragment_Old extends Fragment {
         {
             if(bindingEmpty == null)
             {
-                LayoutInflater inflater = LayoutInflater.from(binding.getRoot().getContext());
                 bindingEmpty = FragmentEmptyBagBinding.inflate(getLayoutInflater(), binding.salerLayoutHolder, false);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -155,12 +153,10 @@ public class CartFragment_Old extends Fragment {
             binding.txtTotalprice.setText(Helper.getMoneyString(0));
             return;
         }
-        else
-        {
-            if(bindingEmpty != null) {
-                binding.contentLayout.removeViewAt(binding.contentLayout.getChildCount() - 1);
-                bindingEmpty = null;
-            }
+
+        if(bindingEmpty != null) {
+            binding.contentLayout.removeViewAt(binding.contentLayout.getChildCount() - 1);
+            bindingEmpty = null;
         }
 
         binding.salerLayoutHolder.removeAllViews();

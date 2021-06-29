@@ -31,19 +31,13 @@ public class DetailBillFragment extends DialogFragment {
     public static final String NAMEDIALOG = "DetailBillFragment";
     FragmentPaymnetBinding binding;
     private Product_InBill_Adapter adapter;
-    private final BillBaseDB bill;
+    private BillBaseDB bill;
     public Context context;
+    int billID;
 
     public DetailBillFragment(int billID, Context context) {
         this.context = context;
-
-        DBControllerBill db = new DBControllerBill();
-        bill = db.getBillbyID(billID);
-        db.closeConnection();
-
-        DBControllerProduct db2 = new DBControllerProduct();
-        bill.productinBill = db2.getProductInBill(billID);
-        db2.closeConnection();
+        this.billID = billID;
     }
 
     @Nullable
@@ -51,14 +45,40 @@ public class DetailBillFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPaymnetBinding.inflate(inflater, container, false);
 
-        //TODO: Add adapter for fragment_payment.xml
-        adapter = new Product_InBill_Adapter(bill.productinBill);
+        new Thread(() -> {
+            //TODO: Add adapter for fragment_payment.xml
+            DBControllerBill db = new DBControllerBill();
+            bill = db.getBillbyID(billID);
+            db.closeConnection();
+
+            getActivity().runOnUiThread(() -> {
+                binding.paymentOrderCode.setText(bill.keyBill);;
+                SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                binding.paymentOrderTime.setText(dateformat.format(bill.createdDate));
+                binding.detailbillNameTake.setText(bill.getAddress()[0]);
+                binding.detailbillPhone.setText(bill.getAddress()[1]);
+                binding.detailbillDetailAddress.setText(bill.getAddress()[2]);
+                binding.generalAddress.setText(bill.getAddress()[3]);
+            });
+
+            DBControllerProduct db2 = new DBControllerProduct();
+            bill.productinBill = db2.getProductInBill(billID);
+            db2.closeConnection();
+
+            getActivity().runOnUiThread(() -> {
+                adapter = new Product_InBill_Adapter(bill.productinBill);
+                binding.paymentRecyclerProduct.swapAdapter(adapter, true);
+
+                binding.detailbillTransportpricePayment.setText(Helper.getMoneyString(bill.total - bill.sumProductPrice()));
+                binding.detailbillProductpricePayment.setText(Helper.getMoneyString(bill.sumProductPrice()));
+                binding.detailbillTotalpricePayment.setText(Helper.getMoneyString(bill.total));
+            });
+        }).start();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
 
         binding.paymentRecyclerProduct.setLayoutManager(layoutManager);
-        binding.paymentRecyclerProduct.setAdapter(adapter);
 
         setEventHandler();
         return binding.getRoot();
@@ -67,18 +87,6 @@ public class DetailBillFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        binding.paymentOrderCode.setText(bill.keyBill);;
-        SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        binding.paymentOrderTime.setText(dateformat.format(bill.createdDate));
-        binding.detailbillNameTake.setText(bill.getAddress()[0]);
-        binding.detailbillPhone.setText(bill.getAddress()[1]);
-        binding.detailbillDetailAddress.setText(bill.getAddress()[2]);
-        binding.generalAddress.setText(bill.getAddress()[3]);
-
-        binding.detailbillTransportpricePayment.setText(Helper.getMoneyString(bill.total - bill.sumProductPrice()));
-        binding.detailbillProductpricePayment.setText(Helper.getMoneyString(bill.sumProductPrice()));
-        binding.detailbillTotalpricePayment.setText(Helper.getMoneyString(bill.total));
     }
 
     private void setEventHandler() {

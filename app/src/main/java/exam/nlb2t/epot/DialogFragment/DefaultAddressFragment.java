@@ -26,6 +26,7 @@ import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentDefaultAddressBinding;
 import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -35,7 +36,11 @@ public class DefaultAddressFragment extends DialogFragment {
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
     private String[] address=new String[4];
 
-    DBControllerUser dbControllerUser=new DBControllerUser();
+    private Helper.OnSuccessListener onSuccessListener;
+
+    public void setOnSuccessListener(Helper.OnSuccessListener onSuccessListener) {
+        this.onSuccessListener = onSuccessListener;
+    }
 
     public DefaultAddressFragment() {
         // Required empty public constructor
@@ -100,7 +105,14 @@ public class DefaultAddressFragment extends DialogFragment {
                     if (CheckErrorInfo() == 0) {
                         Toast.makeText(getContext(), getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show(); }
                     else {
+                        DBControllerUser dbControllerUser=new DBControllerUser();
                         dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
+                        dbControllerUser.closeConnection();
+
+                        UserBaseDB userBaseDB = new UserBaseDB();
+                        userBaseDB.setAddress(binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
+
+                        if(onSuccessListener!= null){onSuccessListener.OnSuccess(userBaseDB.address);}
                         dismiss();
                     }
                 }
@@ -110,10 +122,10 @@ public class DefaultAddressFragment extends DialogFragment {
         String[] items = new String[]{"Điện Biên","Hòa Bình","Lai Châu","Lào Cai","Sơn La","Yên Bái","Bắc Giang","Bắc Kạn","Cao Bằng","Hà Giang","Lạng Sơn","Phú Thọ","Quảng Ninh","Thái Nguyên","Tuyên Quang","Bắc Ninh","Hà Nam","Hà Nội","Hải Dương","Hải Phòng","Hưng Yên","Nam Định","Ninh Bình","Thái Bình","Vĩnh Phúc","Hà Tĩnh","Nghệ An","Quảng Bình","Quảng Trị","Thanh Hóa","Thừa Thiên Huế","Đắk Lắk","Đắk Nông","Gia Lai","Kon Tum","Lâm Đồng","Bà Rịa", "Vũng Tàu","Bình Dương","Bình Phước","Đồng Nai","Thành phố Hồ Chí Minh","Tây Ninh","An Giang","Bạc Liêu","Bến Tre","Cà Mau","Cần Thơ","Đồng Tháp","Hậu Giang","Kiên Giang","Long An","Sóc Trăng","Tiền Giang","Trà Vinh","Vĩnh Long"};
         ArrayAdapter<String> adapter = new  ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item ,items);
         binding.city.setAdapter(adapter);
-        if (address[3]!=null)
-            {
+        if (address[3]!=null) {
             int spinnerPosition = adapter.getPosition(address[3]);
-            binding.city.setSelection(spinnerPosition);}
+            binding.city.setSelection(spinnerPosition);
+        }
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
         binding.name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -204,5 +216,4 @@ public class DefaultAddressFragment extends DialogFragment {
         AlertDialog alert =builder.create();
         alert.show();
     }
-
 }

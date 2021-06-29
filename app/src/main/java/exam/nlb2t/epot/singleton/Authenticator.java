@@ -64,6 +64,7 @@ public class Authenticator {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("username");
         editor.remove("pass");
+        editor.apply();
     }
 
     public static boolean LoginGG(int id)

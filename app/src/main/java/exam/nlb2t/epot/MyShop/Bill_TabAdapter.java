@@ -17,6 +17,7 @@ import java.util.List;
 import exam.nlb2t.epot.BillRecyclerViewAdapter;
 import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
@@ -73,12 +74,17 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
 
     private void changeStatus(int position, BillBaseDB.BillStatus newstatus) {
         BillBaseDB bill = billList.get(position);
+        int old = bill.status.getValue();
         bill.status = newstatus;
 
         new Thread(()-> {
             DBControllerBill db = new DBControllerBill();
             db.setStatusBill(bill.id, newstatus);
             db.closeConnection();
+
+            DBControllerNotification dbNoti = new DBControllerNotification();
+            dbNoti.insertNotify_Bill(bill.userID, bill.id,  old, bill.status.getValue());
+            dbNoti.closeConnection();
         }).start();
 
         billList.remove(position);
