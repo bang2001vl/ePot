@@ -106,11 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onPageSelected(int position) {
-                    switch (position){
-                        case 1:
-                            onOpenTabCart((CartFragment_Old) adapter.getItem(position));
-                            break;
+                    if(position == 1){
+                        onOpenTabCart((CartFragment_Old) adapter.getItem(position));
                     }
+
+                    if(position == 2){
+                        onOpenTabMyShop((ShopFragment)adapter.getItem(position));
+                    }
+                    else {((ShopFragment)adapter.getItem(2)).releaseAdapter();}
                 }
 
                 @Override
@@ -172,6 +175,11 @@ public class MainActivity extends AppCompatActivity {
         if(list.size() > 0) {
             fragmentOld.requestLoadData(list);
         }
+    }
+
+    void onOpenTabMyShop(ShopFragment fragment)
+    {
+        fragment.reload();
     }
 
     public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();
