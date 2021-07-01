@@ -151,7 +151,7 @@ public class OrderTab extends Fragment {
         gifLoadingCircle.setVisibility(View.GONE);
     }
 
-    void layoutData()
+    protected void layoutData()
     {
         if(v==null) return;
         ViewGroup contentLayout = (ViewGroup) v;

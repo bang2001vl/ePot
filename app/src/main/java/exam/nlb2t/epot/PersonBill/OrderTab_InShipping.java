@@ -51,6 +51,7 @@ public class OrderTab_InShipping extends OrderTab {
                         else {
                             bills.remove(posi);
                             recyclerViewAdapter.notifyItemRemoved(posi);
+                            layoutData();
                             if(onSubmitVertifyBillListener != null){onSubmitVertifyBillListener.OnSuccess(null);
                         }
                         dialog.dismiss();

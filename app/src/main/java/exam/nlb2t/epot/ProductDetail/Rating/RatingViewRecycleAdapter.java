@@ -16,6 +16,7 @@ import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.RatingCommentLayoutBinding;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class RatingViewRecycleAdapter extends RecyclerView.Adapter<RatingViewRecycleAdapter.RatingViewHolder> {
     public List<RatingInfo> list;

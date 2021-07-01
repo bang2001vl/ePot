@@ -1,6 +1,8 @@
 package exam.nlb2t.epot.Fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +29,7 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
-import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.Views.Search_Product.fragment_search;
 import exam.nlb2t.epot.databinding.HomeShoppingBinding;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -35,11 +38,9 @@ import exam.nlb2t.epot.singleton.Authenticator;
 public class HomepageFragment extends Fragment implements OnItemClickListener {
     HomeShoppingBinding binding;
 
-    private RecyclerView rcVCategory;
     private CategoryAdapter categoryAdapter;
-
-    private fragment_ProItem_Container fragment_new;
-    private fragment_ProItem_Container fragment_topSold;
+    private ProductAdapter adapter_new;
+    private ProductAdapter adapter_TopSold;
 
     private androidx.appcompat.widget.SearchView searchView;
 
@@ -51,28 +52,29 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     int currentLastIndex = 1;
     boolean hasMoreData = true;
 
+    public HomepageFragment()
+    {
+        list_New = new ArrayList<>();
+        list_TopSold = new ArrayList<>();
+        list_Categoty = new ArrayList<>();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = HomeShoppingBinding.inflate(inflater, container, false);
 
         //category
-        rcVCategory = binding.recycleViewCategory;
         categoryAdapter = new CategoryAdapter(getContext(),list_Categoty,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL, false);
-        rcVCategory.setLayoutManager(linearLayoutManager);
-        rcVCategory.setAdapter(categoryAdapter);
+        binding.recycleViewCategory.setLayoutManager(linearLayoutManager);
+        binding.recycleViewCategory.setAdapter(categoryAdapter);
 
-        fragment_new = fragment_ProItem_Container.newInstance(list_New);
-        fragment_new.hideSpinner = true;
-        fragment_new.canScroll = false;
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_new, fragment_new).commit();
+        adapter_new = new ProductAdapter(list_New, getContext());
+        setupProductRecycleview(binding.fragmentProductNew, adapter_new);
 
-
-        fragment_topSold = fragment_ProItem_Container.newInstance(list_TopSold);
-        fragment_topSold.hideSpinner = true;
-        fragment_topSold.canScroll = false;
-        getChildFragmentManager().beginTransaction().replace(R.id.fragment_product_top_sold, fragment_topSold).commit();
+        adapter_TopSold = new ProductAdapter(list_TopSold, getContext());
+        setupProductRecycleview(binding.fragmentProductTopSold, adapter_TopSold);
 
         binding.stickyScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(list_New.size() < 1){return;}
@@ -90,7 +92,17 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                 loadMoreData_New();
             }
         });
+
+        hideLoading();
+        LoadFirstData();
         return binding.getRoot();
+    }
+
+    void setupProductRecycleview(RecyclerView recyclerView, ProductAdapter adapter)
+    {
+        recyclerView.setAdapter(adapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -111,20 +123,39 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                 return false;
             }
         });
+
         binding.buttonRefeshNew.setOnClickListener(v->onClickRefresh_New());
         binding.buttonRefeshTopSold.setOnClickListener(v->onClickRefresh_TopSold());
 
-        fragment_new.setOnClickItemListener(onClickItemListener);
+        adapter_new.setOnItemClickListener(onClickItemListener);
+        adapter_TopSold.setOnItemClickListener(onClickItemListener);
+    }
 
-        fragment_topSold.setOnClickItemListener(onClickItemListener);
+    void submitQuery(String query) {
+        fragment_search dialog = new fragment_search(query);
+        dialog.show(getChildFragmentManager(), "search");
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        hideLoading();
-        LoadFirstData();
+    public void onItemClickCategory(String string) {
+        searchView.setQuery(String.format(Locale.getDefault(), "Danh mục: %s", string), true);
     }
+
+    @Override
+    public void onItemClickProduct(int id) {
+        //Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
+    }
+
+    fragment_ProItem_Container.OnClickItemListener onClickItemListener = new fragment_ProItem_Container.OnClickItemListener() {
+        @Override
+        public void onClick(int position, int productID) {
+
+            Log.d("MY_TAG", "Open product with id = " + productID);
+            ProductDetailFragment dialog = new ProductDetailFragment();
+            dialog.productID = productID;
+            dialog.show(getChildFragmentManager(), "detailProduct");
+        }
+    };
 
     public void LoadFirstData()
     {
@@ -141,8 +172,40 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             }
         }).start();
 
-        onClickRefresh_New();
         onClickRefresh_TopSold();
+        onClickRefresh_New();
+    }
+
+    private List<Category> getListCategory(){
+        DBControllerCategory db = new DBControllerCategory();
+        List<Category> list = db.getCategoriesList_withoutImage();
+        db.closeConnection();
+        return  list;
+    }
+
+    public void onClickRefresh_TopSold() {
+        Log.d("MY_TAG", "Call refresh list_TopSold");
+        int oldLength = list_TopSold.size();
+        if(oldLength > 0) {
+            list_TopSold.clear();
+            if (adapter_TopSold != null) {
+                adapter_TopSold.notifyItemRangeRemoved(0, oldLength);
+            }
+        }
+
+        binding.fragmentProductTopSold.removeAllViews();
+
+        new Thread(() -> {
+            final List<ProductAdapterItemInfo> data = getDataMaxSold();
+            Log.d("MY_TAG", "topSold = " + data.size());
+            new Handler(Looper.getMainLooper()).post(() -> {
+                list_TopSold.addAll(data);
+                Log.d("MY_TAG", "topSold = " + list_TopSold.size());
+                if (adapter_TopSold != null) {
+                    adapter_TopSold.notifyItemRangeInserted(list_TopSold.size() - data.size(), data.size());
+                }
+            });
+        }, "LoadProductTopSold").start();
     }
 
     private List<ProductAdapterItemInfo> getDataMaxSold() {
@@ -167,24 +230,12 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         return  list;
     }
 
-    private List<Category> getListCategory(){
-        DBControllerCategory db = new DBControllerCategory();
-        List<Category> list = db.getCategoriesList_withoutImage();
-        db.closeConnection();
-        return  list;
-    }
-
-    void submitQuery(String query) {
-        fragment_search dialog = new fragment_search(query);
-        dialog.show(getChildFragmentManager(), "search");
-    }
-
     public void onClickRefresh_New() {
         int oldLength = list_New.size();
         if(oldLength > 0) {
             list_New.clear();
-            if(fragment_new != null && fragment_new.productAdapter != null) {
-                fragment_new.productAdapter.notifyItemRangeRemoved(0, oldLength);
+            if(adapter_new != null) {
+                adapter_new.notifyItemRangeRemoved(0, oldLength);
             }
         }
 
@@ -205,8 +256,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     list_New.addAll(data);
-                    if(fragment_new != null && data.size() > 0) {
-                        fragment_new.productAdapter.notifyItemRangeInserted(list_New.size() - data.size(), data.size());
+                    if(adapter_new != null && data.size() > 0) {
+                        adapter_new.notifyItemRangeInserted(list_New.size() - data.size(), data.size());
                     }
                     hasMoreData = data.size() == step;
                     currentLastIndex += data.size();
@@ -214,42 +265,6 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                 });
             }
         }, "LoadNewProduct").start();
-    }
-
-    protected void showLoading()
-    {
-        binding.gifLoadingCircle.setEnabled(true);
-        binding.gifLoadingCircle.setVisibility(View.VISIBLE);
-    }
-
-    protected void hideLoading()
-    {
-        binding.gifLoadingCircle.setEnabled(false);
-        binding.gifLoadingCircle.setVisibility(View.GONE);
-    }
-
-    public void onClickRefresh_TopSold() {
-        Log.d("MY_TAG", "Call refresh list_TopSold");
-        int oldLength = list_TopSold.size();
-        if(oldLength > 0) {
-            list_TopSold.clear();
-
-            if (fragment_topSold != null && fragment_topSold.productAdapter != null) {
-                fragment_topSold.productAdapter.notifyItemRangeRemoved(0, oldLength);
-            }
-        }
-
-        new Thread(() -> {
-            List<ProductAdapterItemInfo> data = getDataMaxSold();
-            if (getActivity() != null) {
-                getActivity().runOnUiThread(() -> {
-                    list_TopSold.addAll(data);
-                    if (fragment_topSold != null && fragment_topSold.productAdapter != null) {
-                        fragment_topSold.productAdapter.notifyItemRangeInserted(0, data.size());
-                    }
-                });
-            }
-        }, "LoadProductTopSold").start();
     }
 
     public List<ProductAdapterItemInfo> getMoreData()
@@ -279,38 +294,21 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         return list;
     }
 
+    protected void showLoading()
+    {
+        binding.gifLoadingCircle.setEnabled(true);
+        binding.gifLoadingCircle.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideLoading()
+    {
+        binding.gifLoadingCircle.setEnabled(false);
+        binding.gifLoadingCircle.setVisibility(View.GONE);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding = null;
-    }
-
-
-    @Override
-    public void onItemClickCategory(String string) {
-        searchView.setQuery(String.format(Locale.getDefault(), "Danh mục: %s", string), true);
-    }
-
-    @Override
-    public void onItemClickProduct(int id) {
-        //Toast.makeText(getContext(),"id: "+id ,Toast.LENGTH_LONG).show();
-    }
-
-    fragment_ProItem_Container.OnClickItemListener onClickItemListener = new fragment_ProItem_Container.OnClickItemListener() {
-        @Override
-        public void onClick(int position, int productID) {
-
-            Log.d("MY_TAG", "Open product with id = " + productID);
-            ProductDetailFragment dialog = new ProductDetailFragment();
-            dialog.productID = productID;
-            dialog.show(getChildFragmentManager(), "detailProduct");
-        }
-    };
-
-    public HomepageFragment()
-    {
-        list_New = new ArrayList<>();
-        list_TopSold = new ArrayList<>();
-        list_Categoty = new ArrayList<>();
     }
 }

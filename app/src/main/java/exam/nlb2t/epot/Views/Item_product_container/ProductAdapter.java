@@ -2,6 +2,7 @@ package exam.nlb2t.epot.Views.Item_product_container;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
@@ -26,10 +27,11 @@ import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<ProductAdapterItemInfo> products;
+    public List<ProductAdapterItemInfo> products;
     private Context context;
     private fragment_ProItem_Container.OnClickItemListener onClickItemListener;
     public void setOnItemClickListener(fragment_ProItem_Container.OnClickItemListener listener)
@@ -78,8 +80,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ProductAdapterItemInfo info = products.get(position);
         this.product =  info.productBaseDB;
         holder.id = product.id;
-        String price = product.priceOrigin + " đ";
-        SpannableString oldproprice = new SpannableString(price);
+        String price = Helper.getMoneyString(product.price);
+        SpannableString oldproprice = new SpannableString(Helper.getMoneyString(product.priceOrigin));
         oldproprice.setSpan(new StrikethroughSpan(), 0, (price).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         if (product.priceOrigin == product.price)
@@ -93,22 +95,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.tv_Oldproprice.setText(oldproprice);
         }
 
-        holder.tv_Pricepro.setText(product.price + " đ");
+        holder.tv_Pricepro.setText(price);
         holder.tv_Namepro.setText(" " + product.name + " ");
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
 
         holder.rt_Rating.setRating(product.starAverage);
 
         holder.parent_layout.setOnClickListener(v->{
-            if(onClickItemListener != null)onClickItemListener.onClick(position, info.productBaseDB.id);
+            if(onClickItemListener != null){
+                new Handler(Looper.getMainLooper()).post(()->{
+                    onClickItemListener.onClick(position, info.productBaseDB.id);
+                });
+            }
         });
 
         if(info.productAvatar != null) {
             holder.imagePro.setImageBitmap(info.productAvatar);
         }
-        else {holder.imagePro.setImageResource(R.color.white);}
-        if(info.productAvatar == null) {
-            new Thread(new LoadImageRunable(new Handler(), position), "LoadImageAt=" + position).start();
+        else {
+            new Thread(new LoadImageRunable(new Handler(Looper.getMainLooper()), position)
+                    , "LoadImageAt=" + position).start();
         }
     }
 

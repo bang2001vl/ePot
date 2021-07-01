@@ -8,4 +8,10 @@
         <attr name="price_current" format="integer"/>
         <attr name="itemImage" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="RatingChartRow">
+        <attr name="itemImage"/>
+        <attr name="ratingCount" format="integer"/>
+        <attr name="progress" format="integer"/>
+    </declare-styleable>
 </resources>

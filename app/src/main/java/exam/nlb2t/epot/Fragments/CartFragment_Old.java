@@ -3,6 +3,7 @@ package exam.nlb2t.epot.Fragments;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.DialogFragment.PaymentDialogFragment;
+import exam.nlb2t.epot.DialogFragment.PaymentSucessDialog;
 import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Card_ItemView_New;
@@ -426,7 +428,7 @@ public class CartFragment_Old extends Fragment {
         long total = Integer.parseInt(binding.btnPayment.getTag().toString());
         int numSaler = buyMap.size();
         int priceShip = 21 * 1000;
-        PaymentDialogFragment fragment = new PaymentDialogFragment(total, priceShip * numSaler);
+        PaymentDialogFragment fragment = new PaymentDialogFragment(Authenticator.getCurrentUser().id, total, priceShip * numSaler, Authenticator.getCurrentUser().address);
         fragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {
@@ -439,16 +441,23 @@ public class CartFragment_Old extends Fragment {
 
                 if(rs)
                 {
+                    List<Integer> list = new ArrayList<>();
                     for(List<Pair<Integer, Integer>> checkedProduct: buyMap.values()) {
                         for (Pair<Integer, Integer> p : checkedProduct) {
-                            CartDataController.removeProduct(getContext(), p.first);
+                            list.add(p.first);
                         }
                     }
+                    CartDataController.removeProduct(getContext(), list);
 
-                    requestLoadData(CartDataController.getAllData(getContext()));
-                    //Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                    PaymentSucessDialog dialog = new PaymentSucessDialog();
+                    dialog.show(getChildFragmentManager(), "tag");
+
+                    new Thread(() -> {
+                        List<Pair<Integer, Integer>> data = CartDataController.getAllData(getContext());
+                        new Handler(Looper.getMainLooper()).post(() -> requestLoadData(data));
+                    }).start();
                 }
-                else {Toast.makeText(getContext(), "Failed: Error while sending data to server", Toast.LENGTH_LONG).show();}
+                else {Toast.makeText(getContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();}
             }
         });
         fragment.show(getChildFragmentManager(), "payment");

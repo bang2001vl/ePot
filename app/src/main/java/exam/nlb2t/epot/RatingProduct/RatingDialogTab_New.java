@@ -133,11 +133,10 @@ public class RatingDialogTab_New extends Fragment {
                     }
                     hideLoading();
                     layoutData();
+                    hasMoreData = data.size() == step;
+                    lastIndex += data.size();
                 });
             }
-
-            hasMoreData = data.size() == step;
-            lastIndex += data.size();
         }).start();
     }
 

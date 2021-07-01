@@ -33,6 +33,11 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
         this.onSuccessListener = onSuccessListener;
     }
 
+    public RatingProductDialogFragment(int productID, int userID) {
+        this.productID = productID;
+        this.userID = userID;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,10 +78,5 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
                 coordinatorLayout.getParent().requestLayout();
             }
         });
-    }
-
-    public RatingProductDialogFragment(int productID, int userID) {
-        this.productID = productID;
-        this.userID = userID;
     }
 }

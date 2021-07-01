@@ -65,4 +65,15 @@ public class CartDataController {
         editor.remove(key);
         editor.apply();
     }
+
+    public static void removeProduct(Context context, List<Integer> productID) {
+        SharedPreferences preferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        for(int id:productID) {
+            String key = String.valueOf(id);
+            editor.remove(key);
+        }
+        editor.apply();
+    }
 }

@@ -34,39 +34,39 @@ public class ProductRatingView extends BaseCustomViewGroup {
         mContext = context;
 
         setStar(0,0,1,0,1);
-        //addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
+        addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
         //addComment("Tiên Tri Zũ Trụ", 5, "Xài thì cũng được được. Không xịn lắm", null, "30/04/1975");
     }
 
     public void setStar(int star1, int star2, int star3, int star4, int star5)
     {
-        bindingTitle.txtRatingCount1StarProductDetail.setText(star1+"");
-        bindingTitle.txtRatingCount2StarProductDetail.setText(star2+"");
-        bindingTitle.txtRatingCount3StarProductDetail.setText(star3+"");
-        bindingTitle.txtRatingCount4StarProductDetail.setText(star4+"");
-        bindingTitle.txtRatingCount5StarProductDetail.setText(star5+"");
+        bindingTitle.ratingRow1Star.setRatingCount(star1);
+        bindingTitle.ratingRow2Star.setRatingCount(star2);
+        bindingTitle.ratingRow3Star.setRatingCount(star3);
+        bindingTitle.ratingRow4Star.setRatingCount(star4);
+        bindingTitle.ratingRow5Star.setRatingCount(star5);
         int total = star1+star2+star3+star4+star5;
         bindingTitle.txtRatingCountProductDetail.setText(String.format(Locale.getDefault(), "%d đánh giá", total));
 
         if(total == 0)
         {
             bindingTitle.txtRatingAverageProductDetail.setText("0");
-            bindingTitle.seekbarRatingCount1StarProductDetail.setProgress(0);
-            bindingTitle.seekbarRatingCount2StarProductDetail.setProgress(0);
-            bindingTitle.seekbarRatingCount3StarProductDetail.setProgress(0);
-            bindingTitle.seekbarRatingCount4StarProductDetail.setProgress(0);
-            bindingTitle.seekbarRatingCount5StarProductDetail.setProgress(0);
+            bindingTitle.ratingRow1Star.setProgress(0);
+            bindingTitle.ratingRow2Star.setProgress(0);
+            bindingTitle.ratingRow3Star.setProgress(0);
+            bindingTitle.ratingRow4Star.setProgress(0);
+            bindingTitle.ratingRow5Star.setProgress(0);
             return;
         }
 
         float average_star = (star1+star2*2+star3*3+star4*4+star5*5) / (1f * total);
         bindingTitle.txtRatingAverageProductDetail.setText(String.format(Locale.getDefault(),"%.1f", average_star));
 
-        bindingTitle.seekbarRatingCount1StarProductDetail.setProgress(star1 * 100 / total);
-        bindingTitle.seekbarRatingCount2StarProductDetail.setProgress(star2 * 100 / total);
-        bindingTitle.seekbarRatingCount3StarProductDetail.setProgress(star3 * 100 / total);
-        bindingTitle.seekbarRatingCount4StarProductDetail.setProgress(star4 * 100 / total);
-        bindingTitle.seekbarRatingCount5StarProductDetail.setProgress(star5 * 100 / total);
+        bindingTitle.ratingRow1Star.setProgress(star1 * 100 / total);
+        bindingTitle.ratingRow2Star.setProgress(star2 * 100 / total);
+        bindingTitle.ratingRow3Star.setProgress(star3 * 100 / total);
+        bindingTitle.ratingRow4Star.setProgress(star4 * 100 / total);
+        bindingTitle.ratingRow5Star.setProgress(star5 * 100 / total);
     }
 
     public void addComment(String name, int star, String comment, Bitmap avatar, String date)

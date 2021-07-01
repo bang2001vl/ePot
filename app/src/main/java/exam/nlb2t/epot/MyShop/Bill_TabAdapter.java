@@ -23,6 +23,7 @@ import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;

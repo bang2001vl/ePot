@@ -55,6 +55,7 @@ public class ProductDetailFragment extends DialogFragment {
     Bitmap imagePrimary;
     List<RatingInfo> ratingInfos;
     int[] ratingOverview;
+    int ratingCount;
 
     @NonNull
     @Override
@@ -143,26 +144,27 @@ public class ProductDetailFragment extends DialogFragment {
 
             DBControllerProduct db = new DBControllerProduct();
             // Get product data
-            ProductBaseDB data = db.getProduct(productID);
+            ProductBaseDB dataPro = db.getProduct(productID);
             boolean isLiked = db.checkLikeProduct(productID, Authenticator.getCurrentUser().id);
             // Get image of product
             List<Bitmap> images = db.getImages(productID);
-            imagePrimary = db.getAvatar_Product(data.imagePrimaryID);
+            imagePrimary = db.getAvatar_Product(dataPro.imagePrimaryID);
+            int countR  = db.getCountRating(productID);
             // Close connection
             db.closeConnection();
 
             DBControllerRating dbRating = new DBControllerRating();
             // Get rating data
             List<RatingBaseDB> ratings = dbRating.getRating_ByProduct(productID, 1, 3);
-            ratingOverview = dbRating.getRatingStar(productID);
+            int[] stars = dbRating.getRatingStar(productID);
             // Close connection
             dbRating.closeConnection();
 
-            ratingInfos = new ArrayList<>(ratings.size());
+            List<RatingInfo> infosRating = new ArrayList<>(ratings.size());
 
             DBControllerUser dbUsr = new DBControllerUser();
             // Get saler data
-            UserBaseDB saler = dbUsr.getUserOverview(data.salerID);
+            UserBaseDB saler = dbUsr.getUserOverview(dataPro.salerID);
             Bitmap salerAvatar = dbUsr.getAvatar(saler.avatarID);
             // Get commenter data
             for(RatingBaseDB rating: ratings)
@@ -171,7 +173,7 @@ public class ProductDetailFragment extends DialogFragment {
                 info.rating = rating;
                 info.userOverview = dbUsr.getUserOverview(rating.userId);
                 info.userAvatar = dbUsr.getAvatar(info.userOverview.id);
-                ratingInfos.add(info);
+                infosRating.add(info);
             }
             // Close connection
             dbUsr.closeConnection();
@@ -180,9 +182,9 @@ public class ProductDetailFragment extends DialogFragment {
             mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    setProduct(data);
+                    setProduct(dataPro);
                     setSaler(saler, salerAvatar);
-                    loadRating();
+                    loadRating(countR, stars, infosRating);
                     binding.buttonFavouriteProductDetail.setChecked(isLiked);
                     setImages(images);
                     closeLoadingScreen();
@@ -237,9 +239,12 @@ public class ProductDetailFragment extends DialogFragment {
         binding.layoutSalerProductDetail.setSaler(saler, avatar);
     }
 
-    private void loadRating() {
+    private void loadRating(int count, int[] star, List<RatingInfo> infos) {
+        this.ratingCount = count;
+        this.ratingOverview = star;
+        this.ratingInfos = infos;
         @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (RatingInfo info: ratingInfos)
         {
             binding.ratingProductView.addComment(
@@ -250,6 +255,9 @@ public class ProductDetailFragment extends DialogFragment {
                     dateFormat.format(info.rating.createdDate)
             );
         }
+
+        binding.ratingbarOverviewProductDetail.setRating(product.starAverage);
+        binding.txtRatingCountOverviewProductDetail.setText(String.valueOf(ratingCount));
 
         binding.ratingProductView.setStar(
                 ratingOverview[0],

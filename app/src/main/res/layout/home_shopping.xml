@@ -54,6 +54,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         >
         <com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
             android:layout_width="match_parent"
@@ -106,7 +107,6 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:spanCount="1"
                         tools:listitem="@layout/category_tab">
-
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
                 <RelativeLayout
@@ -142,14 +142,18 @@
                         android:layout_centerVertical="true"
                         />
                 </RelativeLayout>
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="300dp"
-                    android:id="@+id/fragment_product_top_sold"
-                    android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-                    tools:layout="@layout/fragment__pro_item__container">
-                </FrameLayout>
+                    android:layout_height="wrap_content">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:minHeight="300dp"
+                        android:nestedScrollingEnabled="false"
+                        android:id="@+id/fragment_product_top_sold">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/titleLayout"
                     android:layout_width="match_parent"
@@ -189,14 +193,13 @@
                             />
                     </RelativeLayout>
                 </LinearLayout>
-                <FrameLayout
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="300dp"
-                    android:id="@+id/fragment_product_new"
-                    android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-                    tools:layout="@layout/fragment__pro_item__container">
-                </FrameLayout>
+                    android:nestedScrollingEnabled="false"
+                    android:id="@+id/fragment_product_new">
+                </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
         </com.emilsjolander.components.StickyScrollViewItems.StickyScrollView>

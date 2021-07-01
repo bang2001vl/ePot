@@ -38,18 +38,19 @@ public class PaymentDialogFragment extends DialogFragment {
     Helper.OnSuccessListener onSubmitOKListener;
     public void setOnSubmitOKListener(Helper.OnSuccessListener listener){this.onSubmitOKListener = listener;}
 
-    public PaymentDialogFragment(long productMoney, int shipMoney)
+    public PaymentDialogFragment(int userID, long productMoney, int shipMoney)
     {
+        this.userID = userID;
         this.productMoney = productMoney;
         this.shipMoney = shipMoney;
+        loadUser(userID);
     }
 
-    public PaymentDialogFragment(String receiverName, String receiverPhone, String receiverAddress, int productMoney, int shipMoney) {
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.receiverAddress = receiverAddress;
+    public PaymentDialogFragment(int userID, long productMoney, int shipMoney, String address) {
+        this.userID = userID;
         this.productMoney = productMoney;
         this.shipMoney = shipMoney;
+        this.address = address;
     }
 
     @NonNull
@@ -80,14 +81,10 @@ public class PaymentDialogFragment extends DialogFragment {
                 Snackbar.make(binding.getRoot(), "Chưa có địa chỉ nhận", BaseTransientBottomBar.LENGTH_LONG).show();
                 return;
             }
-            PaymentSucessDialog dialog = new PaymentSucessDialog();
-            dialog.setOnClickSubmitListener(sender -> {
-                if(onSubmitOKListener != null)
-                {
-                    onSubmitOKListener.OnSuccess(PaymentDialogFragment.this);
-                }
-            });
-            dialog.show(getChildFragmentManager(), "tag");
+            if(onSubmitOKListener != null)
+            {
+                onSubmitOKListener.OnSuccess(PaymentDialogFragment.this);
+            }
         });
 
         binding.btnChangeAddress.setOnClickListener(v->{
@@ -101,10 +98,7 @@ public class PaymentDialogFragment extends DialogFragment {
             dialog.show(getChildFragmentManager(), "address");
         });
 
-        this.userID = Authenticator.getCurrentUser().id;
-
-        loadAddress(null);
-        loadUser(userID);
+        loadAddress(address);
         return  binding.getRoot();
     }
 
@@ -115,9 +109,11 @@ public class PaymentDialogFragment extends DialogFragment {
             UserBaseDB user = db.getUserInfo(userID);
             db.closeConnection();
             address = user.address;
-            getActivity().runOnUiThread(()->{
-                loadAddress(address);
-            });
+            if(getActivity() != null && binding != null) {
+                getActivity().runOnUiThread(() -> {
+                    loadAddress(address);
+                });
+            }
         }).start();
     }
 
