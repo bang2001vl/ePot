@@ -47,7 +47,7 @@ public class SalerOverviewView extends BaseCustomViewGroup {
         TextView txtSalerUsername = findViewById(R.id.txt_username_saler_product_detail);
 
         txtSalerName.setText(saler.fullName);
-        txtSalerUsername.setText(saler.username);
+        txtSalerUsername.setText("@" + saler.username);
 
         if(avatar != null) {
             CircleImageView imageView = findViewById(R.id.avt_saler_product_detail);

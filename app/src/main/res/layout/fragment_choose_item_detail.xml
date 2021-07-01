@@ -8,7 +8,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/image_item"
-        android:src="@mipmap/mango"
+        android:src="@drawable/default_prod"
         android:scaleType="fitCenter"
         android:background="@color/light_gray"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,14 +18,16 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/txtName_item"
         android:text="@string/default_product_name"
         style="@style/TittleBigSize"
         app:layout_constraintTop_toTopOf="@id/image_item"
         app:layout_constraintStart_toEndOf="@id/image_item"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/normal_padding"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="@dimen/normal_padding"
         />
     <TextView
@@ -79,8 +81,8 @@
             app:minValue="1"
             app:maxValue="10"
             app:stepValue="1"
-            app:src_increase="@mipmap/ic_plus"
-            app:src_decrease="@mipmap/ic_minus"
+            app:src_increase="@drawable/ic_add_product_24"
+            app:src_decrease="@drawable/ic_remove_product_24"
             />
     </LinearLayout>
     <TextView

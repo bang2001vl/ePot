@@ -34,7 +34,7 @@ public class ProductRatingView extends BaseCustomViewGroup {
         mContext = context;
 
         setStar(0,0,1,0,1);
-        addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
+        //addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
         //addComment("Tiên Tri Zũ Trụ", 5, "Xài thì cũng được được. Không xịn lắm", null, "30/04/1975");
     }
 
@@ -46,7 +46,7 @@ public class ProductRatingView extends BaseCustomViewGroup {
         bindingTitle.ratingRow4Star.setRatingCount(star4);
         bindingTitle.ratingRow5Star.setRatingCount(star5);
         int total = star1+star2+star3+star4+star5;
-        bindingTitle.txtRatingCountProductDetail.setText(String.format(Locale.getDefault(), "%d đánh giá", total));
+        bindingTitle.txtRatingCountProductDetail.setText(String.format(Locale.getDefault(), "%d\nđánh giá", total));
 
         if(total == 0)
         {

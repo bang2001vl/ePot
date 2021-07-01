@@ -9,43 +9,58 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/test"
+        android:src="@drawable/profile_user"
         android:layout_marginVertical="10dp"
         android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:id="@+id/txt_saler_name_product_detail"
-        android:fontFamily="@font/gilroy_medium"
-        android:textColor="@color/black"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:translationY="-10dp"
-        android:layout_marginStart="20dp"
+        android:orientation="vertical"
         android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:layout_toStartOf="@id/btn_more_saler_product_detail"
         android:layout_toEndOf="@+id/avt_saler_product_detail"
-        android:textSize="20dp"
-        android:text="Thủy Tiên" />
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gilroy_regular"
+            android:text="@string/provide_by"
+            android:textColor="@color/black"
+            android:layout_marginStart="2dp"
+            android:layout_below="@id/txt_saler_name_product_detail"
+            android:layout_toEndOf="@id/avt_saler_product_detail"
+            />
+        <TextView
+            android:id="@+id/txt_saler_name_product_detail"
+            android:fontFamily="@font/gilroy_medium"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:textSize="20dp"
+            android:text="Thủy Tiên" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_username_saler_product_detail"
+            android:fontFamily="@font/gilroy_regular"
+            android:text="thuytien192"
+            android:layout_below="@id/txt_saler_name_product_detail"
+            android:layout_toEndOf="@id/avt_saler_product_detail"
+            />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt_username_saler_product_detail"
-        android:fontFamily="@font/gilroy_regular"
-        android:text="thuytien192"
-        android:layout_below="@id/txt_saler_name_product_detail"
-        android:layout_toEndOf="@id/avt_saler_product_detail"
-        android:layout_marginStart="22dp"/>
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:id="@+id/btn_more_saler_product_detail"
         android:src="@drawable/ic_back_arrow"
         android:scaleType="center"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:tint="@color/black"
-        android:backgroundTint="@color/light_gray"
+        android:backgroundTint="@color/transparent"
         android:background="@drawable/button_circle_background"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
