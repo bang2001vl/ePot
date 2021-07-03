@@ -349,10 +349,11 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 else
                 {
+                    String[] t = personEmail.split("@", 2);
                     Intent intent = new Intent(LoginScreen.this, signup.class);
                     intent.putExtra("Google", 1);
                     intent.putExtra("Personname",personFamilyName + " " + personGivenName);
-                    intent.putExtra("Personemail", personEmail);
+                    intent.putExtra("Personemail", t[0].replaceAll("[^a-zA-Z0-9]", ""));
                     intent.putExtra("pertionphoto", personPhoto);
                     startActivity(intent);
                 }
@@ -378,9 +379,7 @@ public class LoginScreen extends AppCompatActivity {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
+                    public void onComplete(@NonNull Task<Void> task) { }
                 });
     }
     // disconnect acct gg with Epot, delete all infor of user
