@@ -112,11 +112,10 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment frag;
-//        if (((Shop_BillFragment)fragments[position]).listBill.size() == 0) {
-//            frag = emptyfragments[position];
-//        }
-//        else frag = fragments[position];
-        frag = fragments[position];
+        if (((Shop_BillFragment)fragments[position]).listBill.size() == 0) {
+            frag = emptyfragments[position];
+        }
+        else frag = fragments[position];
         return frag;
     }
 

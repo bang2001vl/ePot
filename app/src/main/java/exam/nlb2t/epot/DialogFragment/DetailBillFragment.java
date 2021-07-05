@@ -67,7 +67,12 @@ public class DetailBillFragment extends DialogFragment {
             db2.closeConnection();
 
             getActivity().runOnUiThread(() -> {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                binding.paymentRecyclerProduct.setLayoutManager(layoutManager);
+
                 adapter = new Product_InBill_Adapter(bill.productinBill);
+                //binding.paymentRecyclerProduct.setAdapter(adapter);
                 binding.paymentRecyclerProduct.swapAdapter(adapter, true);
 
                 binding.detailbillTransportpricePayment.setText(Helper.getMoneyString(bill.total - bill.sumProductPrice()));
@@ -79,26 +84,26 @@ public class DetailBillFragment extends DialogFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
 
-        binding.paymentRecyclerProduct.setLayoutManager(layoutManager);
-
         setEventHandler();
         return binding.getRoot();
     }
 
-    @Override
-    public void onResume() {
-        getDialog().getWindow().setLayout(WindowManager.LayoutParams.FLAG_FULLSCREEN, getResources().getDisplayMetrics().heightPixels);
-        super.onResume();
-    }
-
     private void setEventHandler() {
         //TODO: Set event here
+        binding.btnClose.setOnClickListener(v->{
+            DetailBillFragment.this.dismiss();
+        });
     }
 
-//    @NonNull
-//    @Override
-//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        Dialog dialog = new Dialog(getActivity(), android.R.style.);
-//        return dialog;
-//    }
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
+        return dialog;
+    }
 }

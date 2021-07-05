@@ -43,6 +43,7 @@ public class Product_InBill_Adapter extends RecyclerView.Adapter<Product_InBill_
         return holder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         setUI(holder, position);
@@ -54,6 +55,7 @@ public class Product_InBill_Adapter extends RecyclerView.Adapter<Product_InBill_
 
         if (product.getImagePrimary() == null) {
             holder.getImageProduct().setBackgroundResource(R.color.gray);
+            holder.getImageProduct().setImageDrawable(null);
             new Thread(() -> {
                 DBControllerProduct db = new DBControllerProduct();
                 int size = (int) context.getResources().getDimension(R.dimen.ProductImgSize);
@@ -119,4 +121,5 @@ public class Product_InBill_Adapter extends RecyclerView.Adapter<Product_InBill_
             return txtSTT;
         }
     }
+
 }
