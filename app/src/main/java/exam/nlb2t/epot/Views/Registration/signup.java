@@ -57,7 +57,6 @@ public class signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.signup);
 
         fg_signup_enterotp = new fragment_signup_enterotp();
@@ -66,11 +65,9 @@ public class signup extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
-
-        btn_back = (Button) findViewById(R.id.btn_back);
-        btn_next = (Button) findViewById(R.id.btn_next);
-        ln_logo = (LinearLayout) findViewById(R.id.ln_logo);
+        btn_back = findViewById(R.id.btn_back);
+        btn_next = findViewById(R.id.btn_next);
+        ln_logo =  findViewById(R.id.ln_logo);
         context = this;
 
         params = ( ConstraintLayout.LayoutParams) ln_logo.getLayoutParams();
@@ -92,104 +89,98 @@ public class signup extends AppCompatActivity {
             ReplaceFragment(fg_signup_enterphone);
         }
 
-        btn_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP)))
+        btn_next.setOnClickListener(v -> {
+            if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP)))
+            {
+                if (fg_signup_enterphone.edt_phone.getText().toString()!= "" && fg_signup_enterphone.edt_phone.getError() == null)
                 {
-                    if (fg_signup_enterphone.edt_phone.getText().toString()!= "" && fg_signup_enterphone.edt_phone.getError() == null)
+                        DBControllerUser controllerUser = new DBControllerUser();
+                    if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
+                    if (!controllerUser.checkExistPhone(phone))
                     {
-                            DBControllerUser controllerUser = new DBControllerUser();
-                        if (fg_signup_enterphone.edt_phone.getText().toString().length() == 9) phone = "+84" + fg_signup_enterphone.edt_phone.getText().toString();
-                        if (!controllerUser.checkExistPhone(phone))
-                        {
-                            ReplaceFragment(fg_signup_enterotp);
-                            btn_next.setText(R.string.Continue);
-                            sendVerificationCode(phone);
-                            controllerUser.closeConnection();
-                        }
-                        else
-                        {
-                            fg_signup_enterphone.edt_phone.setError(getResources().getString(R.string.error_duplicate_phone_number));
-                        }
+                        ReplaceFragment(fg_signup_enterotp);
+                        btn_next.setText(R.string.Continue);
+                        sendVerificationCode(phone);
+                        controllerUser.closeConnection();
+                    }
+                    else
+                    {
+                        fg_signup_enterphone.edt_phone.setError(getResources().getString(R.string.error_duplicate_phone_number));
+                    }
+                }
+            }
+            else
+            {
+                edt_otp = fg_signup_enterotp.edt_otp;
+                if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
+                {
+                    if( fg_signup_enterotp.edt_otp.getError() == null)
+                    {
+                        verifyCode(edt_otp.getText().toString());
                     }
                 }
                 else
                 {
-                    edt_otp = fg_signup_enterotp.edt_otp;
-                    if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
+                    if (CheckErrorUserInfo() == -1)
                     {
-                        if( fg_signup_enterotp.edt_otp.getError() == null)
-                        {
-                            verifyCode(edt_otp.getText().toString());
-                        }
+                        toast_layout.show(context, getResources().getString(R.string.error_not_enough_info), true );
                     }
                     else
                     {
-                        if (CheckErrorUserInfo() == -1)
                         {
-                            toast_layout.show(context, getResources().getString(R.string.error_not_enough_info), true );
-                        }
-                        else
-                        {
+                            if (CheckErrorUserInfo() == 0)
                             {
-                                if (CheckErrorUserInfo() == 0)
+                                toast_layout.show(context, getResources().getString(R.string.error_incorrect_info), true );
+                            }
+                            else
+                            {
+                                DBControllerUser controllerUser = new DBControllerUser();
+
+                                if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
                                 {
-                                    toast_layout.show(context, getResources().getString(R.string.error_incorrect_info), true );
+                                    fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
                                 }
                                 else
                                 {
-                                    DBControllerUser controllerUser = new DBControllerUser();
+                                    fg_signup_new_account.edt_usename.setError(null);
+                                    int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
+                                    int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
+                                    int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
-                                    if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
-                                    {
-                                        fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
-                                    }
-                                    else
-                                    {
-                                        fg_signup_new_account.edt_usename.setError(null);
-                                        int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
-                                        int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
-                                        int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
-
-                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
-                                        toast_layout.show(context, getResources().getString(R.string.annouce_creat_acc_succsess), true );
-                                        controllerUser.closeConnection();
-                                        finish();
-                                    }
+                                    controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
+                                    toast_layout.show(context, getResources().getString(R.string.annouce_creat_acc_succsess), true );
+                                    controllerUser.closeConnection();
+                                    finish();
                                 }
                             }
-
-
                         }
 
+
                     }
+
                 }
             }
         });
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP))) {
-                finish();
+        btn_back.setOnClickListener(v -> {
+            if (btn_next.getText().toString().equals(getResources().getString(R.string.Sent_OTP))) {
+            finish();
+            }
+            else
+            {
+             /*   params.setMargins(0, 116, 0, 0);
+                ln_logo.setLayoutParams(params);*/
+                if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
+                {
+                   ReplaceFragment(fg_signup_enterphone);
+                    btn_next.setText(R.string.Sent_OTP);
                 }
                 else
                 {
-                 /*   params.setMargins(0, 116, 0, 0);
-                    ln_logo.setLayoutParams(params);*/
-                    if (btn_next.getText().toString().equals(getResources().getString(R.string.Continue)))
-                    {
-                       ReplaceFragment(fg_signup_enterphone);
-                        btn_next.setText(R.string.Sent_OTP);
-                    }
-                    else
-                    {
-                        if (getIntent().getIntExtra("Google", 0) == 1)
-                            finish();
-                        ReplaceFragment(fg_signup_enterotp);
-                        btn_next.setText(R.string.Continue);
-                    }
+                    if (getIntent().getIntExtra("Google", 0) == 1)
+                        finish();
+                    ReplaceFragment(fg_signup_enterotp);
+                    btn_next.setText(R.string.Continue);
                 }
             }
         });
