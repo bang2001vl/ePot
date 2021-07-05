@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,9 +9,52 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:id="@+id/viewPaperMain"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tabLayout"
         />
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:tabIconTint="@color/drark_gray"
+        android:id="@+id/tabLayout"
+        app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
+        app:tabPaddingTop="0dp" app:tabPaddingBottom="0dp"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/MyCustomTabText"
+        app:layout_constraintTop_toBottomOf="@id/viewPaperMain"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_home_page"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_cart"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_shop"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_notification"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_person"
+            android:icon="@drawable/ic_baseline_home_24"
+            />
+    </com.google.android.material.tabs.TabLayout>
         <!--<fragment
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -28,46 +71,5 @@
             android:background="@color/main_bottom_navigation_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>-->
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIconTint="@color/drark_gray"
-            android:id="@+id/tabLayout"
 
-            app:tabPadding="0dp"
-            app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
-            app:tabPaddingTop="0dp" app:tabPaddingBottom="0dp"
-            app:tabMode="fixed"
-            app:tabTextAppearance="@style/MyCustomTabText">
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_home_page"
-                android:icon="@drawable/ic_baseline_home_24"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_cart"
-                android:icon="@drawable/ic_baseline_home_24"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_shop"
-                android:icon="@drawable/ic_baseline_home_24"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_notification"
-                android:icon="@drawable/ic_baseline_home_24"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu_person"
-                android:icon="@drawable/ic_baseline_home_24"
-                />
-        </com.google.android.material.tabs.TabLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

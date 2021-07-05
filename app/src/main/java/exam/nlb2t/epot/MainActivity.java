@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set first-selected tab color
+        binding.tabLayout.getTabAt(0).getIcon().setTint(color);
         //loadInBackground();
     }
 
