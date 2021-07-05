@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class DefaultAddressFragment extends DialogFragment {
     FragmentDefaultAddressBinding binding;
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
     private String[] address=new String[4];
+    private boolean changeInfor;
+    int spinnerPosition;
 
     private Helper.OnSuccessListener onSuccessListener;
 
@@ -56,6 +59,7 @@ public class DefaultAddressFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDefaultAddressBinding.inflate(inflater, container, false);
         openView();
+        changeInfor=false;
         setEventHandler();
         return binding.getRoot();
 
@@ -84,6 +88,7 @@ public class DefaultAddressFragment extends DialogFragment {
                     {
                         binding.phone.setError("Nhập sai định dạng sđt!");
                     }
+                    changeInfor=true;
 
                 }
         });
@@ -93,7 +98,9 @@ public class DefaultAddressFragment extends DialogFragment {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAlertDialog();
+                if (binding.city.getSelectedItemPosition()!=spinnerPosition) changeInfor=true;
+                if (changeInfor) openAlertDialog();
+                else dismiss();
             }
         });
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +126,12 @@ public class DefaultAddressFragment extends DialogFragment {
 
             }
         });
-        String[] items = new String[]{"Điện Biên","Hòa Bình","Lai Châu","Lào Cai","Sơn La","Yên Bái","Bắc Giang","Bắc Kạn","Cao Bằng","Hà Giang","Lạng Sơn","Phú Thọ","Quảng Ninh","Thái Nguyên","Tuyên Quang","Bắc Ninh","Hà Nam","Hà Nội","Hải Dương","Hải Phòng","Hưng Yên","Nam Định","Ninh Bình","Thái Bình","Vĩnh Phúc","Hà Tĩnh","Nghệ An","Quảng Bình","Quảng Trị","Thanh Hóa","Thừa Thiên Huế","Đắk Lắk","Đắk Nông","Gia Lai","Kon Tum","Lâm Đồng","Bà Rịa", "Vũng Tàu","Bình Dương","Bình Phước","Đồng Nai","Thành phố Hồ Chí Minh","Tây Ninh","An Giang","Bạc Liêu","Bến Tre","Cà Mau","Cần Thơ","Đồng Tháp","Hậu Giang","Kiên Giang","Long An","Sóc Trăng","Tiền Giang","Trà Vinh","Vĩnh Long"};
+        String[] items = new String[]{"","Điện Biên","Hòa Bình","Lai Châu","Lào Cai","Sơn La","Yên Bái","Bắc Giang","Bắc Kạn","Cao Bằng","Hà Giang","Lạng Sơn","Phú Thọ","Quảng Ninh","Thái Nguyên","Tuyên Quang","Bắc Ninh","Hà Nam","Hà Nội","Hải Dương","Hải Phòng","Hưng Yên","Nam Định","Ninh Bình","Thái Bình","Vĩnh Phúc","Hà Tĩnh","Nghệ An","Quảng Bình","Quảng Trị","Thanh Hóa","Thừa Thiên Huế","Đắk Lắk","Đắk Nông","Gia Lai","Kon Tum","Lâm Đồng","Bà Rịa", "Vũng Tàu","Bình Dương","Bình Phước","Đồng Nai","Thành phố Hồ Chí Minh","Tây Ninh","An Giang","Bạc Liêu","Bến Tre","Cà Mau","Cần Thơ","Đồng Tháp","Hậu Giang","Kiên Giang","Long An","Sóc Trăng","Tiền Giang","Trà Vinh","Vĩnh Long"};
         ArrayAdapter<String> adapter = new  ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item ,items);
         binding.city.setAdapter(adapter);
-        if (address[3]!=null) {
-            int spinnerPosition = adapter.getPosition(address[3]);
+        if (address[3]!=null)
+        {
+            spinnerPosition = adapter.getPosition(address[3]);
             binding.city.setSelection(spinnerPosition);
         }
         Pattern pattern = Pattern.compile("[\\p{P}\\p{S}]");
@@ -140,6 +148,7 @@ public class DefaultAddressFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                changeInfor=true;
                 Matcher matcher = pattern.matcher(binding.name.getText().toString());
                 if (matcher.find()) {
                     binding.name.setError(getResources().getString(R.string.error_not_special_char));
@@ -152,10 +161,26 @@ public class DefaultAddressFragment extends DialogFragment {
                 }
             }
         });
+        binding.DetailAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                changeInfor=true;
+            }
+        });
     }
     private void openView()
     {
-        if (currentuser.address==null)
+        if ((currentuser.address==null))
         {
             binding.name.setText(currentuser.fullName);
             binding.phone.setText(currentuser.phoneNumber);

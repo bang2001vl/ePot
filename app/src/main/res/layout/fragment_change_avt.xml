@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="15dp"
             android:textAlignment="center"
             android:text="Ảnh đại diện"
             android:fontFamily="@font/gilroy_bold"
@@ -38,30 +38,33 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp" />
-    <Button
-        android:id="@+id/btn_Save"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/epot_btn_bg"
-        android:textColor="@color/white"
-        android:text="Cập nhật"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/gilroy_bold"
-        android:textSize="18dp"
-        android:stateListAnimator="@null"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_circle_background"/>
+
     <Button
         android:id="@+id/btn_choose_image"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/btn_outline"
         android:textColor="@color/mainColor"
         android:text="Chọn ảnh"
         android:fontFamily="@font/gilroy_bold"
-        android:textSize="18dp"
-        android:layout_marginVertical="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="40dp"
         android:stateListAnimator="@null"
         android:layout_gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/btn_Save"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/epot_btn_bg"
+        android:textColor="@color/white"
+        android:text="Cập nhật"
+
+        android:layout_marginVertical="10dp"
+        android:fontFamily="@font/gilroy_bold"
+        android:textSize="20dp"
+        android:stateListAnimator="@null"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

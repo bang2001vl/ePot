@@ -83,7 +83,9 @@ public class SettingAccountFragment extends DialogFragment {
             binding.btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   openAlertDialog();
+
+                   if (binding.btnSaveprofile.getVisibility()==View.VISIBLE) openAlertDialog();
+                   else dismiss();
                 }
             });
             binding.btnChangeprofile.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +123,7 @@ public class SettingAccountFragment extends DialogFragment {
 
                 }
             });
-        String[] items = new String[]{"Nam", "Nữ"};
+        String[] items = new String[]{"Nữ", "Nam"};
         ArrayAdapter<String> adapter = new  ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item ,items);
         binding.tvSex.setAdapter(adapter);
 

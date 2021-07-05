@@ -2,6 +2,9 @@ package exam.nlb2t.epot.Fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import exam.nlb2t.epot.DialogFragment.ChangeAvtFragment;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
 import exam.nlb2t.epot.HelpFragment;
+import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.RatingProduct.RatingProductDialog;
 import exam.nlb2t.epot.Views.Login.LoginScreen;
 import exam.nlb2t.epot.MainActivity;
@@ -56,7 +60,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.tvName.setText(currentuser.fullName);
         binding.tvUsername.setText(currentuser.username);
-        binding.avtProfile.setImageBitmap(currentuser.getAvatar());
+        binding.avtProfile.setImageBitmap(setAvt());
         getAddress();
         binding.tvCityAddress.setText(mAddress[0]);
         binding.tvStreetAddress.setText(mAddress[1]);
@@ -138,6 +142,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         dialogFragment.show(ft, "dialog");
     }
+
     private void getAddress()
     {
         mAddress[0]="";
@@ -171,8 +176,17 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         AlertDialog alert =builder.create();
         alert.show();
         }
+        private Bitmap setAvt()
+        {
+            if (currentuser.getAvatar()==null)
+            {
+            Drawable drawable = getResources().getDrawable(R.drawable.profile_user);
+            Bitmap avt = ((BitmapDrawable)drawable).getBitmap();
+            return  avt;
+            }
+            else return currentuser.getAvatar();
 
-
+        }
 
 
 
