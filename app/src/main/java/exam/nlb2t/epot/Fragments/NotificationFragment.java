@@ -19,6 +19,7 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 import exam.nlb2t.epot.EmptyNotiFragment;
+import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.NotificationWorkspace.NotifyViewAdapter;
 import exam.nlb2t.epot.NotificationWorkspace.NotifycationInfo;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
@@ -65,6 +66,10 @@ public class NotificationFragment extends Fragment {
             }).start();
             info.notification.hasRead = true;
             adapter.notifyItemChanged(postion);
+            MainActivity activity = (MainActivity) getActivity();
+            if(activity != null){
+                activity.decreaseNumberNotification();
+            }
         });
 
         binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {

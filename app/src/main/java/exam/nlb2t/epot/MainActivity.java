@@ -4,8 +4,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
 import exam.nlb2t.epot.Fragments.CartFragment;
 import exam.nlb2t.epot.Fragments.CartFragment_Old;
@@ -32,18 +35,19 @@ import exam.nlb2t.epot.MyShop.ShopFragment;
 import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.databinding.ActivityMainBinding;
+import exam.nlb2t.epot.databinding.TabIconLayoutBinding;
+import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
-    ButtonNumberNotification icon_card;
-    ButtonNumberNotification icon_notification;
-
-    List<ProductBuyInfo> buyInfoList;
+    Thread notiThread;
 
     int color;
     int color2;
+
+    int countNoti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +97,16 @@ public class MainActivity extends AppCompatActivity {
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(color);
+                TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
+                iconLayoutBinding.iconImg.getDrawable().setTint(color);
+                iconLayoutBinding.txtName.setTextColor(color);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(color2);
+                TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
+                iconLayoutBinding.iconImg.getDrawable().setTint(color2);
+                iconLayoutBinding.txtName.setTextColor(color2);
             }
 
             @Override
@@ -106,95 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        binding.tabLayout.setTabTextColors(Color.BLACK, color);
         binding.tabLayout.setSelectedTabIndicatorColor(color);
-        binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
-        // Set first-selected tab color
-        binding.tabLayout.getTabAt(0).getIcon().setTint(color);
+        TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) binding.tabLayout.getTabAt(0).getTag();
+        iconLayoutBinding.iconImg.getDrawable().setTint(color);
+        iconLayoutBinding.txtName.setTextColor(color);
 
         setContentView(binding.getRoot());
-    }
-
-    void loadInBackground()
-    {
-        setContentView(new LoadingView(this));
-
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                binding = ActivityMainBinding.inflate(getLayoutInflater());
-                MainFragmentAdapter adapter = createAdapter();
-                Runnable runnable = () -> {
-                    long start = System.currentTimeMillis();
-                    binding.viewPaperMain.setAdapter(adapter);
-
-                    // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
-                    // App would be terrible-lagging without it
-                    binding.viewPaperMain.setOffscreenPageLimit(5);
-
-                    binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                        }
-
-                        @Override
-                        public void onPageSelected(int position) {
-                            if(position == 1){
-                                onOpenTabCart((CartFragment_Old) adapter.getItem(position));
-                            }
-
-                            if(position == 2){
-                                onOpenTabMyShop((ShopFragment)adapter.getItem(position));
-                            }
-                            else {((ShopFragment)adapter.getItem(2)).releaseAdapter();}
-                        }
-
-                        @Override
-                        public void onPageScrollStateChanged(int state) {
-
-                        }
-                    });
-
-                    binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
-                    setIcons(binding.tabLayout);
-
-                    TypedValue typedValue = new TypedValue();
-                    getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-                    color = typedValue.data;
-                    color2 = getResources().getColor(R.color.drark_gray, getTheme());
-
-                    binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                        @Override
-                        public void onTabSelected(TabLayout.Tab tab) {
-                            tab.getIcon().setTint(color);
-                        }
-
-                        @Override
-                        public void onTabUnselected(TabLayout.Tab tab) {
-                            tab.getIcon().setTint(color2);
-                        }
-
-                        @Override
-                        public void onTabReselected(TabLayout.Tab tab) {
-
-                        }
-                    });
-                    binding.tabLayout.setTabTextColors(Color.BLACK, color);
-                    binding.tabLayout.setSelectedTabIndicatorColor(color);
-                    binding.tabLayout.getTabAt(0).getIcon().setTint(color);
-
-                    // Set first-selected tab color
-                    binding.tabLayout.getTabAt(0).getIcon().setTint(color);
-
-                    handler.post(() -> setContentView(binding.getRoot()));
-                };
-
-                new Thread(runnable).start();
-            }
-        });
     }
 
     void onOpenTabCart(CartFragment_Old fragmentOld)
@@ -263,9 +189,60 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.ic_baseline_notifications_24,
                 R.drawable.ic_baseline_person_24
         };
+
+        int[] titles = new int[]{
+                R.string.menu_home_page,
+                R.string.menu_cart,
+                (R.string.menu_shop),
+                (R.string.menu_notification),
+                (R.string.menu_person)
+        };
+
         for(int i = 0; i<icons.length; i++){
-            tabLayout.getTabAt(i).setIcon(icons[i]);
+            TabIconLayoutBinding iconLayoutBinding = TabIconLayoutBinding.inflate(getLayoutInflater());
+            iconLayoutBinding.iconImg.setImageResource(icons[i]);
+            iconLayoutBinding.txtName.setText(titles[i]);
+
+            iconLayoutBinding.tvNumberRequest.setVisibility(View.GONE);
+
+            tabLayout.getTabAt(i).setCustomView(iconLayoutBinding.getRoot());
+            tabLayout.getTabAt(i).setTag(iconLayoutBinding);
         }
+
+        notiThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DBControllerNotification db = new DBControllerNotification();
+                countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
+                db.closeConnection();
+                MainActivity.this.runOnUiThread(() -> {
+                    MainActivity.this.setNumberNotification(countNoti);
+                });
+            }
+        });
+        notiThread.start();
+    }
+
+    public void setNumberNotification(int num){
+        TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) binding.tabLayout.getTabAt(3).getTag();
+        if(num > 0){
+            iconLayoutBinding.tvNumberRequest.setVisibility(View.VISIBLE);
+            if(num < 100) {
+                iconLayoutBinding.tvNumberRequest.setText(String.valueOf(num));
+            }
+            else {
+                iconLayoutBinding.tvNumberRequest.setText("99+");
+            }
+        }
+        else {
+            iconLayoutBinding.tvNumberRequest.setVisibility(View.GONE);
+        }
+        countNoti = num;
+    }
+
+    public void decreaseNumberNotification(){
+        countNoti--;
+        setNumberNotification(countNoti);
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -90,6 +90,9 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
         if(info.notification.hasRead) {
             holder.binding.getRoot().setBackgroundColor(Color.WHITE);
         }
+        else {
+            holder.binding.getRoot().setBackgroundColor(Color.YELLOW);
+        }
 
         if(this.onClickItemPositionListener != null){
             holder.binding.getRoot().setOnClickListener(v->{onClickItemPositionListener.onClickItem(position);});

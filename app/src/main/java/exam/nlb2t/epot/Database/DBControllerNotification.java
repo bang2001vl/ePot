@@ -48,7 +48,7 @@ public class DBControllerNotification extends DatabaseController{
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            ErrorMsg = "FAILED: Cannot read from server";
+            ErrorMsg = "THẤT BẠI: Không thể lấy thông tin từ server";
         }
         return rs;
     }
@@ -87,6 +87,27 @@ public class DBControllerNotification extends DatabaseController{
             rollback();
             throwables.printStackTrace();
             ErrorMsg = "THẤT BẠI: Không thể đưa dữ liệu vào máy chủ";
+        }
+        return rs;
+    }
+
+    public int countUnreadNoti(int userID){
+        int rs = -1;
+        try {
+            PreparedStatement statement = connection.prepareStatement("EXEC countUnreadNoti ?");
+            statement.setInt(1, userID);
+
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                rs = resultSet.getInt(1);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể lấy thông tin từ server";
         }
         return rs;
     }

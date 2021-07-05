@@ -26,6 +26,8 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
         init(context, attrs);
     }
 
+    boolean isShownNumber  = true;
+
     void init(Context context, AttributeSet attrs)
     {
         rectNumber = new RectF();
@@ -62,7 +64,9 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        drawNumber(canvas);
+        if(isShownNumber) {
+            drawNumber(canvas);
+        }
     }
 
     @Override
@@ -135,5 +139,10 @@ public class ButtonNumberNotification extends androidx.appcompat.widget.AppCompa
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public void setShownNumber(boolean isShown){
+        isShownNumber = isShown;
+        invalidate();
     }
 }
