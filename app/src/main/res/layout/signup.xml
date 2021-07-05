@@ -55,29 +55,25 @@
         android:id="@+id/container_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_next"
-        app:layout_constraintTop_toBottomOf="@+id/ln_logo"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ln_logo" />
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/materialRippleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintCircleRadius="30dp"
         app:mrl_rippleBackground="#FFFFFF"
         app:mrl_rippleColor="#808080"
         app:mrl_rippleOverlay="true"
+        android:layout_marginTop="12dp"
         app:mrl_rippleRoundedCorners="30dp"
-        tools:layout_editor_absoluteX="32dp">
-
-    </com.balysv.materialripple.MaterialRippleLayout>
-
+        tools:layout_editor_absoluteX="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/container_body">
     <Button
         android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:background="@drawable/btn_red_background"
         android:fontFamily="@font/gilroy_bold"
         android:text="@string/Sent_OTP"
@@ -86,6 +82,7 @@
         android:textStyle="bold"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        tools:layout_editor_absoluteX="32dp" />
+    </com.balysv.materialripple.MaterialRippleLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
