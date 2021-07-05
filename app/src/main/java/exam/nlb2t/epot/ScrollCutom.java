@@ -20,6 +20,7 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
     private LinearLayoutManager mLinearLayoutManager;
     private boolean isLoad;
     private boolean isRemove;
+    private boolean isEndPage;
     //private final RecyclerView.Adapter mAdapter;
 
     private boolean isBottomPages(int lastCurrentPositionItem) {
@@ -63,6 +64,11 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
     public void loadPreviousPageUI(int index_item_start_list, int count) {
 
     }
+
+    public void setIsEndPage(boolean value) {
+        isEndPage = value;
+    }
+
     @Override
     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         int visibleItemsCount = mLinearLayoutManager.getChildCount();
@@ -73,9 +79,11 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
         if (dy>0) {
             if (passVisibleItems + visibleItemsCount >= totalItemCount - REMAIN_NUMBER_ITEM_BEFORE_LOAD) {
                 if (!isBottomPages(passVisibleItems + visibleItemsCount - 1) && !isLoad) {
-                    loadPage(mNumberPage, true);
-                    if (numberPageBeforeLoad == MAX_NUMBER_PAGE_IN_CACHE) removePage(mNumberPage - MAX_NUMBER_PAGE_IN_CACHE + 1);
-                    mNumberPage++;
+                    if (!isEndPage) {
+                        loadPage(mNumberPage, true);
+                        if (numberPageBeforeLoad == MAX_NUMBER_PAGE_IN_CACHE) removePage(mNumberPage - MAX_NUMBER_PAGE_IN_CACHE + 1);
+                        mNumberPage++;
+                    }
                 }
             }
         }
@@ -96,8 +104,8 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
 
     private void loadPage(int PageNumber, boolean isloadNextPage) {
         synchronized (ScrollCutom.this) {
-            isLoad = true;
             if (isloadNextPage) {
+                isLoad = true;
                 new Thread(()-> {
                     int index = PageNumber * MAX_NUMBER_ITEM_IN_PAGE - 1;
                     loadNextPage(index);
@@ -108,17 +116,17 @@ public class ScrollCutom extends RecyclerView.OnScrollListener{
                 }).start();
             }
             else {
+                isLoad = true;
                 loadPreviousPage((PageNumber+1) * MAX_NUMBER_ITEM_IN_PAGE);
             }
         }
     }
 
     private void removePage(int PageNumber) {
-//        int indexPage_to_remove = PageNumber - (mNumberPage - MAX_NUMBER_PAGE_IN_CACHE);
-//
-//        int endposition;
-//        if ((indexPage_to_remove + 1) * MAX_NUMBER_PAGE_IN_CACHE < mList.size()) {
-//
-//        }
+        int indexPage_to_remove = PageNumber - (mNumberPage - MAX_NUMBER_PAGE_IN_CACHE);
+        
+        if ((indexPage_to_remove + 1) * MAX_NUMBER_ITEM_IN_PAGE < mList.size()) {
+
+        }
     }
 }

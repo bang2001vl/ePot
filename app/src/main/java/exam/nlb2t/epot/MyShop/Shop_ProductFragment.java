@@ -101,6 +101,7 @@ public class Shop_ProductFragment extends Fragment {
             @Override
             public void loadNextPageUI(int index_item_end_list) {
                 int offset = index_item_end_list + 1;
+                if (products.size() - offset < 5) setIsEndPage(true);
                 adapter.notifyItemRangeInserted(offset, products.size() - offset);
             }
         };
