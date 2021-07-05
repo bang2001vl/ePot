@@ -36,7 +36,7 @@ public class fragment_search extends DialogFragment {
     private List<ProductAdapterItemInfo> productList ;
     private TextView tv_emplty_result;
     private fragment_ProItem_Container fg_ProItem_container;
-    private  final int number_pro = 2;
+    private  final int number_pro = 6;
     private Button btn_more;
     private ImageView btn_back;
     private LinearLayout ln_product;

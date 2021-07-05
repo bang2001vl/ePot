@@ -84,15 +84,13 @@ public class signup extends AppCompatActivity {
             phone = getIntent().getStringExtra("phone");
             params.setMargins(0, 30, 0, 0);
             fg_signup_new_account.name = getIntent().getStringExtra("Personname");
-            fg_signup_new_account.username = getIntent().getStringExtra("Personemail");
+            fg_signup_new_account.username = getIntent().getStringExtra("Personusername");
             ln_logo.setLayoutParams(params);
         }
         else
         {
             ReplaceFragment(fg_signup_enterphone);
         }
-
-
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +147,7 @@ public class signup extends AppCompatActivity {
                                     }
                                     else
                                     {
+                                        fg_signup_new_account.edt_usename.setError(null);
                                         int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
                                         int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
                                         int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
