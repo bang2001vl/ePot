@@ -92,7 +92,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:text="@string/City_Address_edt"
         android:textSize="16dp"
         android:paddingVertical="10dp"
         android:layout_marginTop="5dp"

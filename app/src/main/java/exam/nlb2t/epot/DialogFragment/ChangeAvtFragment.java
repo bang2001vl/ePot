@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +48,7 @@ public class ChangeAvtFragment extends DialogFragment {
     FragmentChangeAvtBinding binding;
 
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
+    boolean changeAvt;
 
     private static final int IMAGE_PICK_CODE=1000;
     private static final int PERMISSION_CODE=1001;
@@ -66,6 +69,7 @@ public class ChangeAvtFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentChangeAvtBinding.inflate(inflater, container, false);
+        changeAvt=false;
         setEventHandler();
         return binding.getRoot();
 
@@ -75,7 +79,7 @@ public class ChangeAvtFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.imageAvt.setImageBitmap(bitmap);
+        binding.imageAvt.setImageBitmap(setAvt());
 
 
     }
@@ -83,7 +87,8 @@ public class ChangeAvtFragment extends DialogFragment {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAlertDialog();
+               if (changeAvt) openAlertDialog();
+               else dismiss();
             }
         });
         binding.btnChooseImage.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +150,7 @@ public class ChangeAvtFragment extends DialogFragment {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 hasPicked = true;
                 binding.imageAvt.setImageBitmap(bitmap);
+                changeAvt=true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -183,5 +189,16 @@ public class ChangeAvtFragment extends DialogFragment {
         });
         AlertDialog alert =builder.create();
         alert.show();
+    }
+    private Bitmap setAvt()
+    {
+        if (currentuser.getAvatar()==null)
+        {
+            Drawable drawable = getResources().getDrawable(R.drawable.profile_user);
+            Bitmap avt = ((BitmapDrawable)drawable).getBitmap();
+            return  avt;
+        }
+        else return currentuser.getAvatar();
+
     }
 }
