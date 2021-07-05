@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
     Thread notiThread;
+    boolean isRunning = false;
 
     int color;
     int color2;
@@ -137,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
         //fragment.reload();
     }
 
-    public static List<Pair<Integer, Integer>> cartData = new ArrayList<>();
     public MainFragmentAdapter createAdapter()
     {
         /*Fragment[] fragments = new Fragment[]{
@@ -220,7 +221,35 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        notiThread.start();
+    }
+
+    void startingCheckNotification(){
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(notiThread == null || !notiThread.isAlive()) {
+                    notiThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DBControllerNotification db = new DBControllerNotification();
+                            countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
+                            db.closeConnection();
+                            if(MainActivity.this.binding != null) {
+                                MainActivity.this.runOnUiThread(() -> {
+                                    MainActivity.this.setNumberNotification(countNoti);
+                                });
+                            }
+                        }
+                    });
+                    Log.d("MY_TAG", "Looper: Count unread notification");
+                    notiThread.start();
+                }
+                if(isRunning) {
+                    mainHandler.postDelayed(this, 10000);
+                }
+            }
+        });
     }
 
     public void setNumberNotification(int num){
@@ -278,4 +307,16 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isRunning = true;
+        startingCheckNotification();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRunning = false;
+    }
 }
