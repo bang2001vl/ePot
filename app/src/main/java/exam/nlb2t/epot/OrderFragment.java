@@ -90,6 +90,7 @@ public class OrderFragment extends DialogFragment{
         tab_inShipping.setOnSubmitVertifyBillListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {
+                // Reload tab success when user confirm received
                 tabs.get(3).reLoad();
             }
         });
@@ -112,10 +113,11 @@ public class OrderFragment extends DialogFragment{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                OrderFragment.this.dismiss();
             }
         });
     }
+
     void selectPage(int pageIndex){
         tabLayout.setScrollPosition(pageIndex,0f,true);
         viewPager.setCurrentItem(pageIndex);
