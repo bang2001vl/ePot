@@ -52,6 +52,7 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
         return new NotifyViewHolder(binding);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull NotifyViewHolder holder, int position) {
 
@@ -91,7 +92,7 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
             holder.binding.getRoot().setBackgroundColor(Color.WHITE);
         }
         else {
-            holder.binding.getRoot().setBackgroundColor(Color.YELLOW);
+            holder.binding.getRoot().setBackground(mContext.getResources().getDrawable(R.drawable.noti_background, mContext.getTheme()));
         }
 
         if(this.onClickItemPositionListener != null){
