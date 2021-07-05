@@ -135,12 +135,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             info.productAvatar = db.getAvatar_Product(imageID);
             db.closeConnection();
 
-            mainHandler.postDelayed(new Runnable() {
+            mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     notifyItemChanged(position);
                 }
-            }, 100);
+            });
         }
     }
 

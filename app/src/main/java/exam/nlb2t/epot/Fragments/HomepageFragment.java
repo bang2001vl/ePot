@@ -211,13 +211,15 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         new Thread(() -> {
             final List<ProductAdapterItemInfo> data = getDataMaxSold();
             Log.d("MY_TAG", "topSold = " + data.size());
-            new Handler(Looper.getMainLooper()).post(() -> {
-                list_TopSold.addAll(data);
-                Log.d("MY_TAG", "topSold = " + list_TopSold.size());
-                if (adapter_TopSold != null) {
-                    adapter_TopSold.notifyItemRangeInserted(list_TopSold.size() - data.size(), data.size());
-                }
-            });
+            if(getActivity()!=null){
+                getActivity().runOnUiThread(() -> {
+                    list_TopSold.addAll(data);
+                    Log.d("MY_TAG", "topSold = " + list_TopSold.size());
+                    if (adapter_TopSold != null) {
+                        adapter_TopSold.notifyItemRangeInserted(list_TopSold.size() - data.size(), data.size());
+                    }
+                });
+            }
         }, "LoadProductTopSold").start();
     }
 
