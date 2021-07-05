@@ -256,7 +256,7 @@
                     android:gravity="start|top"
                     android:hint="Thông tin chi tiết"
                     android:inputType="textMultiLine"
-                    android:maxLength="490"
+                    android:maxLength="999"
                     android:minLines="4" />
             </LinearLayout>
 
