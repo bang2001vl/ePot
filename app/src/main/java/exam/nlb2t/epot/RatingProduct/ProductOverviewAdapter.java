@@ -2,7 +2,6 @@ package exam.nlb2t.epot.RatingProduct;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.databinding.FragmentRatingTabNewItemBinding;
 
@@ -22,15 +20,15 @@ public class ProductOverviewAdapter extends RecyclerView.Adapter<ProductOverview
         this.list = list;
     }
 
-    protected BillAdapter.OnBindingLastPositionListener onCLickItemListener;
+    protected BillAdapter.OnClickItemPositionListener onCLickItemListener;
 
-    public void setOnCLickItemListener(BillAdapter.OnBindingLastPositionListener onCLickItemListener) {
+    public void setOnCLickItemListener(BillAdapter.OnClickItemPositionListener onCLickItemListener) {
         this.onCLickItemListener = onCLickItemListener;
     }
 
-    protected BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener;
-    public void setOnBindingLastPositionListener(BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener) {
-        this.onBindingLastPositionListener = onBindingLastPositionListener;
+    protected BillAdapter.OnClickItemPositionListener onClickItemPositionListener;
+    public void setOnBindingLastPositionListener(BillAdapter.OnClickItemPositionListener onClickItemPositionListener) {
+        this.onClickItemPositionListener = onClickItemPositionListener;
     }
 
     @NonNull
@@ -73,11 +71,11 @@ public class ProductOverviewAdapter extends RecyclerView.Adapter<ProductOverview
         }
 
         holder.binding.getRoot().setOnClickListener(v->{
-            if(onCLickItemListener!= null){onCLickItemListener.onBindingLastPostion(position);}
+            if(onCLickItemListener!= null){onCLickItemListener.onClickItem(position);}
         });
 
-        if((position == list.size() -1) && onBindingLastPositionListener != null){
-            onBindingLastPositionListener.onBindingLastPostion(position);
+        if((position == list.size() -1) && onClickItemPositionListener != null){
+            onClickItemPositionListener.onClickItem(position);
         }
     }
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -15,10 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 
@@ -41,10 +38,10 @@ public class fragment_ProItem_Container extends Fragment {
     {
         this.onClickItemListener = listener;
     }
-    protected BillAdapter.OnBindingLastPositionListener onBindingLastPositionListener;
-    public  void setOnBindingLastPositionListener(BillAdapter.OnBindingLastPositionListener listener)
+    protected BillAdapter.OnClickItemPositionListener onClickItemPositionListener;
+    public  void setOnBindingLastPositionListener(BillAdapter.OnClickItemPositionListener listener)
     {
-        this.onBindingLastPositionListener = listener;
+        this.onClickItemPositionListener = listener;
     }
 
     public fragment_ProItem_Container() {

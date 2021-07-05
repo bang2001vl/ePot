@@ -25,6 +25,7 @@ import exam.nlb2t.epot.Database.Tables.NotificationBaseDB;
 import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
+import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.ButtonMoreView;
 import exam.nlb2t.epot.databinding.FragmentNotificationBinding;
@@ -34,8 +35,11 @@ import exam.nlb2t.epot.singleton.Helper;
 public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.NotifyViewHolder> {
 
     public List<NotifycationInfo> list;
-    OnItemClickListener onItemClickListener;
+    BillAdapter.OnClickItemPositionListener onClickItemPositionListener;
 
+    public void setOnClickItemPositionListener(BillAdapter.OnClickItemPositionListener onClickItemPositionListener) {
+        this.onClickItemPositionListener = onClickItemPositionListener;
+    }
 
     Context mContext;
 
@@ -85,6 +89,10 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
 
         if(info.notification.hasRead) {
             holder.binding.getRoot().setBackgroundColor(Color.WHITE);
+        }
+
+        if(this.onClickItemPositionListener != null){
+            holder.binding.getRoot().setOnClickListener(v->{onClickItemPositionListener.onClickItem(position);});
         }
     }
 

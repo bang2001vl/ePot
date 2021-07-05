@@ -33,7 +33,7 @@ public class DBControllerNotification extends DatabaseController{
                 noti.id = resultSet.getInt(i);i++;
                 noti.oldStatus = resultSet.getInt(i);i++;
                 noti.newStatus = resultSet.getInt(i);i++;
-                noti.hasRead = resultSet.getBoolean(i);i++;
+                noti.hasRead = (resultSet.getInt(i) != 0);i++;
                 noti.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
                 noti.billID = resultSet.getInt(i);i++;
 
@@ -64,10 +64,29 @@ public class DBControllerNotification extends DatabaseController{
             statement.setInt(4, newStatus);
 
             rs = statement.executeUpdate() > 0;
+            commit();
             statement.close();
         } catch (SQLException throwables) {
+            rollback();
             throwables.printStackTrace();
-            ErrorMsg = "THẤT BẠI: Không thể lấy dữ liệu từ máy chủ";
+            ErrorMsg = "THẤT BẠI: Không thể đưa dữ liệu vào máy chủ";
+        }
+        return rs;
+    }
+
+    public boolean notifyHasReadNoti(int notificationID){
+        boolean rs = false;
+        try{
+            CallableStatement statement = connection.prepareCall("{call updateHasReadNoti(?)}");
+            statement.setInt(1, notificationID);
+
+            rs = statement.executeUpdate() > 0;
+            commit();
+            statement.close();
+        } catch (SQLException throwables) {
+            rollback();
+            throwables.printStackTrace();
+            ErrorMsg = "THẤT BẠI: Không thể đưa dữ liệu vào máy chủ";
         }
         return rs;
     }

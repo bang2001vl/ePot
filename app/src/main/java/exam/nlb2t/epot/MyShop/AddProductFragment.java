@@ -332,7 +332,7 @@ public class AddProductFragment extends DialogFragment {
         String rs = editText.getText().toString();
         if(rs.length() > 0)
         {
-            final String filter = ",./;[]-=`~!@#$%^&*_+}|{:?>-*/+'\"\\\t\n";
+            final String filter = ",./;[]-=`~!@#$%^&*_+}|{:?>*/+'\"\\\t\n";
             for(int i = 1; i<filter.length(); i++)
             {
                 if(rs.contains(filter.substring(i-1,i)))

@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerNotification;
+import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 import exam.nlb2t.epot.EmptyNotiFragment;
 import exam.nlb2t.epot.NotificationWorkspace.NotifyViewAdapter;
 import exam.nlb2t.epot.NotificationWorkspace.NotifycationInfo;
+import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.databinding.EmptyCartLayoutBinding;
 import exam.nlb2t.epot.databinding.FragmentEmptyNotiBinding;
 import exam.nlb2t.epot.databinding.FragmentNotificationBinding;
@@ -51,6 +53,19 @@ public class NotificationFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
+
+        adapter.setOnClickItemPositionListener(postion -> {
+            NotifycationInfo info = adapter.list.get(postion);
+            DetailBillFragment dialog = new DetailBillFragment(info.notification.billID, getContext());
+            dialog.show(getParentFragmentManager(), "detailBill");
+            new Thread(()->{
+                DBControllerNotification db = new DBControllerNotification();
+                db.notifyHasReadNoti(info.notification.id);
+                db.closeConnection();
+            }).start();
+            info.notification.hasRead = true;
+            adapter.notifyItemChanged(postion);
+        });
 
         binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(list.size() == 0) return;

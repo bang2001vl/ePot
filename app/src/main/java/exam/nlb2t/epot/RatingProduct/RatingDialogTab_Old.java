@@ -21,14 +21,11 @@ public class RatingDialogTab_Old extends RatingDialogTab_New{
     @Override
     protected void setupAdapter(RecyclerView recyclerView) {
         super.setupAdapter(recyclerView);
-        adapter.setOnCLickItemListener(new BillAdapter.OnBindingLastPositionListener() {
-            @Override
-            public void onBindingLastPostion(int postion) {
-                ProductOverviewAdpterItem info = list.get(postion);
-                int userID = Authenticator.getCurrentUser().id;
-                RatingProductDialogFragment_Edit dialog = new RatingProductDialogFragment_Edit(info.productID, userID);
-                dialog.show(getChildFragmentManager(), "editrating");
-            }
+        adapter.setOnCLickItemListener(postion -> {
+            ProductOverviewAdpterItem info = list.get(postion);
+            int userID = Authenticator.getCurrentUser().id;
+            RatingProductDialogFragment_Edit dialog = new RatingProductDialogFragment_Edit(info.productID, userID);
+            dialog.show(getChildFragmentManager(), "editrating");
         });
     }
 }

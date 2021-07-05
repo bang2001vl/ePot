@@ -20,12 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerProduct;
@@ -40,6 +45,7 @@ import exam.nlb2t.epot.databinding.FragmentCartBinding;
 import exam.nlb2t.epot.databinding.FragmentEmptyBagBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
+import exam.nlb2t.epot.singleton.Category;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class CartFragment_Old extends Fragment {
@@ -60,15 +66,21 @@ public class CartFragment_Old extends Fragment {
 
     public void requestLoadData()
     {
-        if(getContext() == null) return;
+        if(getContext() == null || getActivity() == null) return;
         new Thread(()->{
             List<Pair<Integer, Integer>> list = CartDataController.getAllData(getContext());
-            requestLoadData(list);
+            getActivity().runOnUiThread(()->{
+                requestLoadData(list);
+            });
         }).start();
     }
 
     public void requestLoadData(List<Pair<Integer, Integer>> list) {
-        if(list.size() == 0){return;}
+        if(list.size() == 0) {
+            setData(new ProductBuyInfo[0]);
+            layoutData();
+            return;
+        }
         showLoadingScreen();
 
         new Thread(() -> {
@@ -171,29 +183,14 @@ public class CartFragment_Old extends Fragment {
         binding.btnPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DEBUG
-                /*for(Map.Entry<String, List<ProductBuyInfo>> entry: data.entrySet())
-                {
-                    List<ProductBuyInfo> buyInfo = entry.getValue();
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("saler : ").append(entry.getKey()). append(" {");
-                    for(ProductBuyInfo info: buyInfo)
-                    {
-                        builder.append("\n\t").append(info.product.name)
-                                .append(" amount = ").append(info.Amount);
-                    }
-                    builder.append("\n }\n");
-                    Log.d("MY_TRACE", builder.toString());
-                }*/
-
-                Map<Integer, List<Pair<Integer, Integer>>> buyMap = new HashMap<>();
+                Map<Integer, List<ProductBuyInfo>> buyMap = new HashMap<>();
                 for (LinearLayout container : data_ContainerViews.values()) {
-                    List<Pair<Integer, Integer>> checked = new ArrayList<>();
+                    List<ProductBuyInfo> checked = new ArrayList<>();
                     for (int i = container.getChildCount() - 1; i > -1; i--) {
                         Card_ItemView_New card_itemView = (Card_ItemView_New) container.getChildAt(i);
                         if (card_itemView.getChecked()) {
                             ProductBuyInfo buyInfo = (ProductBuyInfo) card_itemView.Tag;
-                            checked.add(new Pair<>(buyInfo.product.id, buyInfo.Amount));
+                            checked.add(buyInfo);
                         }
                     }
                     if(checked.size() > 0){
@@ -425,7 +422,7 @@ public class CartFragment_Old extends Fragment {
         }
     }
 
-    public void onClickPayment(Map<Integer,List<Pair<Integer, Integer>>> buyMap)
+    public void onClickPayment(Map<Integer,List<ProductBuyInfo>> buyMap)
     {
         long total = Integer.parseInt(binding.btnPayment.getTag().toString());
         int numSaler = buyMap.size();
@@ -435,35 +432,93 @@ public class CartFragment_Old extends Fragment {
             @Override
             public void OnSuccess(Object sender) {
                 fragment.dismiss();
-                if(getContext() == null) {return;}
-                boolean rs;
-                DBControllerBill db = new DBControllerBill();
-                 rs = db.addBill(Authenticator.getCurrentUser().id, priceShip, fragment.address, buyMap);
-                db.closeConnection();
+                if(getContext() == null || getActivity() == null) {return;}
+                showLoadingScreen();
+                new Thread(()->{
 
-                if(rs)
-                {
-                    List<Integer> list = new ArrayList<>();
-                    for(List<Pair<Integer, Integer>> checkedProduct: buyMap.values()) {
-                        for (Pair<Integer, Integer> p : checkedProduct) {
-                            list.add(p.first);
-                        }
+                    if(!checkAmount(buyMap))
+                    {
+                        getActivity().runOnUiThread(() -> {
+                            closeLoadingScreen();
+                        });
+                        return;
                     }
-                    CartDataController.removeProduct(getContext(), list);
 
-                    PaymentSucessDialog dialog = new PaymentSucessDialog();
-                    dialog.show(getChildFragmentManager(), "tag");
+                    boolean rs = pushToDB(buyMap, fragment.address, priceShip);
 
-                    new Thread(() -> {
-                        List<Pair<Integer, Integer>> data = CartDataController.getAllData(getContext());
-                        new Handler(Looper.getMainLooper()).post(() -> requestLoadData(data));
-                    }).start();
-                }
-                else {Toast.makeText(getContext(), "Có lỗi xảy ra", Toast.LENGTH_LONG).show();}
+                    if(rs)
+                    {
+                        List<Integer> list = new ArrayList<>();
+                        for(List<ProductBuyInfo> checkedProduct: buyMap.values()) {
+                            for (ProductBuyInfo p : checkedProduct) {
+                                list.add(p.product.id);
+                            }
+                        }
+                        CartDataController.removeProduct(getContext(), list);
+
+                        getActivity().runOnUiThread(()->{
+                            closeLoadingScreen();
+                            PaymentSucessDialog dialog = new PaymentSucessDialog();
+                            dialog.show(getChildFragmentManager(), "tag");
+                            requestLoadData();
+                        });
+                    }
+                    else {
+                        getActivity().runOnUiThread(() -> {
+                            closeLoadingScreen();
+                            Snackbar.make(binding.getRoot(), "Có lỗi xảy ra", BaseTransientBottomBar.LENGTH_LONG).show();
+                        });
+                    }
+                }).start();
+
             }
         });
         fragment.show(getChildFragmentManager(), "payment");
     }
 
+    private boolean checkAmount(Map<Integer,List<ProductBuyInfo>> buyMap)
+    {
+        DBControllerProduct dbPD = new DBControllerProduct();
+        for (Map.Entry<Integer, List<ProductBuyInfo>> entry : buyMap.entrySet()) {
+            for(ProductBuyInfo p : entry.getValue())
+            {
+                ProductBaseDB productBaseDB = dbPD.getProduct(p.product.id);
+                if(productBaseDB.amount < productBaseDB.amountSold + p.Amount)
+                {
+                    p.Amount = productBaseDB.amount - productBaseDB.amountSold;
+                    if(p.Amount < 1){
+                        CartDataController.removeProduct(getContext(), p.product.id);
+                    }
+                    else {
+                        CartDataController.setProduct(getContext(), p.product.id, p.Amount);
+                    }
+                    getActivity().runOnUiThread(()->{
+                        Snackbar.make(binding.getRoot(), "Không còn đủ hàng cho " + p.product.name, BaseTransientBottomBar.LENGTH_LONG).show();
+                        requestLoadData();
+                    });
+                    dbPD.closeConnection();
+                    return false;
+                }
+            }
+        }
+        dbPD.closeConnection();
+        return true;
+    }
 
+    boolean pushToDB(Map<Integer,List<ProductBuyInfo>> buyMap, String address, int priceShip)
+    {
+        Map<Integer, List<Pair<Integer, Integer>>> map = new HashMap<>();
+        for (Map.Entry<Integer, List<ProductBuyInfo>> entry : buyMap.entrySet()) {
+            List<Pair<Integer, Integer>> l = new ArrayList<>();
+            for(ProductBuyInfo p: entry.getValue()){
+                l.add(new Pair<>(p.product.id, p.Amount));
+            }
+            map.put(entry.getKey(), l);
+        }
+
+        DBControllerBill db = new DBControllerBill();
+        boolean rs = db.addBill(Authenticator.getCurrentUser().id, priceShip, address, map);
+        db.closeConnection();
+        return rs ;
+    }
 }

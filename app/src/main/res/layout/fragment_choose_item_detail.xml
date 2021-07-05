@@ -34,7 +34,7 @@
             android:id="@+id/txtName_item"
             android:text="@string/default_product_name"
             style="@style/TittleBigSize"
-            app:layout_constraintTop_toTopOf="@id/image_item"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/image_item"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/normal_padding"
