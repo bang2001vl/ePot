@@ -163,15 +163,15 @@ public class fragment_search extends DialogFragment {
 
                 if (productList.size() != 0)
                 {
-
                     fg_ProItem_container = fragment_ProItem_Container.newInstance(productList);
                     getChildFragmentManager().beginTransaction().replace(R.id.fg_pro, fg_ProItem_container).commit();
                     fg_ProItem_container.setOnClickItemListener(onClickItemListener);
                     ln_product.setVisibility(View.VISIBLE);
                     tv_emplty_result.setVisibility(View.GONE);
-
-                /*    fg_ProItem_container.productAdapter.addproduct(productList);*/
-                    btn_more.setVisibility(View.VISIBLE);
+                    if (productList.size() < number_pro)
+                        btn_more.setVisibility(View.INVISIBLE);
+                    else
+                        btn_more.setVisibility(View.VISIBLE);
                 }
                 else
                 {
@@ -212,7 +212,8 @@ public class fragment_search extends DialogFragment {
                     info.productAvatar = null;
                     list.add(info);
                 }
-
+                   if ( subpro.size() < number_pro)
+                       btn_more.setVisibility(View.GONE);
                    fg_ProItem_container.productAdapter.addproduct(list);
             }
             else

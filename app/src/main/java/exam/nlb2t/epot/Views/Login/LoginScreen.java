@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +55,7 @@ import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.Views.Registration.signup;
 import exam.nlb2t.epot.Views.home_shopping;
+import exam.nlb2t.epot.Views.toast_layout;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 
@@ -203,9 +203,7 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_username_pass), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0, 150);
-                    toast.show();
+                    toast_layout.show(context,getResources().getString(R.string.error_wrong_username_pass), true);
                 }
             }
         });
@@ -438,8 +436,7 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onAuthenError(int errorCode, String message) {
                 //Đăng nhập thất bại..
-                Toast.makeText(context , "Đăng nhập thất bại, vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
-                Onsusscess();
+                toast_layout.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
             }
             @Override
             public void onGetOAuthComplete(OauthResponse response) {
@@ -453,7 +450,7 @@ public class LoginScreen extends AppCompatActivity {
         @Override
         public void onAuthenError(int errorCode, String message) {
             //Đăng nhập thất bại..
-            Toast.makeText(context , "Đăng nhập thất bại, vui lòng thử lại sau!", Toast.LENGTH_SHORT).show();
+            toast_layout.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
             Onsusscess();
         }
         @Override

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +29,7 @@ import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.toast_layout;
 
 public class signup extends AppCompatActivity {
 
@@ -128,14 +128,14 @@ public class signup extends AppCompatActivity {
                     {
                         if (CheckErrorUserInfo() == -1)
                         {
-                            Toast.makeText(context , getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+                            toast_layout.show(context, getResources().getString(R.string.error_not_enough_info), true );
                         }
                         else
                         {
                             {
                                 if (CheckErrorUserInfo() == 0)
                                 {
-                                    Toast.makeText(context , getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                                    toast_layout.show(context, getResources().getString(R.string.error_incorrect_info), true );
                                 }
                                 else
                                 {
@@ -153,7 +153,7 @@ public class signup extends AppCompatActivity {
                                         int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
                                         controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
-                                        Toast.makeText(context, getResources().getString(R.string.annouce_creat_acc_succsess),Toast.LENGTH_SHORT).show();
+                                        toast_layout.show(context, getResources().getString(R.string.annouce_creat_acc_succsess), true );
                                         controllerUser.closeConnection();
                                         finish();
                                     }
@@ -244,8 +244,7 @@ public class signup extends AppCompatActivity {
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
-                            Toast.makeText(signup.this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
-                        }
+                            toast_layout.show(context, getResources().getString(R.string.error_wrong_OTP), true ); }
                     }
                 });
     }
@@ -307,7 +306,7 @@ public class signup extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
-            Toast.makeText(signup.this,getResources().getString(R.string.error_connect_firebar), Toast.LENGTH_LONG).show();
+            toast_layout.show(context, getResources().getString(R.string.error_connect_firebar), true );
             finish();
         }
     };
@@ -325,7 +324,7 @@ public class signup extends AppCompatActivity {
         {
             if (count == 5)
             {
-                Toast.makeText(this, getResources().getString(R.string.error_5_otp), Toast.LENGTH_LONG).show();
+                toast_layout.show(context, getResources().getString(R.string.error_5_otp), true );
                 count = 0;
                 finish();
             }
@@ -335,7 +334,7 @@ public class signup extends AppCompatActivity {
             if ( Issend && code != credential.getSmsCode())
             {
                 ++count;
-                Toast.makeText(this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
+                toast_layout.show(context, getResources().getString(R.string.error_wrong_OTP), true );
                 return false;
             }
             signInWithCredential(credential);
