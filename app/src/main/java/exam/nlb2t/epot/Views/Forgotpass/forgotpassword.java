@@ -28,10 +28,9 @@ import java.util.regex.Pattern;
 
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.Registration.fragment_signup_enterotp;
 import exam.nlb2t.epot.Views.Registration.signup_enterphone;
-
+import exam.nlb2t.epot.Views.toast_layout;
 
 public class forgotpassword extends AppCompatActivity {
 
@@ -223,7 +222,7 @@ public class forgotpassword extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             // displaying error message with firebase exception.
-            Error_toast.show(forgotpassword.this, getResources().getString(R.string.error_connect_firebar), true );
+            toast_layout.show(forgotpassword.this, getResources().getString(R.string.error_connect_firebar), true );
             finish();
         }
     };
@@ -242,7 +241,7 @@ public class forgotpassword extends AppCompatActivity {
         {
             if (count >= 5)
             {
-                Error_toast.show(forgotpassword.this,  getResources().getString(R.string.error_5_otp), true );
+                toast_layout.show(forgotpassword.this,  getResources().getString(R.string.error_5_otp), true );
                 count = 0;
                 finish();
             }
@@ -252,7 +251,7 @@ public class forgotpassword extends AppCompatActivity {
             if ( Issend==1 && code != credential.getSmsCode())
             {
 
-                Error_toast.show(forgotpassword.this,  getResources().getString(R.string.error_wrong_OTP), true );
+                toast_layout.show(forgotpassword.this,  getResources().getString(R.string.error_wrong_OTP), true );
                 return false;
             }
             signInWithCredential(credential);

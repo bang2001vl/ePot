@@ -35,7 +35,6 @@ import exam.nlb2t.epot.ProductDetail.Rating.ProductRatingDialog;
 import exam.nlb2t.epot.ProductDetail.Rating.RatingInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.LoadingView;
-import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentProductDetailBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
@@ -307,17 +306,28 @@ public class ProductDetailFragment extends DialogFragment {
                 return;
             }
 
+            String message;
+            if (isChecked) {
+                message = "Bạn muốn đánh dấu thích sản phẩm?";
+            } else {
+                message = "Bạn muốn hủy thích sản phẩm?";
+            }
+
+            new AlertDialog.Builder(getContext())
+            .setMessage(message).setPositiveButton(R.string.submit, (dialog, which) -> {
                 DBControllerProduct db = new DBControllerProduct();
                 if (isChecked) {
                     db.likeProduct(productID, Authenticator.getCurrentUser().id);
-                    Success_toast.show(getContext(),"Đã thích!", true);
                 } else {
                     db.unlikeProduct(productID, Authenticator.getCurrentUser().id);
-                    Success_toast.show(getContext(),"Bỏ thích!", true);
                 }
                 db.closeConnection();
-
-
+            })
+            .setNegativeButton(R.string.cancel, (d, w) ->
+                {
+                    btn.setTag("a");
+                    btn.setChecked(!isChecked);
+                }).show();
 
         });
 

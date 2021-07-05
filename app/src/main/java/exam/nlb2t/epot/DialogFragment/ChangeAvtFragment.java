@@ -38,8 +38,6 @@ import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.RatingProduct.RatingProductDialog;
-import exam.nlb2t.epot.Views.Error_toast;
-import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentChangeAvtBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
@@ -118,11 +116,10 @@ public class ChangeAvtFragment extends DialogFragment {
                     DBControllerUser db = new DBControllerUser();
                     db.updateUser_Avatar(currentuser.id, currentuser.avatarID, bitmap);
                     db.closeConnection();
-                    Success_toast.show(getContext(),  "Đổi ảnh đại diện thành công!", true);
                     dismiss();
                 }
                 else {
-                    Error_toast.show(getContext(), "Vui lòng chọn ảnh", true);
+                    Snackbar.make(binding.getRoot(), "Vui lòng chọn ảnh", BaseTransientBottomBar.LENGTH_LONG).show();
                 }
             }
         });
@@ -169,7 +166,7 @@ public class ChangeAvtFragment extends DialogFragment {
                     pickImage();
                 }
                 else {
-                    Error_toast.show(getContext(), "Lỗi!", true);
+                    Toast.makeText(getContext(), "Lỗi!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
