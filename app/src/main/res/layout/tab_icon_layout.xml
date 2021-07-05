@@ -41,5 +41,6 @@
         style="@style/MyCustomTabText"
         android:text="@string/menu_notification"
         android:id="@+id/txtName"
+        android:layout_gravity="center_horizontal"
         />
 </LinearLayout>
