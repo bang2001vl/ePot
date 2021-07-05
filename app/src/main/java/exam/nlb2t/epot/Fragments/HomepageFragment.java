@@ -226,7 +226,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     private List<ProductAdapterItemInfo> getDataMaxSold() {
         String sql = "SELECT TOP 8 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
                 "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG " +
-                "FROM PRODUCT ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
+                "FROM PRODUCT WHERE DELETED = 0 ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         List<ProductBaseDB> subpro = dbControllerProduct.getNewProductList(sql);
         List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
@@ -288,7 +288,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
 
                 "(SELECT product.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, AMOUNT_SOLD, " +
                 "PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG, ROW_NUMBER() OVER(ORDER BY CREATED_DATE  DESC) AS STT " +
-                "FROM PRODUCT where DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 70) as tamp " +
+                "FROM PRODUCT WHERE DELETED = 0 AND DATEDIFF(DAY,PRODUCT.CREATED_DATE, GETDATE()) < 70) as tamp " +
                 "where tamp.STT BETWEEN " + currentLastIndex + " AND " + (currentLastIndex + step -1);
 
         DBControllerProduct dbControllerProduct = new DBControllerProduct();

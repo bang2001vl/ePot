@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerNotification;
+import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
 import exam.nlb2t.epot.Fragments.CartFragment;
 import exam.nlb2t.epot.Fragments.CartFragment_Old;
@@ -56,73 +57,79 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        MainFragmentAdapter adapter = createAdapter();
-        binding.viewPaperMain.setAdapter(adapter);
+        setContentView(binding.getRoot());
 
-        // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
-        // App would be terrible-lagging without it
-        binding.viewPaperMain.setOffscreenPageLimit(5);
-
-        binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void run() {
+                MainFragmentAdapter adapter = createAdapter();
+                binding.viewPaperMain.setAdapter(adapter);
 
-            }
+                // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
+                // App would be terrible-lagging without it
+                binding.viewPaperMain.setOffscreenPageLimit(5);
 
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 1) {
-                    onOpenTabCart((CartFragment_Old) adapter.getItem(position));
-                }
+                binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                if (position == 2) {
-                    onOpenTabMyShop((ShopFragment) adapter.getItem(position));
-                } else {
-                    ((ShopFragment) adapter.getItem(2)).releaseAdapter();
-                }
-            }
+                    }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (position == 1) {
+                            onOpenTabCart((CartFragment_Old) adapter.getItem(position));
+                        }
 
-            }
-        });
+                        if (position == 2) {
+                            onOpenTabMyShop((ShopFragment) adapter.getItem(position));
+                        } else {
+                            ((ShopFragment) adapter.getItem(2)).releaseAdapter();
+                        }
+                    }
 
-        binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
-        setIcons(binding.tabLayout);
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
 
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        color = typedValue.data;
-        color2 = getResources().getColor(R.color.drark_gray, getTheme());
+                    }
+                });
 
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
+                binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
+                setIcons(binding.tabLayout);
+
+                TypedValue typedValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+                color = typedValue.data;
+                color2 = getResources().getColor(R.color.drark_gray, getTheme());
+
+                binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
+                        iconLayoutBinding.iconImg.getDrawable().setTint(color);
+                        iconLayoutBinding.txtName.setTextColor(color);
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
+                        iconLayoutBinding.iconImg.getDrawable().setTint(color2);
+                        iconLayoutBinding.txtName.setTextColor(color2);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+                binding.tabLayout.setSelectedTabIndicatorColor(color);
+
+                TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) binding.tabLayout.getTabAt(0).getTag();
                 iconLayoutBinding.iconImg.getDrawable().setTint(color);
                 iconLayoutBinding.txtName.setTextColor(color);
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) tab.getTag();
-                iconLayoutBinding.iconImg.getDrawable().setTint(color2);
-                iconLayoutBinding.txtName.setTextColor(color2);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
         });
-        binding.tabLayout.setSelectedTabIndicatorColor(color);
-
-        TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) binding.tabLayout.getTabAt(0).getTag();
-        iconLayoutBinding.iconImg.getDrawable().setTint(color);
-        iconLayoutBinding.txtName.setTextColor(color);
-
-        setContentView(binding.getRoot());
     }
 
     void onOpenTabCart(CartFragment_Old fragmentOld)

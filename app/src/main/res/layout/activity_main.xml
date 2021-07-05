@@ -56,21 +56,4 @@
             android:icon="@drawable/ic_baseline_home_24"
             />
     </com.google.android.material.tabs.TabLayout>
-        <!--<fragment
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/fragment_container"
-            android:name="exam.nlb2t.epot.fragment_ProItem_Container"
-            />-->
-        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottom_navigation_menu"
-            app:menu="@menu/main_bottom_navigation"
-            app:labelVisibilityMode="labeled"
-            android:background="@color/main_bottom_navigation_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
