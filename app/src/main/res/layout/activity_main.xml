@@ -18,6 +18,7 @@
         android:layout_height="65dp"
         app:tabIconTint="@color/drark_gray"
         android:id="@+id/tabLayout"
+        app:tabPadding="0dp"
         app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
         app:tabPaddingTop="0dp" app:tabPaddingBottom="0dp"
         app:tabMode="fixed"

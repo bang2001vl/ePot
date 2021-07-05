@@ -57,7 +57,7 @@ public class OrderTab extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //TODO: Find UserID to login app
 
-        v=inflater.inflate(R.layout.fragment_order_tab,container,false);
+        v=inflater.inflate(R.layout.fragment_bill_user_layout,container,false);
         gifLoadingCircle = v.findViewById(R.id.gif_loading_circle);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.Recycelview_bill);

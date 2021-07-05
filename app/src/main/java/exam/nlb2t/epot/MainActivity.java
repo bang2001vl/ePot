@@ -194,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
         int[] titles = new int[]{
                 R.string.menu_home_page,
                 R.string.menu_cart,
-                (R.string.menu_shop),
-                (R.string.menu_notification),
-                (R.string.menu_person)
+                R.string.menu_shop,
+                R.string.menu_notification,
+                R.string.menu_person
         };
 
         for(int i = 0; i<icons.length; i++){
@@ -209,18 +209,6 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.getTabAt(i).setCustomView(iconLayoutBinding.getRoot());
             tabLayout.getTabAt(i).setTag(iconLayoutBinding);
         }
-
-        notiThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBControllerNotification db = new DBControllerNotification();
-                countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
-                db.closeConnection();
-                MainActivity.this.runOnUiThread(() -> {
-                    MainActivity.this.setNumberNotification(countNoti);
-                });
-            }
-        });
     }
 
     void startingCheckNotification(){
