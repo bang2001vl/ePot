@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,9 +71,10 @@ public class LoginScreen extends AppCompatActivity {
     private TextView tv_resent_otp;
     private ImageButton btn_signin_gg;
     private ImageButton btn_login_zalo;
+    private SignInButton btn_signin;
 
     FirebaseUser currentusser;
-    private String mail;
+    LinearLayout ln_gg;
 
     private FirebaseAuth mAuth;
 
@@ -111,6 +115,7 @@ public class LoginScreen extends AppCompatActivity {
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_signin_gg = (ImageButton) findViewById(R.id.sign_in_button);
         btn_login_zalo = (ImageButton) findViewById(R.id.btn_login_zalo);
+        ln_gg = findViewById(R.id.ln_continue_gg);
 
 
 
@@ -198,7 +203,9 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(v.getContext(), getResources().getString(R.string.error_wrong_username_pass), Toast.LENGTH_SHORT).show();
+                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_wrong_username_pass), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0, 150);
+                    toast.show();
                 }
             }
         });
@@ -210,7 +217,7 @@ public class LoginScreen extends AppCompatActivity {
             }
         });
 
-        btn_signin_gg.setOnClickListener(new View.OnClickListener() {
+        ln_gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
@@ -349,11 +356,13 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 else
                 {
+                    assert personEmail != null;
                     String[] t = personEmail.split("@", 2);
                     Intent intent = new Intent(LoginScreen.this, signup.class);
                     intent.putExtra("Google", 1);
                     intent.putExtra("Personname",personFamilyName + " " + personGivenName);
-                    intent.putExtra("Personemail", t[0].replaceAll("[^a-zA-Z0-9]", ""));
+                    intent.putExtra("Personusername", t[0].replaceAll("[^a-zA-Z0-9]", ""));
+                    intent.putExtra("Personemail",personEmail);
                     intent.putExtra("pertionphoto", personPhoto);
                     startActivity(intent);
                 }
