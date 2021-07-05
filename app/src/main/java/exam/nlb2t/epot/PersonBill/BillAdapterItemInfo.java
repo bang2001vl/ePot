@@ -13,7 +13,7 @@ public class BillAdapterItemInfo {
 
     public BillAdapterItemInfo(BillBaseDB billOverview, int amountProduct, UserBaseDB salerOverview) {
         this.billOverview = billOverview;
-        this.salerAvatar = salerAvatar;
+        this.amountProduct = amountProduct;
         this.salerOverview = salerOverview;
     }
 }

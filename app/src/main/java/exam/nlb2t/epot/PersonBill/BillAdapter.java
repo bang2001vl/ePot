@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import exam.nlb2t.epot.BillRecyclerViewAdapter;
+import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.databinding.SampleOrderBillViewBinding;
@@ -61,7 +62,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         holder.binding.dateOrder.setText(Helper.getDateFormat().format(info.billOverview.createdDate));
         holder.binding.tvIDOrder.setText(info.billOverview.keyBill);
         holder.binding.tvAmount.setText(String.valueOf(info.amountProduct));
-        holder.binding.tvTotal.setText(String.valueOf(info.billOverview.total));
+        holder.binding.tvTotal.setText(Helper.getMoneyString(info.billOverview.total));
         holder.binding.tvStatus.setText(info.billOverview.status.toString());
 
         if(info.salerAvatar != null)
@@ -75,6 +76,9 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
                 DBControllerUser db = new DBControllerUser();
                 list.get(position).salerAvatar = db.getAvatar(id);
                 db.closeConnection();
+
+                DBControllerBill db2 = new DBControllerBill();
+                db2.getAmountProductInBill(info.billOverview.id);
 
                 mainHandler.post(() -> notifyItemChanged(position));
             }).start();
