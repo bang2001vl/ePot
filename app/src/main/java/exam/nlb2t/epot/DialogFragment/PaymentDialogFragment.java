@@ -98,6 +98,10 @@ public class PaymentDialogFragment extends DialogFragment {
             dialog.show(getChildFragmentManager(), "address");
         });
 
+        binding.titlePayment.setOnBackListener(v -> {
+            PaymentDialogFragment.this.dismiss();
+        });
+
         loadAddress(address);
         return  binding.getRoot();
     }

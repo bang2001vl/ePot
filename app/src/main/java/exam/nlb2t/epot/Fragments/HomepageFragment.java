@@ -124,8 +124,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
             }
         });
 
-        binding.buttonRefeshNew.setOnClickListener(v->onClickRefresh_New());
-        binding.buttonRefeshTopSold.setOnClickListener(v->onClickRefresh_TopSold());
+        binding.buttonRefeshNew.setOnClickListener(v-> reload_New());
+        binding.buttonRefeshTopSold.setOnClickListener(v-> reload_TopSold());
 
         adapter_new.setOnItemClickListener(onClickItemListener);
         adapter_TopSold.setOnItemClickListener(onClickItemListener);
@@ -160,6 +160,22 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     public void LoadFirstData()
     {
         Log.d("My_TAG", "First load");
+
+        reloadCategory();
+
+        reload_TopSold();
+        reload_New();
+    }
+
+    void reloadCategory()
+    {
+        int oldLength = list_Categoty.size();
+        if(oldLength > 0)
+        {
+            list_Categoty.clear();
+            if(categoryAdapter != null){categoryAdapter.notifyItemRangeRemoved(0, oldLength);}
+        }
+
         new Thread(() -> {
             List<Category> data = getListCategory();
             if(getActivity() != null)
@@ -167,13 +183,10 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
                 getActivity().runOnUiThread(() -> {
                     list_Categoty.addAll(data);
                     if(categoryAdapter != null)
-                    categoryAdapter.notifyItemRangeInserted(0, data.size());
+                        categoryAdapter.notifyItemRangeInserted(0, data.size());
                 });
             }
         }).start();
-
-        onClickRefresh_TopSold();
-        onClickRefresh_New();
     }
 
     private List<Category> getListCategory(){
@@ -183,7 +196,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         return  list;
     }
 
-    public void onClickRefresh_TopSold() {
+    public void reload_TopSold() {
         Log.d("MY_TAG", "Call refresh list_TopSold");
         int oldLength = list_TopSold.size();
         if(oldLength > 0) {
@@ -230,7 +243,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         return  list;
     }
 
-    public void onClickRefresh_New() {
+    public void reload_New() {
         int oldLength = list_New.size();
         if(oldLength > 0) {
             list_New.clear();

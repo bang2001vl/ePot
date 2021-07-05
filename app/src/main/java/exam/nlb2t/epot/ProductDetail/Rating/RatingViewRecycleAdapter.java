@@ -65,14 +65,6 @@ public class RatingViewRecycleAdapter extends RecyclerView.Adapter<RatingViewRec
 
     @Override
     public int getItemCount() {
-        return 0;
-    }
-
-    int VIEW_TYPE_CELL = 0x165;
-    int VIEW_TYPE_LAST_ELEMENT = 0x175;
-
-    @Override
-    public int getItemViewType(int position) {
         return list.size();
     }
 

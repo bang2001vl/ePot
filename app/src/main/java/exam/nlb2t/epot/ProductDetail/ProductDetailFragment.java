@@ -188,7 +188,7 @@ public class ProductDetailFragment extends DialogFragment {
                     binding.buttonFavouriteProductDetail.setChecked(isLiked);
                     setImages(images);
                     closeLoadingScreen();
-                    initEvent();
+                    initAfterGetData();
                 }
             });
         };
@@ -267,13 +267,13 @@ public class ProductDetailFragment extends DialogFragment {
                 ratingOverview[4]
         );
 
-        if(ratingInfos.size() < 3)
+        if(ratingInfos.size() < 5)
         {
             binding.btnMoreCommentRating.setVisibility(View.GONE);
         }
         else {
             binding.btnMoreCommentRating.setOnClickListener(v->{
-                ProductRatingDialog dialog = new ProductRatingDialog(productID);
+                ProductRatingDialog dialog = new ProductRatingDialog(productID, star);
                 dialog.show(getChildFragmentManager(), "ratingOfProduct");
             });
         }
@@ -298,7 +298,7 @@ public class ProductDetailFragment extends DialogFragment {
         );
     }
 
-    void initEvent() {
+    void initAfterGetData() {
         binding.buttonFavouriteProductDetail.setOnCheckedChangeListener((btn, isChecked) -> {
             if(btn.getTag() != null)
             {
