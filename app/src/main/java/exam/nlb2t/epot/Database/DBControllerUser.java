@@ -80,7 +80,7 @@ public class DBControllerUser extends DatabaseController{
         UserBaseDB rs = null;
         try
         {
-            String sql = "select [USERNAME],[FULL_NAME],[AVATAR_ID], [ADDRESS], [GENDER], [BIRTHDAY] from [USER] where [ID] = ?";
+            String sql = "select [USERNAME],[FULL_NAME],[AVATAR_ID], [ADDRESS], [GENDER], [BIRTHDAY], [PHONE] from [USER] where [ID] = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
@@ -94,6 +94,7 @@ public class DBControllerUser extends DatabaseController{
                 rs.address = resultSet.getString(4);
                 rs.gender = resultSet.getInt(5);
                 rs.birthday = Helper.getDateLocalFromUTC(resultSet.getDate(6));
+                rs.phoneNumber = resultSet.getString(7);
             }
             resultSet.close();
             statement.close();
