@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_username"
         tools:layout_editor_absoluteX="44dp"
-
         android:inputType="textEmailAddress"
 
         />
@@ -55,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tit_pass"
-            android:inputType="textPassword"
+            android:inputType="textVisiblePassword"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_pass" />
@@ -78,13 +77,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_pass"
-        app:passwordToggleEnabled="true">
+       >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tit_define_pass"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:layout_marginTop="140dp" />
     </com.google.android.material.textfield.TextInputLayout>
 

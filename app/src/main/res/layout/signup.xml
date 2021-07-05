@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btn_next"
         app:layout_constraintTop_toBottomOf="@+id/ln_logo"
-         />
+        tools:layout_editor_absoluteX="0dp" />
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/materialRippleLayout"
