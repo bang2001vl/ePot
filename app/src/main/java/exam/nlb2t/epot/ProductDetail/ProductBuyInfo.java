@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import java.util.Random;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
@@ -19,14 +20,20 @@ public class ProductBuyInfo{
 
     }
 
-    public ProductBuyInfo(int productID, int amount)
+    public static ProductBuyInfo loadFromDB(int productID, int amount)
     {
-        this.Amount = amount;
+        ProductBuyInfo info = new ProductBuyInfo();
+        info.Amount = amount;
+
         DBControllerProduct db1 = new DBControllerProduct();
-        product = db1.getProduct(productID);
+        info.product = db1.getProduct(productID);
         db1.closeConnection();
 
-        salerOverview = product.getSalerOverview();
+        DBControllerUser db2 = new DBControllerUser();
+        info.salerOverview = db2.getUserOverview(info.product.salerID);
+        db2.closeConnection();
+
+        return info;
     }
 
     public ProductBuyInfo(ProductBuyInfo productBuyInfo) {

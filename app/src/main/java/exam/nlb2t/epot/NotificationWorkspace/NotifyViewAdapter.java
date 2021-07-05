@@ -24,19 +24,19 @@ import java.util.List;
 import exam.nlb2t.epot.Database.Tables.NotificationBaseDB;
 import exam.nlb2t.epot.Database.Tables.RatingBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.OnItemClickListener;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.ButtonMoreView;
 import exam.nlb2t.epot.databinding.FragmentNotificationBinding;
 import exam.nlb2t.epot.databinding.SampleNotificationBinding;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.NotifyViewHolder> {
 
     public List<NotifycationInfo> list;
-    public void addItem(List<NotifycationInfo> l)
-    {
-        this.list.addAll(l);
-        this.notifyItemRangeInserted(list.size() - l.size(), l.size());
-    }
+    OnItemClickListener onItemClickListener;
+
+
     Context mContext;
 
     @NonNull
@@ -81,6 +81,10 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
             {
                 bindingNotify_Fail_Saler(holder, info.keyBill);
             }
+        }
+
+        if(info.notification.hasRead) {
+            holder.binding.getRoot().setBackgroundColor(Color.WHITE);
         }
     }
 

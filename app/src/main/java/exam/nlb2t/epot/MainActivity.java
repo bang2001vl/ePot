@@ -50,10 +50,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         MainFragmentAdapter adapter = createAdapter();
         binding.viewPaperMain.setAdapter(adapter);
+
+        // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
+        // App would be terrible-lagging without it
+        binding.viewPaperMain.setOffscreenPageLimit(5);
+
+        binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    onOpenTabCart((CartFragment_Old) adapter.getItem(position));
+                }
+
+                if (position == 2) {
+                    onOpenTabMyShop((ShopFragment) adapter.getItem(position));
+                } else {
+                    ((ShopFragment) adapter.getItem(2)).releaseAdapter();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
         setIcons(binding.tabLayout);
@@ -62,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         color = typedValue.data;
         color2 = getResources().getColor(R.color.drark_gray, getTheme());
-        binding.tabLayout.setTabTextColors(Color.BLACK, color);
-        binding.tabLayout.setSelectedTabIndicatorColor(color);
+
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -80,10 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        binding.tabLayout.setTabTextColors(Color.BLACK, color);
+        binding.tabLayout.setSelectedTabIndicatorColor(color);
+        binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
         // Set first-selected tab color
         binding.tabLayout.getTabAt(0).getIcon().setTint(color);
-        //loadInBackground();
+
+        setContentView(binding.getRoot());
     }
 
     void loadInBackground()
@@ -154,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
                     });
                     binding.tabLayout.setTabTextColors(Color.BLACK, color);
                     binding.tabLayout.setSelectedTabIndicatorColor(color);
+                    binding.tabLayout.getTabAt(0).getIcon().setTint(color);
+
+                    // Set first-selected tab color
                     binding.tabLayout.getTabAt(0).getIcon().setTint(color);
 
                     handler.post(() -> setContentView(binding.getRoot()));

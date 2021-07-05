@@ -58,28 +58,31 @@ public class CartFragment_Old extends Fragment {
 
     }
 
+    public void requestLoadData()
+    {
+        if(getContext() == null) return;
+        new Thread(()->{
+            List<Pair<Integer, Integer>> list = CartDataController.getAllData(getContext());
+            requestLoadData(list);
+        }).start();
+    }
+
     public void requestLoadData(List<Pair<Integer, Integer>> list) {
+        if(list.size() == 0){return;}
         showLoadingScreen();
-        Handler handler = new Handler();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ProductBuyInfo[] arr = new ProductBuyInfo[list.size()];
-                for(int i = 0; i<arr.length; i++)
-                {
-                    arr[i] = new ProductBuyInfo(list.get(i).first, list.get(i).second);
-                }
-                setData(arr);
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutData();
-                        closeLoadingScreen();
-                    }
-                });
+        new Thread(() -> {
+            ProductBuyInfo[] arr = new ProductBuyInfo[list.size()];
+            for(int i = 0; i<arr.length; i++)
+            {
+                arr[i] = ProductBuyInfo.loadFromDB(list.get(i).first, list.get(i).second);
             }
+            setData(arr);
+
+            getActivity().runOnUiThread(() -> {
+                layoutData();
+                closeLoadingScreen();
+            });
         }).start();
     }
 
