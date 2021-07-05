@@ -15,7 +15,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
 
-import exam.nlb2t.epot.ClassData.Bill;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.EmptyBillFragment;

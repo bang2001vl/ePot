@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import java.util.List;
 
 import exam.nlb2t.epot.BillRecyclerViewAdapter;
-import exam.nlb2t.epot.ClassInformation.User;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.Database.DBControllerUser;

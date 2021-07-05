@@ -6,30 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
-import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.Views.Card_ItemView;
 import exam.nlb2t.epot.databinding.FragmentCartThachBinding;
-import exam.nlb2t.epot.databinding.HomeShoppingBinding;
-import exam.nlb2t.epot.singleton.Helper;
 
 public class CartFragment extends Fragment {
 

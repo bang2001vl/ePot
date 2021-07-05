@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
+import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
 import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
@@ -36,7 +36,6 @@ import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
-import exam.nlb2t.epot.databinding.EmptyCartLayoutBinding;
 import exam.nlb2t.epot.databinding.FragmentCartBinding;
 import exam.nlb2t.epot.databinding.FragmentEmptyBagBinding;
 import exam.nlb2t.epot.singleton.Authenticator;

@@ -1,4 +1,4 @@
-package exam.nlb2t.epot.ClassInformation;
+package exam.nlb2t.epot.ProductDetail;
 
 import android.graphics.Bitmap;
 

@@ -1,20 +1,11 @@
 package exam.nlb2t.epot.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
-import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfoParcel;
-import exam.nlb2t.epot.Fragments.CartFragment;
 import exam.nlb2t.epot.R;
 
 public class CartActivity extends AppCompatActivity {

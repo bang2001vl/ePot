@@ -22,7 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import exam.nlb2t.epot.ClassInformation.ProductBuyInfo;
+import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
 import exam.nlb2t.epot.Fragments.CartFragment;
 import exam.nlb2t.epot.Fragments.CartFragment_Old;
 import exam.nlb2t.epot.Fragments.HomepageFragment;

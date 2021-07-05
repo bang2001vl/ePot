@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.R;
 
 public class product_Item_Layout extends LinearLayout {
@@ -63,7 +62,7 @@ public class product_Item_Layout extends LinearLayout {
         });
     }
 
-    @SuppressLint("SetTextI18n")
+    /*@SuppressLint("SetTextI18n")
     public void Set_value(Product product)
     {
         String price = product.originPrice + " đ";
@@ -78,7 +77,7 @@ public class product_Item_Layout extends LinearLayout {
         this.tag_salepro.setText(" -" + (int) (product.currentPrice*100/ product.originPrice)+ "% ");
 
         postInvalidate();
-    }
+    }*/
     private void Init(Context context, AttributeSet attrs)
     {
 

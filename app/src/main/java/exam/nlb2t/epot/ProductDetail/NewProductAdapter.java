@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import exam.nlb2t.epot.ClassInformation.Product;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.R;
