@@ -1,6 +1,9 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import exam.nlb2t.epot.singleton.Helper;
 
 public class Bill_TabAdapter extends BillRecyclerViewAdapter{
     BillBaseDB.BillStatus status;
+    public static Bitmap imageMyShop = null;
 
     public Bill_TabAdapter(List<BillBaseDB> listBill, BillBaseDB.BillStatus status) {
         super();
@@ -46,20 +50,36 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
             holder = new EditProductViewHolder(inflater.inflate(R.layout.sample_order_bill_confirm_view, parent, false));
         }
 
+        loadImageShop();
+
         return holder;
+    }
+
+    public synchronized void loadImageShop() {
+        //new Handler(Looper.getMainLooper()).post(()->{
+        if (imageMyShop == null) {
+            int size = (int)context.getResources().getDimension(R.dimen.image_shop_bill_size);
+            imageMyShop = Authenticator.getCurrentUser().getAvatar(size, size);
+        }
+        //});
     }
 
     @Override
     public void onBindViewHolder(@NonNull BillRecyclerViewAdapter.ViewHolder holder, int position) {
         BillBaseDB bill = billList.get(position);
-        setBillInfor(holder, bill);
-        setShopInfor(holder, Authenticator.getCurrentUser());
+        this.setBillInfor(holder, bill);
+        this.setShopInfor(holder);
         setEventHandler(holder);
 
         if (holder instanceof EditProductViewHolder) {
             ((EditProductViewHolder) holder).getBtnConfirm().setOnClickListener(v -> onBtnConfirmClick(holder));
             ((EditProductViewHolder) holder).getBtnCancel().setOnClickListener(v -> onBtnCancelClick(holder));
         }
+    }
+
+    protected void setShopInfor(@NonNull BillRecyclerViewAdapter.ViewHolder holder) {
+        holder.getShopImage().setImageBitmap(imageMyShop);
+        holder.getTv_shopName().setText(Authenticator.getCurrentUser().username);
     }
 
     private void onBtnCancelClick(RecyclerView.ViewHolder holder) {

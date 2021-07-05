@@ -42,7 +42,7 @@ public class Shop_ProductFragment extends Fragment {
     Product_TabAdapter adapter;
     public List<ProductMyShop> products;
 
-    Handler mhandler = new Handler(Looper.getMainLooper());
+    //Handler mhandler = new Handler(Looper.myLooper());
 
     private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 2;
     private final int NUMBER_PREVIOUS_ITEM_IN_SCROLL = 5;
@@ -60,14 +60,14 @@ public class Shop_ProductFragment extends Fragment {
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         binding.layoutProductMyShop.setLayoutManager(layout);
 
-        /*binding.layoutProductMyShop.setHasFixedSize(true);
+//        binding.layoutProductMyShop.setHasFixedSize(true);
         binding.layoutProductMyShop.setItemViewCacheSize(10);
         binding.layoutProductMyShop.setDrawingCacheEnabled(true);
-        binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);*/
+        binding.layoutProductMyShop.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         adapter = new Product_TabAdapter(products);
         adapter.setHasStableIds(true);
-        adapter.mHandler = new Handler();
+        adapter.mHandler = new Handler(Looper.myLooper());
         binding.layoutProductMyShop.setAdapter(adapter);
 
         binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
@@ -86,28 +86,28 @@ public class Shop_ProductFragment extends Fragment {
         // First load
         adapter.addItemToList(adapter.mHandler);
 
-        /*mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
-            @Override
-            public void loadNextPage(int index_item_end_list) {
-                Log.d("MY_TAG", "Load at index" + index_item_end_list);
-                adapter.addItemToList(index_item_end_list+1, 5, adapter.mHandler);
-            }
+//        mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
+//            @Override
+//            public void loadNextPage(int index_item_end_list) {
+//                Log.d("MY_TAG", "Load at index" + index_item_end_list);
+//                adapter.addItemToList(index_item_end_list+1, 5, adapter.mHandler);
+//            }
+//
+//            @Override
+//            public void loadPreviousPage(int index_item_start_list) {
+//
+//            }
+//
+//            @Override
+//            public void loadNextPageUI(int index_item_end_list) {
+//                int offset = index_item_end_list + 1;
+//                if (products.size() - offset < 5) setIsEndPage(true);
+//                adapter.notifyItemRangeInserted(offset, products.size() - offset);
+//            }
+//        };
 
-            @Override
-            public void loadPreviousPage(int index_item_start_list) {
-
-            }
-
-            @Override
-            public void loadNextPageUI(int index_item_end_list) {
-                int offset = index_item_end_list + 1;
-                if (products.size() - offset < 5) setIsEndPage(true);
-                adapter.notifyItemRangeInserted(offset, products.size() - offset);
-            }
-        };
-
-        binding.layoutProductMyShop.setAdapter(adapter);
-        binding.layoutProductMyShop.addOnScrollListener(mScroll);*/
+//        binding.layoutProductMyShop.setAdapter(adapter);
+//        binding.layoutProductMyShop.addOnScrollListener(mScroll);
 //        binding.layoutProductMyShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -119,12 +119,9 @@ public class Shop_ProductFragment extends Fragment {
 //                    int totalItemCount = layout.getItemCount();
 //
 //                    if ( passVisibleItems + visibleItemsCount >= totalItemCount - NUMBER_BEHIND_ITEM_IN_SCROLL) {
-//                        if (passVisibleItems + visibleItemsCount == totalItemCount)
+//                        //if (passVisibleItems + visibleItemsCount == totalItemCount)
 //                            //wait for load data finished
-//                            while (isLoadMoreData());
-//                        if (!isLoadMoreData()) {
-//                            adapter.addItemToList(totalItemCount, NUMBER_ITEM_TO_LOAD, mhandler);
-//                        }
+//                            adapter.addItemToList(mhandler);
 //                    }
 //                }
 //                if (dy<0) {
@@ -206,6 +203,4 @@ public class Shop_ProductFragment extends Fragment {
 //            //remove page at position totalNumberPage - 1
 //        }
 //    }
-
-    public ScrollCutom mScroll;
 }

@@ -88,6 +88,9 @@ public class BillBaseDB {
         return amountProduct;
     }
 
+    public void setAmountProduct(int value) {
+        amountProduct = value;
+    }
     public String[] getAddress()
     {
         String separator = "|-|";

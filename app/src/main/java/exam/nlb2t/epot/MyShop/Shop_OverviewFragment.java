@@ -43,26 +43,29 @@ public class Shop_OverviewFragment extends Fragment {
         //TODO : Write code here <Set all listener in here>
         getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT,
                 Shop_OverviewFragment.this, (resquestKey, result) -> {
-            new Handler(Looper.getMainLooper()).post(() -> loadData());
+            new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
         });
     }
 
     public void loadData() {
-        new Handler(Looper.getMainLooper()).post(() -> {
+        new Thread(()->{
             DBControllerBill db = new DBControllerBill();
             int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
             db.closeConnection();
+
+            DBControllerProduct db2 = new DBControllerProduct();
+            int sellvalue = db2.getNumberProducts(Authenticator.getCurrentUser().id);
+            int outofstockvalue = db2.getNumberProductOutofStock(Authenticator.getCurrentUser().id);
+            db2.closeConnection();
+
             if (listNumber != null) {
                 binding.itemComplete.setValue(listNumber[BillBaseDB.BillStatus.SUCCESS.getValue()]);
                 binding.itemShipping.setValue(listNumber[BillBaseDB.BillStatus.IN_SHIPPING.getValue()]);
                 binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]);
                 binding.itemCancel.setValue(listNumber[BillBaseDB.BillStatus.DEFAULT.getValue()]);
             }
-
-            DBControllerProduct db2 = new DBControllerProduct();
-            binding.itemSell.setValue(db2.getNumberProducts(Authenticator.getCurrentUser().id));
-            binding.itemOutofstock.setValue(db2.getNumberProductOutofStock(Authenticator.getCurrentUser().id));
-            db2.closeConnection();
-        });
+            binding.itemSell.setValue(sellvalue);
+            binding.itemOutofstock.setValue(outofstockvalue);
+        }).start();
     }
 }

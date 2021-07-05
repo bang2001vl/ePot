@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
@@ -26,6 +28,9 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     String[] tabtitles;
     Fragment[] fragments;
     Fragment[] emptyfragments;
+    //int fromIndex = -1;
+    //int toIndex = -1;
+    public static int NUMBER_BILL_LOAD_DONE = 0;
 
     public Order_TabAdapter(@NonNull FragmentManager frag, int behavior) {
         super(frag, behavior);
@@ -44,15 +49,24 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
         }
 
         setEventHandler();
+        LoadInitData();
     }
-
     private void setEventHandler() {
         for (int i=0; i< fragments.length; i ++) {
-            ((Shop_BillFragment)fragments[i]).setNotifyStatusChangedListener((f,t,b)->receiveNotifyChanged(f,t,b));
+            Shop_BillFragment frag = (Shop_BillFragment)fragments[i];
+            frag.setNotifyStatusChangedListener((f,t,b)->receiveNotifyStatusChanged(f,t,b));
+            frag.setOnListBillChanged(()->{
+                if (NUMBER_BILL_LOAD_DONE == fragments.length) {
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
-    int fromIndex,toIndex;
-    private void receiveNotifyChanged(@NonNull BillBaseDB.BillStatus fromStatus, BillBaseDB.BillStatus toStatus, BillBaseDB bill) {
+
+    private void receiveNotifyStatusChanged(@NonNull BillBaseDB.BillStatus fromStatus, @NonNull BillBaseDB.BillStatus toStatus, @NonNull BillBaseDB bill) {
+        int fromIndex = -1;
+        int toIndex = -1;
+
         switch (fromStatus) {
             case DEFAULT:
                 fromIndex = 3;
@@ -89,24 +103,43 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
         fragAt0.TranferStatus(bill, toStatus);
         fragAttoIndex.TranferStatus(bill, toStatus);
 
-        if (fragAttoIndex.listBill.size() == 1 || fragAtfromIndex.listBill.size() == 0) notifyDataSetChanged();
+        //if (fragAttoIndex.listBill.size() == 1 || fragAtfromIndex.listBill.size() == 0)
+            notifyDataSetChanged();
+        //fromIndex = toIndex = -1;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
         Fragment frag;
-        if (((Shop_BillFragment)fragments[position]).listBill.size() == 0) {
-            frag = emptyfragments[position];
-        }
-        else frag = fragments[position];
+//        if (((Shop_BillFragment)fragments[position]).listBill.size() == 0) {
+//            frag = emptyfragments[position];
+//        }
+//        else frag = fragments[position];
+        frag = fragments[position];
         return frag;
     }
 
     @Override
     public int getItemPosition(@NonNull Object object) {
         Fragment fragment = (Fragment) object;
-        if (fragment == fragments[0] || fragment == fragments[fromIndex] || fragment == emptyfragments[toIndex]) return POSITION_NONE;
+//        if (fromIndex >= 0 && toIndex >= 0) {
+//            if (fragment == fragments[0] || fragment == fragments[fromIndex] || fragment == emptyfragments[toIndex]) return POSITION_NONE;
+//            else return POSITION_UNCHANGED;
+//        }
+        if (fragment instanceof EmptyBillFragment) {
+            int index = Arrays.asList(emptyfragments).indexOf(fragment);
+            Shop_BillFragment billf = (Shop_BillFragment)fragments[index];
+            if (billf.listBill.size() > 0) {
+                return POSITION_NONE;
+            }
+        }
+        if (fragment instanceof Shop_BillFragment) {
+            Shop_BillFragment billf = (Shop_BillFragment)fragment;
+            if (billf.listBill.size() == 0) {
+                return POSITION_NONE;
+            }
+        }
         return POSITION_UNCHANGED;
     }
 
@@ -119,5 +152,11 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return fragments.length;
+    }
+
+    public void LoadInitData() {
+        for (int i = 0; i < fragments.length; i++) {
+            ((Shop_BillFragment)fragments[i]).loadAsyncData();
+        }
     }
 }

@@ -67,5 +67,6 @@
     <dimen name="button_common_height">50dp</dimen>
     <dimen name="title_common_font_size">30dp</dimen>
     <dimen name="image_card_size">120dp</dimen>
+    <dimen name="image_shop_bill_size">30dp</dimen>
 
 </resources>

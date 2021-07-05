@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -86,6 +87,7 @@ public class DetailBillFragment extends DialogFragment {
 
     @Override
     public void onResume() {
+        getDialog().getWindow().setLayout(WindowManager.LayoutParams.FLAG_FULLSCREEN, getResources().getDisplayMetrics().heightPixels);
         super.onResume();
     }
 
@@ -93,10 +95,10 @@ public class DetailBillFragment extends DialogFragment {
         //TODO: Set event here
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
-        return dialog;
-    }
+//    @NonNull
+//    @Override
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//        Dialog dialog = new Dialog(getActivity(), android.R.style.);
+//        return dialog;
+//    }
 }
