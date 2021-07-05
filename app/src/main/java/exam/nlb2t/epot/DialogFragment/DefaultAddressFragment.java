@@ -24,6 +24,8 @@ import android.widget.Toast;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
+import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentDefaultAddressBinding;
 import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -107,10 +109,10 @@ public class DefaultAddressFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if ((CheckErrorInfo()) == -1) {
-                    Toast.makeText(getContext(), getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+                    Error_toast.show(getContext(), getResources().getString(R.string.error_not_enough_info), true);
                 } else {
                     if (CheckErrorInfo() == 0) {
-                        Toast.makeText(getContext(), getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show(); }
+                        Error_toast.show(getContext(), getResources().getString(R.string.error_incorrect_info), true);}
                     else {
                         DBControllerUser dbControllerUser=new DBControllerUser();
                         dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
@@ -120,6 +122,7 @@ public class DefaultAddressFragment extends DialogFragment {
                         userBaseDB.setAddress(binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
 
                         if(onSuccessListener!= null){onSuccessListener.OnSuccess(userBaseDB.address);}
+                        Success_toast.show(getContext(),"Thay đổi địa chỉ thành công!",true);
                         dismiss();
                     }
                 }

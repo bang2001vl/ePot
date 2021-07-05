@@ -37,6 +37,8 @@ import exam.nlb2t.epot.ChangePasswordFragment;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
+import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 
@@ -100,10 +102,10 @@ public class SettingAccountFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     if (CheckErrorUserInfo() == -1) {
-                        Toast.makeText(context, getResources().getString(R.string.error_not_enough_info), Toast.LENGTH_SHORT).show();
+                        Error_toast.show(context, getResources().getString(R.string.error_not_enough_info), true);
                     } else {
                         if (CheckErrorUserInfo() == 0) {
-                            Toast.makeText(context, getResources().getString(R.string.error_incorrect_info), Toast.LENGTH_SHORT).show();
+                            Error_toast.show(context, getResources().getString(R.string.error_incorrect_info), true);
                         } else {
                             binding.btnChangeprofile.setVisibility(View.VISIBLE);
                             setVisible();
@@ -111,6 +113,7 @@ public class SettingAccountFragment extends DialogFragment {
                             int month = Integer.parseInt(binding.tvBirthday.getText().toString().substring(3, 5)) - 1;
                             int year = Integer.parseInt(binding.tvBirthday.getText().toString().substring(6, 10));
                             dbControllerUser.updateUser(currentuser.id, binding.tvFullname.getText().toString(), binding.tvSex.getSelectedItemPosition(), day, month, year);
+                            Success_toast.show(context,"Thay đổi thông tin thành công!", true);
                         }
                     }
                 }
