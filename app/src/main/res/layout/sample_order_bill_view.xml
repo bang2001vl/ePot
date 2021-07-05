@@ -11,8 +11,8 @@
         android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/shop_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/image_shop_bill_size"
+            android:layout_height="@dimen/image_shop_bill_size"
             android:src="@drawable/shop"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"/>

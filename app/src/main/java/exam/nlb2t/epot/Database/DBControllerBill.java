@@ -158,9 +158,13 @@ public class DBControllerBill extends DatabaseController {
             statement.setInt(3, offset);
             statement.setInt(4, number);
 
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement statement2 = connection.prepareStatement("SELECT BILL_ID, COUNT(*) as NUMBER FROM BILL_DETAIL WHERE BILL_ID IN (SELECT ID FROM BILL WHERE SALER_ID = ?) GROUP BY BILL_ID");
+            statement2.setInt(1, salerID);
 
-            while (resultSet.next()) {
+            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet2 = statement2.executeQuery();
+
+            while (resultSet.next() && resultSet2.next()) {
                 BillBaseDB bill = new BillBaseDB();
 
                 bill.salerID = salerID;
@@ -171,6 +175,7 @@ public class DBControllerBill extends DatabaseController {
                 bill.keyBill = resultSet.getString("KEYBILL");
                 bill.total = resultSet.getInt("TOTAL");
                 bill.userID = resultSet.getInt("USER_ID");
+                bill.setAmountProduct(resultSet2.getInt("NUMBER"));
 
                 // if not null, return current status, else return status in the table
                 if (statusBill != null) bill.status = statusBill;
@@ -265,6 +270,7 @@ public class DBControllerBill extends DatabaseController {
             statement.setInt(3, endIndex);
 
             ResultSet resultSet = statement.executeQuery();
+
             rs = new ArrayList<>();
             while (resultSet.next()) {
                 BillBaseDB bill = new BillBaseDB();

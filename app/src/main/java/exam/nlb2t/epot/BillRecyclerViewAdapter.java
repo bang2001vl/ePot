@@ -23,6 +23,7 @@ import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
+import exam.nlb2t.epot.singleton.Authenticator;
 
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder> {
     protected List<BillBaseDB> billList;
@@ -189,5 +190,10 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
 
     public void addNewItem() {
 
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return billList.get(position).id;
     }
 }

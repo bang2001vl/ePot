@@ -46,6 +46,35 @@ public class DBControllerUser extends DatabaseController{
         return rs;
     }
 
+    public Bitmap getAvatar(int avatarID, int targetWidth, int targetHeight) {
+        Bitmap rs = null;
+        if(avatarID == -1) return null;
+        try
+        {
+            String sql = "select [DATA] from [AVATAR] where [ID] = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, avatarID);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next())
+            {
+                InputStream inputStream = resultSet.getBinaryStream(1);
+                if(inputStream != null) {
+                    //rs = BitmapFactory.decodeStream(inputStream);
+                    rs = Helper.getScaleImage(inputStream, targetWidth, targetHeight);
+                    inputStream.close();
+                }
+            }
+            resultSet.close();
+            statement.close();
+        }
+        catch (SQLException | IOException e)
+        {
+            ErrorMsg = "LỖI: Câu lệnh SQL không đúng";
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
     public UserBaseDB getUserOverview(int userID)
     {
         UserBaseDB rs = null;

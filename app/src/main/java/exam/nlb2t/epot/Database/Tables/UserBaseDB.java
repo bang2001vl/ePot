@@ -28,6 +28,13 @@ public class UserBaseDB {
         db.closeConnection();
         return rs;
     }
+    public Bitmap getAvatar(int targetWidth, int targetHeight) {
+        Bitmap rs;
+        DBControllerUser db = new DBControllerUser();
+        rs  = db.getAvatar(this.avatarID, targetWidth, targetHeight);
+        db.closeConnection();
+        return rs;
+    }
 
     public void setAddress(String receiverName, String receiverPhone, String address_detail, String province)
     {
