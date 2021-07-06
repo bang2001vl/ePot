@@ -658,26 +658,31 @@ public class DBControllerProduct extends DatabaseController{
     public List<ProductBaseDB> getProductsBaseName( String name, int offset, int rows)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
-        name = name.toUpperCase();
         try
         {
             String sql =
-                    "(Select  * from ( " +
-                            "select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME as Name, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, " +
-                            "Pro.PRIMARY_IMAGE_ID, Pro.DETAIL, Pro.CREATED_DATE as CREATED_DATE, Pro.DELETED, D.DATA from [PRODUCT] AS Pro " +
-                            "INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
-                            "where UPPER(Pro.NAME) LIKE N'" + name +"%' and Pro.DELETED = 0) p1 " +
-                            "union " +
-                            "Select * from ( " +
-                            "select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, " +
-                            "Pro.PRIMARY_IMAGE_ID, Pro.DETAIL, Pro.CREATED_DATE, Pro.DELETED, D.DATA from [PRODUCT] AS Pro" +
-                            " INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
-                            "where UPPER(Pro.NAME) LIKE N'%"+name+"%'  and Pro.DELETED = 0) p2) " +
-                            "ORDER BY  Name  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+                            "(Select  * from (" +
+                            " select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME as Name, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, Pro.PRIMARY_IMAGE_ID, " +
+                            " Pro.DETAIL, Pro.CREATED_DATE as CREATED_DATE, Pro.DELETED, D.DATA" +
+                            " from [PRODUCT] AS Pro INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
+                            " where Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AS or Pro.NAME LIKE N'" + name+"%' and pro.DELETED = 0 ) p1" +
+                           /* " ORDER BY  CREATED_DATE DESC  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY )" + */
+                            " union " +
+                            " Select * from (" +
+                            " select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, Pro.PRIMARY_IMAGE_ID, " +
+                            " Pro.DETAIL, Pro.CREATED_DATE, Pro.DELETED, D.DATA " +
+                            " from [PRODUCT] AS Pro INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
+                            " where Pro.NAME LIKE '%" + name+"%'  COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '%" + name+"%' COLLATE Vietnamese_CI_AS  or Pro.NAME LIKE N'%" + name+"%' and pro.DELETED = 0 ) p2)" +
+                           /* " ORDER BY  CREATED_DATE  DESC  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ) " +*/
+                            " ORDER BY  Name  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
-            statement.setInt(2, rows);
+            statement.setInt(2,  rows);
+            /*statement.setInt(3, offset);
+            statement.setInt(4, rows + offset);
+            statement.setInt(5, offset);
+            statement.setInt(6, rows);*/
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next())
@@ -720,7 +725,7 @@ public class DBControllerProduct extends DatabaseController{
                     " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                     " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                     "  INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID  "+
-                    " where C.NAME LIKE '%" + name + "%' COLLATE Vietnamese_CI_AI and P.DELETED = 0" +
+                    " where C.NAME LIKE N'%" + name + "%' and P.DELETED = 0" +
                     " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; ; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
@@ -768,7 +773,7 @@ public class DBControllerProduct extends DatabaseController{
                 " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                 " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                 " INNER JOIN [USER]  AS U on P.SALER_ID = U.ID "+
-                " where U.USERNAME LIKE '%" + name + "%'  COLLATE Vietnamese_CI_AI and P.DELETED = 0" +
+                " where U.USERNAME LIKE N'%" + name + "%'  and P.DELETED = 0" +
                 " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);
