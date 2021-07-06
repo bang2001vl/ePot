@@ -26,11 +26,6 @@ public class ProductOverviewAdapter extends RecyclerView.Adapter<ProductOverview
         this.onCLickItemListener = onCLickItemListener;
     }
 
-    protected BillAdapter.OnClickItemPositionListener onClickItemPositionListener;
-    public void setOnBindingLastPositionListener(BillAdapter.OnClickItemPositionListener onClickItemPositionListener) {
-        this.onClickItemPositionListener = onClickItemPositionListener;
-    }
-
     @NonNull
     @Override
     public ProductOverviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,13 +65,7 @@ public class ProductOverviewAdapter extends RecyclerView.Adapter<ProductOverview
             }).start();
         }
 
-        holder.binding.getRoot().setOnClickListener(v->{
-            if(onCLickItemListener!= null){onCLickItemListener.onClickItem(position);}
-        });
 
-        if((position == list.size() -1) && onClickItemPositionListener != null){
-            onClickItemPositionListener.onClickItem(position);
-        }
     }
 
     @Override
@@ -90,6 +79,10 @@ public class ProductOverviewAdapter extends RecyclerView.Adapter<ProductOverview
         public ProductOverviewViewHolder(@NonNull FragmentRatingTabNewItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.getRoot().setOnClickListener(v->{
+                if(onCLickItemListener!= null){onCLickItemListener.onClickItem(this.getBindingAdapterPosition());}
+            });
         }
     }
 }

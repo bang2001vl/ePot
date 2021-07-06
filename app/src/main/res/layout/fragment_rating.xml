@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tabLayoutMain"
         app:tabMode="fixed"
-        app:tabTextAppearance="@style/MyCustomTabText"
+        app:tabTextAppearance="@style/MyCustomTabText2"
         app:tabIndicatorColor="@color/mainColor"
         app:tabTextColor="@color/mainColor">
         <com.google.android.material.tabs.TabItem

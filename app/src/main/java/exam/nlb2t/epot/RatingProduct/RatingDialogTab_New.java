@@ -31,11 +31,13 @@ public class RatingDialogTab_New extends Fragment {
     boolean hasMoreData = true;
     int lastIndex = 1;
     int step = 20;
+    int userID;
 
     protected Helper.OnSuccessListener onRatingSuccessListener;
 
     public void setOnRatingSuccessListener(Helper.OnSuccessListener onRatingSuccessListener) {
         this.onRatingSuccessListener = onRatingSuccessListener;
+        userID = Authenticator.getCurrentUser().id;
     }
 
     public RatingDialogTab_New()
@@ -78,7 +80,7 @@ public class RatingDialogTab_New extends Fragment {
 
         adapter.setOnCLickItemListener(postion -> {
             ProductOverviewAdpterItem info = list.get(postion);
-            int userID = Authenticator.getCurrentUser().id;
+
             RatingProductDialogFragment dialog = new RatingProductDialogFragment(info.productID, userID);
             dialog.setOnSuccessListener(new Helper.OnSuccessListener() {
                 @Override

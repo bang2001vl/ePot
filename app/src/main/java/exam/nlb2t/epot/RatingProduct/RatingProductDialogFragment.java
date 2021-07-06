@@ -19,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import exam.nlb2t.epot.Database.DBControllerRating;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
+import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentReviewBinding;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -27,7 +29,7 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
     protected int productID;
     protected int userID;
 
-    Helper.OnSuccessListener onSuccessListener;
+    private Helper.OnSuccessListener onSuccessListener;
 
     public void setOnSuccessListener(Helper.OnSuccessListener onSuccessListener) {
         this.onSuccessListener = onSuccessListener;
@@ -58,11 +60,12 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
 
             if(isOK)
             {
+                Success_toast.show(getContext(), "Đánh giá thành công", true);
                 RatingProductDialogFragment.this.dismiss();
                 if(onSuccessListener != null){onSuccessListener.OnSuccess(productID);}
             }
             else {
-                Snackbar.make(binding.getRoot(), "Có lỗi xảy ra", BaseTransientBottomBar.LENGTH_LONG).show();
+                Error_toast.show(getContext(), "Có lỗi xảy ra", true);
             }
         });
 
