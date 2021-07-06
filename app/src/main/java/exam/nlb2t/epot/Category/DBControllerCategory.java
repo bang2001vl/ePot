@@ -158,7 +158,7 @@ public class DBControllerCategory extends DatabaseController {
     {
         List<Category> rs = null;
         try{
-            String sql = "SELECT [NAME], [AVATAR_ID] FROM [CATEGORY];";
+            String sql = "SELECT [NAME], [AVATAR_ID] FROM [CATEGORY] ORDER BY [ID] DESC;";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             ResultSet resultSet = statement.executeQuery();

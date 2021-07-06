@@ -8,21 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
-import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.OnItemClickListener;
-import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
-import exam.nlb2t.epot.fragment_ProItem_Container;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
@@ -91,8 +85,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_tab, parent, false);
         return new CategoryViewHolder(view);
-
-
     }
 
     @Override
@@ -101,13 +93,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         if (category != null)
         {
             holder.textView.setText(category.getName());
-            if(category.getAvatar_id() != null) {
-                holder.imageView.setImageBitmap(category.getAvatar_id());
+            if(category.getAvatar() != null) {
+                holder.imageView.setImageBitmap(category.getAvatar());
             }
             else {
-                holder.imageView.setBackgroundResource(R.color.white);
+                Handler handler = new Handler();
+                new Thread(()->{
+                    DBControllerProduct db = new DBControllerProduct();
+                    category.setAvatar(db.getAvatar_Product(category.avatarID));
+                    db.closeConnection();
 
-                new Thread(new LoadImageRunable(new Handler(), position), "loadImageAt="+position).start();
+                    handler.post(()->notifyItemChanged(position));
+                }).start();
             }
         }
     }
@@ -125,9 +122,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             Category category = listCategory.get(position);
             int imageID = category.avatarID;
 
-            DBControllerProduct db = new DBControllerProduct();
-            category.setAvatar_id(db.getAvatar_Product(imageID));
-            db.closeConnection();
+
 
             mainHandler.postDelayed(new Runnable() {
                 @Override

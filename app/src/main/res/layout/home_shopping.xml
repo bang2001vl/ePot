@@ -98,8 +98,9 @@
                         android:textStyle="bold" />
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="130dp"
+                        android:layout_height="wrap_content"
                         android:id="@+id/recycleViewCategory"
+                        android:padding="2dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:orientation="horizontal"

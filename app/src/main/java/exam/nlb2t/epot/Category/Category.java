@@ -6,19 +6,19 @@ public class Category {
     //private String id;
     private String name;
     public int avatarID;
-    private Bitmap avatar_id;
+    private Bitmap avatar;
 
-    public Category(String name, Bitmap avatar_id) {
+    public Category(String name, Bitmap avatar) {
         //this.id = id;
         this.name = name;
-        this.avatar_id = avatar_id;
+        this.avatar = avatar;
     }
 
-    public Category(String name, int avatar_id) {
+    public Category(String name, int avatar) {
         //this.id = id;
         this.name = name;
-        this.avatarID = avatar_id;
-        this.avatar_id = null;
+        this.avatarID = avatar;
+        this.avatar = null;
     }
 
     /*public String getId() {
@@ -37,11 +37,11 @@ public class Category {
         this.name = name;
     }
 
-    public Bitmap getAvatar_id() {
-        return avatar_id;
+    public Bitmap getAvatar() {
+        return avatar;
     }
 
-    public void setAvatar_id(Bitmap avatar_id) {
-        this.avatar_id = avatar_id;
+    public void setAvatar(Bitmap avatar) {
+        this.avatar = avatar;
     }
 }
