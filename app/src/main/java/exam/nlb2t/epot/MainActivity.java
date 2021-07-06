@@ -1,5 +1,6 @@
 package exam.nlb2t.epot;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import exam.nlb2t.epot.Activities.SplashActivity;
 import exam.nlb2t.epot.Database.DBControllerNotification;
 import exam.nlb2t.epot.Fragments.LoadingDialogFragment;
 import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
@@ -36,6 +38,7 @@ import exam.nlb2t.epot.Fragments.PersonFragment;
 import exam.nlb2t.epot.MyShop.ShopFragment;
 import exam.nlb2t.epot.Views.Card_ItemView_New;
 import exam.nlb2t.epot.Views.LoadingView;
+import exam.nlb2t.epot.Views.Login.LoginScreen;
 import exam.nlb2t.epot.databinding.ActivityMainBinding;
 import exam.nlb2t.epot.databinding.TabIconLayoutBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
@@ -57,40 +60,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        MainFragmentAdapter adapter = createAdapter();
-        binding.viewPaperMain.setAdapter(adapter);
-
-        // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
-        // App would be terrible-lagging without it
-        binding.viewPaperMain.setOffscreenPageLimit(5);
-
-        binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {           }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 1) {
-                    onOpenTabCart((CartFragment_Old) adapter.getItem(position));
-                }
-
-                if (position == 2) {
-                    onOpenTabMyShop((ShopFragment) adapter.getItem(position));
-                } else {
-                    ((ShopFragment) adapter.getItem(2)).releaseAdapter();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) { }
-        });
-        binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
         setContentView(binding.getRoot());
 
         Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
             public void run() {
+                Log.d("MY_TAG", "b");
+                MainFragmentAdapter adapter = createAdapter();
+                binding.viewPaperMain.setAdapter(adapter);
+
+                // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
+                // App would be terrible-lagging without it
+                binding.viewPaperMain.setOffscreenPageLimit(5);
+
+                binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {           }
+
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (position == 1) {
+                            onOpenTabCart((CartFragment_Old) adapter.getItem(position));
+                        }
+
+                        if (position == 2) {
+                            onOpenTabMyShop((ShopFragment) adapter.getItem(position));
+                        } else {
+                            ((ShopFragment) adapter.getItem(2)).releaseAdapter();
+                        }
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int state) { }
+                });
+                binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
 
                 setIcons(binding.tabLayout);
 
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 iconLayoutBinding.txtName.setTextColor(color);
             }
         });
+        Log.d("MY_TAG", "a");
     }
 
     void onOpenTabCart(CartFragment_Old fragmentOld)

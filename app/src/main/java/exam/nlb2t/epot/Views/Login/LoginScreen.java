@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -49,7 +50,9 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import exam.nlb2t.epot.Activities.SplashActivity;
 import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.DialogFragment.LoginLoadingDialog;
 import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Error_toast;
@@ -80,19 +83,26 @@ public class LoginScreen extends AppCompatActivity {
 
     Context context;
 
-    public
+    LoginLoadingDialog dialog;
 
-    GoogleSignInClient mGoogleSignInClient;
+    public GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dialog = new LoginLoadingDialog();
 
         if(Authenticator.LoginWithSavedData(this))
         {
-            loadMainActivity();
+            dialog.show(getSupportFragmentManager(), "");
+            Handler handler = new Handler();
+            handler.postDelayed(()->{
+                loadMainActivity();
+                handler.postDelayed(()->{
+                    if(dialog.isCancelable()){dialog.dismiss();}
+                }, 2000);
+            }, 1000);
         }
-
         context = this;
         setContentView(R.layout.activity_login_screen);
 
@@ -189,22 +199,35 @@ public class LoginScreen extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if ( et_username.getError() != null || tet_password.getError()!= null ) return;
+                LoginLoadingDialog dialog = new LoginLoadingDialog();
+                new Thread(()->{
+                    DBControllerUser controllerUser = new DBControllerUser();
+                    if (controllerUser.CheckUserLogin(et_username.getText().toString(), tet_password.getText().toString()))
+                    {
+                        runOnUiThread(()->dialog.show(getSupportFragmentManager(), "load"));
+                        Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
+                        controllerUser.closeConnection();
+                        Authenticator.saveLoginData(LoginScreen.this, et_username.getText().toString(), tet_password.getText().toString());
 
-                DBControllerUser controllerUser = new DBControllerUser();
-                if (controllerUser.CheckUserLogin(et_username.getText().toString(), tet_password.getText().toString()))
-                {
-                    Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
+                        runOnUiThread(()->{
+                            loadMainActivity();
+                            new Handler(getMainLooper()).postDelayed(()->{
+                                if(dialog.isCancelable()){
+                                    dialog.dismiss();
+                                }
+                            }, 7000);
+                        });
+                    }
+                    else
+                    {
+                        controllerUser.closeConnection();
+                        runOnUiThread(()->{
+                            Error_toast.show(context,getResources().getString(R.string.error_wrong_username_pass), true);
+                        });
+                    }
+                }).start();
 
-                    controllerUser.closeConnection();
-                    Authenticator.saveLoginData(LoginScreen.this, et_username.getText().toString(), tet_password.getText().toString());
-                    loadMainActivity();
-                }
-                else
-                {
-                    Error_toast.show(context,getResources().getString(R.string.error_wrong_username_pass), true);
-                }
             }
         });
         tv_signup.setOnClickListener(new View.OnClickListener() {

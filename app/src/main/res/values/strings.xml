@@ -2,6 +2,7 @@
     <string name="facebook_app_id">4072790202790404</string>
     <string name="fb_login_protocol_scheme">fb4072790202790404</string>
 
+    <string name="on_login">Đang Xác Thực</string>
 
     <string name="app_name">ePot</string>
 

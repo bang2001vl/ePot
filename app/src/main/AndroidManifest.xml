@@ -108,6 +108,7 @@
             </intent-filter>
             -->
         </activity>
+        <activity android:name=".Activities.SplashActivity"/>
     </application>
 
 </manifest>
