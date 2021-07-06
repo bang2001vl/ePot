@@ -37,6 +37,12 @@ public class Authenticator {
         return rs;
     }
 
+    public static void reloadUserData(){
+        DBControllerUser db = new DBControllerUser();
+        currentUser = db.getUserInfo(currentUser.id);
+        db.closeConnection();
+    }
+
     public static void saveLoginData(Context context, String username, String password)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);

@@ -49,11 +49,8 @@ public class OrderTab_InShipping extends OrderTab {
                             db.closeConnection();
 
                             getActivity().runOnUiThread(()->{
-                                if(db.hasError() && getView() != null)
+                                if(!db.hasError() && getView() != null)
                                 {
-                                    Error_toast.show(getContext(), db.getErrorMsg(), true);
-                                }
-                                else {
                                     bills.remove(posi);
                                     recyclerViewAdapter.notifyItemRemoved(posi);
                                     layoutData();
@@ -62,9 +59,12 @@ public class OrderTab_InShipping extends OrderTab {
                                         onSubmitVertifyBillListener.OnSuccess(null);
                                     }
                                 }
-                                dialog.dismiss();
+                                else {
+                                    Error_toast.show(getContext(), db.getErrorMsg(), true);
+                                }
                             });
                         }).start();
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

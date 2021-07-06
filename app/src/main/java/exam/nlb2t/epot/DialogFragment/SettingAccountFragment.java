@@ -45,13 +45,13 @@ import exam.nlb2t.epot.singleton.Authenticator;
 public class SettingAccountFragment extends DialogFragment {
 
     FragmentSettingAccountBinding binding;
-    private UserBaseDB currentuser= Authenticator.getCurrentUser();
+    private UserBaseDB currentuser;
     Calendar myCalendar;
-    DBControllerUser dbControllerUser=new DBControllerUser();
     Context context;
 
     public SettingAccountFragment() {
         // Required empty public constructor
+        currentuser= Authenticator.getCurrentUser();
     }
     @Override
     public int getTheme() {
@@ -112,8 +112,22 @@ public class SettingAccountFragment extends DialogFragment {
                             int day = Integer.parseInt(binding.tvBirthday.getText().toString().substring(0, 2));
                             int month = Integer.parseInt(binding.tvBirthday.getText().toString().substring(3, 5)) - 1;
                             int year = Integer.parseInt(binding.tvBirthday.getText().toString().substring(6, 10));
-                            dbControllerUser.updateUser(currentuser.id, binding.tvFullname.getText().toString(), binding.tvSex.getSelectedItemPosition(), day, month, year);
-                            Success_toast.show(context,"Thay đổi thông tin thành công!", true);
+                            new Thread(()->{
+                                DBControllerUser db = new DBControllerUser();
+                                boolean isOK = db.updateUser(currentuser.id, binding.tvFullname.getText().toString(), binding.tvSex.getSelectedItemPosition(), year, month, day);
+                                db.closeConnection();
+
+                                getActivity().runOnUiThread(()->{
+                                    if(!db.hasError() && isOK){
+                                        new Thread(Authenticator::reloadUserData).start();
+                                        Success_toast.show(getContext(),"Thay đổi thông tin thành công!", true);
+                                    }
+                                    else {
+                                        Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                                    }
+                                });
+                            }).start();
+
                         }
                     }
                 }
@@ -229,13 +243,11 @@ public class SettingAccountFragment extends DialogFragment {
         builder.setMessage("Hủy bỏ thay đổi")
                 .setTitle("Thoát");
 
-
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dismiss();
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Quay lại", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }

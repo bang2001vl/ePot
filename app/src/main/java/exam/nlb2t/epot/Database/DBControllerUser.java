@@ -345,6 +345,7 @@ public class DBControllerUser extends DatabaseController{
             commit();
 
         } catch (SQLException e) {
+            rollback();
             e.printStackTrace();
             ErrorMsg = "THẤT BẠI: Không thể ghi vào máy chủ";
         }

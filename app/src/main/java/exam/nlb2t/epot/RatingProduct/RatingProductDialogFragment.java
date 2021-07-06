@@ -54,19 +54,22 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
         binding.btnRating.setOnClickListener(v->{
             int star = binding.startMyRating.getProgress();
             String comment = binding.reviewMyRating.getText().toString();
-            DBControllerRating db = new DBControllerRating();
-            boolean isOK = db.insertRating(productID, userID, star, comment);
-            db.closeConnection();
-
-            if(isOK)
-            {
-                Success_toast.show(getContext(), "Đánh giá thành công", true);
-                RatingProductDialogFragment.this.dismiss();
-                if(onSuccessListener != null){onSuccessListener.OnSuccess(productID);}
-            }
-            else {
-                Error_toast.show(getContext(), "Có lỗi xảy ra", true);
-            }
+            new Thread(()->{
+                DBControllerRating db = new DBControllerRating();
+                boolean isOK = db.insertRating(productID, userID, star, comment);
+                db.closeConnection();
+                getActivity().runOnUiThread(()->{
+                    if(isOK)
+                    {
+                        Success_toast.show(getContext(), "Đánh giá thành công", true);
+                        if(onSuccessListener != null){onSuccessListener.OnSuccess(productID);}
+                    }
+                    else {
+                        Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                    }
+                });
+            }).start();
+            RatingProductDialogFragment.this.dismiss();
         });
 
 

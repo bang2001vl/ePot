@@ -57,45 +57,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        MainFragmentAdapter adapter = createAdapter();
+        binding.viewPaperMain.setAdapter(adapter);
+
+        // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
+        // App would be terrible-lagging without it
+        binding.viewPaperMain.setOffscreenPageLimit(5);
+
+        binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {           }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    onOpenTabCart((CartFragment_Old) adapter.getItem(position));
+                }
+
+                if (position == 2) {
+                    onOpenTabMyShop((ShopFragment) adapter.getItem(position));
+                } else {
+                    ((ShopFragment) adapter.getItem(2)).releaseAdapter();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
+        binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
         setContentView(binding.getRoot());
 
         Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
             public void run() {
-                MainFragmentAdapter adapter = createAdapter();
-                binding.viewPaperMain.setAdapter(adapter);
 
-                // Code-line of GOD. I spend 3 hours to find it on Stack Overflow
-                // App would be terrible-lagging without it
-                binding.viewPaperMain.setOffscreenPageLimit(5);
-
-                binding.viewPaperMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        if (position == 1) {
-                            onOpenTabCart((CartFragment_Old) adapter.getItem(position));
-                        }
-
-                        if (position == 2) {
-                            onOpenTabMyShop((ShopFragment) adapter.getItem(position));
-                        } else {
-                            ((ShopFragment) adapter.getItem(2)).releaseAdapter();
-                        }
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
-
-                binding.tabLayout.setupWithViewPager(binding.viewPaperMain);
                 setIcons(binding.tabLayout);
 
                 TypedValue typedValue = new TypedValue();
@@ -246,12 +242,12 @@ public class MainActivity extends AppCompatActivity {
         db.closeConnection();
         if(MainActivity.this.binding != null) {
             MainActivity.this.runOnUiThread(() -> {
-                MainActivity.this.setNumberNotification(countNoti);
+                MainActivity.this.setNumberNotification(countNoti, 3);
             });
         }
     }
 
-    public void setNumberNotification(int num){
+    public void setNumberNotification(int num, int tabIndex){
         TabIconLayoutBinding iconLayoutBinding = (TabIconLayoutBinding) binding.tabLayout.getTabAt(3).getTag();
         if(num > 0){
             iconLayoutBinding.tvNumberRequest.setVisibility(View.VISIBLE);
@@ -270,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void decreaseNumberNotification(){
         countNoti--;
-        setNumberNotification(countNoti);
+        setNumberNotification(countNoti, 3);
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {

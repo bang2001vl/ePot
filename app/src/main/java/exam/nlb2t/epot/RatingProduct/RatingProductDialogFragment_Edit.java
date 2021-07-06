@@ -51,18 +51,21 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
                     binding.btnRating.setOnClickListener(v->{
                         int star = binding.startMyRating.getProgress();
                         String comment = binding.reviewMyRating.getText().toString();
-                        DBControllerRating db2 = new DBControllerRating();
-                        boolean isOK = db2.updateRating(ratingID, productID, star, comment);
-                        db2.closeConnection();
-
-                        if(isOK)
-                        {
-                            Success_toast.show(getContext(), "Đánh giá thành công", true);
-                            RatingProductDialogFragment_Edit.this.dismiss();
-                        }
-                        else {
-                            Error_toast.show(getContext(), "Có lỗi xảy ra", true);
-                        }
+                        new Thread(()->{
+                            DBControllerRating db2 = new DBControllerRating();
+                            boolean isOK = db2.updateRating(ratingID, productID, star, comment);
+                            db2.closeConnection();
+                            getActivity().runOnUiThread(()->{
+                                if(isOK)
+                                {
+                                    Success_toast.show(getContext(), "Đánh giá thành công", true);
+                                }
+                                else {
+                                    Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                                }
+                            });
+                        }).start();
+                        RatingProductDialogFragment_Edit.this.dismiss();
                     });
                 }
                 else
@@ -71,6 +74,6 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
                     dismiss();
                 }
             });
-        });
+        }).start();
     }
 }
