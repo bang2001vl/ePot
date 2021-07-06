@@ -35,16 +35,18 @@ import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
 import exam.nlb2t.epot.Database.Tables.BillBaseDB.BillStatus;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class PersonFragment<DialogLayoutBinding> extends Fragment {
     FragmentProfileBinding binding;
-    private UserBaseDB currentuser=Authenticator.getCurrentUser();
+    private UserBaseDB currentuser;
     DBControllerBill db=new DBControllerBill();
     private String[] mAddress=new String[2];
     MainActivity mainActivity;
     public PersonFragment(MainActivity ma)
     {
         mainActivity=ma;
+        this.currentuser =Authenticator.getCurrentUser();
     }
     @Nullable
     @Override
@@ -58,13 +60,16 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadDataFromUser();
+    }
+
+    void loadDataFromUser(){
         binding.tvName.setText(currentuser.fullName);
         binding.tvUsername.setText(currentuser.username);
         binding.avtProfile.setImageBitmap(setAvt());
         getAddress();
         binding.tvCityAddress.setText(mAddress[0]);
         binding.tvStreetAddress.setText(mAddress[1]);
-
     }
 
     void setEventHandler()
@@ -78,13 +83,33 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new DefaultAddressFragment());
+                DefaultAddressFragment defaultAddressFragment = new DefaultAddressFragment();
+                defaultAddressFragment.setOnSuccessListener(sender -> {
+                    new Thread(()->{
+                        Authenticator.reloadUserData();
+                        currentuser = Authenticator.getCurrentUser();
+                        getActivity().runOnUiThread(()->{
+                            loadDataFromUser();
+                        });
+                    }).start();
+                });
+                ShowDialog(defaultAddressFragment);
             }
         });
         binding.btnAccountSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new SettingAccountFragment());
+                SettingAccountFragment settingAccountFragment = new SettingAccountFragment();
+                settingAccountFragment.setOnSuccessListener(sender -> {
+                    new Thread(()->{
+                        Authenticator.reloadUserData();
+                        currentuser = Authenticator.getCurrentUser();
+                        getActivity().runOnUiThread(()->{
+                            loadDataFromUser();
+                        });
+                    }).start();
+                });
+                ShowDialog(settingAccountFragment);
             }
         });
         binding.btnFavorite.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +158,15 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.avtProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new ChangeAvtFragment());
+                ChangeAvtFragment avtFragment = new ChangeAvtFragment();
+                avtFragment.setOnSuccessListener(obj->{
+                    Bitmap bitmap = (Bitmap)obj;
+                    if(bitmap != null) {
+                        getActivity().runOnUiThread(()->binding.avtProfile.setImageBitmap(bitmap));
+                        ;
+                    }
+                });
+                ShowDialog(avtFragment);
             }
         });
 

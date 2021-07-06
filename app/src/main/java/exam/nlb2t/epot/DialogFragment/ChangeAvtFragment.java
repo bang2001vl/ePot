@@ -42,12 +42,19 @@ import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentChangeAvtBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 import static android.app.Activity.RESULT_OK;
 
 public class ChangeAvtFragment extends DialogFragment {
 
     FragmentChangeAvtBinding binding;
+
+    Helper.OnSuccessListener onSuccessListener;
+
+    public void setOnSuccessListener(Helper.OnSuccessListener onSuccessListener) {
+        this.onSuccessListener = onSuccessListener;
+    }
 
     private UserBaseDB currentuser= Authenticator.getCurrentUser();
     boolean changeAvt;
@@ -116,9 +123,16 @@ public class ChangeAvtFragment extends DialogFragment {
             public void onClick(View v) {
                 if(hasPicked) {
                     DBControllerUser db = new DBControllerUser();
-                    db.updateUser_Avatar(currentuser.id, currentuser.avatarID, bitmap);
+                    boolean isOK = db.updateUser_Avatar(currentuser.id, currentuser.avatarID, bitmap);
                     db.closeConnection();
-                    Success_toast.show(getContext(),  "Đổi ảnh đại diện thành công!", true);
+
+                    if(!db.hasError() && isOK){
+                        if(onSuccessListener != null){onSuccessListener.OnSuccess(bitmap);}
+                        Success_toast.show(getContext(),  "Đổi ảnh đại diện thành công!", true);
+                    }
+                    else {
+                        Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                    }
                     dismiss();
                 }
                 else {

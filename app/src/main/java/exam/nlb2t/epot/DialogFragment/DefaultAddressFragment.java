@@ -114,19 +114,27 @@ public class DefaultAddressFragment extends DialogFragment {
                     if (CheckErrorInfo() == 0) {
                         Error_toast.show(getContext(), getResources().getString(R.string.error_incorrect_info), true);}
                     else {
-                        DBControllerUser dbControllerUser=new DBControllerUser();
-                        dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
-                        dbControllerUser.closeConnection();
+                        new Thread(()->{
+                            DBControllerUser dbControllerUser=new DBControllerUser();
+                            boolean isOK = dbControllerUser.updateAddress(currentuser.id,binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
+                            dbControllerUser.closeConnection();
 
-                        UserBaseDB userBaseDB = new UserBaseDB();
-                        userBaseDB.setAddress(binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
-
-                        if(onSuccessListener!= null){onSuccessListener.OnSuccess(userBaseDB.address);}
-                        Success_toast.show(getContext(),"Thay đổi địa chỉ thành công!",true);
-                        dismiss();
+                            getActivity().runOnUiThread(()->{
+                                if(!dbControllerUser.hasError() && isOK)
+                                {
+                                    if(onSuccessListener != null){onSuccessListener.OnSuccess(null);}
+                                    UserBaseDB userBaseDB = new UserBaseDB();
+                                    userBaseDB.setAddress(binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
+                                    Success_toast.show(getContext(),"Thay đổi địa chỉ thành công!",true);
+                                }
+                                else {
+                                    Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                                }
+                                dismiss();
+                            });
+                        }).start();
                     }
                 }
-
             }
         });
         String[] items = new String[]{"","Điện Biên","Hòa Bình","Lai Châu","Lào Cai","Sơn La","Yên Bái","Bắc Giang","Bắc Kạn","Cao Bằng","Hà Giang","Lạng Sơn","Phú Thọ","Quảng Ninh","Thái Nguyên","Tuyên Quang","Bắc Ninh","Hà Nam","Hà Nội","Hải Dương","Hải Phòng","Hưng Yên","Nam Định","Ninh Bình","Thái Bình","Vĩnh Phúc","Hà Tĩnh","Nghệ An","Quảng Bình","Quảng Trị","Thanh Hóa","Thừa Thiên Huế","Đắk Lắk","Đắk Nông","Gia Lai","Kon Tum","Lâm Đồng","Bà Rịa", "Vũng Tàu","Bình Dương","Bình Phước","Đồng Nai","Thành phố Hồ Chí Minh","Tây Ninh","An Giang","Bạc Liêu","Bến Tre","Cà Mau","Cần Thơ","Đồng Tháp","Hậu Giang","Kiên Giang","Long An","Sóc Trăng","Tiền Giang","Trà Vinh","Vĩnh Long"};

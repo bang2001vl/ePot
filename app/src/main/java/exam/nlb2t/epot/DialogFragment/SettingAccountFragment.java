@@ -41,6 +41,7 @@ import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentSettingAccountBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class SettingAccountFragment extends DialogFragment {
 
@@ -48,6 +49,12 @@ public class SettingAccountFragment extends DialogFragment {
     private UserBaseDB currentuser;
     Calendar myCalendar;
     Context context;
+
+    Helper.OnSuccessListener onSuccessListener;
+
+    public void setOnSuccessListener(Helper.OnSuccessListener onSuccessListener) {
+        this.onSuccessListener = onSuccessListener;
+    }
 
     public SettingAccountFragment() {
         // Required empty public constructor
@@ -119,7 +126,7 @@ public class SettingAccountFragment extends DialogFragment {
 
                                 getActivity().runOnUiThread(()->{
                                     if(!db.hasError() && isOK){
-                                        new Thread(Authenticator::reloadUserData).start();
+                                        if(onSuccessListener != null){onSuccessListener.OnSuccess(null);}
                                         Success_toast.show(getContext(),"Thay đổi thông tin thành công!", true);
                                     }
                                     else {
