@@ -105,7 +105,7 @@ public class Shop_BillFragment extends Fragment {
                     listBill.addAll(data);
                     if (Order_TabAdapter.NUMBER_BILL_LOAD_DONE < 5) {
                         //MEANS: Load init
-                        synchronized (Shop_BillFragment.class) {
+                        synchronized (Order_TabAdapter.class) {
                             Order_TabAdapter.NUMBER_BILL_LOAD_DONE++;
                         }
                         OnListBillChanged.OnChanged();

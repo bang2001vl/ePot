@@ -30,10 +30,12 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     Fragment[] emptyfragments;
     //int fromIndex = -1;
     //int toIndex = -1;
-    public static int NUMBER_BILL_LOAD_DONE = 0;
+    public static int NUMBER_BILL_LOAD_DONE;
 
     public Order_TabAdapter(@NonNull FragmentManager frag, int behavior) {
         super(frag, behavior);
+
+        NUMBER_BILL_LOAD_DONE = 0;
 
         tabtitles = new String[]{"Tất cả", "Chờ xác nhận", "Đang giao", "Đơn hủy", "Thành công"};
         fragments = new Fragment[tabtitles.length];
