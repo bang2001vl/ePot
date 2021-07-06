@@ -39,7 +39,9 @@ public class DBControllerNotification extends DatabaseController{
 
                 NotifycationInfo info = new NotifycationInfo();
                 info.notification = noti;
-                info.keyBill = resultSet.getString(i);
+                info.keyBill = resultSet.getString(i);i++;
+
+                info.salerID = resultSet.getInt(i);i++;
 
                 rs.add(info);
             }
