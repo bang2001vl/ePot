@@ -1,11 +1,7 @@
 package exam.nlb2t.epot.Views.Item_product_container;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StrikethroughSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -51,7 +47,6 @@ public class product_Item_Layout extends LinearLayout {
         super(context, attrs, defStyleAttr);
         Init(context, attrs);
         this.addOnLayoutChangeListener((v, left, top, right, bottom, leftWas, topWas, rightWas, bottomWas) -> {
-
                   });
     }
 

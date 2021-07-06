@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -160,7 +159,7 @@ public class forgotpassword extends AppCompatActivity {
                             btn_next.setText(R.string.Confirm);
 
                         } else {
-                            Toast.makeText(forgotpassword.this, getResources().getString(R.string.error_wrong_OTP), Toast.LENGTH_LONG).show();
+                            toast_layout.show(forgotpassword.this, getResources().getString(R.string.error_wrong_OTP), true);
                         }
                     }
                 });
