@@ -2,6 +2,7 @@ package exam.nlb2t.epot.DialogFragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,15 +13,26 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.DBControllerUser;
+import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.ProductDetail.ProductBuyInfo;
+import exam.nlb2t.epot.Product_InBill_Adapter;
 import exam.nlb2t.epot.databinding.FragmentCartPaymentBinding;
+import exam.nlb2t.epot.databinding.SalerInBillDetailLayoutBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -34,23 +46,17 @@ public class PaymentDialogFragment extends DialogFragment {
     public String address;
     public String[] addressParts;
     int userID;
+    Map<Integer, List<ProductBuyInfo>> buyMap;
 
     Helper.OnSuccessListener onSubmitOKListener;
     public void setOnSubmitOKListener(Helper.OnSuccessListener listener){this.onSubmitOKListener = listener;}
 
-    public PaymentDialogFragment(int userID, long productMoney, int shipMoney)
-    {
-        this.userID = userID;
-        this.productMoney = productMoney;
-        this.shipMoney = shipMoney;
-        loadUser(userID);
-    }
-
-    public PaymentDialogFragment(int userID, long productMoney, int shipMoney, String address) {
+    public PaymentDialogFragment(int userID, long productMoney, int shipMoney, String address, Map<Integer, List<ProductBuyInfo>> buyMap) {
         this.userID = userID;
         this.productMoney = productMoney;
         this.shipMoney = shipMoney;
         this.address = address;
+        this.buyMap = buyMap;
     }
 
     @NonNull
@@ -72,7 +78,7 @@ public class PaymentDialogFragment extends DialogFragment {
         binding = FragmentCartPaymentBinding.inflate(inflater, container, false);
 
         binding.productpricePayment.setText(Helper.getMoneyString(productMoney));
-        binding.transportpricePayment.setText(Helper.getMoneyString(shipMoney));
+        binding.transportpricePayment.setText(buyMap.size() + " x " + Helper.getMoneyString(shipMoney));
         binding.totalpricePayment.setText(Helper.getMoneyString(productMoney+shipMoney));
 
         binding.btnPayment.setOnClickListener(v->{
@@ -103,6 +109,7 @@ public class PaymentDialogFragment extends DialogFragment {
         });
 
         loadAddress(address);
+        loadData(buyMap);
         return  binding.getRoot();
     }
 
@@ -141,6 +148,35 @@ public class PaymentDialogFragment extends DialogFragment {
         binding.nameTake.setText(receiverName);
         binding.detailAddress.setText(receiverPhone);
         binding.generalAddress.setText(receiverAddress);
+    }
+
+    void loadData(Map<Integer, List<ProductBuyInfo>> butMap){
+        for(Map.Entry<Integer, List<ProductBuyInfo>> entry: butMap.entrySet()){
+            SalerInBillDetailLayoutBinding salerViewBinding = SalerInBillDetailLayoutBinding.inflate(getLayoutInflater(), binding.productDetailLayout, false);
+            List<ProductBuyInfo> list = entry.getValue();
+
+            UserBaseDB salerOverview = list.get(0).salerOverview;
+            salerViewBinding.salerOverview.setSaler(salerOverview, null);
+            new Thread(()->{
+                DBControllerUser db = new DBControllerUser();
+                Bitmap avatar = db.getAvatar(salerOverview.avatarID);
+                db.closeConnection();
+
+                getActivity().runOnUiThread(()->salerViewBinding.salerOverview.setSaler(salerOverview, avatar));
+            }).start();
+
+            List<ProductInBill> data = new ArrayList<>(list.size());
+            for(ProductBuyInfo p : list){
+                ProductBaseDB product = p.product;
+                data.add(new ProductInBill(product.id, product.imagePrimaryID, product.name, product.price, p.Amount));
+            }
+
+            Product_InBill_Adapter adapter = new Product_InBill_Adapter(data);
+            salerViewBinding.paymentRecyclerProduct.setAdapter(adapter);
+            salerViewBinding.paymentRecyclerProduct.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+
+            binding.productDetailLayout.addView(salerViewBinding.getRoot());
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,7 +39,8 @@ public class SalerOverviewView extends BaseCustomViewGroup {
             Snackbar.make(this, "Not implement yet", BaseTransientBottomBar.LENGTH_LONG).show();
         });
 
-        this.addView(view);
+        ViewGroup.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        this.addView(view, params);
     }
 
     public void setSaler(UserBaseDB saler, Bitmap avatar)

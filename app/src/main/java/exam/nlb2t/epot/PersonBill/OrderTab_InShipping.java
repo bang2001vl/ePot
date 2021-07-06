@@ -13,6 +13,8 @@ import exam.nlb2t.epot.Database.DBControllerBill;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.OrderTab;
 import exam.nlb2t.epot.ProductDetail.ChooseItemDetailBottomSheet;
+import exam.nlb2t.epot.Views.Error_toast;
+import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -41,21 +43,28 @@ public class OrderTab_InShipping extends OrderTab {
                 .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DBControllerBill db = new DBControllerBill();
-                        db.vertifyReceived(bill.id);
-                        db.closeConnection();
-                        if(db.hasError() && getView() != null)
-                        {
-                            Snackbar.make(getView(), db.getErrorMsg(), BaseTransientBottomBar.LENGTH_LONG).show();;
-                        }
-                        else {
-                            bills.remove(posi);
-                            recyclerViewAdapter.notifyItemRemoved(posi);
-                            layoutData();
-                            if(onSubmitVertifyBillListener != null){onSubmitVertifyBillListener.OnSuccess(null);
-                        }
-                        dialog.dismiss();
-                        }
+                        new Thread(()->{
+                            DBControllerBill db = new DBControllerBill();
+                            db.vertifyReceived(bill.id);
+                            db.closeConnection();
+
+                            getActivity().runOnUiThread(()->{
+                                if(db.hasError() && getView() != null)
+                                {
+                                    Error_toast.show(getContext(), db.getErrorMsg(), true);
+                                }
+                                else {
+                                    bills.remove(posi);
+                                    recyclerViewAdapter.notifyItemRemoved(posi);
+                                    layoutData();
+                                    Success_toast.show(getContext(), "Xác nhận thành công", true);
+                                    if (onSubmitVertifyBillListener != null) {
+                                        onSubmitVertifyBillListener.OnSuccess(null);
+                                    }
+                                }
+                                dialog.dismiss();
+                            });
+                        }).start();
                     }
                 })
                 .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

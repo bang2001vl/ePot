@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/border"
+    android:layout_marginTop="5dp">
+    <exam.nlb2t.epot.ProductDetail.SalerOverviewView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/saler_overview"
+        android:paddingBottom="5dp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/payment_recycler_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container_infor_bill"
+
+        tools:itemCount="2"
+        tools:listitem="@layout/fragment_product_in_bill">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

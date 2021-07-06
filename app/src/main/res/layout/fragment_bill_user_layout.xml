@@ -9,12 +9,17 @@
         android:layout_height="match_parent"
         android:id="@+id/scroll_view_main"
         >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/Recycelview_bill"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/sample_order_bill_view" />
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/Recycelview_bill"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/sample_order_bill_view" />
+        </RelativeLayout>
+
     </ScrollView>
 
     <RelativeLayout

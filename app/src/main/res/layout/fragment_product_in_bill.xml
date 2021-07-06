@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:layout_marginVertical="10dp">
+    android:layout_marginBottom="5dp">
 
     <ImageView
         android:id="@+id/img_Product"
+        android:layout_marginVertical="5dp"
         style="@style/ImageItem_NormalSize"
         android:layout_width="@dimen/ProductImgSize"
         android:layout_height="@dimen/ProductImgSize"
@@ -71,5 +71,12 @@
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/quantity_Product"
         app:layout_constraintEnd_toEndOf="@id/quantity_Product"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_marginTop="-5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

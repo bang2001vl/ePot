@@ -38,6 +38,8 @@ import exam.nlb2t.epot.singleton.Authenticator;
 public class HomepageFragment extends Fragment implements OnItemClickListener {
     HomeShoppingBinding binding;
 
+    int userID;
+    
     private CategoryAdapter categoryAdapter;
     private ProductAdapter adapter_new;
     private ProductAdapter adapter_TopSold;
@@ -57,6 +59,8 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         list_New = new ArrayList<>();
         list_TopSold = new ArrayList<>();
         list_Categoty = new ArrayList<>();
+        
+        userID = userID;
     }
 
     @Nullable
@@ -151,7 +155,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         public void onClick(int position, int productID) {
 
             Log.d("MY_TAG", "Open product with id = " + productID);
-            ProductDetailFragment dialog = new ProductDetailFragment(Authenticator.getCurrentUser().id, productID);
+            ProductDetailFragment dialog = new ProductDetailFragment(userID, productID);
             dialog.show(getChildFragmentManager(), "detailProduct");
         }
     };
@@ -225,7 +229,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
     private List<ProductAdapterItemInfo> getDataMaxSold() {
         String sql = "SELECT TOP 8 PRODUCT.ID, SALER_ID, CATEGORY_ID, NAME, PRICE, PRICE_ORIGIN, AMOUNT, " +
                 "AMOUNT_SOLD, PRIMARY_IMAGE_ID, DETAIL, CREATED_DATE, DELETED, STAR_AVG " +
-                "FROM PRODUCT WHERE DELETED = 0 ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
+                "FROM PRODUCT WHERE DELETED = 0 AND SALER_ID != "+userID+" ORDER BY AMOUNT_SOLD DESC, CREATED_DATE DESC";
         DBControllerProduct dbControllerProduct = new DBControllerProduct();
         List<ProductBaseDB> subpro = dbControllerProduct.getNewProductList(sql);
         List<ProductAdapterItemInfo> list = new ArrayList<>(subpro.size());
@@ -233,7 +237,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         {
             ProductAdapterItemInfo info = new ProductAdapterItemInfo();
             info.productBaseDB = p;
-            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, userID);
             info.ratingCount = dbControllerProduct.getCountRating(p.id);
 
             // Image would be get later
@@ -297,7 +301,7 @@ public class HomepageFragment extends Fragment implements OnItemClickListener {
         {
             ProductAdapterItemInfo info = new ProductAdapterItemInfo();
             info.productBaseDB = p;
-            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, Authenticator.getCurrentUser().id);
+            info.isLiked = dbControllerProduct.checkLikeProduct(p.id, userID);
             info.ratingCount = dbControllerProduct.getCountRating(p.id);
 
             // Image would be get later

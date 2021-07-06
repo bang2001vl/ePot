@@ -425,9 +425,8 @@ public class CartFragment_Old extends Fragment {
     public void onClickPayment(Map<Integer,List<ProductBuyInfo>> buyMap)
     {
         long total = Integer.parseInt(binding.btnPayment.getTag().toString());
-        int numSaler = buyMap.size();
         int priceShip = 21 * 1000;
-        PaymentDialogFragment fragment = new PaymentDialogFragment(Authenticator.getCurrentUser().id, total, priceShip * numSaler, Authenticator.getCurrentUser().address);
+        PaymentDialogFragment fragment = new PaymentDialogFragment(Authenticator.getCurrentUser().id, total, priceShip, Authenticator.getCurrentUser().address, buyMap);
         fragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
             @Override
             public void OnSuccess(Object sender) {

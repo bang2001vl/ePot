@@ -73,7 +73,8 @@ public class OrderTab extends Fragment {
         ScrollView scrollView = (ScrollView) v.findViewById(R.id.scroll_view_main);
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(bills.size() == 0) return;
-            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+            ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+            View view = viewG.getChildAt(viewG.getChildCount() -1);
             if(view == null) return;
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
