@@ -34,8 +34,7 @@ public class ProductRatingView extends BaseCustomViewGroup {
         mContext = context;
 
         setStar(0,0,2,0,1);
-        //addComment("Hair", 3, "Dit me cuoc doi", null, "21/06/2001");
-        //addComment("Tiên Tri Zũ Trụ", 5, "Xài thì cũng được được. Không xịn lắm", null, "30/04/1975");
+
     }
 
     public void setStar(int star1, int star2, int star3, int star4, int star5)
