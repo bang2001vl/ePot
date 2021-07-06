@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
+            android:nestedScrollingEnabled="false"
             tools:itemCount="3"
             tools:listitem="@layout/my_shop_product_view" />
     </ScrollView>

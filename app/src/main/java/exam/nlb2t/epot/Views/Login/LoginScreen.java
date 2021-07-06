@@ -52,10 +52,10 @@ import java.util.regex.Pattern;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.MainActivity;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.Views.Registration.signup;
 import exam.nlb2t.epot.Views.home_shopping;
-import exam.nlb2t.epot.Views.toast_layout;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 
@@ -203,7 +203,7 @@ public class LoginScreen extends AppCompatActivity {
                 }
                 else
                 {
-                    toast_layout.show(context,getResources().getString(R.string.error_wrong_username_pass), true);
+                    Error_toast.show(context,getResources().getString(R.string.error_wrong_username_pass), true);
                 }
             }
         });
@@ -436,7 +436,7 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onAuthenError(int errorCode, String message) {
                 //Đăng nhập thất bại..
-                toast_layout.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
+                Error_toast.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
             }
             @Override
             public void onGetOAuthComplete(OauthResponse response) {
@@ -450,7 +450,7 @@ public class LoginScreen extends AppCompatActivity {
         @Override
         public void onAuthenError(int errorCode, String message) {
             //Đăng nhập thất bại..
-            toast_layout.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
+            Error_toast.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
             Onsusscess();
         }
         @Override
