@@ -123,55 +123,30 @@ public class signup extends AppCompatActivity {
                 {
                     if (CheckErrorUserInfo() == -1)
                     {
-                        toast_layout.show(context, getResources().getString(R.string.error_not_enough_info), true );
+                        Error_toast.show(context, getResources().getString(R.string.error_not_enough_info), true );
                     }
-                    else
-                    {
-                        if (CheckErrorUserInfo() == -1)
-                        {
-                            Error_toast.show(context, getResources().getString(R.string.error_not_enough_info), true );
-                        }
-                        else
-                        {
-                            if (CheckErrorUserInfo() == 0)
-                            {
-                                toast_layout.show(context, getResources().getString(R.string.error_incorrect_info), true );
-                            }
-                            else
-                            {
-                                DBControllerUser controllerUser = new DBControllerUser();
+                    else {
+                        if (CheckErrorUserInfo() == 0) {
+                            Error_toast.show(context, getResources().getString(R.string.error_incorrect_info), true);
+                        } else {
+                            DBControllerUser controllerUser = new DBControllerUser();
 
-                                if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
-                                {
-                                    Error_toast.show(context, getResources().getString(R.string.error_incorrect_info), true );
-                                }
-                                else
-                                {
-                                    DBControllerUser controllerUser = new DBControllerUser();
+                            if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString())) {
+                                fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
+                                Error_toast.show(context, getResources().getString(R.string.error_incorrect_info), true);
+                            } else {
+                                fg_signup_new_account.edt_usename.setError(null);
+                                int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
+                                int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
+                                int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
 
-                                    if (controllerUser.checkExistUsername(fg_signup_new_account.edt_usename.getText().toString()))
-                                    {
-                                        fg_signup_new_account.edt_usename.setError(getResources().getString(R.string.error_existing_username));
-                                    }
-                                    else
-                                    {
-                                        fg_signup_new_account.edt_usename.setError(null);
-                                        int day = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(0, 2));
-                                        int month = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(3, 5)) - 1;
-                                        int year = Integer.parseInt(fg_signup_new_account.edt_birth.getText().toString().substring(6, 10));
-
-                                        controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(),phone,getIntent().getStringExtra("Personemail"),  fg_signup_new_account.edt_name.getText().toString(),fg_signup_new_account.acs_sex.getSelectedItemPosition(),year, month,day);
-                                        Error_toast.show(context, getResources().getString(R.string.annouce_creat_acc_succsess), true );
-                                        controllerUser.closeConnection();
-                                        finish();
-                                    }
-                                }
+                                controllerUser.insertUser(fg_signup_new_account.edt_usename.getText().toString(), fg_signup_new_account.tit_pass.getText().toString(), phone, getIntent().getStringExtra("Personemail"), fg_signup_new_account.edt_name.getText().toString(), fg_signup_new_account.acs_sex.getSelectedItemPosition(), year, month, day);
+                                Error_toast.show(context, getResources().getString(R.string.annouce_creat_acc_succsess), true);
+                                controllerUser.closeConnection();
+                                finish();
                             }
                         }
-
-
                     }
-
                 }
             }
         });
