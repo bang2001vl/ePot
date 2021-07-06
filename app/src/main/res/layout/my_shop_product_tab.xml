@@ -20,7 +20,6 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_add_product"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -28,5 +27,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/submit"
         android:scaleType="fitCenter"
+        android:backgroundTint="@color/mainColor"
+        android:foregroundTint="@color/white"
         android:src="@drawable/ic_add_product_24" />
 </RelativeLayout>

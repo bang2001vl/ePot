@@ -24,17 +24,20 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:fontFamily="@font/gilroy_bold"
-
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
+                android:layout_toLeftOf="@+id/btn_Logout"
                 android:layout_toRightOf="@+id/avt_profile"
+                android:fontFamily="@font/gilroy_bold"
                 android:includeFontPadding="false"
-                android:textSize="20dp"
-                android:text="Thủy Tiên" />
+                android:text="Thủy Tiên"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tv_username"
@@ -74,7 +77,7 @@
             android:fontFamily="@font/gilroy_medium"
             android:text="      Đơn hàng"
             android:textColor="@color/black"
-            android:background="@color/transparent"
+            android:background="?selectableItemBackground"
             android:textAllCaps="false"
             android:textSize="16dp"
             android:stateListAnimator="@null">
@@ -101,6 +104,7 @@
                 android:fontFamily="@font/gilroy_medium"
                 android:textAllCaps="false"
                 android:textSize="12dp"
+                android:background="?selectableItemBackground"
                 android:textColor="#524F4F">
             </Button>
                 <TextView
@@ -134,7 +138,8 @@
                 android:text="Đang giao"
                 android:textAllCaps="false"
                 android:textColor="#524F4F"
-                android:textSize="12dp"></Button>
+                android:textSize="12dp"
+                android:background="?selectableItemBackground"></Button>
                 <TextView
                     android:id="@+id/tv_number_delivery"
                     android:layout_width="17dp"
@@ -167,7 +172,8 @@
                     android:textColor="#524F4F"
                     android:layout_marginLeft="10dp"
                     android:layout_column="2"
-                    android:layout_columnWeight="1">
+                    android:layout_columnWeight="1"
+                    android:background="?selectableItemBackground">
                 </Button>
                 <TextView
                     android:id="@+id/tv_number_rate"
@@ -185,27 +191,28 @@
 
 
         </GridLayout>
+
         <Button
             android:id="@+id/btn_default_address"
-            android:drawableLeft="@drawable/ic_address"
-            android:drawableRight="@drawable/ic_back_arrow"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/mainColor"
-            android:textAlignment="textStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="20dp"
-            android:paddingLeft="20dp"
-            app:iconPadding="20dp"
+            android:layout_marginTop="10dp"
+            android:background="?selectableItemBackground"
+            android:drawableLeft="@drawable/ic_address"
+            android:drawableRight="@drawable/ic_back_arrow"
             android:fontFamily="@font/gilroy_medium"
+            android:paddingLeft="20dp"
+            android:stateListAnimator="@null"
             android:text="      Địa chỉ mặc định"
-            android:textColor="@color/black"
-            android:background="@color/transparent"
+            android:textAlignment="textStart"
             android:textAllCaps="false"
+            android:textColor="@color/black"
             android:textSize="16dp"
-            android:stateListAnimator="@null">
-        </Button>
+            app:iconPadding="20dp"
+            app:strokeColor="@color/mainColor"
+            app:strokeWidth="2dp"></Button>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,7 +248,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:background="@color/transparent"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/ic_heart"
             android:drawableRight="@drawable/ic_back_arrow"
             android:fontFamily="@font/gilroy_medium"
@@ -275,7 +282,7 @@
             android:fontFamily="@font/gilroy_medium"
             android:text="      Thiết lập tài khoản"
             android:textColor="@color/black"
-            android:background="@color/transparent"
+            android:background="?selectableItemBackground"
             android:textAllCaps="false"
             android:textSize="16dp"
             android:stateListAnimator="@null">
@@ -294,7 +301,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:background="@color/transparent"
+            android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/ic_help"
             android:drawableRight="@drawable/ic_back_arrow"
             android:fontFamily="@font/gilroy_medium"
