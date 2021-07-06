@@ -160,7 +160,7 @@ public class forgotpassword extends AppCompatActivity {
                             btn_next.setText(R.string.Confirm);
 
                         } else {
-                            toast_layout.show(forgotpassword.this, getResources().getString(R.string.error_wrong_OTP), true);
+                            Error_toast.show(forgotpassword.this, getResources().getString(R.string.error_wrong_OTP), true);
                         }
                     }
                 });
