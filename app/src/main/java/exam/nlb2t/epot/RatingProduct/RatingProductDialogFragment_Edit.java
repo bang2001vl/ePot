@@ -38,7 +38,7 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
             getActivity().runOnUiThread(()->{
                 if(db.hasError())
                 {
-                    Snackbar.make(binding.getRoot(), db.getErrorMsg(), BaseTransientBottomBar.LENGTH_LONG).show();
+                    Error_toast.show(getContext(), db.getErrorMsg(), true);
                     dismiss();
                 }
                 if(rating != null)
@@ -67,7 +67,7 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
                 }
                 else
                 {
-                    Snackbar.make(binding.getRoot(), "Chưa có đánh giá nào trước đây", BaseTransientBottomBar.LENGTH_LONG).show();
+                    Success_toast.show(getContext(), "Chưa có đánh giá nào trước đây", true);
                     dismiss();
                 }
             });
