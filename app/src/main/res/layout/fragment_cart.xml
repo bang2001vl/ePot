@@ -98,15 +98,15 @@
                     app:layout_constraintTop_toTopOf="@id/title_totalprice"
                     app:layout_constraintBottom_toBottomOf="@id/title_totalprice"/>
                 <Button
-                    style="@style/cartButton"
                     android:id="@+id/btn_payment"
                     android:layout_width="300dp"
                     android:layout_height="@dimen/button_common_height"
-
+                    android:background="@drawable/btn_red_background"
+                    android:fontFamily="@font/gilroy_bold"
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/white"
                     android:text="@string/btn_cart"
                     android:textSize="25sp"
-                    android:background="@drawable/epot_btn_bg"
-                    android:stateListAnimator="@null"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
