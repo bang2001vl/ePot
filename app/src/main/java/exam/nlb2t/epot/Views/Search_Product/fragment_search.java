@@ -293,8 +293,7 @@ public class fragment_search extends DialogFragment {
         public void onClick(int position, int productID) {
 
             Log.d("MY_TAG", "Open product with id = " + productID);
-            ProductDetailFragment dialog = new ProductDetailFragment();
-            dialog.productID = productID;
+            ProductDetailFragment dialog = new ProductDetailFragment(Authenticator.getCurrentUser().id, productID);
             dialog.show(getChildFragmentManager(), "detailProduct");
         }
     };

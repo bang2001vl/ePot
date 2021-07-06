@@ -34,6 +34,7 @@ import exam.nlb2t.epot.DialogFragment.PlainTextDialog;
 import exam.nlb2t.epot.ProductDetail.Rating.ProductRatingDialog;
 import exam.nlb2t.epot.ProductDetail.Rating.RatingInfo;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.LoadingView;
 import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.databinding.FragmentProductDetailBinding;
@@ -44,12 +45,14 @@ import exam.nlb2t.epot.singleton.Helper;
 public class ProductDetailFragment extends DialogFragment {
 
     FragmentProductDetailBinding binding;
-    public int productID;
     ChooseItemDetailBottomSheet.OnClickSubmitListener onClickAddToCartListener;
     public void setOnClickAddToCartListener(ChooseItemDetailBottomSheet.OnClickSubmitListener listener)
     {
         this.onClickAddToCartListener = listener;
     }
+
+    int userID;
+    int productID;
 
     ProductBaseDB product;
     UserBaseDB saler;
@@ -57,6 +60,16 @@ public class ProductDetailFragment extends DialogFragment {
     List<RatingInfo> ratingInfos;
     int[] ratingOverview;
     int ratingCount;
+
+    public ProductDetailFragment(int productID){
+        this.userID = Authenticator.getCurrentUser().id;
+        this.productID = productID;
+    }
+
+    public ProductDetailFragment(int userID, int productID){
+        this.userID = userID;
+        this.productID = productID;
+    }
 
     @NonNull
     @Override
@@ -95,6 +108,10 @@ public class ProductDetailFragment extends DialogFragment {
         binding.btnBackFromProductDetail.setOnClickListener(v->this.dismiss());
 
         binding.btnAddToCart.setOnClickListener(v->{
+            if(userID == saler.id){
+                Error_toast.show(getContext(), "Không thể mua sản phẩm của chính bạn", true);
+                return;
+            }
             // Init bottomSheet
             ChooseItemDetailBottomSheet bottomSheet = new ChooseItemDetailBottomSheet(product.name,
                     product.amount - product.amountSold, product.priceOrigin, product.price,
@@ -102,7 +119,7 @@ public class ProductDetailFragment extends DialogFragment {
             bottomSheet.setOnClickSubmitListener(new ChooseItemDetailBottomSheet.OnClickSubmitListener() {
                 @Override
                 public void OnClickSubmit(View view, int amount, int[] params) {
-                    Toast.makeText(getContext(), "Thêm sản phẩm thành công", Toast.LENGTH_LONG).show();
+                    Success_toast.show(getContext(), "Thêm sản phẩm thành công", true);
                     CartDataController.addProduct(getContext(), productID, amount);
                     if(onClickAddToCartListener!=null) {
                         onClickAddToCartListener.OnClickSubmit(view, amount, params);

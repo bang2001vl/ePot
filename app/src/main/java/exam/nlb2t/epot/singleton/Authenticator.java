@@ -31,6 +31,7 @@ public class Authenticator {
         if(id > 0) {
             currentUser = db.getUserInfo(id);
             currentUser.password = password;
+            CartDataController.setUser(id);
             rs = true;
         }
         return rs;
@@ -74,8 +75,8 @@ public class Authenticator {
         if(id > 0)
         {
             currentUser = db.getUserInfo(id);
-           /* currentUser.password = password;*/
             db.closeConnection();
+            CartDataController.setUser(id);
             return true;
         }
         else {
@@ -83,6 +84,7 @@ public class Authenticator {
             return false;
         }
     }
+
     private static UserBaseDB currentUser;
     public static UserBaseDB getCurrentUser()
     {
@@ -101,6 +103,7 @@ public class Authenticator {
             {
                 rs = data;
             }
+            else {throw new OutOfMemoryError();}
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
