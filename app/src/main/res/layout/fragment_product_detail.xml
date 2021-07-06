@@ -10,8 +10,11 @@
         android:id="@+id/vertical_scrollview_product_detail"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layout_buttons_product_detail"
-        >
+        app:layout_constraintBottom_toTopOf="@id/layout_buttons_product_detail">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +25,7 @@
                 android:layout_height="350dp"
                 android:id="@+id/viewpaper_product_detail"
                 app:layout_constraintTop_toTopOf="parent"
-
+                android:background="@drawable/border_prod"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -148,14 +151,15 @@
                 android:buttonTint="@color/red"
                 app:layout_constraintTop_toTopOf="@id/layout_price_product_detail"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                android:layout_marginBottom="10dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
             <exam.nlb2t.epot.ProductDetail.SalerOverviewView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_saler_product_detail"
                 app:layout_constraintTop_toBottomOf="@id/button_favourite_product_detail"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/border"/>
+                android:layout_marginTop="10dp"
+                android:background="@color/white"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +167,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/layout_saler_product_detail"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/border">
+                android:background="@color/white">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -171,14 +175,14 @@
                     android:text="Chi tiết sản phẩm"
                     style="@style/TittleNormalSize"
                     android:textSize="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="10dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_description_product_detail"
                     android:textColor="@color/black"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="Kho: 45\nThương hiệu:  no brand\nChất liệu:  cotton\nXuất xứ: Việt Nam
 \nGửi từ: quận tân bình, tp.Hồ Chí Minh\n--------------------------------------------------------------------------------
 \nGel lột hút mụn than tre hoạt tính IRC dạng mặt nạ hủ nắp bạc 50g
@@ -186,7 +190,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:textSize="16sp"
                     android:fontFamily="@font/gilroy_light"
-                    android:background="@drawable/border"
                     android:padding="10dp"
                     />
                 <TextView android:visibility="gone"
@@ -209,7 +212,8 @@
                 android:id="@+id/layout_rating_product_detail"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/layout_description_product_detail"
-                >
+                android:background="@color/white"
+                android:layout_marginTop="7dp">
 
                 <TextView
                     style="@style/TittleNormalSize"
@@ -223,9 +227,7 @@
                 <exam.nlb2t.epot.ProductDetail.Rating.ProductRatingView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ratingProductView"
-                    android:layout_marginHorizontal="15dp"
-                    />
+                    android:id="@+id/ratingProductView" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -236,8 +238,8 @@
                     android:gravity="center_horizontal"
                     android:paddingVertical="5dp"/>
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </LinearLayout>
     </ScrollView>
 
     <ImageButton
@@ -248,7 +250,6 @@
         android:scaleType="center"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:tint="@color/black"
         android:backgroundTint="@color/light_gray"
         android:background="@drawable/button_circle_background"
         app:layout_constraintTop_toTopOf="@id/vertical_scrollview_product_detail"
@@ -259,20 +260,19 @@
         android:layout_width="match_parent"
         android:id="@+id/layout_buttons_product_detail"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
         android:background="@drawable/see_more_border">
         <Button
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:id="@+id/btnAddToCart"
             android:text="Thêm Vào Giỏ Hàng"
             style="@style/CommonButton"
             android:stateListAnimator="@null"
             android:background="@drawable/epot_btn_bg"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="10dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="20dp"/>
         <!--<Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
