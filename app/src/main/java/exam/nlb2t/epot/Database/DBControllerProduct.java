@@ -2,12 +2,7 @@ package exam.nlb2t.epot.Database;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-
-import com.google.zxing.BinaryBitmap;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,7 +18,6 @@ import exam.nlb2t.epot.Database.Tables.ImageProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
-import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -667,11 +661,20 @@ public class DBControllerProduct extends DatabaseController{
         name = name.toUpperCase();
         try
         {
-            String sql ="select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID, " +
-                    " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
-                    " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
-                    " where UPPER(P.NAME) LIKE N'%" + name + "%'" +
-                    " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/
+            String sql =
+                    "(Select  * from ( " +
+                            "select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME as Name, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, " +
+                            "Pro.PRIMARY_IMAGE_ID, Pro.DETAIL, Pro.CREATED_DATE as CREATED_DATE, Pro.DELETED, D.DATA from [PRODUCT] AS Pro " +
+                            "INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
+                            "where UPPER(Pro.NAME) LIKE N'" + name +"%' and Pro.DELETED = 0) p1 " +
+                            "union " +
+                            "Select * from ( " +
+                            "select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, " +
+                            "Pro.PRIMARY_IMAGE_ID, Pro.DETAIL, Pro.CREATED_DATE, Pro.DELETED, D.DATA from [PRODUCT] AS Pro" +
+                            " INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
+                            "where UPPER(Pro.NAME) LIKE N'%"+name+"%'  and Pro.DELETED = 0) p2) " +
+                            "ORDER BY  Name  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);
@@ -711,14 +714,13 @@ public class DBControllerProduct extends DatabaseController{
     public List<ProductBaseDB> getProductsBaseCategory( String name, int offset, int rows)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
-        name = name.toUpperCase();
         try
         {
             String sql = "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID," +
                     " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                     " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                     "  INNER JOIN [CATEGORY]  AS C on P.CATEGORY_ID = C.ID  "+
-                    " where UPPER(C.NAME) LIKE N'%" + name + "%'" +
+                    " where C.NAME LIKE '%" + name + "%' COLLATE Vietnamese_CI_AI and P.DELETED = 0" +
                     " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; ; /*LIMIT 2 OFFSET 0";*/
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
@@ -760,14 +762,13 @@ public class DBControllerProduct extends DatabaseController{
     public List<ProductBaseDB> getProductsBaseSaler( String name, int offset, int rows)
     {
         List<ProductBaseDB> rs = new ArrayList<>();
-        name = name.toUpperCase();
         try
         {
             String sql =  "select P.ID, P.SALER_ID, P.CATEGORY_ID, P.NAME, P.PRICE, P.PRICE_ORIGIN, P.AMOUNT, P.AMOUNT_SOLD, P.PRIMARY_IMAGE_ID," +
                 " P.DETAIL, P.CREATED_DATE, P.DELETED, A.DATA" +
                 " from [PRODUCT] AS P INNER join  [AVATAR] as A on P.PRIMARY_IMAGE_ID = A.ID " +
                 " INNER JOIN [USER]  AS U on P.SALER_ID = U.ID "+
-                " where UPPER(U.USERNAME) LIKE N'%" + name + "%'" +
+                " where U.USERNAME LIKE '%" + name + "%'  COLLATE Vietnamese_CI_AI and P.DELETED = 0" +
                 " ORDER BY CREATED_DATE  DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;"; /*LIMIT 2 OFFSET 0";*/            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, offset);
             statement.setInt(2, rows);

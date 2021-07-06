@@ -231,30 +231,7 @@ public class LoginScreen extends AppCompatActivity {
             Onsusscess();
         }
 
-
         callbackManager = CallbackManager.Factory.create();
-     /*   lgb_login.setReadPermissions("email");
-        lgb_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("Thông báo", "======Facebook login success======");
-                Log.d("Thông báo", "Facebook Access Token: " + loginResult.getAccessToken().getToken());
-                Toast.makeText(LoginScreen.this, "Login Facebook success.", Toast.LENGTH_SHORT).show();
-                getFbInfo();
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(LoginScreen.this, "Login Facebook cancelled.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.e("Thông báo", "======Facebook login error======");
-                Log.e("Error", "Error: " + error.toString());
-                Toast.makeText(LoginScreen.this, "Login Facebook error.", Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     private void loadMainActivity() {
@@ -295,9 +272,7 @@ public class LoginScreen extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d("Thành công", "firebaseAuthWithGoogle:" + account.getId());
-
                 firebaseAuthWithGoogle(account.getIdToken());
-
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Lỗi đăng nhập gg", "Google sign in failed", e);
@@ -319,11 +294,9 @@ public class LoginScreen extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Thành công", "signInWithCredential:success");
                             }
-                           /* updateUI(user);*/
                          else {
                             // If sign in fails, display a message to the user.
                             Log.w("Lỗi", "signInWithCredential:failure", task.getException());
-                           /* updateUI(null);*/
                         }
                     }
            });
@@ -395,7 +368,6 @@ public class LoginScreen extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // ...
                     }
                 });
     }
