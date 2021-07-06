@@ -117,17 +117,16 @@ public class OrderTab extends Fragment {
             List<BillAdapterItemInfo> list = loadDataFromDB();
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
-                    bills.addAll(bills.size(), list);
+                    bills.addAll(list);
                     if (recyclerViewAdapter != null && list.size() > 0) {
-                        recyclerViewAdapter.notifyItemRangeInserted(bills.size() - 1, bills.size());
+                        recyclerViewAdapter.notifyItemRangeInserted(bills.size() -list.size(), bills.size());
                     }
                     layoutData();
                     hideLoading();
+                    hasMoreData = list.size() == step;
+                    lastIndex += list.size();
                 });
             }
-
-            hasMoreData = list.size() == step;
-            lastIndex += list.size();
         }).start();
     }
 

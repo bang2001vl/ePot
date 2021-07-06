@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.PersonBill;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -33,11 +34,6 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
 
     public interface OnClickItemPositionListener {
         void onClickItem(int postion);
-    }
-    protected OnClickItemPositionListener onClickItemPositionListener;
-    public  void setOnBindingLastPositionListener(OnClickItemPositionListener listener)
-    {
-        this.onClickItemPositionListener = listener;
     }
 
     public BillAdapter(List<BillAdapterItemInfo> list) {
@@ -83,18 +79,6 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
                 mainHandler.post(() -> notifyItemChanged(position));
             }).start();
         }
-
-        if (onBtnDetailClickListener != null) {
-            holder.binding.btnDetailBill.setOnClickListener(v -> {
-                onBtnDetailClickListener.onClick(list.get(position).billOverview, position);
-            });
-        }
-
-        if(position == list.size() - 1) {
-            if (onClickItemPositionListener != null) {
-                onClickItemPositionListener.onClickItem(position);
-            }
-        }
     }
 
     @Override
@@ -113,6 +97,15 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         public BillViewHolder(@NonNull SampleOrderBillViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+
+            BillViewHolder holder = this;
+
+            if (onBtnDetailClickListener != null) {
+                holder.binding.btnDetailBill.setOnClickListener(v -> {
+                    Log.d("MY_TAG", "CLICK on item position = " + this.getBindingAdapterPosition());
+                    onBtnDetailClickListener.onClick(list.get(this.getBindingAdapterPosition()).billOverview, this.getBindingAdapterPosition());
+                });
+            }
         }
     }
 }

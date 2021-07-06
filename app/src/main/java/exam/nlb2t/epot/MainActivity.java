@@ -227,17 +227,9 @@ public class MainActivity extends AppCompatActivity {
                     notiThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            DBControllerNotification db = new DBControllerNotification();
-                            countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
-                            db.closeConnection();
-                            if(MainActivity.this.binding != null) {
-                                MainActivity.this.runOnUiThread(() -> {
-                                    MainActivity.this.setNumberNotification(countNoti);
-                                });
-                            }
+                            checkNotification();
                         }
                     });
-                    Log.d("MY_TAG", "Looper: Count unread notification");
                     notiThread.start();
                 }
                 if(isRunning) {
@@ -245,6 +237,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    void checkNotification(){
+        Log.d("MY_TAG", "Looper: Count unread notification");
+        DBControllerNotification db = new DBControllerNotification();
+        countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
+        db.closeConnection();
+        if(MainActivity.this.binding != null) {
+            MainActivity.this.runOnUiThread(() -> {
+                MainActivity.this.setNumberNotification(countNoti);
+            });
+        }
     }
 
     public void setNumberNotification(int num){
@@ -305,8 +309,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        isRunning = true;
-        startingCheckNotification();
+        if(notiThread != null){
+            Handler handler = new Handler();
+            new Thread(()->checkNotification()).start();
+            handler.postDelayed(()->{
+                isRunning = true;
+                startingCheckNotification();
+            }, 10000);
+        }
+        else {
+            startingCheckNotification();
+        }
     }
 
     @Override
