@@ -128,7 +128,7 @@
             android:textSize="16dp"
             android:padding="10dp"
             android:fontFamily="@font/gilroy_bold"
-
+            android:background="?selectableItemBackground"
             android:layout_marginEnd="10dp"
 
             app:layout_constraintTop_toTopOf="parent"
@@ -144,7 +144,7 @@
             android:textSize="16dp"
             android:padding="10dp"
             android:fontFamily="@font/gilroy_bold"
-
+            android:background="?selectableItemBackground"
             android:layout_marginEnd="10dp"
 
             app:layout_constraintTop_toTopOf="parent"

@@ -14,8 +14,7 @@
             android:id="@+id/recyclerViewMain"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fragment_rating_tab_new_item"
-            />
+            tools:listitem="@layout/fragment_rating_tab_new_item" />
     </ScrollView>
     <RelativeLayout
         android:layout_width="match_parent"

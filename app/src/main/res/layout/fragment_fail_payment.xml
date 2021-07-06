@@ -67,7 +67,7 @@
             android:id="@+id/btn_again_payment"
             style="@style/cartButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:fontFamily="@font/gilroy_bold"
             android:text="@string/btn_again_payment"
             android:stateListAnimator="@null"
