@@ -38,6 +38,7 @@ import exam.nlb2t.epot.Database.Tables.ImageProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.databinding.UpdateProductBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
@@ -434,7 +435,7 @@ public class AddProductFragment extends DialogFragment {
                 inputStream = getContext().getContentResolver().openInputStream(data.getData());
                 if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
                 {
-                    Log.e("MY_TAG", "ERROR: Image is too big");
+                    Error_toast.show(getContext(), "Vui lòng chọn ảnh <10MB", true);
                     return;
                 }
             }

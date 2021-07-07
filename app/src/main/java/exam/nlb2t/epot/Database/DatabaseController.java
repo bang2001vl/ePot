@@ -96,7 +96,7 @@ public class DatabaseController {
         return true;
     }
 
-    public static final int MAX_BYTE_IMAGE = 2000000;
+    public static final int MAX_BYTE_IMAGE = 10000000;
     public static final int BIG_SIZE_PRODUCT_IMAGES_IN_PIXEL = 700;
     public static final int MEDIUM_SIZE_IMAGES_IN_PIXEL = 200;
 }

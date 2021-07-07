@@ -40,6 +40,7 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DatabaseController;
 import exam.nlb2t.epot.DialogFragment.PopupMenuDialog;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.databinding.PickImageDialogBinding;
 
 public class ImagesDialog extends DialogFragment {
@@ -130,7 +131,7 @@ public class ImagesDialog extends DialogFragment {
             inputStream = getContext().getContentResolver().openInputStream(uri);
             if(inputStream.available() > DatabaseController.MAX_BYTE_IMAGE)
             {
-                Log.e("MY_TAG", "ERROR: Image is too big");
+                Error_toast.show(getContext(), "Vui lòng chọn ảnh <10MB", true);
                 return;
             }
         } catch (IOException e) {

@@ -88,22 +88,6 @@ public class ProductDetailFragment extends DialogFragment {
         binding = FragmentProductDetailBinding.inflate(inflater, container, false);
         ImageViewAdapter adpater = new ImageViewAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, getContext());
         binding.viewpaperProductDetail.setAdapter(adpater);
-        binding.viewpaperProductDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                binding.txtNumberViewpaperProductDetail.setText(
-                        String.format(Locale.getDefault(),"%d/%d",position + 1, adpater.getCount())
-                );
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
 
         binding.btnBackFromProductDetail.setOnClickListener(v->this.dismiss());
 
@@ -304,16 +288,32 @@ public class ProductDetailFragment extends DialogFragment {
         if(adapter== null) return;
         if(bitmaps==null || bitmaps.size() == 0)
         {
-            binding.txtNumberViewpaperProductDetail.setText(
+            /*binding.txtNumberViewpaperProductDetail.setText(
                     "0"
             );
-            return;
+            return;*/
+            bitmaps.add(imagePrimary);
         }
 
         adapter.setBitmaps(bitmaps);
         binding.txtNumberViewpaperProductDetail.setText(
                 String.format(Locale.getDefault(),"%d/%d",1, adapter.getCount())
         );
+
+        binding.viewpaperProductDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.txtNumberViewpaperProductDetail.setText(
+                        String.format(Locale.getDefault(),"%d/%d",position + 1, binding.viewpaperProductDetail.getAdapter().getCount())
+                );
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
     void initAfterGetData() {
