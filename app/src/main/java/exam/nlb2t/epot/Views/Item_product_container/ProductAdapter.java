@@ -19,11 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import exam.nlb2t.epot.Category.CategoryAdapter;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
-import exam.nlb2t.epot.OnItemClickListener;
-import exam.nlb2t.epot.PersonBill.BillAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.fragment_ProItem_Container;
@@ -91,7 +88,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
         else
         {
-            holder.tag_salepro.setText(" -" + (product.price*100 / product.priceOrigin) +"% ");
+            holder.tag_salepro.setText(" -" + (100 - product.price*100 / product.priceOrigin) +"% ");
             holder.tv_Oldproprice.setText(oldproprice);
         }
 
