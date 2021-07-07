@@ -28,6 +28,8 @@ import exam.nlb2t.epot.singleton.Helper;
 public class SaleDialog extends DialogFragment {
     SaleDialogBinding binding;
     ProductMyShop product;
+    int newSalePrice = 0;
+
     public SaleDialog(ProductMyShop product) {
         super();
         this.product = product;
@@ -51,7 +53,6 @@ public class SaleDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 //TODO: Change Price in product
-                int newSalePrice;
                 try {
                     newSalePrice = Integer.parseInt(binding.saleDialogPriceSale.getText().toString());
                 }
@@ -90,7 +91,7 @@ public class SaleDialog extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        onDismissListener.onDismiss(dialog);
+        if (onDismissListener != null) onDismissListener.onDismiss(dialog);
     }
 
     @NonNull
