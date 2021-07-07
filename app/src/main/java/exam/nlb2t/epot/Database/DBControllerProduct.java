@@ -819,7 +819,7 @@ public class DBControllerProduct extends DatabaseController{
   public int getNumberProducts(int saler) {
         int rs = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID]=?";
+            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID]=? AND DELETED = 0";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,saler);
             ResultSet resultSet = statement.executeQuery();
@@ -937,7 +937,7 @@ public class DBControllerProduct extends DatabaseController{
         final int LIMIT_NUMBER_OUTOFSTOCK = 5;
         int rs = 0;
         try {
-            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID] = ? AND (AMOUNT - AMOUNT_SOLD) <= ?";
+            String sql = "SELECT COUNT(*) FROM [PRODUCT] WHERE [SALER_ID] = ? AND (AMOUNT - AMOUNT_SOLD) <= ? and DELETED = 0";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, salerID);
             statement.setInt(2, LIMIT_NUMBER_OUTOFSTOCK);

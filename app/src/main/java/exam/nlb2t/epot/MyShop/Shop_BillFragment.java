@@ -142,6 +142,7 @@ public class Shop_BillFragment extends Fragment {
         if (listBill.contains(bill)) {
             int index = listBill.indexOf(bill);
             listBill.get(index).status = newStatus;
+            if (adapter != null)
             adapter.notifyItemChanged(index);
         } else {
             listBill.add(bill);

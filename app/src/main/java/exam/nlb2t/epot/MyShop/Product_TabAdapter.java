@@ -33,7 +33,7 @@ import exam.nlb2t.epot.singleton.Helper;
 public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.ViewHolder> {
     public final List<ProductMyShop> products;
     Context context;
-    boolean isfullProducts;
+    public boolean isfullProducts;
     public Handler mHandler;
 
     public Product_TabAdapter(List<ProductMyShop> products) {
