@@ -157,9 +157,9 @@ public class Shop_ProductFragment extends Fragment {
             //TODO: Add product to My Shop
             AddProductFragment addProductFragment = new AddProductFragment();
 
-            if (getFragmentManager() == null) {
-                return;
-            }
+//            if (getFragmentManager() == null) {
+//                return;
+//            }
 
             addProductFragment.show(getChildFragmentManager(), "createProduct");
             addProductFragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {

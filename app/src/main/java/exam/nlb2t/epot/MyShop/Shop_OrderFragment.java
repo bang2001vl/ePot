@@ -15,7 +15,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.OrderTab;
 import exam.nlb2t.epot.databinding.MyShopOrderTabBinding;
 import exam.nlb2t.epot.databinding.OrderTabBinding;
@@ -23,6 +27,8 @@ import exam.nlb2t.epot.databinding.OrderTabBinding;
 public class Shop_OrderFragment extends Fragment {
     MyShopOrderTabBinding binding;
     Order_TabAdapter adapter;
+
+    public static final String NOTIFY_BILL_WAIT_CONFIRM_ADDED = "NotifyNewBillAdded";
 
     @Nullable
     @Override
@@ -51,6 +57,8 @@ public class Shop_OrderFragment extends Fragment {
     public void reloadData_WaitComfirm(){
         Log.d("MY_TAG", "Path 3");
         if(adapter == null) return;
+        adapter.ReloadBill(null);
         adapter.ReloadBill(BillBaseDB.BillStatus.WAIT_CONFIRM);
+        getParentFragmentManager().setFragmentResult(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT, new Bundle());
     }
 }

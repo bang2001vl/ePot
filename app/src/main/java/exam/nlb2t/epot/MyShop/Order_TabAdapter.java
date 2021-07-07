@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
+import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.Tables.ProductInBill;
 import exam.nlb2t.epot.EmptyBillFragment;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentEmptyBillBinding;

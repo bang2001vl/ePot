@@ -183,9 +183,9 @@ public class Shop_BillFragment extends Fragment {
         this.OnListBillChanged = onListBillChanged;
     }
 
-    public void ReloadBill() {
-        Shop_BillFragment newBill = new Shop_BillFragment(this.statusBill);
-        newBill.loadAsyncData();
-        getParentFragmentManager().beginTransaction().detach(Shop_BillFragment.this).attach(Shop_BillFragment.this).commit();
-    }
+//    public void ReloadBill() {
+//        Shop_BillFragment newBill = new Shop_BillFragment(this.statusBill);
+//        newBill.loadAsyncData();
+//        getParentFragmentManager().beginTransaction().detach(Shop_BillFragment.this).attach(Shop_BillFragment.this).commit();
+//    }
 }

@@ -43,12 +43,16 @@ public class Shop_OverviewFragment extends Fragment {
         //TODO : Write code here <Set all listener in here>
         getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT,
                 Shop_OverviewFragment.this, (resquestKey, result) -> {
-            new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
-        });
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
+                });
+        getParentFragmentManager().setFragmentResultListener(Shop_OrderFragment.NOTIFY_BILL_WAIT_CONFIRM_ADDED,
+                Shop_OverviewFragment.this, ((requestKey, result) -> {
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
+                }));
     }
 
     public void loadData() {
-        new Thread(()->{
+        new Thread(() -> {
             DBControllerBill db = new DBControllerBill();
             int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
             db.closeConnection();
