@@ -84,7 +84,8 @@ public class Shop_ProductFragment extends Fragment {
         binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(adapter == null || adapter.getItemCount() == 0) return;
             ScrollView scrollView = binding.scrollViewMain;
-            View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+            ViewGroup viewG = (ViewGroup) scrollView.getChildAt(scrollView.getChildCount() - 1);
+            View view = viewG.getChildAt(viewG.getChildCount() - 1);
             if(view == null) return;
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
@@ -97,51 +98,8 @@ public class Shop_ProductFragment extends Fragment {
         emptyBinding = null;
 
         // First load
+        adapter.lastIndex = 0;
         adapter.addItemToList(adapter.mHandler);
-
-//        mScroll = new ScrollCutom((LinearLayoutManager) binding.layoutProductMyShop.getLayoutManager()) {
-//            @Override
-//            public void loadNextPage(int index_item_end_list) {
-//                Log.d("MY_TAG", "Load at index" + index_item_end_list);
-//                adapter.addItemToList(index_item_end_list+1, 5, adapter.mHandler);
-//            }
-//
-//            @Override
-//            public void loadPreviousPage(int index_item_start_list) {
-//
-//            }
-//
-//            @Override
-//            public void loadNextPageUI(int index_item_end_list) {
-//                int offset = index_item_end_list + 1;
-//                if (products.size() - offset < 5) setIsEndPage(true);
-//                adapter.notifyItemRangeInserted(offset, products.size() - offset);
-//            }
-//        };
-
-//        binding.layoutProductMyShop.setAdapter(adapter);
-//        binding.layoutProductMyShop.addOnScrollListener(mScroll);
-//        binding.layoutProductMyShop.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                //super.onScrolled(recyclerView, dx, dy);
-//                if (dy>0) {
-//                    //scroll down
-//                    int visibleItemsCount = layout.getChildCount();
-//                    int passVisibleItems = layout.findFirstVisibleItemPosition();
-//                    int totalItemCount = layout.getItemCount();
-//
-//                    if ( passVisibleItems + visibleItemsCount >= totalItemCount - NUMBER_BEHIND_ITEM_IN_SCROLL) {
-//                        //if (passVisibleItems + visibleItemsCount == totalItemCount)
-//                            //wait for load data finished
-//                            adapter.addItemToList(mhandler);
-//                    }
-//                }
-//                if (dy<0) {
-//                    //scroll up
-//                }
-//            }
-//        });
 
         return binding.getRoot();
     }
@@ -156,10 +114,6 @@ public class Shop_ProductFragment extends Fragment {
         binding.buttonAddProduct.setOnClickListener(v -> {
             //TODO: Add product to My Shop
             AddProductFragment addProductFragment = new AddProductFragment();
-
-//            if (getFragmentManager() == null) {
-//                return;
-//            }
 
             addProductFragment.show(getChildFragmentManager(), "createProduct");
             addProductFragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
