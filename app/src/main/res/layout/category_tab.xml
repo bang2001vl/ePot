@@ -9,6 +9,7 @@
     android:layout_gravity="center_vertical"
     >
 
+
     <LinearLayout
         android:id="@+id/category_tab"
         android:layout_width="80dp"

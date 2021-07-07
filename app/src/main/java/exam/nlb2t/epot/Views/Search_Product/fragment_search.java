@@ -224,7 +224,7 @@ public class fragment_search extends DialogFragment {
         });
 
         btn_back.setOnClickListener(v -> {
-            fragment_search.this.onStop();
+            fragment_search.this.dismiss();
             /*getActivity().getFragmentManager().beginTransaction().remove(fg_ProItem_container).commit();*/
         });
         return view;

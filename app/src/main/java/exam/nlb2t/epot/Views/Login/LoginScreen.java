@@ -15,16 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,13 +35,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.zing.zalo.zalosdk.oauth.LoginVia;
-import com.zing.zalo.zalosdk.oauth.OAuthCompleteListener;
-import com.zing.zalo.zalosdk.oauth.OauthResponse;
-import com.zing.zalo.zalosdk.oauth.ZaloOpenAPICallback;
-import com.zing.zalo.zalosdk.oauth.ZaloSDK;
-
-import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +46,6 @@ import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.Views.Error_toast;
 import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.Views.Registration.signup;
-import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -74,7 +61,6 @@ public class LoginScreen extends AppCompatActivity {
     private TextView tv_signup;
     private TextView tv_resent_otp;
     private ImageButton btn_signin_gg;
-    private ImageButton btn_login_zalo;
     private SignInButton btn_signin;
 
     FirebaseUser currentusser;
@@ -96,7 +82,6 @@ public class LoginScreen extends AppCompatActivity {
         context = this;
         setContentView(R.layout.activity_login_screen);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
         // require infor from user
@@ -114,7 +99,6 @@ public class LoginScreen extends AppCompatActivity {
         tv_signup = (TextView) findViewById(R.id.tv_signup);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_signin_gg = (ImageButton) findViewById(R.id.sign_in_button);
-        btn_login_zalo = (ImageButton) findViewById(R.id.btn_login_zalo);
         ln_gg = findViewById(R.id.ln_continue_gg);
 
 
@@ -238,16 +222,6 @@ public class LoginScreen extends AppCompatActivity {
                 signIn();
             }
         });
-        btn_login_zalo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!checkConnection()) return;
-                loginZalo();
-            }
-        });
-        if(ZaloSDK.Instance.isAuthenticate(null)) {
-            Onsusscess();
-        }
 
         callbackManager = CallbackManager.Factory.create();
     }
@@ -311,8 +285,6 @@ public class LoginScreen extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        ZaloSDK.Instance.onActivityResult(this, requestCode, resultCode, data);
-
         if (requestCode == 9) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -325,10 +297,6 @@ public class LoginScreen extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Lỗi đăng nhập gg", "Google sign in failed", e);
             }
-        }
-        else
-        {
-            Onsusscess();
         }
     }
 
@@ -420,95 +388,8 @@ public class LoginScreen extends AppCompatActivity {
                 });
     }
 
-    private void getFbInfo() {
-        if (AccessToken.getCurrentAccessToken() != null) {
-            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                    new GraphRequest.GraphJSONObjectCallback() {
-                        @Override
-                        public void onCompleted(final JSONObject me, GraphResponse response) {
-                            if (me != null) {
-                                Log.i("Login: ", me.optString("name"));
-                                Log.i("ID: ", me.optString("id"));
-                                /*Log.i("Password: ", me.optString("email"));*/
-
-                                Toast.makeText(LoginScreen.this, "Name: " + me.optString("name"), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(LoginScreen.this, "ID: " + me.optString("id"), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(LoginScreen.this, "Email: " + me.optString("email"), Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(LoginScreen.this, home_shopping.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link");
-            request.setParameters(parameters);
-            request.executeAsync();
-        }
-    }
 
 
 //login zalo
-    private void loginZalo() {
-        ZaloSDK.Instance.authenticate(this, LoginVia.APP, new OAuthCompleteListener() {
-
-            @Override
-            public void onAuthenError(int errorCode, String message) {
-                //Đăng nhập thất bại..
-                Error_toast.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
-            }
-            @Override
-            public void onGetOAuthComplete(OauthResponse response) {
-                Onsusscess();
-            }
-        });
-    }
-
-    OAuthCompleteListener listener = new OAuthCompleteListener() {
-
-        @Override
-        public void onAuthenError(int errorCode, String message) {
-            //Đăng nhập thất bại..
-            Error_toast.show(context, "Đăng nhập thất bại, vui lòng thử lại sau!", true );
-            Onsusscess();
-        }
-        @Override
-        public void onGetOAuthComplete(OauthResponse response) {
-            Onsusscess();
-        }
-    };
-
-    void Onsusscess()
-    {
-        String id ;
-        String name ;
-        String birthday;
-        int gender;
-
-        Intent intent = new Intent(LoginScreen.this, signup.class);
-        //Get Profile
-        ZaloSDK.Instance.getProfile(getBaseContext(), new ZaloOpenAPICallback()
-                {
-                    @Override
-                    public void onResult(JSONObject data) {
-
-                        intent.putExtra("id", data.optString("id"));
-                        intent.putExtra( "Personname", data.optString("name"));
-                        intent.putExtra( "birthday", data.optString("birthday"));
-                        intent.putExtra("gender", data.optString("gender"));
-
-                    }
-                }
-                ,new String[]{"id", "name", "birthdayr", "gender"});
-
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("MY_TAG", "onDetroy");
-    }
 
 }
