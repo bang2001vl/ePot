@@ -53,8 +53,10 @@ public class ProductInBill {
 
     @Override
     protected void finalize() throws Throwable {
-        image.recycle();
         super.finalize();
+        if(image != null) {
+            image.recycle();
+        }
     }
 
 }

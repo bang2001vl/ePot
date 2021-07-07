@@ -41,7 +41,9 @@ public class ShopFragment extends Fragment {
     }
 
     public void reloadBill_WaitComfirm(){
-        adapter.reloadBill_WaitComfirm();
+        if(adapter != null) {
+            adapter.reloadBill_WaitComfirm();
+        }
     }
 
     public void reload()

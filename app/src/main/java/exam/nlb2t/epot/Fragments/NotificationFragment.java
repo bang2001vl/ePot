@@ -59,16 +59,18 @@ public class NotificationFragment extends Fragment {
             NotifycationInfo info = adapter.list.get(postion);
             DetailBillFragment dialog = new DetailBillFragment(info.notification.billID, getContext());
             dialog.show(getParentFragmentManager(), "detailBill");
-            new Thread(()->{
-                DBControllerNotification db = new DBControllerNotification();
-                db.notifyHasReadNoti(info.notification.id);
-                db.closeConnection();
-            }).start();
-            info.notification.hasRead = true;
-            adapter.notifyItemChanged(postion);
-            MainActivity activity = (MainActivity) getActivity();
-            if(activity != null){
-                activity.decreaseNumberNotification();
+            if(!info.notification.hasRead) {
+                new Thread(() -> {
+                    DBControllerNotification db = new DBControllerNotification();
+                    db.notifyHasReadNoti(info.notification.id);
+                    db.closeConnection();
+                }).start();
+                info.notification.hasRead = true;
+                adapter.notifyItemChanged(postion);
+                MainActivity activity = (MainActivity) getActivity();
+                if (activity != null) {
+                    activity.decreaseNumberNotification();
+                }
             }
         });
 

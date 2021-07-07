@@ -48,6 +48,7 @@ public class Shop_OrderFragment extends Fragment {
     }
 
     public void reloadData_WaitComfirm(){
+        if(adapter == null) return;
         adapter.ReloadBill(BillBaseDB.BillStatus.WAIT_CONFIRM);
     }
 }

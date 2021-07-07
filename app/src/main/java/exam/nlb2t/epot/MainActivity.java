@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         db.closeConnection();
         if(MainActivity.this.binding != null) {
             MainActivity.this.runOnUiThread(() -> {
-                if(countNoti != countUnreadNoti) {
+                if(countNoti < countUnreadNoti) {
                     countNoti = countUnreadNoti;
                     MainActivity.this.setNumberNotification(countNoti, 3);
                     if(this.binding != null && this.isRunning){
