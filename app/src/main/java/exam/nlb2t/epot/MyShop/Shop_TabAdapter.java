@@ -19,9 +19,9 @@ public class Shop_TabAdapter extends FragmentStatePagerAdapter {
         fragments[2] = new Shop_OrderFragment();
     }
 
-    public void reloadBill_InShipping(){
+    public void reloadBill_WaitComfirm(){
         Shop_OrderFragment shopOrderFragment = (Shop_OrderFragment) fragments[2];
-        shopOrderFragment.reloadData_InShipping();
+        shopOrderFragment.reloadData_WaitComfirm();
     }
 
     @Override

@@ -47,7 +47,7 @@ public class Shop_OrderFragment extends Fragment {
         });
     }
 
-    public void reloadData_InShipping(){
-        adapter.ReloadBill(BillBaseDB.BillStatus.IN_SHIPPING);
+    public void reloadData_WaitComfirm(){
+        adapter.ReloadBill(BillBaseDB.BillStatus.WAIT_CONFIRM);
     }
 }

@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Update store's bill
                         ShopFragment shopFragment = (ShopFragment) adapter.getItem(2);
-                        shopFragment.reloadBill_Inshipping();
+                        shopFragment.reloadBill_WaitComfirm();
                     }
                 }
             });
