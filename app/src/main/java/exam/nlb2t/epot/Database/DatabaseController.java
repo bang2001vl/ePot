@@ -1,6 +1,10 @@
 package exam.nlb2t.epot.Database;
 
+import android.app.AlertDialog;
+import android.app.Application;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,16 +12,24 @@ import java.sql.SQLException;
 import exam.nlb2t.epot.SQL.DataController;
 
 public class DatabaseController {
+
+    public boolean noConnection;
+
     protected String ErrorMsg = null;
     public String getErrorMsg(){return ErrorMsg;}
     public boolean hasError(){return ErrorMsg != null;}
     protected DataController dataController = new DataController();
     protected Connection connection;
 
-    public DatabaseController() {
+    public DatabaseController(){
         try{
             connection = dataController.ConnnectionData();
-            connection.setAutoCommit(false);
+            if(connection == null){
+                ErrorMsg = "No connection";
+            }
+            else {
+                connection.setAutoCommit(false);
+            }
         }
         catch (SQLException e)
         {

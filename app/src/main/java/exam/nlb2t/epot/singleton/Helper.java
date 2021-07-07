@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -188,5 +189,14 @@ public class Helper {
         options.inJustDecodeBounds = false;
 
         return BitmapFactory.decodeStream(bufferIn, new Rect(0, 0, 0, 0), options);
+    }
+
+    public static boolean checkConnectionToServer(){
+            DatabaseController db = new DatabaseController();
+            if(db.hasError()){
+                return false;
+            }
+            db.closeConnection();
+            return true;
     }
 }

@@ -23,6 +23,8 @@ import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.DialogFragment.YesNoDialog;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.Views.Error_toast;
+import exam.nlb2t.epot.Views.Success_toast;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
 
@@ -30,16 +32,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     public final List<ProductMyShop> products;
     Context context;
     boolean isfullProducts;
-    int position;
     public Handler mHandler;
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 
     public Product_TabAdapter(List<ProductMyShop> products) {
         this.products = products;
@@ -171,7 +164,9 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                 //TODO: Open dialog view update_product.xml
                 AddProductFragment dialog = new AddProductFragment(products.get(holder.getAbsoluteAdapterPosition()));
                 dialog.setOnSubmitOKListener(l -> {
-                    Toast.makeText(context, "Thay đổi thành công", Toast.LENGTH_LONG).show();
+                    if(onUpdatedListener != null){
+                        onUpdatedListener.OnSuccess(holder.getBindingAdapterPosition());
+                    }
                 });
 
                 dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), AddProductFragment.NAMEDIALOG);
@@ -182,11 +177,12 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             @Override
             public void onClick(View v) {
                 //TODO: Delete product from My Shop
+                int position = holder.getAbsoluteAdapterPosition();
                 DBControllerProduct db = new DBControllerProduct();
-                if (db.checkProductIsSold(products.get(holder.getAbsoluteAdapterPosition()).id)) {
+                if (db.checkProductIsSold(products.get(position).id)) {
                     YesNoDialog dialog = new YesNoDialog(context, "Mặt hàng này đã được bán ra, chỉ có thể ngừng cung cấp. Bạn có chấp nhận không?");
                     dialog.setOnBtnYesClickListener(view -> {
-                        stopProvide(holder.getAbsoluteAdapterPosition());
+                        stopProvide(position);
                         dialog.dismiss();
                     });
                     dialog.setOnBtnNoClickListener(view -> {
@@ -197,13 +193,18 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                     db.closeConnection();
                     return;
                 }
-                if (!db.deleteProduct(products.get(holder.getAbsoluteAdapterPosition()).id)) {
-                    Log.e("Lỗi", "Không có món cần tìm hoặc không thể xóa món");
+
+                if (db.hasError() || !db.deleteProduct(products.get(position).id)) {
+                    Error_toast.show(context, "Có,lỗi xảy ra", true);
+                }
+                else {
+                    products.remove(position);
+                    notifyItemRemoved(position);
+                    if(onDeletedListener != null){
+                        onDeletedListener.OnSuccess(null);
+                    }
                 }
                 db.closeConnection();
-
-                products.remove(holder.getAbsoluteAdapterPosition());
-                notifyItemRemoved(holder.getAbsoluteAdapterPosition());
             }
         });
 
@@ -216,12 +217,12 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                 switch (item.getItemId()) {
                     case R.id.menu_product_sale:
                         //MEANS: Open change product dialog
-                        SaleDialog dialog = new SaleDialog(products.get(holder.getLayoutPosition()));
+                        SaleDialog dialog = new SaleDialog(products.get(holder.getBindingAdapterPosition()));
                         dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "SaleDialog");
                         break;
                     case R.id.menu_product_stopProvide:
                         //MEANS: Open Stop Provide product dialog
-                        stopProvide(products.get(holder.getAbsoluteAdapterPosition()).id);
+                        stopProvide(holder.getBindingAdapterPosition());
                         break;
                 }
                 return true;
@@ -231,22 +232,44 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     }
 
     private void stopProvide(int position) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBControllerProduct db = new DBControllerProduct();
-                db.StopProvide(products.get(position).id);
-                db.closeConnection();
+        new Thread(() -> {
+            ProductMyShop product = products.get(position);
+            DBControllerProduct db = new DBControllerProduct();
+            if(!db.checkProductIsSold(product.id)){
+                db.deleteProduct(product.id);
             }
-        }).start();
+            else {
+                db.StopProvide(product.id);
+            }
+            db.closeConnection();
 
-        products.remove(position);
-        notifyItemRemoved(position);
-        Toast.makeText(context, "Đã ngừng cung cấp", Toast.LENGTH_SHORT);
+            mHandler.post(()->{
+                products.remove(position);
+                notifyItemRemoved(position);
+                if(onDeletedListener != null){
+                    onDeletedListener.OnSuccess(position);
+                }
+            });
+        }).start();
     }
 
-    int step = 10;
-    int lastIndex = 0;
+    Helper.OnSuccessListener onUpdatedListener;
+    public void setOnUpdatedListener(Helper.OnSuccessListener listener) {
+        this.onUpdatedListener = listener;
+    }
+
+    Helper.OnSuccessListener onDeletedListener;
+    public void setOnDeletedListener(Helper.OnSuccessListener onDeletedListener) {
+        this.onDeletedListener = onDeletedListener;
+    }
+
+    Helper.OnSuccessListener onLoadMoreSuccessListener;
+    public void setOnLoadMoreSuccessListener(Helper.OnSuccessListener onLoadMoreSuccessListener) {
+        this.onLoadMoreSuccessListener = onLoadMoreSuccessListener;
+    }
+
+    public int step = 10;
+    public int lastIndex = 0;
     public void addItemToList(Handler mainHandler) {
         if (isfullProducts) return;
 
@@ -268,6 +291,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                 public void run() {
                     products.addAll(newlist);
                     notifyItemRangeInserted(products.size() - newlist.size(), newlist.size());
+                    if(onLoadMoreSuccessListener !=null){onLoadMoreSuccessListener.OnSuccess(null);}
                 }
             });
         }).start();

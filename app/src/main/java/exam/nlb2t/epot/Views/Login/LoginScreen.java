@@ -1,10 +1,11 @@
 package exam.nlb2t.epot.Views.Login;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,7 +51,6 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exam.nlb2t.epot.Activities.SplashActivity;
 import exam.nlb2t.epot.Database.DBControllerUser;
 import exam.nlb2t.epot.DialogFragment.LoginLoadingDialog;
 import exam.nlb2t.epot.MainActivity;
@@ -60,6 +60,7 @@ import exam.nlb2t.epot.Views.Forgotpass.forgotpassword;
 import exam.nlb2t.epot.Views.Registration.signup;
 import exam.nlb2t.epot.Views.home_shopping;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 
 public class LoginScreen extends AppCompatActivity {
@@ -83,26 +84,15 @@ public class LoginScreen extends AppCompatActivity {
 
     Context context;
 
-    LoginLoadingDialog dialog;
+    LoginLoadingDialog dialogLoading;
 
     public GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dialog = new LoginLoadingDialog();
+        dialogLoading = new LoginLoadingDialog();
 
-        if(Authenticator.LoginWithSavedData(this))
-        {
-            dialog.show(getSupportFragmentManager(), "");
-            Handler handler = new Handler();
-            handler.postDelayed(()->{
-                loadMainActivity();
-                handler.postDelayed(()->{
-                    if(dialog.isCancelable()){dialog.dismiss();}
-                }, 2000);
-            }, 1000);
-        }
         context = this;
         setContentView(R.layout.activity_login_screen);
 
@@ -191,6 +181,7 @@ public class LoginScreen extends AppCompatActivity {
         tv_forgotpass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!checkConnection()) return;
                 Intent intent = new Intent(LoginScreen.this, forgotpassword.class);
                 startActivity(intent);
             }
@@ -200,23 +191,24 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ( et_username.getError() != null || tet_password.getError()!= null ) return;
+                if(!checkConnection()) return;
                 LoginLoadingDialog dialog = new LoginLoadingDialog();
                 new Thread(()->{
                     DBControllerUser controllerUser = new DBControllerUser();
                     if (controllerUser.CheckUserLogin(et_username.getText().toString(), tet_password.getText().toString()))
                     {
-                        runOnUiThread(()->dialog.show(getSupportFragmentManager(), "load"));
+                        //runOnUiThread(()->dialogLoading.show(getSupportFragmentManager(), "load"));
                         Authenticator.Login(et_username.getText().toString(), tet_password.getText().toString());
                         controllerUser.closeConnection();
                         Authenticator.saveLoginData(LoginScreen.this, et_username.getText().toString(), tet_password.getText().toString());
 
                         runOnUiThread(()->{
                             loadMainActivity();
-                            new Handler(getMainLooper()).postDelayed(()->{
-                                if(dialog.isCancelable()){
-                                    dialog.dismiss();
+                            /*new Handler(getMainLooper()).postDelayed(()->{
+                                if(dialogLoading.isCancelable()){
+                                    dialogLoading.dismiss();
                                 }
-                            }, 7000);
+                            }, 7000);*/
                         });
                     }
                     else
@@ -233,6 +225,7 @@ public class LoginScreen extends AppCompatActivity {
         tv_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!checkConnection()) return;
                 Intent intent = new Intent(LoginScreen.this, signup.class);
                 startActivity(intent);
             }
@@ -241,12 +234,14 @@ public class LoginScreen extends AppCompatActivity {
         ln_gg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!checkConnection()) return;
                 signIn();
             }
         });
         btn_login_zalo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!checkConnection()) return;
                 loginZalo();
             }
         });
@@ -280,6 +275,36 @@ public class LoginScreen extends AppCompatActivity {
         }
         signOut();
         /*updateUI(account);*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Authenticator.HasSavedData(this)){
+            if(!checkConnection()) return;
+            if(Authenticator.LoginWithSavedData(this))
+            {
+                loadMainActivity();
+            }
+        }
+    }
+
+    boolean checkConnection(){
+        if(!Helper.checkConnectionToServer()){
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Lỗi")
+                        .setMessage("Không thể kết nối đến server")
+                        .setPositiveButton("Thoát", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        }).create();
+                dialog.show();
+                return false;
+        }
+        return true;
     }
 
     @Override
@@ -480,6 +505,10 @@ public class LoginScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("MY_TAG", "onDetroy");
+    }
 
 }

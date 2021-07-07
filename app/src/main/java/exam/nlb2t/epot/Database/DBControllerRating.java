@@ -13,6 +13,7 @@ import exam.nlb2t.epot.RatingProduct.ProductOverviewAdpterItem;
 import exam.nlb2t.epot.singleton.Helper;
 
 public class DBControllerRating extends DatabaseController{
+
     public boolean insertRating(int productID, int userID, int star, String comment)
     {
         boolean rs =false;

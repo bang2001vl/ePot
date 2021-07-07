@@ -1,5 +1,8 @@
 package exam.nlb2t.epot;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -43,6 +46,7 @@ import exam.nlb2t.epot.databinding.ActivityMainBinding;
 import exam.nlb2t.epot.databinding.TabIconLayoutBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.CartDataController;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -242,9 +246,30 @@ public class MainActivity extends AppCompatActivity {
 
     void checkNotification(){
         Log.d("MY_TAG", "Looper: Count unread notification");
-        DBControllerNotification db = new DBControllerNotification();
-        countNoti = db.countUnreadNoti(Authenticator.getCurrentUser().id);
-        db.closeConnection();
+
+        if(!Helper.checkConnectionToServer()){
+            new Handler(Looper.getMainLooper()).post(()->{
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Lỗi")
+                        .setMessage("Không thể kết nối đến server")
+                        .setPositiveButton("Thoát", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+                dialog.show();
+            });
+            isRunning = false;
+            return;
+        }
+
         if(MainActivity.this.binding != null) {
             MainActivity.this.runOnUiThread(() -> {
                 MainActivity.this.setNumberNotification(countNoti, 3);
@@ -319,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
             }, 10000);
         }
         else {
+            isRunning = true;
             startingCheckNotification();
         }
     }
@@ -327,5 +353,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isRunning = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("MY_TAG", "onDetroy");
     }
 }

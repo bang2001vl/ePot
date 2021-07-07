@@ -238,7 +238,11 @@ public class ProductDetailFragment extends DialogFragment {
             binding.txtPriceNormalProductDetail.setText(helper.getPrice(product.price));
         }
 
-        if(product.amountSold < product.amount)
+        if(product.deleted > 0){
+            binding.btnAddToCart.setEnabled(false);
+            binding.btnAddToCart.setText("Đã ngừng bán");
+        }
+        else if(product.amountSold < product.amount)
         {
             binding.btnAddToCart.setEnabled(true);
             binding.btnAddToCart.setText(getResources().getText(R.string.add_to_cart));

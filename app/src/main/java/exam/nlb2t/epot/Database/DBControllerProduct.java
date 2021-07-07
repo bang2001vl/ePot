@@ -324,9 +324,13 @@ public class DBControllerProduct extends DatabaseController{
     public boolean deleteProduct(int productID) {
         boolean rs = false;
         try {
-            String sql = "DELETE FROM [PRODUCT] WHERE [ID] = ?";
+            String sql = "DELETE FROM [LIKE] WHERE [PRODUCT_ID] = ? ;" +
+                    " DELETE FROM [PRODUCT_IMAGE] WHERE [PRODUCT_ID] = ? ; " +
+                    "DELETE FROM [PRODUCT] WHERE [ID] = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, productID);
+            statement.setInt(2, productID);
+            statement.setInt(3, productID);
             rs = statement.executeUpdate() == 1;
 
             commit();
@@ -334,6 +338,7 @@ public class DBControllerProduct extends DatabaseController{
         }
         catch (SQLException e)
         {
+            ErrorMsg = "Cannot write to server";
             e.printStackTrace();
         }
         return rs;

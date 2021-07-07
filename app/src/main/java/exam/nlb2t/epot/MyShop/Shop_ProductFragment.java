@@ -33,6 +33,8 @@ import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.ScrollCutom;
+import exam.nlb2t.epot.Views.Success_toast;
+import exam.nlb2t.epot.databinding.FragmentStartSellingBinding;
 import exam.nlb2t.epot.databinding.MyShopProductTabBinding;
 import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.singleton.Helper;
@@ -69,6 +71,15 @@ public class Shop_ProductFragment extends Fragment {
         adapter.setHasStableIds(true);
         adapter.mHandler = new Handler(Looper.myLooper());
         binding.layoutProductMyShop.setAdapter(adapter);
+        adapter.setOnLoadMoreSuccessListener(obj->{
+            layoutData();
+        });
+        adapter.setOnUpdatedListener(obj->{
+            Success_toast.show(getContext(), "Thay đổi thành công", true);
+        });
+        adapter.setOnDeletedListener(obj->{
+            Success_toast.show(getContext(), "Ngừng bán thành công", true);
+        });
 
         binding.scrollViewMain.getViewTreeObserver().addOnScrollChangedListener(() -> {
             if(adapter == null || adapter.getItemCount() == 0) return;
@@ -82,6 +93,8 @@ public class Shop_ProductFragment extends Fragment {
                 adapter.addItemToList(adapter.mHandler);
             }
         });
+
+        emptyBinding = null;
 
         // First load
         adapter.addItemToList(adapter.mHandler);
@@ -148,11 +161,12 @@ public class Shop_ProductFragment extends Fragment {
                 return;
             }
 
-            addProductFragment.show(getParentFragmentManager().beginTransaction(), "createProduct");
+            addProductFragment.show(getChildFragmentManager(), "createProduct");
             addProductFragment.setOnSubmitOKListener(new Helper.OnSuccessListener() {
                 @Override
                 public void OnSuccess(Object sender) {
-                    Toast.makeText(getContext(), "Tạo mới thành công", Toast.LENGTH_LONG).show();
+                    Success_toast.show(getContext(), "Tạo mới thành công", true);
+                    reloadData();
                 }
             });
         });
@@ -182,6 +196,33 @@ public class Shop_ProductFragment extends Fragment {
                     }
                 }).start();
         });
+    }
+
+    void reloadData(){
+        int oldLength = adapter.products.size();
+        if(oldLength > 0) {
+            adapter.products.clear();
+            adapter.notifyItemRangeRemoved(0, oldLength);
+        }
+        adapter.lastIndex = 0;
+        getActivity().runOnUiThread(()->adapter.addItemToList(adapter.mHandler));
+    }
+
+    FragmentStartSellingBinding emptyBinding;
+    void layoutData(){
+        if(adapter.products.size() == 0){
+            if(emptyBinding == null){
+                emptyBinding = FragmentStartSellingBinding.inflate(getLayoutInflater(), binding.getRoot(), false);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                binding.getRoot().addView(emptyBinding.getRoot(), binding.getRoot().getChildCount(), params);
+            }
+            return;
+        }
+
+        if(emptyBinding != null){
+            binding.getRoot().removeView(emptyBinding.getRoot());
+            emptyBinding = null;
+        }
     }
 
 //    private boolean isLoadMoreData() {

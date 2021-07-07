@@ -54,6 +54,15 @@ public class Authenticator {
         editor.apply();
     }
 
+    public static boolean HasSavedData(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        if(username == null) return false;
+        String pass = sharedPreferences.getString("pass", null);
+        if(pass == null) return false;
+        return true;
+    }
+
     public static boolean LoginWithSavedData(Context context)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferences_file_name, Context.MODE_PRIVATE);
