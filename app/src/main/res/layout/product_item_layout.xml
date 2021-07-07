@@ -116,7 +116,7 @@
                 android:fontFamily="@font/gilroy_medium"
                 android:textColor="#DB3022"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="7dp" />
+                android:layout_marginStart="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -134,7 +134,7 @@
             android:id="@+id/textview_OldproPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="5dp"
             android:text="@string/old_price"
             android:fontFamily="@font/gilroy_medium"
             android:textAlignment="viewStart"

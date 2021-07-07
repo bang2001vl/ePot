@@ -93,7 +93,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
 
         holder.tv_Pricepro.setText(price);
-        holder.tv_Namepro.setText(" " + product.name + " ");
+        holder.tv_Namepro.setText(product.name);
         holder.tv_Amountpro.setText("Đã bán " + product.amountSold);
 
         holder.rt_Rating.setRating(product.starAverage);
