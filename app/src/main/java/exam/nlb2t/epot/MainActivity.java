@@ -280,7 +280,8 @@ public class MainActivity extends AppCompatActivity {
         db.closeConnection();
         if(MainActivity.this.binding != null) {
             MainActivity.this.runOnUiThread(() -> {
-                if(countNoti < countUnreadNoti) {
+                if(countNoti != countUnreadNoti)
+                {
                     countNoti = countUnreadNoti;
                     MainActivity.this.setNumberNotification(countNoti, 3);
                     if(this.binding != null && this.isRunning){
@@ -290,11 +291,14 @@ public class MainActivity extends AppCompatActivity {
                         NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
                         fragment.reload();
 
-                        // Update store's bill
-                        ShopFragment shopFragment = (ShopFragment) adapter.getItem(2);
-                        shopFragment.reloadBill_WaitComfirm();
+                        if(countNoti < countUnreadNoti) {
+                            // Update store's bill
+                            ShopFragment shopFragment = (ShopFragment) adapter.getItem(2);
+                            shopFragment.reloadBill_WaitComfirm();
+                        }
                     }
                 }
+
             });
         }
     }

@@ -165,6 +165,7 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     }
 
     public void ReloadBill(BillBaseDB.BillStatus status) {
+        Log.d("MY_TAG", "Code has been run");
         for (int i = 0; i < tabtitles.length; i++) {
             Shop_BillFragment frag = (Shop_BillFragment)fragments[i];
             if (frag.statusBill == status) {

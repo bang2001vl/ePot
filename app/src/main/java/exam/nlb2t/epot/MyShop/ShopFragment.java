@@ -41,6 +41,7 @@ public class ShopFragment extends Fragment {
     }
 
     public void reloadBill_WaitComfirm(){
+        Log.d("MY_TAG", "Path 1");
         if(adapter != null) {
             adapter.reloadBill_WaitComfirm();
         }

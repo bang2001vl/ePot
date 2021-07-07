@@ -1,5 +1,7 @@
 package exam.nlb2t.epot.MyShop;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,7 @@ public class Shop_TabAdapter extends FragmentStatePagerAdapter {
     }
 
     public void reloadBill_WaitComfirm(){
+        Log.d("MY_TAG", "Path 2");
         Shop_OrderFragment shopOrderFragment = (Shop_OrderFragment) fragments[2];
         if(shopOrderFragment == null) return;
         shopOrderFragment.reloadData_WaitComfirm();

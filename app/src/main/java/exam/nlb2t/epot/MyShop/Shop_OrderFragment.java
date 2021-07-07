@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.MyShop;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class Shop_OrderFragment extends Fragment {
     }
 
     public void reloadData_WaitComfirm(){
+        Log.d("MY_TAG", "Path 3");
         if(adapter == null) return;
         adapter.ReloadBill(BillBaseDB.BillStatus.WAIT_CONFIRM);
     }
