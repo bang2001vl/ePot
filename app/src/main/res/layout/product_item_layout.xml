@@ -93,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textview_proName"
+            android:maxLines="2"
             android:text="@string/productname"
             android:textSize="12sp"
             android:textColor="#222222"
