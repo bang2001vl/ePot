@@ -844,9 +844,16 @@ public class DBControllerProduct extends DatabaseController{
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,newSalePrice);
             statement.setInt(2, productID);
-            ResultSet resultSet = statement.executeQuery();
+            int rs = statement.executeUpdate();
 
-            commit();
+            if (rs != 1) {
+                rollback();
+                Log.e("UPDATE DATABASE", "Cannot update price for Product");
+            }
+            else {
+                commit();
+            }
+
             statement.close();
         }
         catch (SQLException e) {

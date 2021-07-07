@@ -2,8 +2,10 @@ package exam.nlb2t.epot.MyShop;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +58,19 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductMyShop product = products.get(position);
+        TextView priceView = holder.getPriceView();
 
         holder.getNameView().setText(product.name);
-        holder.getPriceView().setText(Helper.getMoneyString(product.priceOrigin));
+
+        priceView.setText(Helper.getMoneyString(product.priceOrigin));
+        if (product.price < product.priceOrigin) {
+            holder.getPriceSaleView().setVisibility(View.VISIBLE);
+            holder.getPriceSaleView().setText(Helper.getMoneyString(product.price));
+
+            priceView.setTextColor(context.getResources().getColor(R.color.black));
+            priceView.setPaintFlags(priceView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            priceView.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 12, context.getResources().getDisplayMetrics()));
+        }
 
         if (product.imageProduct != null) {
             holder.getImageView().setImageBitmap(product.imageProduct);
@@ -79,7 +91,6 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
         holder.getSellView().setText("Đã bán: " + product.amountSold);
     }
 
-
     public void setTextItemPrice() {
         //TODO: Set PriceOrigin and Price of ProductItem here
     }
@@ -95,6 +106,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
         private TextView nameView;
         private TextView priceView;
+        private TextView priceSaleView;
         private TextView warehouseView;
         private TextView sellView;
         private TextView likeView;
@@ -110,6 +122,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
             nameView = (TextView) itemView.findViewById(R.id.my_shop_nameProduct);
             priceView = (TextView) itemView.findViewById(R.id.my_shop_priceProduct);
+            priceSaleView = (TextView) itemView.findViewById(R.id.my_shop_priceProduct_sale);
             warehouseView = (TextView) itemView.findViewById(R.id.my_shop_txt_numberWarehouse);
             sellView = (TextView) itemView.findViewById(R.id.my_shop_txt_numberSale);
             likeView = (TextView) itemView.findViewById(R.id.my_shop_txt_numberLike);
@@ -134,6 +147,10 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
 
         public TextView getPriceView() {
             return priceView;
+        }
+
+        public TextView getPriceSaleView() {
+            return priceSaleView;
         }
 
         public TextView getWarehouseView() {
@@ -218,6 +235,15 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                     case R.id.menu_product_sale:
                         //MEANS: Open change product dialog
                         SaleDialog dialog = new SaleDialog(products.get(holder.getBindingAdapterPosition()));
+                        dialog.setOnDismissListener((d)->{
+                            int position = holder.getAbsoluteAdapterPosition();
+                            int newPriceSale = dialog.newSalePrice;
+
+                            if (newPriceSale >= 0 && newPriceSale <= products.get(position).priceOrigin && newPriceSale != products.get(position).price) {
+                                products.get(position).price = newPriceSale;
+                                notifyItemChanged(position);
+                            }
+                        });
                         dialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "SaleDialog");
                         break;
                     case R.id.menu_product_stopProvide:
