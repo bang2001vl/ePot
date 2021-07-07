@@ -670,14 +670,14 @@ public class DBControllerProduct extends DatabaseController{
                             " select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME as Name, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, Pro.PRIMARY_IMAGE_ID, " +
                             " Pro.DETAIL, Pro.CREATED_DATE as CREATED_DATE, Pro.DELETED, D.DATA" +
                             " from [PRODUCT] AS Pro INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
-                            " where Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AS or Pro.NAME LIKE N'" + name+"%' and pro.DELETED = 0 ) p1" +
+                            " where (Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '" + name+"%' COLLATE Vietnamese_CI_AS or Pro.NAME LIKE N'" + name+"%') and pro.DELETED = 0 ) p1" +
                            /* " ORDER BY  CREATED_DATE DESC  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY )" + */
                             " union " +
                             " Select * from (" +
                             " select Pro.ID, Pro.SALER_ID, Pro.CATEGORY_ID, Pro.NAME, Pro.PRICE, Pro.PRICE_ORIGIN, Pro.AMOUNT, Pro.AMOUNT_SOLD, Pro.PRIMARY_IMAGE_ID, " +
                             " Pro.DETAIL, Pro.CREATED_DATE, Pro.DELETED, D.DATA " +
                             " from [PRODUCT] AS Pro INNER join  [AVATAR] as D on Pro.PRIMARY_IMAGE_ID = D.ID " +
-                            " where Pro.NAME LIKE '%" + name+"%'  COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '%" + name+"%' COLLATE Vietnamese_CI_AS  or Pro.NAME LIKE N'%" + name+"%' and pro.DELETED = 0 ) p2)" +
+                            " where (Pro.NAME LIKE '%" + name+"%'  COLLATE Vietnamese_CI_AI or Pro.NAME LIKE '%" + name+"%' COLLATE Vietnamese_CI_AS  or Pro.NAME LIKE N'%" + name+"%' )and pro.DELETED = 0 ) p2)" +
                            /* " ORDER BY  CREATED_DATE  DESC  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ) " +*/
                             " ORDER BY  Name  OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
