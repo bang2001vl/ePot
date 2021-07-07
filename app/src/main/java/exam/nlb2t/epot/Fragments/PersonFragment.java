@@ -18,8 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import exam.nlb2t.epot.Database.DBControllerBill;
-import exam.nlb2t.epot.Database.DBControllerUser;
-import exam.nlb2t.epot.Database.Tables.BillBaseDB;
+import exam.nlb2t.epot.Database.DBControllerRating;
 import exam.nlb2t.epot.DialogFragment.ChangeAvtFragment;
 import exam.nlb2t.epot.DialogFragment.DefaultAddressFragment;
 import exam.nlb2t.epot.DialogFragment.FavoriteProdFragment;
@@ -35,12 +34,10 @@ import exam.nlb2t.epot.singleton.Authenticator;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 
 import exam.nlb2t.epot.Database.Tables.BillBaseDB.BillStatus;
-import exam.nlb2t.epot.singleton.Helper;
 
 public class PersonFragment<DialogLayoutBinding> extends Fragment {
     FragmentProfileBinding binding;
     private UserBaseDB currentuser;
-    DBControllerBill db=new DBControllerBill();
     private String[] mAddress=new String[2];
     MainActivity mainActivity;
     public PersonFragment(MainActivity ma)
@@ -77,7 +74,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         binding.btnOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ShowDialog(new OrderFragment(0));
+               ShowDialog_Order(0);
             }
         });
         binding.btnDefaultAddress.setOnClickListener(new View.OnClickListener() {
@@ -130,20 +127,17 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                 ShowDialog(new HelpFragment());
             }
         });
-        binding.tvNumberRequest.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.WAIT_CONFIRM)));
-        binding.tvNumberDelivery.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.IN_SHIPPING)));
-        binding.tvNumberRate.setText(String.valueOf(db.getNumberofUserBill(currentuser.id, BillStatus.SUCCESS)));
+
         binding.btnOrdersRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new OrderFragment(2));
-
+                ShowDialog_Order(2);
             }
         });
         binding.btnOrdersDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog(new OrderFragment(1));
+                ShowDialog_Order(1);
             }
 
         });
@@ -151,6 +145,7 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
             @Override
             public void onClick(View v) {
                 RatingProductDialog dialog = new RatingProductDialog();
+                dialog.setOnRatingSuccessListener(sender -> loadNumberData());
                 dialog.show(getChildFragmentManager(), "ratingDialog");
             }
 
@@ -163,7 +158,6 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
                     Bitmap bitmap = (Bitmap)obj;
                     if(bitmap != null) {
                         getActivity().runOnUiThread(()->binding.avtProfile.setImageBitmap(bitmap));
-                        ;
                     }
                 });
                 ShowDialog(avtFragment);
@@ -171,6 +165,37 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
         });
 
     }
+
+    public void loadNumberData(){
+        new Thread(()->{
+            DBControllerBill db = new DBControllerBill();
+            int numRequest = db.getNumberofUserBill(currentuser.id, BillStatus.WAIT_CONFIRM);
+            int numDelivery = db.getNumberofUserBill(currentuser.id, BillStatus.IN_SHIPPING);
+            db.closeConnection();
+            DBControllerRating db2 = new DBControllerRating();
+            int numRating = db2.countUnratingProduct(currentuser.id, 10);
+            db2.closeConnection();
+            if(getActivity() != null){
+                getActivity().runOnUiThread(()->{
+                    binding.tvNumberRequest.setText(String.valueOf(numRequest));
+                    binding.tvNumberDelivery.setText(String.valueOf(numDelivery));
+                    if(numRating < 10) {
+                        binding.tvNumberRate.setText(String.valueOf(numRating));
+                    }
+                    else {
+                        binding.tvNumberRate.setText("9+");
+                    }
+                });
+            }
+        }).start();
+    }
+
+    void ShowDialog_Order(int page){
+        OrderFragment fragment = new OrderFragment(page);
+        fragment.setOnReceivedSuccessListener(obj->loadNumberData());
+        ShowDialog(fragment);
+    }
+
     private void ShowDialog(DialogFragment dialogFragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         dialogFragment.show(ft, "dialog");
@@ -220,7 +245,4 @@ public class PersonFragment<DialogLayoutBinding> extends Fragment {
             else return currentuser.getAvatar();
 
         }
-
-
-
 }

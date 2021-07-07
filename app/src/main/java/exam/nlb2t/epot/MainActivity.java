@@ -276,15 +276,15 @@ public class MainActivity extends AppCompatActivity {
                         // Update store's bill
                         ShopFragment shopFragment = (ShopFragment) adapter.getItem(2);
                         shopFragment.reloadBill_WaitComfirm();
+
+                        PersonFragment personFragment = (PersonFragment) adapter.getItem(4);
+                        personFragment.loadNumberData();
                     }
 
                     countNoti = countUnreadNoti;
                     MainActivity.this.setNumberNotification(countNoti, 3);
-                    if(this.binding != null && this.isRunning){
-                        // Update notification fragment
-                        NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
-                        fragment.reload();
-                    }
+                    NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
+                    fragment.reload();
                 }
             });
         }
@@ -370,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        binding = null;
         Log.d("MY_TAG", "onDetroy");
     }
 }

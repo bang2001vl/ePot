@@ -17,6 +17,12 @@ import exam.nlb2t.epot.singleton.Helper;
 
 public class RatingProductDialog extends DialogFragment {
     FragmentRatingBinding binding;
+    Helper.OnSuccessListener onRatingSuccessListener;
+
+    public void setOnRatingSuccessListener(Helper.OnSuccessListener onRatingSuccessListener) {
+        this.onRatingSuccessListener = onRatingSuccessListener;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -36,7 +42,12 @@ public class RatingProductDialog extends DialogFragment {
 
         RatingDialogTab_New fragment1 = new RatingDialogTab_New();
         RatingDialogTab_Old fragment2 = new RatingDialogTab_Old();
-        fragment1.setOnRatingSuccessListener(sender -> fragment2.reloadData());
+        fragment1.setOnRatingSuccessListener(sender -> {
+            fragment2.reloadData();
+            if(onRatingSuccessListener != null){
+                onRatingSuccessListener.OnSuccess(null);
+            }
+        });
 
         RatingDialogTabAdapter adapter = new RatingDialogTabAdapter(
                 getChildFragmentManager(),

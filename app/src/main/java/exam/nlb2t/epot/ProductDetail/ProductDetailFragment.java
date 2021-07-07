@@ -164,7 +164,7 @@ public class ProductDetailFragment extends DialogFragment {
 
             DBControllerUser dbUsr = new DBControllerUser();
             // Get saler data
-            UserBaseDB saler = dbUsr.getUserOverview(dataPro.salerID);
+            saler = dbUsr.getUserOverview(dataPro.salerID);
             Bitmap salerAvatar = dbUsr.getAvatar(saler.avatarID);
             // Get commenter data
             for(RatingBaseDB rating: ratings)

@@ -218,6 +218,10 @@ public class DBControllerRating extends DatabaseController{
         return rs;
     }
 
+    public int countUnratingProduct(int userID, int max){
+        return getUserNotRatingPD(userID, 1, max).size();
+    }
+
     public List<ProductOverviewAdpterItem> getUserNotRatingPD(int userID, int star, int end)
     {
         List<ProductOverviewAdpterItem> rs = null;

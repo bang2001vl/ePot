@@ -111,7 +111,6 @@ public class Bill_TabAdapter extends BillRecyclerViewAdapter{
 
         notifyItemRemoved(position);
         notifyStatusChangedListener.notifyChanged(Bill_TabAdapter.this.status, newstatus, bill);
-
     }
 
     public class EditProductViewHolder extends BillRecyclerViewAdapter.ViewHolder {

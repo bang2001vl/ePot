@@ -34,6 +34,12 @@ public class OrderFragment extends DialogFragment{
     List<List<BillAdapterItemInfo>> data;
     List<OrderTab> tabs;
 
+    Helper.OnSuccessListener onReceivedSuccessListener;
+
+    public void setOnReceivedSuccessListener(Helper.OnSuccessListener onReceivedSuccessListener) {
+        this.onReceivedSuccessListener = onReceivedSuccessListener;
+    }
+
     protected int lastIndex = 1;
     protected int step = 20;
 
@@ -92,6 +98,9 @@ public class OrderFragment extends DialogFragment{
             public void OnSuccess(Object sender) {
                 // Reload tab success when user confirm received
                 tabs.get(3).reLoad();
+                if(onReceivedSuccessListener!= null){
+                    onReceivedSuccessListener.OnSuccess(null);
+                }
             }
         });
 
