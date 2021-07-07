@@ -58,30 +58,31 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
                 DBControllerRating db = new DBControllerRating();
                 boolean isOK = db.insertRating(productID, userID, star, comment);
                 db.closeConnection();
-                getActivity().runOnUiThread(()->{
-                    if(isOK)
-                    {
-                        Success_toast.show(getContext(), "Đánh giá thành công", true);
-                        if(onSuccessListener != null){onSuccessListener.OnSuccess(productID);}
-                    }
-                    else {
-                        Error_toast.show(getContext(), "Có lỗi xảy ra", true);
-                    }
-                    RatingProductDialogFragment.this.dismiss();
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        if (isOK) {
+                            Success_toast.show(getContext(), "Đánh giá thành công", true);
+                            if (onSuccessListener != null) {
+                                onSuccessListener.OnSuccess(productID);
+                            }
+                        } else {
+                            Error_toast.show(getContext(), "Có lỗi xảy ra", true);
+                        }
+                        RatingProductDialogFragment.this.dismiss();
+                    });
+                }
         });
 
-
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
+        if(getDialog() != null) {
+            getDialog().setOnShowListener(dialog -> {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 FrameLayout bottomSheet = (FrameLayout) d.findViewById(R.id.design_bottom_sheet);
+                if(bottomSheet == null) return;
                 CoordinatorLayout coordinatorLayout = (CoordinatorLayout) bottomSheet.getParent();
                 BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
                 bottomSheetBehavior.setPeekHeight(bottomSheet.getHeight());
                 coordinatorLayout.getParent().requestLayout();
-            }
-        });
+            });
+        }
     }
 }

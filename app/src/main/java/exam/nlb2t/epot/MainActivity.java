@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     notiThread.start();
                 }
-                // It already running, so wait next loop
+                // It already running, sol wait next loop
                 mainHandler.postDelayed(this, 10000);
             }
         });

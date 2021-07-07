@@ -157,7 +157,7 @@ public class OrderTab extends Fragment {
         ViewGroup contentLayout = (ViewGroup) v;
         if (bills.size() == 0) {
             if(emptybinding == null) {
-                emptybinding = FragmentEmptyBillBinding.inflate(getLayoutInflater(), contentLayout, false);
+                emptybinding = FragmentEmptyBillBinding.inflate(LayoutInflater.from(contentLayout.getContext()), contentLayout, false);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 contentLayout.addView(emptybinding.getRoot(), contentLayout.getChildCount(), params);
             }

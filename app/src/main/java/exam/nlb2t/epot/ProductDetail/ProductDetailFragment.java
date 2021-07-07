@@ -132,7 +132,6 @@ public class ProductDetailFragment extends DialogFragment {
 
         showLoadingScreen();
 
-        //new Thread(getImagesFromDB()).start();
         new Thread(getProductFromDB()).start();
 
         return binding.getRoot();
@@ -157,7 +156,6 @@ public class ProductDetailFragment extends DialogFragment {
 
     Runnable getProductFromDB()
     {
-        Handler mainHandler = new Handler();
         Runnable runnable = () -> {
 
             DBControllerProduct db = new DBControllerProduct();
@@ -197,17 +195,15 @@ public class ProductDetailFragment extends DialogFragment {
             dbUsr.closeConnection();
 
             // Update UI when done
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setProduct(dataPro);
-                    setSaler(saler, salerAvatar);
-                    loadRating(countR, stars, infosRating);
-                    binding.buttonFavouriteProductDetail.setChecked(isLiked);
-                    setImages(images);
-                    closeLoadingScreen();
-                    initAfterGetData();
-                }
+            if(getActivity() == null) return;
+            getActivity().runOnUiThread(() -> {
+                setProduct(dataPro);
+                setSaler(saler, salerAvatar);
+                loadRating(countR, stars, infosRating);
+                binding.buttonFavouriteProductDetail.setChecked(isLiked);
+                setImages(images);
+                closeLoadingScreen();
+                initAfterGetData();
             });
         };
 

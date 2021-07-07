@@ -82,7 +82,7 @@ public class NotificationFragment extends Fragment {
             int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
             // if diff is zero, then the bottom has been reached
-            if (diff <= 00 && hasMoreData) {
+            if (diff <= 0 && hasMoreData) {
                 showLoading();
                 loadMoreData();
             }
@@ -119,27 +119,24 @@ public class NotificationFragment extends Fragment {
     {
         if(!hasMoreData) return;
         hasMoreData = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DBControllerNotification db = new DBControllerNotification();
-                List<NotifycationInfo> data = db.getNotidication(Authenticator.getCurrentUser().id, lastIndex, lastIndex+step-1);
-                db.closeConnection();
+        new Thread(() -> {
+            DBControllerNotification db = new DBControllerNotification();
+            List<NotifycationInfo> data = db.getNotidication(Authenticator.getCurrentUser().id, lastIndex, lastIndex+step-1);
+            db.closeConnection();
 
-                if(getActivity() != null)
-                {
-                    getActivity().runOnUiThread(() -> {
-                        list.addAll(data);
-                        if(adapter != null && data.size() > 0) {
-                            adapter.notifyItemRangeInserted(list.size() - data.size(), data.size());
-                        }
-                        layoutData();
-                        hideLoading();
-                    });
-                }
+            if(getActivity() != null)
+            {
+                getActivity().runOnUiThread(() -> {
+                    list.addAll(data);
+                    if(adapter != null && data.size() > 0) {
+                        adapter.notifyItemRangeInserted(list.size() - data.size(), data.size());
+                    }
+                    layoutData();
+                    hideLoading();
 
-                hasMoreData = data.size() == step;
-                lastIndex += step;
+                    hasMoreData = data.size() == step;
+                    lastIndex += step;
+                });
             }
         }).start();
     }

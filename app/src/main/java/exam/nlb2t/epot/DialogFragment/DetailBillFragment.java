@@ -52,33 +52,38 @@ public class DetailBillFragment extends DialogFragment {
             bill = db.getBillbyID(billID);
             db.closeConnection();
 
-            getActivity().runOnUiThread(() -> {
-                binding.paymentOrderCode.setText(bill.keyBill);;
-                SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-                binding.paymentOrderTime.setText(dateformat.format(bill.createdDate));
-                binding.detailbillNameTake.setText(bill.getAddress()[0]);
-                binding.detailbillPhone.setText(bill.getAddress()[1]);
-                binding.detailbillDetailAddress.setText(bill.getAddress()[2]);
-                binding.generalAddress.setText(bill.getAddress()[3]);
-            });
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    binding.paymentOrderCode.setText(bill.keyBill);
+                    ;
+                    SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                    binding.paymentOrderTime.setText(dateformat.format(bill.createdDate));
+                    binding.detailbillNameTake.setText(bill.getAddress()[0]);
+                    binding.detailbillPhone.setText(bill.getAddress()[1]);
+                    binding.detailbillDetailAddress.setText(bill.getAddress()[2]);
+                    binding.generalAddress.setText(bill.getAddress()[3]);
+                });
+            }
 
             DBControllerProduct db2 = new DBControllerProduct();
             bill.productinBill = db2.getProductInBill(billID);
             db2.closeConnection();
 
-            getActivity().runOnUiThread(() -> {
-                LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                binding.paymentRecyclerProduct.setLayoutManager(layoutManager);
+            if(getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    binding.paymentRecyclerProduct.setLayoutManager(layoutManager);
 
-                adapter = new Product_InBill_Adapter(bill.productinBill);
-                //binding.paymentRecyclerProduct.setAdapter(adapter);
-                binding.paymentRecyclerProduct.swapAdapter(adapter, true);
+                    adapter = new Product_InBill_Adapter(bill.productinBill);
+                    //binding.paymentRecyclerProduct.setAdapter(adapter);
+                    binding.paymentRecyclerProduct.swapAdapter(adapter, true);
 
-                binding.detailbillTransportpricePayment.setText(Helper.getMoneyString(bill.total - bill.sumProductPrice()));
-                binding.detailbillProductpricePayment.setText(Helper.getMoneyString(bill.sumProductPrice()));
-                binding.detailbillTotalpricePayment.setText(Helper.getMoneyString(bill.total));
-            });
+                    binding.detailbillTransportpricePayment.setText(Helper.getMoneyString(bill.total - bill.sumProductPrice()));
+                    binding.detailbillProductpricePayment.setText(Helper.getMoneyString(bill.sumProductPrice()));
+                    binding.detailbillTotalpricePayment.setText(Helper.getMoneyString(bill.total));
+                });
+            }
         }).start();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
