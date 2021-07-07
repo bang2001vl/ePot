@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import exam.nlb2t.epot.Database.DBControllerProduct;
+import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.ProductMyShop;
 import exam.nlb2t.epot.R;
@@ -128,22 +129,29 @@ public class Shop_ProductFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_PRODUCT_FRAGMENT, Shop_ProductFragment.this, (requestKey, result) -> {
             int[] productIDs = result.getIntArray("ProductIDs");
             int[] quantities = result.getIntArray("Quantities");
-            if (productIDs != null)
+            boolean isCancelBill = result.getInt("ToStatus") == BillBaseDB.BillStatus.DEFAULT.getValue();
+            if (productIDs != null && isCancelBill)
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //TODO: reload numbersold
+                        //TODO: reload numbersold if cancel bill
                         synchronized (products) {
                             DBControllerProduct db = new DBControllerProduct();
                             for (int i = 0; i < productIDs.length; i++) {
                                 for (int j = 0; j < products.size(); j++) {
                                     if (productIDs[i] == products.get(j).id) {
+                                        int i2 = i;
+                                        int j2 = j;
                                         //products.get(j).amount += quantities[i];
-                                        products.get(j).amountSold -= quantities[i];
+                                        new Handler(Looper.getMainLooper()).post(()->{
+                                            products.get(j2).amountSold -= quantities[i2];
+                                            if (adapter!=null) adapter.notifyItemChanged(j2);
+                                        });
+                                        db.updateQuantityProduct(productIDs[i], quantities[i]);
                                         break;
                                     }
                                 }
-                                db.updateQuantityProduct(productIDs[i], quantities[i]);
+
                             }
                             db.closeConnection();
                         }
