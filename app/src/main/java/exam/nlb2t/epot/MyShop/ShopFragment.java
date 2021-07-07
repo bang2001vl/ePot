@@ -47,43 +47,6 @@ public class ShopFragment extends Fragment {
         }
     }
 
-    public void reload()
-    {
-        showLoadingScreen();
-        reloadThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                adapter = new Shop_TabAdapter(getChildFragmentManager()
-                        , FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-                if(getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            binding.myShopViewPaper.setAdapter(adapter);
-                            binding.myShopViewPaper.setOffscreenPageLimit(3);
-                            binding.myShopTabLayout.setupWithViewPager(binding.myShopViewPaper);
-                            closeLoadingScreen();
-                        }
-                    });
-                }
-            }
-        });
-
-        reloadThread.start();
-    }
-
-    public void showLoadingScreen()
-    {
-        View view = new LoadingView(getContext());
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        binding.getRoot().addView(view, binding.getRoot().getChildCount());
-    }
-
-    public void closeLoadingScreen()
-    {
-        binding.getRoot().removeViewAt(binding.getRoot().getChildCount() - 1);
-    }
-
     @Override
     public void onResume() {
         super.onResume();

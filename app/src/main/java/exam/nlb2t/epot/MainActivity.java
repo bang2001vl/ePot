@@ -92,12 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         if (position == 1) {
                             onOpenTabCart((CartFragment_Old) adapter.getItem(position));
                         }
-
-                        if (position == 2) {
-                            onOpenTabMyShop((ShopFragment) adapter.getItem(position));
-                        } else {
-                            ((ShopFragment) adapter.getItem(2)).releaseAdapter();
-                        }
                     }
 
                     @Override
@@ -151,11 +145,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void onOpenTabMyShop(ShopFragment fragment)
-    {
-        //fragment.reload();
-    }
-
     public MainFragmentAdapter createAdapter()
     {
         /*Fragment[] fragments = new Fragment[]{
@@ -170,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 new NotificationFragment(),
                 new PersonFragment(this)
         };
-
-
 
         CartFragment_Old fragmentOld = (CartFragment_Old) fragments[1];
         fragmentOld.setOnItemDeleted(view -> {
@@ -297,10 +284,8 @@ public class MainActivity extends AppCompatActivity {
                         // Update notification fragment
                         NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
                         fragment.reload();
-
                     }
                 }
-
             });
         }
     }
