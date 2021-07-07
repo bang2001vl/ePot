@@ -39,7 +39,7 @@ public class NewBillNotificationView extends VertifyBillNotificationView{
     public void createData() {
         setTitle("Bạn có đơn hàng mới");
         setAfterWord("Vui lòng nhanh chóng xác nhận đơn hàng và tiến hành giao hàng.");
-        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_new_bill));
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.newbill));
     }
 
     public void setBillKey(String key)

@@ -111,7 +111,7 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
                 " vừa được gửi đến bạn."
         );
         viewHolder.setAfterWord("Vui lòng nhanh chóng xác nhận đơn hàng và tiến hành giao hàng.");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_new_bill));
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.newbill));
     }
 
     void bindingNotify_VertifyBill(NotifyViewHolder viewHolder, String key)
@@ -123,14 +123,14 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
                 " đã được xác nhận thành công."
         );
         viewHolder.setAfterWord("Người bán đã xác nhận và đơn hàng sẽ sớm được giao đến bạn.");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_tranport));
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.vertifybill));
     }
 
     void bindingNotify_Success_Customer(NotifyViewHolder viewHolder, String key)
     {
         viewHolder.setTitle("Nhận hàng thành công");
         viewHolder.setAfterWord("Mong bạn có thể dành chút thời gian để nhận xét về sản phẩm");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_received_bill));
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.deliverybill));
         viewHolder.setContent(
                 "Đơn hàng ",
                 key,
@@ -140,9 +140,9 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
 
     void bindingNotify_Success_saler(NotifyViewHolder viewHolder, String key)
     {
-        viewHolder.setTitle("Giao hàng thành công");
-        viewHolder.setAfterWord("Chúc bạn sẽ có nhiều đơn hàng thành công hơn nữa với ePot");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_paid));
+        viewHolder.setTitle("Giao hàng thành công!");
+        viewHolder.setAfterWord("Chúc bạn sẽ có nhiều đơn hàng thành công hơn nữa với ePot!");
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.money));
         viewHolder.setContent(
                 "Đơn hàng ",
                 key,
@@ -152,9 +152,9 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
 
     void bindingNotify_Unvertify(NotifyViewHolder viewHolder, String key)
     {
-        viewHolder.setTitle("Không thể xác nhận đơn hàng");
-        viewHolder.setAfterWord("Về trang chủ để lập đơn hàng mới ngay nào");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_unvertify));
+        viewHolder.setTitle("Người bán không xác nhận đơn hàng");
+        viewHolder.setAfterWord("Về trang chủ để lập đơn hàng mới ngay nào!");
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.failbill));
         viewHolder.setContent(
                 "Đơn hàng ",
                 key,
@@ -166,7 +166,7 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
     {
         viewHolder.setTitle("Không giao hàng thành công");
         viewHolder.setAfterWord("Thua keo này ta bày keo khác. Tiếp tục cố gắng nào !");
-        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.icon_notify_failed));
+        viewHolder.setBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.faildelivery));
         viewHolder.setContent(
                 "Đơn hàng ",
                 key,

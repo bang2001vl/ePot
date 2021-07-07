@@ -13,7 +13,7 @@
             android:id="@+id/shop_image"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/shop"
+            android:src="@drawable/profile_user"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"/>
         <TextView

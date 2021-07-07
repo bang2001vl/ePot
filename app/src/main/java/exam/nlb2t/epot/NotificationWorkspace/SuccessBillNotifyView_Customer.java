@@ -31,7 +31,7 @@ public class SuccessBillNotifyView_Customer extends VertifyBillNotificationView{
     public void createData() {
         setTitle("Nhận hàng thành công");
         setAfterWord("Mong bạn có thể dành chút thời gian để nhận xét về sản phẩm");
-        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_received_bill));
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.deliverybill));
     }
 
     @Override
