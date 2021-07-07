@@ -999,10 +999,11 @@ public class DBControllerProduct extends DatabaseController{
 
     public void updateQuantityProduct(int productID, int quantity) {
         try {
-            String sql = "UPDATE [PRODUCT] SET AMOUNT_SOLD = AMOUNT_SOLD - ? WHERE ID = ?";
+            String sql = "UPDATE [PRODUCT] SET AMOUNT_SOLD = AMOUNT_SOLD - ?, AMOUNT = AMOUNT - ? WHERE ID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1,quantity);
-            statement.setInt(2,productID);
+            statement.setInt(2,quantity);
+            statement.setInt(3,productID);
 
             if(statement.executeUpdate() == 1) {
                 commit();

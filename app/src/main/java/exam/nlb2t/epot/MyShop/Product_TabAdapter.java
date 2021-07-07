@@ -181,6 +181,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
                 //TODO: Open dialog view update_product.xml
                 AddProductFragment dialog = new AddProductFragment(products.get(holder.getAbsoluteAdapterPosition()));
                 dialog.setOnSubmitOKListener(l -> {
+                    notifyItemChanged(holder.getAbsoluteAdapterPosition());
                     if(onUpdatedListener != null){
                         onUpdatedListener.OnSuccess(holder.getBindingAdapterPosition());
                     }
@@ -233,7 +234,7 @@ public class Product_TabAdapter extends RecyclerView.Adapter<Product_TabAdapter.
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.menu_product_sale:
-                        //MEANS: Open change product dialog
+                        //MEANS: Open Change Price product dialog
                         SaleDialog dialog = new SaleDialog(products.get(holder.getBindingAdapterPosition()));
                         dialog.setOnDismissListener((d)->{
                             int position = holder.getAbsoluteAdapterPosition();

@@ -40,15 +40,34 @@ public class Shop_OverviewFragment extends Fragment {
     }
 
     void setEventHandler() {
-        //TODO : Write code here <Set all listener in here>
         getParentFragmentManager().setFragmentResultListener(Shop_BillFragment.NOTIFY_STATUS_CHANGED_TO_OVERVIEW_FRAGMENT,
                 Shop_OverviewFragment.this, (resquestKey, result) -> {
+                    //MEANS: Change layout when status of bill is tranfer in tab "Order"
+
                     new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
                 });
+
         getParentFragmentManager().setFragmentResultListener(Shop_OrderFragment.NOTIFY_BILL_WAIT_CONFIRM_ADDED,
-                Shop_OverviewFragment.this, ((requestKey, result) -> {
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> loadData(), 100);
-                }));
+                Shop_OverviewFragment.this, (requestKey, result) -> {
+                    //MEANS: Change Layout when Customer order one or more than product in MyShop
+
+                    DBControllerBill db = new DBControllerBill();
+                    int[] listNumber = db.getAllNumberBill(Authenticator.getCurrentUser().id);
+                    db.closeConnection();
+
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> binding.itemConfirm.setValue(listNumber[BillBaseDB.BillStatus.WAIT_CONFIRM.getValue()]), 100);
+                });
+
+        getParentFragmentManager().setFragmentResultListener(Shop_ProductFragment.NOTIFY_WAREHOUSE_CHANGED,
+                Shop_OverviewFragment.this, (requestKey, result) -> {
+                    //MEANS: Change Layout when WareHouse of product is change, check again out of stock
+
+                    DBControllerProduct db = new DBControllerProduct();
+                    int outofstockvalue = db.getNumberProductOutofStock(Authenticator.getCurrentUser().id);
+                    db.closeConnection();
+
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> binding.itemOutofstock.setValue(outofstockvalue), 100);
+                });
     }
 
     public void loadData() {

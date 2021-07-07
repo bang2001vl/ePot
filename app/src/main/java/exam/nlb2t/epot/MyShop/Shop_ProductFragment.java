@@ -45,6 +45,7 @@ public class Shop_ProductFragment extends Fragment {
     Product_TabAdapter adapter;
     public List<ProductMyShop> products;
 
+    public static String NOTIFY_WAREHOUSE_CHANGED = "NotifyWareHouseChanged";
     //Handler mhandler = new Handler(Looper.myLooper());
 
     private final int NUMBER_BEHIND_ITEM_IN_SCROLL = 2;
@@ -77,6 +78,7 @@ public class Shop_ProductFragment extends Fragment {
         });
         adapter.setOnUpdatedListener(obj->{
             Success_toast.show(getContext(), "Thay đổi thành công", true);
+            getParentFragmentManager().setFragmentResult(NOTIFY_WAREHOUSE_CHANGED, new Bundle());
         });
         adapter.setOnDeletedListener(obj->{
             Success_toast.show(getContext(), "Ngừng bán thành công", true);
@@ -145,6 +147,7 @@ public class Shop_ProductFragment extends Fragment {
                                         //products.get(j).amount += quantities[i];
                                         new Handler(Looper.getMainLooper()).post(()->{
                                             products.get(j2).amountSold -= quantities[i2];
+                                            products.get(j2).amount -= quantities[i2];
                                             if (adapter!=null) adapter.notifyItemChanged(j2);
                                         });
                                         db.updateQuantityProduct(productIDs[i], quantities[i]);
