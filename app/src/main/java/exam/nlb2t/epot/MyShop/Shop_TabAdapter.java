@@ -19,6 +19,11 @@ public class Shop_TabAdapter extends FragmentStatePagerAdapter {
         fragments[2] = new Shop_OrderFragment();
     }
 
+    public void reloadBill_InShipping(){
+        Shop_OrderFragment shopOrderFragment = (Shop_OrderFragment) fragments[2];
+        shopOrderFragment.reloadData_InShipping();
+    }
+
     @Override
     public int getCount() {
         return tagTitles.length;
@@ -35,4 +40,6 @@ public class Shop_TabAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         return fragments[position];
     }
+
+
 }

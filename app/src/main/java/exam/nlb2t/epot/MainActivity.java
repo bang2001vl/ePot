@@ -283,12 +283,16 @@ public class MainActivity extends AppCompatActivity {
                 if(countNoti != countUnreadNoti) {
                     countNoti = countUnreadNoti;
                     MainActivity.this.setNumberNotification(countNoti, 3);
-                    if(this.binding != null){
+                    if(this.binding != null && this.isRunning){
                         // Update notification fragment
                         MainFragmentAdapter adapter = (MainFragmentAdapter) binding.viewPaperMain.getAdapter();
                         if(adapter == null) return;
                         NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
                         fragment.reload();
+
+                        // Update store's bill
+                        ShopFragment shopFragment = (ShopFragment) adapter.getItem(2);
+                        shopFragment.reloadBill_Inshipping();
                     }
                 }
             });

@@ -40,6 +40,10 @@ public class ShopFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    public void reloadBill_Inshipping(){
+        adapter.reloadBill_InShipping();
+    }
+
     public void reload()
     {
         showLoadingScreen();
