@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_tag_salepro"
                     android:background="@drawable/bg_tag_sale"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="@string/Sale"
                     android:textSize="13sp"
@@ -139,7 +139,6 @@
             android:textAlignment="viewStart"
             android:textColor="#9B9B9B"
             android:textSize="12sp"
-            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
