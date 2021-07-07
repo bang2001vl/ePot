@@ -1,5 +1,6 @@
 package exam.nlb2t.epot.MyShop;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +29,15 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     String[] tabtitles;
     Fragment[] fragments;
     Fragment[] emptyfragments;
-    //int fromIndex = -1;
+    FragmentManager fragmentManager;
     //int toIndex = -1;
+    //int fromIndex = -1;
     public static int NUMBER_BILL_LOAD_DONE;
 
     public Order_TabAdapter(@NonNull FragmentManager frag, int behavior) {
         super(frag, behavior);
 
+        this.fragmentManager = frag;
         NUMBER_BILL_LOAD_DONE = 0;
 
         tabtitles = new String[]{"Tất cả", "Chờ xác nhận", "Đang giao", "Đơn hủy", "Thành công"};
@@ -158,6 +161,27 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
     public void LoadInitData() {
         for (int i = 0; i < fragments.length; i++) {
             ((Shop_BillFragment)fragments[i]).loadAsyncData();
+        }
+    }
+
+    public void ReloadBill(BillBaseDB.BillStatus status) {
+        for (int i = 0; i < tabtitles.length; i++) {
+            Shop_BillFragment frag = (Shop_BillFragment)fragments[i];
+            if (frag.statusBill == status) {
+                NUMBER_BILL_LOAD_DONE --;
+
+                Shop_BillFragment newBill = new Shop_BillFragment(status);
+
+                newBill.setNotifyStatusChangedListener((f,t,b)->receiveNotifyStatusChanged(f,t,b));
+                newBill.setOnListBillChanged(()->{
+                    if (NUMBER_BILL_LOAD_DONE == fragments.length) {
+                        notifyDataSetChanged();
+                    }
+                });
+
+                newBill.loadAsyncData();
+                fragments[i] = newBill;
+            }
         }
     }
 }
