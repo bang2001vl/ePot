@@ -51,7 +51,7 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
                     binding.btnRating.setOnClickListener(v->{
                         int star = binding.startMyRating.getProgress();
                         String comment = binding.reviewMyRating.getText().toString();
-                        new Thread(()->{
+
                             DBControllerRating db2 = new DBControllerRating();
                             boolean isOK = db2.updateRating(ratingID, productID, star, comment);
                             db2.closeConnection();
@@ -63,9 +63,9 @@ public class RatingProductDialogFragment_Edit extends RatingProductDialogFragmen
                                 else {
                                     Error_toast.show(getContext(), "Có lỗi xảy ra", true);
                                 }
+                                RatingProductDialogFragment_Edit.this.dismiss();
                             });
-                        }).start();
-                        RatingProductDialogFragment_Edit.this.dismiss();
+
                     });
                 }
                 else

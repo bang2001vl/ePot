@@ -54,7 +54,7 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
         binding.btnRating.setOnClickListener(v->{
             int star = binding.startMyRating.getProgress();
             String comment = binding.reviewMyRating.getText().toString();
-            new Thread(()->{
+
                 DBControllerRating db = new DBControllerRating();
                 boolean isOK = db.insertRating(productID, userID, star, comment);
                 db.closeConnection();
@@ -67,9 +67,8 @@ public class RatingProductDialogFragment extends BottomSheetDialogFragment {
                     else {
                         Error_toast.show(getContext(), "Có lỗi xảy ra", true);
                     }
+                    RatingProductDialogFragment.this.dismiss();
                 });
-            }).start();
-            RatingProductDialogFragment.this.dismiss();
         });
 
 

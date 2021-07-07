@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
     int color2;
 
     int countNoti;
+    int userID;
+
+    public MainActivity(){
+        userID = Authenticator.getCurrentUser().id;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
+                if(!isRunning) return;
                 if(notiThread == null || !notiThread.isAlive()) {
                     notiThread = new Thread(new Runnable() {
                         @Override
@@ -237,9 +243,8 @@ public class MainActivity extends AppCompatActivity {
                     });
                     notiThread.start();
                 }
-                if(isRunning) {
-                    mainHandler.postDelayed(this, 10000);
-                }
+                // It already running, so wait next loop
+                mainHandler.postDelayed(this, 10000);
             }
         });
     }
@@ -248,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MY_TAG", "Looper: Count unread notification");
 
         if(!Helper.checkConnectionToServer()){
-            new Handler(Looper.getMainLooper()).post(()->{
+            runOnUiThread(()->{
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Lỗi")
                         .setMessage("Không thể kết nối đến server")
@@ -270,9 +275,22 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        DBControllerNotification db = new DBControllerNotification();
+        int countUnreadNoti = db.countUnreadNoti(this.userID);
+        db.closeConnection();
         if(MainActivity.this.binding != null) {
             MainActivity.this.runOnUiThread(() -> {
-                MainActivity.this.setNumberNotification(countNoti, 3);
+                if(countNoti != countUnreadNoti) {
+                    countNoti = countUnreadNoti;
+                    MainActivity.this.setNumberNotification(countNoti, 3);
+                    if(this.binding != null){
+                        // Update notification fragment
+                        MainFragmentAdapter adapter = (MainFragmentAdapter) binding.viewPaperMain.getAdapter();
+                        if(adapter == null) return;
+                        NotificationFragment fragment = (NotificationFragment) adapter.getItem(3);
+                        fragment.reload();
+                    }
+                }
             });
         }
     }
@@ -291,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             iconLayoutBinding.tvNumberRequest.setVisibility(View.GONE);
         }
-        countNoti = num;
     }
 
     public void decreaseNumberNotification(){
