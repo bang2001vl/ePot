@@ -15,7 +15,9 @@ import com.google.android.material.snackbar.Snackbar;
 import de.hdodenhof.circleimageview.CircleImageView;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.R;
+import exam.nlb2t.epot.SearchActivity;
 import exam.nlb2t.epot.Views.BaseCustomViewGroup;
+import exam.nlb2t.epot.Views.Search_Product.fragment_search;
 
 public class SalerOverviewView extends BaseCustomViewGroup {
     public SalerOverviewView(Context context) {
@@ -51,9 +53,20 @@ public class SalerOverviewView extends BaseCustomViewGroup {
         txtSalerName.setText(saler.fullName);
         txtSalerUsername.setText("@" + saler.username);
 
+        hideButtonMore();
+
         if(avatar != null) {
             CircleImageView imageView = findViewById(R.id.avt_saler_product_detail);
             imageView.setImageBitmap(avatar);
         }
+    }
+
+    public void hideButtonMore(){
+        findViewById(R.id.btn_more_saler_product_detail).setVisibility(INVISIBLE);
+    }
+
+    public void showButtonMore(View.OnClickListener clickListener){
+        findViewById(R.id.btn_more_saler_product_detail).setVisibility(VISIBLE);
+        findViewById(R.id.btn_more_saler_product_detail).setOnClickListener(clickListener);
     }
 }

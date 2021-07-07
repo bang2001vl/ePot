@@ -17,10 +17,12 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentFavoriteProdBinding;
+import exam.nlb2t.epot.fragment_ProItem_Container;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 
@@ -56,6 +58,14 @@ public class FavoriteProdFragment extends DialogFragment {
         {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         binding.mainRecyclerView.setLayoutManager(gridLayoutManager);
+        ProductAdapter productAdapter = new ProductAdapter(list, getContext());
+        productAdapter.setOnItemClickListener(new fragment_ProItem_Container.OnClickItemListener() {
+            @Override
+            public void onClick(int position, int productID) {
+                ProductDetailFragment fragment = new ProductDetailFragment(productID);
+                fragment.show(getChildFragmentManager(), "detail");
+            }
+        });
         binding.mainRecyclerView.setAdapter(new ProductAdapter(list, getContext()));}
 
     }
