@@ -49,7 +49,7 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/Sale"
                     android:textSize="13sp"
-                    android:padding="4dp"
+                    android:padding="5dp"
                     android:textAlignment="center"
                     android:textColor="@color/white">
                 </TextView>
