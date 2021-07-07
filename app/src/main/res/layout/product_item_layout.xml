@@ -95,11 +95,11 @@
             android:id="@+id/textview_proName"
             android:maxLines="2"
             android:text="@string/productname"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="#222222"
             android:textAlignment="viewStart"
             android:fontFamily="@font/gilroy_bold"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="7dp"
             />
 
         <LinearLayout
@@ -113,10 +113,10 @@
                 android:id="@+id/textview_proPrice"
                 android:text="@string/new_price"
                 android:textSize="12sp"
-                android:fontFamily="@font/gilroy_medium"
+                android:fontFamily="@font/gilroy_bold"
                 android:textColor="#DB3022"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp" />
+                android:layout_marginStart="7dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -124,24 +124,24 @@
                 android:id="@+id/textview_proSold"
                 android:layout_marginHorizontal="5dp"
                 android:text="@string/Sold"
-                android:fontFamily="@font/gilroy_medium"
+                android:fontFamily="@font/gilroy_regular"
                 android:textAlignment="textEnd"
                 android:textColor="#9B9B9B"
                 android:textSize="10sp" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/textview_OldproPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="7dp"
+            android:fontFamily="@font/gilroy_regular"
             android:text="@string/old_price"
-            android:fontFamily="@font/gilroy_medium"
             android:textAlignment="viewStart"
             android:textColor="#9B9B9B"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -79,7 +79,7 @@
             android:textColor="@color/black"
             android:background="?selectableItemBackground"
             android:textAllCaps="false"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null">
         </Button>
         <GridLayout
@@ -208,7 +208,7 @@
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="17dp"
             app:iconPadding="20dp"
             app:strokeColor="@color/mainColor"
             app:strokeWidth="2dp"></Button>
@@ -224,14 +224,14 @@
                 android:layout_height="wrap_content"
                 android:text="3 Newbridge Court"
                 android:fontFamily="@font/gilroy_light"
-                android:layout_marginLeft="40dp"/>
+                android:layout_marginLeft="50dp"/>
             <TextView
                 android:id="@+id/tv_city_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chino Hills, CA 91709, United States"
                 android:fontFamily="@font/gilroy_light"
-                android:layout_marginLeft="40dp" />
+                android:layout_marginLeft="50dp" />
 
         </LinearLayout>
         <View
@@ -259,7 +259,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:iconPadding="20dp"
-            android:textSize="16dp"></Button>
+            android:textSize="17dp"></Button>
 
         <View
             android:layout_width="match_parent"
@@ -284,7 +284,7 @@
             android:textColor="@color/black"
             android:background="?selectableItemBackground"
             android:textAllCaps="false"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null">
         </Button>
         <View
@@ -311,7 +311,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:iconPadding="20dp"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null"></Button>
 
         <View
