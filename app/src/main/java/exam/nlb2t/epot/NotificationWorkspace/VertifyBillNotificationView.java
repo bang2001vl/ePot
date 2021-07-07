@@ -53,7 +53,7 @@ public class VertifyBillNotificationView extends BaseCustomViewGroup {
 
     public void createData()
     {
-        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_vertify_bill));
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.vertifybill));
     }
 
     public void setTitle(String title)

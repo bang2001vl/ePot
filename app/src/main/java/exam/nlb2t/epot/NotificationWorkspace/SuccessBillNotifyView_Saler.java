@@ -31,7 +31,7 @@ public class SuccessBillNotifyView_Saler extends VertifyBillNotificationView{
     public void createData() {
         setTitle("Giao hàng thành công!");
         setAfterWord("Chúc bạn sẽ có nhiều đơn hàng thành công hơn nữa với ePot!");
-        setBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_notify_paid));
+        setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.money));
     }
 
     @Override

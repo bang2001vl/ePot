@@ -23,7 +23,6 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/shop_image"
             android:layout_marginLeft="10dp"
-            android:text="16.junee"
             android:fontFamily="@font/gilroy_regular"
             android:textColor="@color/black" />
         <TextView
@@ -34,7 +33,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:text="5-12-2019"
             android:fontFamily="@font/gilroy_medium"
             android:textSize="12dp"/>
     </RelativeLayout>
@@ -54,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_title_ID_Order"
-            android:text="IW3475453455"
             android:textColor="@color/black"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
@@ -75,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title_ID_Order"
             android:layout_toRightOf="@id/tv_title_amount"
-            android:text="-1"
             android:textColor="@color/black"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
@@ -87,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tv_title_ID_Order"
-            android:text="122.000đ"
             android:textColor="@color/black"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
@@ -111,7 +106,6 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_alignParentRight="true"
-           android:text="Trạng thái"
            android:layout_centerVertical="true"
            android:textColor="#2AA952"
            android:layout_marginRight="40dp"
