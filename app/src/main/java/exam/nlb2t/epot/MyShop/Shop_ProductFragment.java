@@ -205,6 +205,7 @@ public class Shop_ProductFragment extends Fragment {
             adapter.notifyItemRangeRemoved(0, oldLength);
         }
         adapter.lastIndex = 0;
+        adapter.isfullProducts = false;
         getActivity().runOnUiThread(()->adapter.addItemToList(adapter.mHandler));
     }
 
