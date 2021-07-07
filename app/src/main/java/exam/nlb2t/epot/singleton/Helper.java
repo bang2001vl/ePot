@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,14 @@ public class Helper {
     public static Date getDateFromLocalToUTC(int year, int month, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.set(year, month, day, hour, minute);
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date rs = new Date(calendar.getTimeInMillis());
+        return rs;
+    }
+
+    public static Date getDateFromLocalToUTC(long totalInMillis) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(totalInMillis);
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date rs = new Date(calendar.getTimeInMillis());
         return rs;
@@ -120,14 +130,37 @@ public class Helper {
 
     public static Date getDateLocalFromUTC(Date utcDate) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(utcDate);
+        calendar.setTimeInMillis(utcDate.getTime());
         calendar.setTimeZone(TimeZone.getDefault());
 
         return new Date(calendar.getTimeInMillis());
     }
 
+    public static Timestamp getDateLocalFromUTC(long millis) {
+        /*Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.setTimeInMillis(millis);
+        long utc = calendar.getTimeInMillis();
+        calendar.setTimeZone(TimeZone.getDefault());
+        long local = calendar.getTimeInMillis();*/
+        return new Timestamp(millis - getLocalToUtcDelta());
+    }
+
+    public static long getLocalToUtcDelta() {
+        Calendar local = Calendar.getInstance();
+        local.clear();
+        local.set(1970, Calendar.JANUARY, 1, 1, 0, 0);
+        long a = local.getTimeInMillis();
+        return local.getTimeInMillis();
+    }
+
     public static DateFormat getDateFormat() {
         @SuppressLint("SimpleDateFormat") DateFormat rs = new SimpleDateFormat("dd/MM/yyyy");
+        rs.setTimeZone(TimeZone.getDefault());
+        return rs;
+    }
+
+    public static DateFormat getDateTimeFormat() {
+        @SuppressLint("SimpleDateFormat") DateFormat rs = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         rs.setTimeZone(TimeZone.getDefault());
         return rs;
     }

@@ -59,6 +59,8 @@ public class NotifyViewAdapter extends RecyclerView.Adapter<NotifyViewAdapter.No
         NotifycationInfo info = list.get(position);
         NotificationBaseDB noti = info.notification;
 
+        holder.binding.tvNotiDate.setText(Helper.getDateTimeFormat().format(noti.createdDate));
+
         if(noti.newStatus == 1)
         {
             bindingNotify_NewBill(holder, info.keyBill);

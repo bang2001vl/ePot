@@ -2,6 +2,7 @@ package exam.nlb2t.epot.Database.Tables;
 
 import android.graphics.Bitmap;
 
+import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
     public int amountSold; //[PRODUCT].[AMOUNT_SOLD]
     public String description; //[PRODUCT].[DETAIL]
     public int imagePrimaryID; //[PRODUCT].[PRIMARY_IMAGE_ID]
-    public Date createdDate; //[PRODUCT].[CREATED_DATE]
+    public Timestamp createdDate; //[PRODUCT].[CREATED_DATE]
     public int deleted; //[PRODUCT].[DELETED]
     public float starAverage; //[PRODUCT].[STAR_AVG]
     public Bitmap imageProduct;
@@ -91,7 +92,7 @@ public class ProductBaseDB implements Comparable<ProductAdapterItemInfo>{
         amountSold = 1;
         description = "description";
         imagePrimaryID = 3;
-        createdDate = new Date(System.currentTimeMillis());
+        createdDate = new Timestamp(System.currentTimeMillis());
         deleted = 0;
     }
 

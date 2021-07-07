@@ -1,9 +1,12 @@
 package exam.nlb2t.epot.Database;
 
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,9 @@ public class DBControllerNotification extends DatabaseController{
                 noti.oldStatus = resultSet.getInt(i);i++;
                 noti.newStatus = resultSet.getInt(i);i++;
                 noti.hasRead = (resultSet.getInt(i) != 0);i++;
-                noti.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
+
+                noti.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
+
                 noti.billID = resultSet.getInt(i);i++;
 
                 NotifycationInfo info = new NotifycationInfo();

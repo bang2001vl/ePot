@@ -307,7 +307,7 @@ public class DBControllerProduct extends DatabaseController{
                 rs.amountSold = resultSet.getInt(i);i++;
                 rs.imagePrimaryID = resultSet.getInt(i);i++;
                 rs.description = resultSet.getString(i);i++;
-                rs.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate(i));i++;
+                rs.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 rs.deleted = resultSet.getInt(i);i++;
                 rs.starAverage = resultSet.getFloat(i);i++;
             }
@@ -369,7 +369,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);i++;
 
                 rs.add(item);
@@ -409,7 +409,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt("AMOUNT_SOLD");
                 item.imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
                 item.description = resultSet.getString("DETAIL");
-                item.createdDate = resultSet.getDate("CREATED_DATE");
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
 
 //                InputStream is = resultSet.getBinaryStream("PRIMARY_IMAGE");
 //                BitmapFactory.Options options = new BitmapFactory.Options();
@@ -458,7 +458,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt("AMOUNT_SOLD");
                 item.imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
                 item.description = resultSet.getString("DETAIL");
-                item.createdDate = resultSet.getDate("CREATED_DATE");
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
 
                 item.numberLike =  getNumberLikeProduct(item.id);
 
@@ -497,7 +497,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt("AMOUNT_SOLD");
                 item.imagePrimaryID = resultSet.getInt("PRIMARY_IMAGE_ID");
                 item.description = resultSet.getString("DETAIL");
-                item.createdDate = resultSet.getDate("CREATED_DATE");
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
 
                 item.numberLike =  getNumberLikeProduct(item.id);
                 rs.add(item);
@@ -536,7 +536,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);i++;
                 item.starAverage = resultSet.getFloat(i);i++;
 
@@ -705,7 +705,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);i++;
                 item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
 
@@ -752,7 +752,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);i++;
                 item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
                 i++;
@@ -799,7 +799,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
                 item.description = resultSet.getString(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);++i;
                 item.imageProduct = BitmapFactory.decodeStream(resultSet.getBinaryStream(i));
                 i++;
@@ -879,7 +879,7 @@ public class DBControllerProduct extends DatabaseController{
                 item.amount = resultSet.getInt(i);i++;
                 item.amountSold = resultSet.getInt(i);i++;
                 item.imagePrimaryID = resultSet.getInt(i);i++;
-                item.createdDate = resultSet.getDate(i);i++;
+                item.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp(i).getTime());i++;
                 item.deleted = resultSet.getInt(i);i++;
                 item.starAverage = resultSet.getFloat(i);i++;
                 rs.add(item);

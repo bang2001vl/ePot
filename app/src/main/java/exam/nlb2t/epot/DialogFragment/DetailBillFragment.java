@@ -56,8 +56,8 @@ public class DetailBillFragment extends DialogFragment {
                 getActivity().runOnUiThread(() -> {
                     binding.paymentOrderCode.setText(bill.keyBill);
                     ;
-                    SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-                    binding.paymentOrderTime.setText(dateformat.format(bill.createdDate));
+                    //SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                    binding.paymentOrderTime.setText(Helper.getDateTimeFormat().format(bill.createdDate));
                     binding.detailbillNameTake.setText(bill.getAddress()[0]);
                     binding.detailbillPhone.setText(bill.getAddress()[1]);
                     binding.detailbillDetailAddress.setText(bill.getAddress()[2]);

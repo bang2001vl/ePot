@@ -1,6 +1,7 @@
 package exam.nlb2t.epot.Database.Tables;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class NotificationBaseDB {
     public int id;
@@ -9,5 +10,5 @@ public class NotificationBaseDB {
     public int oldStatus;
     public int newStatus;
     public boolean hasRead;
-    public Date createdDate;
+    public Timestamp createdDate;
 }

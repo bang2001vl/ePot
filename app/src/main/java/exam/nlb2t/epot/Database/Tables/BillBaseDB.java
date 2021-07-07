@@ -3,6 +3,7 @@ package exam.nlb2t.epot.Database.Tables;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class BillBaseDB {
 
     public int id; //[BILL].[ID]
     public int userID; //[BILL].[USER_ID]
-    public Date createdDate; //[BILL].[CREATED_DATE]
+    public Timestamp createdDate; //[BILL].[CREATED_DATE]
     public String keyBill; //[BILL].[KEYBILL]
     public String address; //[BILL].[ADDRESS]
     public BillStatus status; //[BILL].[STATUS]

@@ -171,7 +171,7 @@ public class DBControllerBill extends DatabaseController {
 
                 bill.id = resultSet.getInt("ID");
                 bill.address = resultSet.getString("ADDRESS");
-                bill.createdDate = resultSet.getDate("CREATED_DATE");
+                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
                 bill.keyBill = resultSet.getString("KEYBILL");
                 bill.total = resultSet.getInt("TOTAL");
                 bill.userID = resultSet.getInt("USER_ID");
@@ -231,7 +231,7 @@ public class DBControllerBill extends DatabaseController {
 
                 bill.id = resultSet.getInt("ID");
                 bill.address = resultSet.getString("ADDRESS");
-                bill.createdDate = resultSet.getDate("CREATED_DATE");
+                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
                 bill.keyBill = resultSet.getString("KEYBILL");
                 bill.total = resultSet.getInt("TOTAL");
                 bill.salerID = resultSet.getInt("SALER_ID");
@@ -278,7 +278,7 @@ public class DBControllerBill extends DatabaseController {
                 bill.salerID = salerID;
                 bill.keyBill = resultSet.getString("KEYBILL");
                 bill.total = resultSet.getLong("TOTAL");
-                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getDate("CREATED_DATE"));
+                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
                 bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt("STATUS")];
                 bill.userID = resultSet.getInt("USER_ID");
                 bill.address = resultSet.getString("ADDRESS");
@@ -347,7 +347,7 @@ public class DBControllerBill extends DatabaseController {
                 bill.status = BillBaseDB.BillStatus.values()[resultSet.getInt("STATUS")];
                 bill.address = resultSet.getString("ADDRESS");
                 bill.total = resultSet.getInt("TOTAL");
-                bill.createdDate = resultSet.getDate("CREATED_DATE");
+                bill.createdDate = Helper.getDateLocalFromUTC(resultSet.getTimestamp("CREATED_DATE").getTime());
                 bill.salerID = resultSet.getInt("SALER_ID");
                 bill.userID = resultSet.getByte("USER_ID");
             }
