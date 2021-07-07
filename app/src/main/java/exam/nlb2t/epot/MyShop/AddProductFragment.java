@@ -55,7 +55,7 @@ public class AddProductFragment extends DialogFragment {
     {
         if(imagePrimary == null)
         {
-            Snackbar.make(binding.getRoot(), "Ảnh chính không thể trống", BaseTransientBottomBar.LENGTH_LONG).show();
+            Error_toast.show(getContext(), "Ảnh chính không thể trống", true);
         }
         return imagePrimary;
     }
@@ -120,15 +120,15 @@ public class AddProductFragment extends DialogFragment {
 
             binding.imagePrimary.setOnClickListener(v->{
                 //TODO: Show message "Not change image" when click
-                Toast.makeText(getContext(),"Không thể chỉnh sửa ảnh đại diện",Toast.LENGTH_SHORT).show();
+                Error_toast.show(getContext(),"Không thể chỉnh sửa ảnh đại diện",true);
             });
             binding.editTextTextProductName.setOnClickListener(v->{
                 //TODO: Show message "Not change name" when click
-                Toast.makeText(getContext(),"Không thể chỉnh sửa tên mặt hàng",Toast.LENGTH_SHORT).show();
+                Error_toast.show(getContext(),"Không thể chỉnh sửa tên mặt hàng", true);
             });
             binding.editTextNumberDecimal.setOnClickListener(v->{
                 //TODO: Show message "Not change price" when click
-                Toast.makeText(getContext(),"Không thể chỉnh sửa giá gốc của mặt hàng",Toast.LENGTH_SHORT).show();
+                Error_toast.show(getContext(),"Không thể chỉnh sửa giá gốc của mặt hàng",true);
             });
 
             binding.imagePrimary.setFocusable(false);
@@ -195,7 +195,7 @@ public class AddProductFragment extends DialogFragment {
                     }
                 }
                 else {
-                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+                    Error_toast.show(getContext(), "Lỗi kết nối với đatabasse", true);
                 }
                 databaseController.closeConnection();
             }
@@ -231,13 +231,13 @@ public class AddProductFragment extends DialogFragment {
 //                    }
 //                }
 //                else {
-//                    Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+//                    Error_toast.show(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
 //                }
 //                db.closeConnection();
 //            }
         }
         else {
-            Snackbar.make(binding.getRoot(), "Có thông tin chưa hợp lệ", BaseTransientBottomBar.LENGTH_LONG).show();
+            Error_toast.show(getContext(), "Có thông tin chưa hợp lệ", true);
         }
     }
 
@@ -281,7 +281,7 @@ public class AddProductFragment extends DialogFragment {
                 }
             }
             else {
-                Toast.makeText(getContext(), "Lỗi kết nối với đatabasse", Toast.LENGTH_LONG).show();
+                Error_toast.show(getContext(), "Lỗi kết nối với đatabasse", true);
             }
             db.closeConnection();
         }
@@ -299,7 +299,7 @@ public class AddProductFragment extends DialogFragment {
         if (productBefore != null) return productBefore.priceOrigin;
         try {
             rs = Integer.parseInt(editText.getText().toString());
-            if(rs < 0 || ((rs%1000) != 0)){
+            if(rs < 1 || ((rs%1000) != 0)){
                 throw new NumberFormatException();}
             else {return rs;}
         }
