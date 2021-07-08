@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Không có đánh giá nào."
-            android:fontFamily="@font/gilroy_medium"
             android:textSize="18dp"
             android:textColor="#363434"
             android:layout_marginTop="20dp"

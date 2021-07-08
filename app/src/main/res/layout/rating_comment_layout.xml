@@ -59,7 +59,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_content_comment_rating"
             android:textColor="@color/black"
-            android:fontFamily="@font/gilroy_light"
             android:text="Mụn đầu đen mới thì mới ra nha các bác, còn mụn lâu năm thì phải cạy ra rồi chứ cái nào hút cho nổi. Mụn cám gạo thì ra sạch. Sản phẩm ookk. giá mắc hơn các sp khác chút đá tiềngn"
             app:layout_constraintStart_toStartOf="@id/txt_customer_name_comment_rating"
             app:layout_constraintEnd_toEndOf="parent"

@@ -70,7 +70,6 @@
                 android:id="@+id/TotalCmt"
                 android:text="@string/Cmt"
                 android:textSize="8sp"
-                android:fontFamily="@font/gilroy_medium"
                 android:gravity="center"
                 android:layout_marginStart="2dp"
                 android:visibility="gone"
