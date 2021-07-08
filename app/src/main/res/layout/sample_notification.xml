@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Đơn hàng đã được xác nhận !"
             android:textColor="@color/black"
-            android:fontFamily="@font/gilroy_medium"
             android:textSize="15dp"
             android:background="@color/transparent"/>
         <!--<LinearLayout
