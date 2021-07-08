@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,11 +63,12 @@ public class FavoriteProdFragment extends DialogFragment {
         productAdapter.setOnItemClickListener(new fragment_ProItem_Container.OnClickItemListener() {
             @Override
             public void onClick(int position, int productID) {
-                ProductDetailFragment fragment = new ProductDetailFragment(productID);
-                fragment.show(getChildFragmentManager(), "detail");
+                Log.d("MY_TAG", "Open product with id = " + productID);
+                ProductDetailFragment dialog = new ProductDetailFragment(Authenticator.getCurrentUser().id, productID);
+                dialog.show(getChildFragmentManager(), "detailProduct");
             }
         });
-        binding.mainRecyclerView.setAdapter(new ProductAdapter(list, getContext()));}
+        binding.mainRecyclerView.setAdapter(productAdapter);}
 
     }
 
