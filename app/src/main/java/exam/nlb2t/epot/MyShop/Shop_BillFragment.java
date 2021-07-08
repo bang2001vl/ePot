@@ -91,7 +91,7 @@ public class Shop_BillFragment extends Fragment {
         if (isFullBill) return;
 
         isFullBill = true;
-        int step = 5;
+        int step = 10;
 
         new Thread(new Runnable() {
             @Override
