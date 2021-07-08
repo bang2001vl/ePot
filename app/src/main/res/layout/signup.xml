@@ -44,7 +44,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/gilroy_medium"
             android:text="@string/Sign_Up"
             android:textColor="@color/Title_login_logout"
             android:textSize="@dimen/biggest_title_size_text"
