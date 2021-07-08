@@ -55,7 +55,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         BillAdapterItemInfo info = list.get(position);
 
         holder.binding.nameShop.setText(info.salerOverview.fullName);
-        holder.binding.dateOrder.setText(Helper.getDateFormat().format(info.billOverview.createdDate));
+        holder.binding.dateOrder.setText(Helper.getDateTimeFormat().format(info.billOverview.createdDate));
         holder.binding.tvIDOrder.setText(info.billOverview.keyBill);
         holder.binding.tvAmount.setText(String.valueOf(info.amountProduct));
         holder.binding.tvTotal.setText(Helper.getMoneyString(info.billOverview.total));

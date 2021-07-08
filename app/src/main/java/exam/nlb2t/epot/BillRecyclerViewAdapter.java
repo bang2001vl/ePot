@@ -24,6 +24,7 @@ import exam.nlb2t.epot.Database.Tables.BillBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
 import exam.nlb2t.epot.DialogFragment.DetailBillFragment;
 import exam.nlb2t.epot.singleton.Authenticator;
+import exam.nlb2t.epot.singleton.Helper;
 
 public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerViewAdapter.ViewHolder> {
     protected List<BillBaseDB> billList;
@@ -95,7 +96,7 @@ public class BillRecyclerViewAdapter extends RecyclerView.Adapter<BillRecyclerVi
 
     protected void setBillInfor(@NonNull BillRecyclerViewAdapter.ViewHolder holder, BillBaseDB currentbill) {
         holder.getTv_IDBill().setText(currentbill.keyBill);
-        holder.getTv_DateCreate().setText(currentbill.createdDate.toString());
+        holder.getTv_DateCreate().setText(Helper.getDateTimeFormat().format(currentbill.createdDate));
         holder.getTv_Status().setText(currentbill.status.toString());
         holder.getTv_total().setText(String.valueOf(currentbill.total));
         holder.getTv_Amount().setText(String.valueOf(currentbill.getAmountProduct()));
