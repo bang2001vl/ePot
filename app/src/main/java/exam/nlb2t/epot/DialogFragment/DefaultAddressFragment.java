@@ -122,10 +122,10 @@ public class DefaultAddressFragment extends DialogFragment {
                             getActivity().runOnUiThread(()->{
                                 if(!dbControllerUser.hasError() && isOK)
                                 {
-                                    if(onSuccessListener != null){onSuccessListener.OnSuccess(null);}
                                     UserBaseDB userBaseDB = new UserBaseDB();
                                     userBaseDB.setAddress(binding.name.getText().toString(),setPhone(),binding.DetailAddress.getText().toString(),binding.city.getSelectedItem().toString());
                                     Success_toast.show(getContext(),"Thay đổi địa chỉ thành công!",true);
+                                    if(onSuccessListener != null){onSuccessListener.OnSuccess(userBaseDB.address);}
                                 }
                                 else {
                                     Error_toast.show(getContext(), "Có lỗi xảy ra", true);

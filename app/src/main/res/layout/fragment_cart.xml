@@ -80,33 +80,37 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginStart="10dp"
                     android:text="Tổng tiền"
-                    android:textSize="25sp"
+                    android:textSize="22dp"
                     app:layout_constraintBottom_toTopOf="@id/btn_payment"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
+                    android:id="@+id/txt_totalprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txt_totalprice"
 
-                    android:text="300,000đ"
-                    android:textSize="25sp"
-                    android:textColor="@color/black"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
+                    android:text="300,000đ"
+                    android:fontFamily="@font/gilroy_bold"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    app:layout_constraintBottom_toBottomOf="@id/title_totalprice"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/title_totalprice"
-                    app:layout_constraintBottom_toBottomOf="@id/title_totalprice"/>
+                    app:layout_constraintVertical_bias="1.0" />
+
                 <Button
                     android:id="@+id/btn_payment"
-                    android:layout_width="300dp"
-                    android:layout_height="@dimen/button_common_height"
+                    android:layout_width="280dp"
+                    android:layout_height="45dp"
                     android:background="@drawable/btn_red_background"
                     android:fontFamily="@font/gilroy_bold"
                     android:stateListAnimator="@null"
                     android:textColor="@color/white"
                     android:text="@string/btn_cart"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

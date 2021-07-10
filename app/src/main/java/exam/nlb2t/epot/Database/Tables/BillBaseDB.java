@@ -62,7 +62,7 @@ public class BillBaseDB {
     private int amountProduct = 0;
 
     public BillBaseDB() {
-
+        amountProduct = 0;
     }
 
     public static int getNumberBill(int userID, BillStatus status) {
@@ -81,11 +81,11 @@ public class BillBaseDB {
     }
 
     public int getAmountProduct() {
-        if (amountProduct == 0) {
-            DBControllerBill db = new DBControllerBill();
-            amountProduct = db.getAmountProductInBill(this.id);
-            db.closeConnection();
-        }
+//        if (amountProduct == 0) {
+//            DBControllerBill db = new DBControllerBill();
+//            amountProduct = db.getAmountProductInBill(this.id);
+//            db.closeConnection();
+//        }
         return amountProduct;
     }
 

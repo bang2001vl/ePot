@@ -81,7 +81,6 @@
         android:layout_marginStart="32dp"
         android:text="@string/Enror_phone"
         android:textColor="@color/mainColor"
-        android:fontFamily="@font/gilroy_medium"
         android:textSize="@dimen/small_title_size_text"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"

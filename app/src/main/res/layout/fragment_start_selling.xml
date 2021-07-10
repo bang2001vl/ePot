@@ -23,7 +23,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chưa có sản phẩm nào."
-            android:fontFamily="@font/gilroy_medium"
             android:textSize="20dp"
             android:textColor="#363434"
             android:layout_marginTop="20dp"

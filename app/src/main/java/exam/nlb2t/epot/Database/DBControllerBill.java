@@ -148,24 +148,22 @@ public class DBControllerBill extends DatabaseController {
 
         List<BillBaseDB> rs = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("EXEC selectBillByStatus ?,?,?,?");
-            String getNumberSQL;
+            PreparedStatement statement = connection.prepareStatement("EXEC selectBillByStatus2 ?,?,?,?");
+            PreparedStatement statement2 = connection.prepareStatement("EXEC selectNumberProductInBill ?,?,?,?");
+            //String getNumberSQL;
             statement.setInt(1, salerID);
-            if (statusBill != null) {
-                statement.setInt(2, statusBill.getValue());
-                getNumberSQL = "SELECT BILL_ID, COUNT(*) as NUMBER FROM BILL_DETAIL WHERE BILL_ID IN (SELECT ID FROM BILL WHERE SALER_ID = ? AND STATUS = ?) GROUP BY BILL_ID";
-            } else {
-                statement.setNull(2, Types.INTEGER);
-                getNumberSQL = "SELECT BILL_ID, COUNT(*) as NUMBER FROM BILL_DETAIL WHERE BILL_ID IN (SELECT ID FROM BILL WHERE SALER_ID = ?) GROUP BY BILL_ID";
-            }
-            statement.setInt(3, offset);
-            statement.setInt(4, number);
-
-            PreparedStatement statement2 = connection.prepareStatement(getNumberSQL);
             statement2.setInt(1, salerID);
             if (statusBill != null) {
+                statement.setInt(2, statusBill.getValue());
                 statement2.setInt(2, statusBill.getValue());
+            } else {
+                statement.setNull(2, Types.INTEGER);
+                statement2.setNull(2, Types.INTEGER);
             }
+            statement.setInt(3, offset);
+            statement2.setInt(3, offset);
+            statement.setInt(4, number);
+            statement2.setInt(4, number);
 
             ResultSet resultSet = statement.executeQuery();
             ResultSet resultSet2 = statement2.executeQuery();

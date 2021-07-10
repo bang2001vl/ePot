@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,12 @@ import java.util.List;
 import exam.nlb2t.epot.Database.DBControllerProduct;
 import exam.nlb2t.epot.Database.Tables.ProductBaseDB;
 import exam.nlb2t.epot.Database.Tables.UserBaseDB;
+import exam.nlb2t.epot.ProductDetail.ProductDetailFragment;
 import exam.nlb2t.epot.Views.Item_product_container.ProductAdapter;
 import exam.nlb2t.epot.ProductAdapterItemInfo;
 import exam.nlb2t.epot.R;
 import exam.nlb2t.epot.databinding.FragmentFavoriteProdBinding;
+import exam.nlb2t.epot.fragment_ProItem_Container;
 import exam.nlb2t.epot.singleton.Authenticator;
 
 
@@ -56,7 +59,16 @@ public class FavoriteProdFragment extends DialogFragment {
         {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         binding.mainRecyclerView.setLayoutManager(gridLayoutManager);
-        binding.mainRecyclerView.setAdapter(new ProductAdapter(list, getContext()));}
+        ProductAdapter productAdapter = new ProductAdapter(list, getContext());
+        productAdapter.setOnItemClickListener(new fragment_ProItem_Container.OnClickItemListener() {
+            @Override
+            public void onClick(int position, int productID) {
+                Log.d("MY_TAG", "Open product with id = " + productID);
+                ProductDetailFragment dialog = new ProductDetailFragment(Authenticator.getCurrentUser().id, productID);
+                dialog.show(getChildFragmentManager(), "detailProduct");
+            }
+        });
+        binding.mainRecyclerView.setAdapter(productAdapter);}
 
     }
 

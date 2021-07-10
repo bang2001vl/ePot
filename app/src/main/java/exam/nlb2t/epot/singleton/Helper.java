@@ -160,7 +160,7 @@ public class Helper {
     }
 
     public static DateFormat getDateTimeFormat() {
-        @SuppressLint("SimpleDateFormat") DateFormat rs = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") DateFormat rs = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         rs.setTimeZone(TimeZone.getDefault());
         return rs;
     }

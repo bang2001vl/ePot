@@ -36,12 +36,12 @@
                 />
             <TextView
                 android:id="@+id/name_shop"
-                android:fontFamily="@font/gilroy_medium"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:textSize="20dp"
+                android:textSize="16dp"
+                android:fontFamily="@font/gilroy_bold"
                 android:text="Thủy Tiên" />
         </LinearLayout>
 
@@ -53,7 +53,6 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
             android:text="5-12-2019"
-            android:fontFamily="@font/gilroy_medium"
             android:textSize="12dp"/>
     </RelativeLayout>
     <RelativeLayout

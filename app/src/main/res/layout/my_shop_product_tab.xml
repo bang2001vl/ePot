@@ -33,6 +33,6 @@
         android:contentDescription="@string/submit"
         android:scaleType="fitCenter"
         android:backgroundTint="@color/mainColor"
-        android:foregroundTint="@color/white"
+        android:tint="@color/white"
         android:src="@drawable/ic_add_product_24" />
 </RelativeLayout>

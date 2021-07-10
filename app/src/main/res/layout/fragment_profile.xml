@@ -74,12 +74,11 @@
             android:layout_marginHorizontal="20dp"
             android:paddingLeft="20dp"
             app:iconPadding="@dimen/normal_padding"
-            android:fontFamily="@font/gilroy_medium"
             android:text="      Đơn hàng"
             android:textColor="@color/black"
             android:background="?selectableItemBackground"
             android:textAllCaps="false"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null">
         </Button>
         <GridLayout
@@ -101,7 +100,6 @@
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/ic_wallet"
                 android:text="Chờ xác nhận"
-                android:fontFamily="@font/gilroy_medium"
                 android:textAllCaps="false"
                 android:textSize="12dp"
                 android:background="?selectableItemBackground"
@@ -134,7 +132,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:drawableTop="@drawable/ic_box"
-                android:fontFamily="@font/gilroy_medium"
                 android:text="Đang giao"
                 android:textAllCaps="false"
                 android:textColor="#524F4F"
@@ -166,7 +163,6 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_favorites"
                     android:text="Đánh giá"
-                    android:fontFamily="@font/gilroy_medium"
                     android:textAllCaps="false"
                     android:textSize="12dp"
                     android:textColor="#524F4F"
@@ -201,14 +197,13 @@
             android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/ic_address"
             android:drawableRight="@drawable/ic_back_arrow"
-            android:fontFamily="@font/gilroy_medium"
             android:paddingLeft="20dp"
             android:stateListAnimator="@null"
             android:text="      Địa chỉ mặc định"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="16dp"
+            android:textSize="17dp"
             app:iconPadding="20dp"
             app:strokeColor="@color/mainColor"
             app:strokeWidth="2dp"></Button>
@@ -224,14 +219,14 @@
                 android:layout_height="wrap_content"
                 android:text="3 Newbridge Court"
                 android:fontFamily="@font/gilroy_light"
-                android:layout_marginLeft="40dp"/>
+                android:layout_marginLeft="50dp"/>
             <TextView
                 android:id="@+id/tv_city_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Chino Hills, CA 91709, United States"
                 android:fontFamily="@font/gilroy_light"
-                android:layout_marginLeft="40dp" />
+                android:layout_marginLeft="50dp" />
 
         </LinearLayout>
         <View
@@ -251,7 +246,6 @@
             android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/ic_heart"
             android:drawableRight="@drawable/ic_back_arrow"
-            android:fontFamily="@font/gilroy_medium"
             android:paddingLeft="20dp"
             android:stateListAnimator="@null"
             android:text="      Sản phẩm yêu thích"
@@ -259,7 +253,7 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:iconPadding="20dp"
-            android:textSize="16dp"></Button>
+            android:textSize="17dp"></Button>
 
         <View
             android:layout_width="match_parent"
@@ -279,12 +273,11 @@
             android:layout_marginHorizontal="20dp"
             android:paddingLeft="20dp"
             app:iconPadding="20dp"
-            android:fontFamily="@font/gilroy_medium"
             android:text="      Thiết lập tài khoản"
             android:textColor="@color/black"
             android:background="?selectableItemBackground"
             android:textAllCaps="false"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null">
         </Button>
         <View
@@ -304,14 +297,13 @@
             android:background="?selectableItemBackground"
             android:drawableLeft="@drawable/ic_help"
             android:drawableRight="@drawable/ic_back_arrow"
-            android:fontFamily="@font/gilroy_medium"
             android:paddingLeft="20dp"
             android:text="       Trợ giúp"
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:iconPadding="20dp"
-            android:textSize="16dp"
+            android:textSize="17dp"
             android:stateListAnimator="@null"></Button>
 
         <View
