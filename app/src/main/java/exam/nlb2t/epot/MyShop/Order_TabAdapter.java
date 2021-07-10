@@ -137,11 +137,18 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
         if (fragment instanceof EmptyBillFragment) {
             int index = Arrays.asList(emptyfragments).indexOf(fragment);
             Shop_BillFragment billf = (Shop_BillFragment)fragments[index];
+            BillBaseDB.BillStatus status = billf.statusBill;
+            if (FLAG_RELOAD > 0 && (status == null || status == BillBaseDB.BillStatus.WAIT_CONFIRM)) FLAG_RELOAD--;
             if (billf.listBill.size() > 0) {
                 return POSITION_NONE;
             }
         }
         if (fragment instanceof Shop_BillFragment) {
+            BillBaseDB.BillStatus status = ((Shop_BillFragment)fragment).statusBill;
+            if (FLAG_RELOAD > 0 && (status == null || status == BillBaseDB.BillStatus.WAIT_CONFIRM)) {
+                FLAG_RELOAD--;
+                return POSITION_NONE;
+            }
             Shop_BillFragment billf = (Shop_BillFragment)fragment;
             if (billf.listBill.size() == 0) {
                 return POSITION_NONE;
@@ -166,19 +173,21 @@ public class Order_TabAdapter extends FragmentStatePagerAdapter {
             ((Shop_BillFragment)fragments[i]).loadAsyncData();
         }
     }
-
+    private int FLAG_RELOAD = 0;
     public void ReloadBill(BillBaseDB.BillStatus status) {
         Log.d("MY_TAG", "Code has been run");
         for (int i = 0; i < tabtitles.length; i++) {
             Shop_BillFragment frag = (Shop_BillFragment)fragments[i];
             if (frag.statusBill == status) {
                 NUMBER_BILL_LOAD_DONE --;
+                FLAG_RELOAD++;
 
                 Shop_BillFragment newBill = new Shop_BillFragment(status);
 
                 newBill.setNotifyStatusChangedListener((f,t,b)->receiveNotifyStatusChanged(f,t,b));
                 newBill.setOnListBillChanged(()->{
                     if (NUMBER_BILL_LOAD_DONE == fragments.length) {
+                        Log.d("BILL_RELOAD", "DONE: " + status);
                         notifyDataSetChanged();
                     }
                 });
