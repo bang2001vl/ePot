@@ -26,6 +26,7 @@
 - Quyền truy cập đa phương tiện
   - Dùng để lấy ảnh từ máy khi tạo sản phẩm mới
 
-## Thông tin về máy chủ
+## Thông tin về máy chủ (Đã ngừng hoạt động)
 - Nhà cung cấp : Microsoft Azure
+- Nhằm tiết kiệm kinh phí, máy chủ sẽ dừng hoạt động  vào 9h ngày 02/09/2021. Mọi người có thể tự tạo server theo mẫu 'ePot/database.sql' và config đại chỉ server trong file 'ePot/app/src/main/java/exam/nlb2t/epot/SQL/DataModel.java'
 
